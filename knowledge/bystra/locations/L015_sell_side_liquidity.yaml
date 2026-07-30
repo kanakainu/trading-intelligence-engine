@@ -1,0 +1,39 @@
+id: BYS-L015
+name: Sell Side Liquidity
+aliases:
+- SSL
+- Sell Stops
+- Stops Below
+category: Location
+version: '1.0'
+definition: Concentration of sell stop orders (and buy stop orders below for breakdown
+  entries) resting below swing lows.
+location_type: LIQUIDITY
+characteristics:
+- Located below swing lows
+- Equal lows attract SSL
+- Retail breakdown traders park stops here
+- Institutional targets for sweeps
+related_objects:
+- BYS-C013
+- BYS-C014
+- BYS-C018
+- BYS-C019
+used_by:
+- BYS-ST010
+- BYS-ST011
+references: []
+tags:
+- liquidity
+- sell-stops
+- below
+- sweep
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

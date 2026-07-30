@@ -1,0 +1,44 @@
+id: BYS-CF012
+name: Retest Confirmation
+aliases:
+- Retest
+- Back-Test
+- Level Retest
+- B&R Confirm
+category: Confirmation
+version: '1.0'
+definition: Price returns to a broken level and shows rejection — confirms the level
+  held as new support/resistance.
+characteristics:
+- Price returns to broken level
+- Rejection candle or pattern visible
+- Level transformed (support→resistance or vice versa)
+- Validates breakout quality
+strengthens:
+- BYS-L001
+- BYS-L002
+- BYS-L003
+- BYS-L004
+- BYS-ST001
+- BYS-ST002
+related_objects:
+- BYS-C009
+- BYS-C008
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- retest
+- back-test
+- break-and-retest
+- confirmation
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,42 @@
+id: BYS-C011
+name: Swing Low
+aliases:
+- local low
+- pivot low
+- reaction low
+- swing bottom
+category: Concept
+definition: A price trough formed when a bar's low is less than the lows of the bars
+  immediately preceding and following it, marking a point at which downward price
+  movement temporarily reversed or stalled.
+characteristics:
+- The low of the pivot bar is less than the lows of surrounding bars
+- Defined by at least one higher low on each side (context-dependent)
+- Represents a point of temporary demand dominance
+- Can be major (significant structural) or minor (smaller degree)
+- Forms the reference points used to identify trend structure
+notes: The number of confirming bars on each side defines swing sensitivity. Higher
+  confirmation bars yield more structurally significant swing lows.
+related_objects:
+- BYS-C010
+- BYS-C033
+- BYS-C034
+- BYS-C037
+- BYS-C039
+- BYS-C012
+references: []
+tags:
+- structure
+- pivot
+- low
+- reference_level
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

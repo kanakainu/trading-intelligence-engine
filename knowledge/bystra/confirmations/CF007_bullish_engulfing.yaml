@@ -1,0 +1,41 @@
+id: BYS-CF007
+name: Bullish Engulfing Confirmation
+aliases:
+- Bull Engulf
+- Bullish Candle Confirmation
+- Green Engulf
+category: Confirmation
+version: '1.0'
+definition: A bullish candle body fully engulfs the prior bearish candle body — confirms
+  buying momentum shift.
+characteristics:
+- Current bullish body > previous bearish body
+- Close above prior open
+- Strong momentum signal
+- More significant at key levels
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-L001
+- BYS-L003
+related_objects:
+- BYS-C025
+- BYS-C023
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- bullish
+- engulfing
+- momentum
+- reversal
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

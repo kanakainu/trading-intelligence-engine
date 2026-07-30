@@ -1,0 +1,39 @@
+id: BYS-C001
+name: Impulse
+aliases:
+- impulse move
+- impulsive wave
+- impulse leg
+category: Concept
+definition: A strong, directional price move characterized by above-average momentum
+  and range, representing the dominant force in a given market direction over a defined
+  period.
+characteristics:
+- Larger candle bodies relative to recent average
+- Above-average displacement from open to close
+- Minimal overlap between consecutive candles
+- Occurs in the direction of prevailing pressure
+- Associated with elevated volume or spread expansion
+notes: Impulse is a descriptive quality of a price move, not a pattern. It describes
+  the character of movement rather than a specific candle formation.
+related_objects:
+- BYS-C002
+- BYS-C003
+- BYS-C006
+- BYS-C030
+references: []
+tags:
+- price_action
+- momentum
+- move_quality
+- directional
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

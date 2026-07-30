@@ -1,0 +1,6 @@
+id: ST001
+name: Dummy Long Setup
+category: Setup
+version: 1.0
+status: ACTIVE
+description: Test setup for dummy strategy.

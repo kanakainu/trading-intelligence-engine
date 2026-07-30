@@ -1,0 +1,46 @@
+id: BYS-ST014
+name: Channel
+aliases:
+- Price Channel
+- Trending Channel
+- Parallel Channel
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Structure where price moves between two parallel trendlines, either trending
+  or horizontal.
+sequence:
+- Lower Trendline
+- Price Oscillation
+- Upper Trendline
+components:
+  lower_trendline: Connecting swing lows (support)
+  price_oscillation: Price bouncing between both lines
+  upper_trendline: Connecting swing highs (resistance)
+characteristics:
+- Two parallel trendlines
+- Minimum 2 touch points on each line
+- Can trend up, down, or sideways
+- Price respects both boundaries
+invalidation: Price breaks and closes outside either trendline with follow-through.
+related_objects:
+- BYS-C005
+- BYS-C033
+- BYS-C034
+used_by:
+- BYS-EP001
+references: []
+tags:
+- channel
+- parallel
+- trendline
+- structure
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

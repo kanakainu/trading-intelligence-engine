@@ -1,0 +1,46 @@
+id: BYS-ST008
+name: Expansion Structure
+aliases:
+- Expansion Phase
+- Breakout Expansion
+- Volatility Expansion Pattern
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Structure where price range increases significantly after compression
+  or consolidation.
+sequence:
+- Pre-Expansion Base
+- Expansion Trigger
+- Expansion Leg
+components:
+  pre_expansion_base: Tight consolidation or compression
+  trigger: Break of consolidation boundary
+  expansion_leg: Strong directional move with increasing range
+characteristics:
+- Candle ranges increase from base
+- Strong directional conviction
+- Often follows compression
+- Volume increases on expansion
+invalidation: Price returns to pre-expansion base.
+related_objects:
+- BYS-C006
+- BYS-C007
+- BYS-C001
+used_by:
+- BYS-EP001
+references: []
+tags:
+- expansion
+- breakout
+- volatility
+- range
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

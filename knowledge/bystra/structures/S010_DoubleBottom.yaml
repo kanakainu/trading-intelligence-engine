@@ -1,0 +1,48 @@
+id: BYS-ST010
+name: Double Bottom
+aliases:
+- DB
+- W-Pattern
+- Twin Troughs
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Bullish reversal structure — two swing lows at approximately same level
+  separated by a peak.
+sequence:
+- First Trough
+- Peak
+- Second Trough
+- Breakout
+components:
+  first_trough: Initial swing low
+  peak: Rally between troughs (neckline reference)
+  second_trough: Second swing low near first trough level
+  breakout: Close above peak high
+characteristics:
+- Two troughs at similar price level
+- Equal or near-equal lows
+- Peak between troughs
+- Second trough may be slightly higher
+invalidation: Price breaks below second trough low.
+related_objects:
+- BYS-C011
+- BYS-C018
+- BYS-C004
+used_by:
+- BYS-EP001
+references: []
+tags:
+- bullish
+- reversal
+- double-bottom
+- equal-low
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

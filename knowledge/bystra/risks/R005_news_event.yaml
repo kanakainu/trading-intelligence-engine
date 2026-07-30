@@ -1,0 +1,41 @@
+id: BYS-R005
+name: News Event Risk
+aliases:
+- News Risk
+- Fundamental Risk
+- High Impact News
+category: Risk
+version: '1.0'
+definition: Scheduled high-impact economic event that can cause sudden volatility
+  spike and spread widening.
+severity: CRITICAL
+characteristics:
+- Scheduled news release approaching
+- Spread may spike unpredictably
+- Price can move hundreds of pips in seconds
+- SL may not protect due to gaps/slippage
+affects:
+- Volatility
+- Spread
+- SL
+- Session
+- Decision
+related_objects:
+- BYS-L021
+- BYS-L019
+- BYS-CF013
+references: []
+tags:
+- news
+- fundamental
+- critical
+- spike
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

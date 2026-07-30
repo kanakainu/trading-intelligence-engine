@@ -1,0 +1,56 @@
+id: BYS-SETUP-012
+name: Manipulation
+engine: bystra
+category: Setup
+version: '1.0'
+setup_type: Reversal
+market_bias: NEUTRAL
+description: 'Higher risk than QMR. Valid manipulation appears on HTF. Structure:
+  HTF engulfing → switch to LTF → find RBR/DBD entry point inside the engulfing body.
+  Bearish Engulfing on HTF → LTF shows DBD entry point inside it → sell. Bullish Engulfing
+  on HTF → LTF shows RBR entry point inside it → buy.'
+allowed_entry_patterns:
+- RBR inside HTF Bullish Engulfing (buy)
+- DBD inside HTF Bearish Engulfing (sell)
+required_locations:
+- Inside HTF engulfing candle body
+required_confirmations:
+- HTF engulfing (Bullish or Bearish)
+- LTF RBR/DBD inside engulfing body
+required_risks:
+- Very high risk
+- HTF engulfing must be valid
+required_structures:
+- RBR
+- DBD
+required_concepts:
+- Reversal
+- Manipulation
+- HTF Engulfing
+- LTF Entry Inside Engulfing
+- Multi-Timeframe
+invalidate_conditions:
+- No HTF engulfing
+- LTF entry not inside engulfing body
+notes: Higher risk than QMR. HTF engulfing required first, then LTF entry inside it.
+references:
+- 'XAUUSD Bystra Secret Strategy - Setup #12: Manipulation — Reversal (High Risk)'
+type: NEUTRAL
+requires:
+- BYS-CF007
+- BYS-CF008
+- BYS-ST001
+- BYS-ST004
+invalid_if:
+- BYS-R020
+priority: 4
+confidence: 0.55
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_document: XAUUSD — Bystra Secret Strategy.md
+  source_location: knowledge/bystra/setups/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

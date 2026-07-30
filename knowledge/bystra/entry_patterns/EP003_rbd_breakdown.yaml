@@ -1,0 +1,39 @@
+id: BYS-EP003
+name: RBD Breakdown Entry
+aliases:
+- RBD Break
+- Rally-Base-Drop Breakdown
+category: Concept
+version: '1.0'
+definition: Entry triggered when price breaks below the low of the Base within an
+  RBD structure, confirming bearish reversal.
+trigger_description: A candle closes below the Base Low of the RBD structure after
+  an initial rally.
+prerequisites:
+- RBD structure identified
+- Base formed after initial rally
+- Base Low clearly defined
+invalidation: Price closes above Base High before breakdown occurs.
+related_objects:
+- BYS-ST003
+- BYS-C008
+- BYS-CF011
+used_by:
+- BYS-CF024
+- BYS-CF025
+- BYS-CF026
+references: []
+tags:
+- rbd
+- breakdown
+- bearish
+- reversal
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

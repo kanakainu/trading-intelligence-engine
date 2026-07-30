@@ -1,0 +1,42 @@
+id: BYS-EP015
+name: Liquidity Sweep Entry
+aliases:
+- Sweep Entry
+- Post-Sweep Entry
+- LSE
+category: Concept
+version: '1.0'
+definition: Entry triggered after a liquidity sweep — price swept a key liquidity
+  pool and reversed, confirming the trap is complete.
+trigger_description: After price sweeps a liquidity area (equal highs/lows, swing
+  point) and reversal momentum appears, entry confirmed.
+prerequisites:
+- Liquidity pool or equal high/low identified
+- Price sweeps beyond key level
+- Reversal candle confirms directional intent
+invalidation: Price continues beyond sweep level without reversal.
+related_objects:
+- BYS-CF017
+- BYS-C016
+- BYS-L014
+- BYS-L015
+- BYS-L017
+- BYS-L018
+used_by:
+- BYS-CF024
+- BYS-CF025
+references: []
+tags:
+- liquidity
+- sweep
+- reversal
+- institutional
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

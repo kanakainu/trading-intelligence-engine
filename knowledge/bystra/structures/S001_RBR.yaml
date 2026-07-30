@@ -1,0 +1,44 @@
+id: BYS-ST001
+name: Rally Base Rally
+aliases:
+- RBR
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Bullish continuation structure — impulse up, consolidation base, second
+  impulse up.
+sequence:
+- Rally
+- Base
+- Rally
+components:
+  rally_leg: Bullish impulse creating a new swing high
+  base: Horizontal consolidation with overlapping candles
+  breakout_leg: Bullish breakout above base high
+characteristics:
+- Two bullish impulses separated by a base
+- Base contained within prior rally range
+- Second rally exceeds base high
+invalidation: Price closes below base low before breakout.
+related_objects:
+- BYS-C001
+- BYS-C005
+- BYS-C003
+used_by:
+- BYS-EP001
+- BYS-EP002
+references: []
+tags:
+- bullish
+- continuation
+- base
+- rbr
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

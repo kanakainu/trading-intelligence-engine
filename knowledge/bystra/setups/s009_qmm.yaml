@@ -1,0 +1,51 @@
+id: BYS-SETUP-009
+name: QMM
+engine: bystra
+category: Setup
+version: '1.0'
+setup_type: Reversal
+market_bias: NEUTRAL
+description: QM Manipulation. Price fails to respect QMR. Simultaneously makes a new
+  entry point in line with the left shoulder of the failed QMR. Variants exist. Entry
+  is safer when formation has strong engulfing on HTF.
+allowed_entry_patterns:
+- Left shoulder of failed QMR
+required_locations:
+- Left shoulder of failed Quasimodo structure
+required_confirmations:
+- Strong engulfing on HTF (safer)
+- Failed QMR confirmed
+required_risks:
+- High risk
+- Variants exist — interpret with care
+required_structures:
+- Quasimodo
+- Failed QMR
+required_concepts:
+- Reversal
+- Quasimodo Manipulation
+- Left Shoulder
+- Failed QMR
+- Multi-Timeframe
+invalidate_conditions:
+- QMR is NOT failed
+notes: Variants exist. Entry safer with strong HTF engulfing.
+references:
+- 'XAUUSD Bystra Secret Strategy - Setup #9: QMM — Reversal'
+type: NEUTRAL
+requires:
+- BYS-ST011
+- BYS-CF007
+- BYS-CF008
+invalid_if: []
+priority: 3
+confidence: 0.6
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_document: XAUUSD — Bystra Secret Strategy.md
+  source_location: knowledge/bystra/setups/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

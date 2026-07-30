@@ -1,0 +1,42 @@
+id: BYS-C035
+name: Sideways
+aliases:
+- ranging market
+- lateral movement
+- horizontal trend
+- chop
+- range-bound
+category: Concept
+definition: A market condition in which price oscillates horizontally within a bounded
+  range, forming neither higher highs and higher lows nor lower highs and lower lows,
+  indicating equilibrium between buying and selling pressure over the observed period.
+characteristics:
+- No net directional displacement over the observed period
+- Swing highs cluster near a common upper boundary
+- Swing lows cluster near a common lower boundary
+- Neither bullish nor bearish structure is sustained
+- Often characterized by overlapping candles and reduced momentum
+notes: Sideways describes the absence of sustained trend structure rather than any
+  specific pattern. It may occur at any timeframe and is the defining condition of
+  consolidation phases.
+related_objects:
+- BYS-C005
+- BYS-C033
+- BYS-C034
+- BYS-C007
+references: []
+tags:
+- trend
+- range
+- consolidation
+- market_condition
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

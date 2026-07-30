@@ -1,0 +1,38 @@
+id: BYS-R002
+name: Low Volatility Risk
+aliases:
+- LV Risk
+- Dead Market
+- Choppy
+category: Risk
+version: '1.0'
+definition: Market condition where price range is abnormally narrow — movement insufficient
+  to reach targets, choppy price action.
+severity: MEDIUM
+characteristics:
+- ATR below normal range
+- Small candle ranges
+- No directional conviction
+- Sideways choppy movement
+affects:
+- TP Reach
+- Momentum
+- Setup Quality
+related_objects:
+- BYS-C035
+- BYS-C007
+references: []
+tags:
+- volatility
+- low
+- choppy
+- dead-market
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,35 @@
+id: BYS-CF005
+name: Lower High Confirmation
+aliases:
+- LH Confirm
+- Rejected Rally
+category: Confirmation
+version: '1.0'
+definition: Price creates a lower high — confirms bearish structure continuation and
+  selling pressure.
+characteristics:
+- New swing high below prior high
+- Sellers entering earlier
+- Bearish LH-LL structure intact
+strengthens:
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C038
+- BYS-C034
+used_by:
+- BYS-CF006
+references: []
+tags:
+- lower-high
+- bearish
+- structure
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

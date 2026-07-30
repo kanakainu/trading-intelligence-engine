@@ -1,0 +1,6 @@
+id: CF001
+name: Volume Confirmation
+category: Confirmation
+version: 1.0
+status: ACTIVE
+description: Relative volume increase on breakout.

@@ -1,0 +1,40 @@
+id: BYS-CF018
+name: Liquidity Grab Confirmation
+aliases:
+- Grab Confirm
+- Stop Hunt Confirm
+- Liq Grab
+category: Confirmation
+version: '1.0'
+definition: Price grabbed liquidity at a known pool before reversing — confirms the
+  trap has been set and filled.
+characteristics:
+- Liquidity pool triggered
+- Reversal candle follows
+- Confirms institutional intent
+- Directional move expected after grab
+strengthens:
+- BYS-L016
+- BYS-L014
+- BYS-L015
+related_objects:
+- BYS-C015
+- BYS-C019
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- liquidity-grab
+- stop-hunt
+- institutional
+- reversal
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

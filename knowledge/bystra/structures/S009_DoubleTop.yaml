@@ -1,0 +1,48 @@
+id: BYS-ST009
+name: Double Top
+aliases:
+- DT
+- M-Pattern
+- Twin Peaks
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Bearish reversal structure — two swing highs at approximately same level
+  separated by a trough.
+sequence:
+- First Peak
+- Trough
+- Second Peak
+- Breakdown
+components:
+  first_peak: Initial swing high
+  trough: Pullback between peaks (neckline reference)
+  second_peak: Second swing high near first peak level
+  breakdown: Close below trough low
+characteristics:
+- Two peaks at similar price level
+- Equal or near-equal highs
+- Trough between peaks
+- Second peak may be slightly lower
+invalidation: Price breaks above second peak high.
+related_objects:
+- BYS-C010
+- BYS-C017
+- BYS-C004
+used_by:
+- BYS-EP001
+references: []
+tags:
+- bearish
+- reversal
+- double-top
+- equal-high
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

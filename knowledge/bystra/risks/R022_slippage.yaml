@@ -1,0 +1,39 @@
+id: BYS-R022
+name: Slippage Risk
+aliases:
+- Price Slippage
+- Execution Slippage
+- Market Order Risk
+category: Risk
+version: '1.0'
+definition: Risk of trade executing at a different price than expected — common during
+  high volatility or news events.
+severity: MEDIUM
+characteristics:
+- High volatility conditions
+- Wide spread
+- Market order execution
+- Fast price movement at entry
+affects:
+- Execution
+- Entry Price
+- RR
+related_objects:
+- BYS-R001
+- BYS-R003
+- BYS-R005
+references: []
+tags:
+- slippage
+- execution
+- market-order
+- risk
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

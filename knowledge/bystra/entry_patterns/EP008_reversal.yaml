@@ -1,0 +1,42 @@
+id: BYS-EP008
+name: Reversal Entry
+aliases:
+- Counter-Trend Entry
+- Reversal Trigger
+- Turn Entry
+category: Concept
+version: '1.0'
+definition: Entry against the prior trend direction at a key structural level after
+  reversal signals appear.
+trigger_description: After a trending move, price reaches a significant structure
+  or zone, shows a reversal pattern, and a confirmation candle triggers entry.
+prerequisites:
+- Significant structure or zone reached
+- Reversal candle or pattern visible
+- Prior trend momentum exhausted
+invalidation: Price breaks structure confirming trend continuation instead of reversing.
+related_objects:
+- BYS-C004
+- BYS-C012
+- BYS-CF007
+- BYS-CF008
+- BYS-L001
+- BYS-L002
+used_by:
+- BYS-CF025
+- BYS-CF026
+references: []
+tags:
+- reversal
+- counter-trend
+- exhaustion
+- flip
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

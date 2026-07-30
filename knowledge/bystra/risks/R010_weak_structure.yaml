@@ -1,0 +1,38 @@
+id: BYS-R010
+name: Weak Structure Risk
+aliases:
+- Poor Structure
+- Unclear Structure
+- Ambiguous Setup
+category: Risk
+version: '1.0'
+definition: Market structure is unclear, mixed, or lacks conviction — setup reliability
+  reduced.
+severity: MEDIUM
+characteristics:
+- Mixed higher/lower highs-lows
+- No clear trend
+- Multiple overlapping zones
+- Structure reads differently on different TFs
+affects:
+- Setup Quality
+- Confirmation
+- Decision
+related_objects:
+- BYS-C012
+- BYS-L019
+references: []
+tags:
+- structure
+- weak
+- ambiguous
+- risk
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

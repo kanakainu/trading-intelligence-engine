@@ -1,0 +1,36 @@
+id: BYS-CF003
+name: Higher High Confirmation
+aliases:
+- HH Confirm
+- New High Confirm
+category: Confirmation
+version: '1.0'
+definition: Price creates a higher high relative to previous swing high — confirms
+  bullish structure continuation.
+characteristics:
+- New swing high above prior high
+- Bullish HH-HL structure maintained
+- Buyers still in control
+strengthens:
+- BYS-ST001
+- BYS-ST002
+related_objects:
+- BYS-C036
+- BYS-C033
+used_by:
+- BYS-CF004
+- BYS-CF005
+references: []
+tags:
+- higher-high
+- bullish
+- structure
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

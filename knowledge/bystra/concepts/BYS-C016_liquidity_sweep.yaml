@@ -1,0 +1,42 @@
+id: BYS-C016
+name: Liquidity Sweep
+aliases:
+- sweep
+- stop sweep
+- liq sweep
+- range sweep
+category: Concept
+definition: A price movement that clears liquidity from multiple levels across a range,
+  triggering a series of resting orders in sequence as price moves through them, typically
+  in a rapid, impulsive manner.
+characteristics:
+- Price moves through multiple order-bearing levels in a single continuous move
+- Multiple stop clusters or liquidity pools are triggered sequentially
+- Often occurs with elevated momentum and range expansion
+- Distinct from a grab in that it covers a wider range and multiple levels
+- The swept levels represent cleared order activity no longer available
+notes: A liquidity sweep is broader in scope than a liquidity grab. After a sweep,
+  the cleared levels may act differently as structural references because the orders
+  that defined them have been consumed.
+related_objects:
+- BYS-C013
+- BYS-C014
+- BYS-C015
+- BYS-C019
+- BYS-C006
+references: []
+tags:
+- liquidity
+- sweep
+- order_flow
+- momentum
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

@@ -1,0 +1,39 @@
+id: BYS-R017
+name: Fake Breakout Risk
+aliases:
+- Fakeout
+- False Breakout
+- Bull/Bear Trap
+category: Risk
+version: '1.0'
+definition: Price appears to break a key level with conviction but reverses, trapping
+  breakout traders.
+severity: HIGH
+characteristics:
+- Brief close beyond level
+- No follow-through momentum
+- Reversal candle appears
+- Breakout traders caught
+affects:
+- Entry Pattern
+- Setup
+- Decision
+related_objects:
+- BYS-C019
+- BYS-C008
+- BYS-CF011
+references: []
+tags:
+- fakeout
+- 'false'
+- breakout
+- trap
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

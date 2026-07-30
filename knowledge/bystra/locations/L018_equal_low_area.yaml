@@ -1,0 +1,39 @@
+id: BYS-L018
+name: Equal Low Area
+aliases:
+- EQL Zone
+- Double Bottom Area
+- SSL Area
+category: Location
+version: '1.0'
+definition: A price area where two or more swing lows form at approximately the same
+  level, concentrating sell-side liquidity below.
+location_type: LIQUIDITY
+characteristics:
+- Two or more lows at same level
+- Sell stops clustered below
+- Visible on chart as double/triple bottom shape
+- Attractive for liquidity sweeps
+related_objects:
+- BYS-C018
+- BYS-L015
+- BYS-L016
+- BYS-C011
+used_by:
+- BYS-ST010
+- BYS-ST011
+references: []
+tags:
+- equal-low
+- ssl
+- double-bottom
+- liquidity
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

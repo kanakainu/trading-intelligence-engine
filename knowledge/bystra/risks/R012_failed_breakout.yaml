@@ -1,0 +1,39 @@
+id: BYS-R012
+name: Failed Breakout Risk
+aliases:
+- Fakeout Risk
+- False Break
+- Trap Breakout
+category: Risk
+version: '1.0'
+definition: Price broke a level but reversed back — breakout was false, trapping breakout
+  traders.
+severity: HIGH
+characteristics:
+- Price closed beyond level
+- Reversed back within same session
+- Breakout traders trapped
+- Liquidity was grabbed
+affects:
+- Entry Pattern
+- Setup
+- Decision
+related_objects:
+- BYS-C019
+- BYS-C015
+- BYS-CF011
+references: []
+tags:
+- fakeout
+- false-break
+- trap
+- breakout
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

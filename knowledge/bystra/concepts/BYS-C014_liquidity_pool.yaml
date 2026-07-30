@@ -1,0 +1,44 @@
+id: BYS-C014
+name: Liquidity Pool
+aliases:
+- liquidity cluster
+- order cluster
+- stop cluster
+category: Concept
+definition: A concentration of resting orders — typically stop-losses and pending
+  entries — accumulated at or near a specific price level, often below a swing low
+  or above a swing high where traders commonly place protective orders.
+characteristics:
+- Forms at predictable levels where stop placement is conventional
+- Commonly found below equal lows, below swing lows, above equal highs, above swing
+  highs
+- Larger pools form where more market participants have stops at the same level
+- Visible indirectly through the structure of prior price action (equal levels, obvious
+  pivots)
+- Represents latent order activity not yet executed
+notes: A liquidity pool is a structural concept identifying where orders are likely
+  to reside. Its location can be inferred from price structure without direct access
+  to order book data.
+related_objects:
+- BYS-C013
+- BYS-C015
+- BYS-C016
+- BYS-C017
+- BYS-C018
+- BYS-C021
+references: []
+tags:
+- liquidity
+- orders
+- structure
+- stop_levels
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

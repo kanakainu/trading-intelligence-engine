@@ -1,0 +1,42 @@
+id: BYS-C012
+name: Market Structure Shift
+aliases:
+- MSS
+- structure shift
+- structural shift
+- structure break
+category: Concept
+definition: A change in the prevailing sequence of swing highs and lows that signals
+  a potential transition from one directional bias to another, evidenced by price
+  breaching a key structural swing point in the opposing direction.
+characteristics:
+- A prior swing high (in a downtrend) or swing low (in an uptrend) is decisively broken
+- The break is in the direction opposite to the prior trend
+- Forms the first structural evidence of a potential directional change
+- Does not require full trend confirmation — it is the initial signal of change
+- The broken swing level serves as a reference for the shift
+notes: A market structure shift is a precursor to a reversal but does not guarantee
+  one. It is one structural event within a broader sequence that may or may not lead
+  to a sustained new trend.
+related_objects:
+- BYS-C004
+- BYS-C010
+- BYS-C011
+- BYS-C033
+- BYS-C034
+references: []
+tags:
+- structure
+- shift
+- reversal_signal
+- trend_change
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

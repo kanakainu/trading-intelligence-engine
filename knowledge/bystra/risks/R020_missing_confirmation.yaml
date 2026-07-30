@@ -1,0 +1,40 @@
+id: BYS-R020
+name: Missing Confirmation Risk
+aliases:
+- No Confirm
+- Unconfirmed Setup
+- Raw Entry
+category: Risk
+version: '1.0'
+definition: Setup lacks sufficient confirmation signals — entry without adequate evidence
+  increases failure probability.
+severity: MEDIUM
+characteristics:
+- No rejection candle at zone
+- No reversal pattern
+- Setup only partially fulfilled
+- Entry before confirmation
+affects:
+- Setup
+- Decision
+- Entry Pattern
+related_objects:
+- BYS-CF023
+- BYS-CF022
+- BYS-CF007
+- BYS-CF008
+references: []
+tags:
+- confirmation
+- missing
+- unconfirmed
+- risk
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

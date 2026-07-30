@@ -1,0 +1,41 @@
+id: BYS-C022
+name: Order Flow
+aliases:
+- trade flow
+- market order flow
+- delta
+- transaction flow
+category: Concept
+definition: The sequence and volume of buy and sell orders being executed in the market
+  at any given time, representing the actual transactional activity that drives price
+  movement.
+characteristics:
+- Reflects real-time execution of market orders against the order book
+- Determines the immediate direction and speed of price movement
+- Imbalance between buying and selling pressure moves price
+- Can be observed through volume, delta, and tape reading
+- Distinguishes between passive (limit) and aggressive (market) order activity
+notes: Order flow is the most direct representation of supply and demand in action.
+  It differs from price action in that it describes the orders causing price to move
+  rather than the resulting price movement itself.
+related_objects:
+- BYS-C013
+- BYS-C021
+- BYS-C001
+- BYS-C030
+references: []
+tags:
+- order_flow
+- volume
+- market_mechanics
+- execution
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

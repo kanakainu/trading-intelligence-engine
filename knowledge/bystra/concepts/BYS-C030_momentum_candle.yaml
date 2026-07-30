@@ -1,0 +1,41 @@
+id: BYS-C030
+name: Momentum Candle
+aliases:
+- strong candle
+- power candle
+- decisive candle
+- conviction candle
+category: Concept
+definition: A candlestick with a large body relative to its total range and recent
+  candles, minimal wicks, and a close near the extreme of its range, indicating strong
+  directional conviction and one-sided pressure during the period.
+characteristics:
+- Large body relative to recent average candle bodies
+- Close near the high (bullish) or low (bearish) of the candle's range
+- Minimal upper and lower wicks relative to body size
+- Implies one-sided order flow dominated the period
+- Often associated with impulsive price moves or breakouts
+notes: Momentum candle is a relative descriptor — it is assessed against recent context,
+  not an absolute size threshold. The same candle may be a momentum candle on one
+  chart and not on another.
+related_objects:
+- BYS-C001
+- BYS-C006
+- BYS-C023
+- BYS-C024
+references: []
+tags:
+- candlestick
+- momentum
+- conviction
+- single_bar
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

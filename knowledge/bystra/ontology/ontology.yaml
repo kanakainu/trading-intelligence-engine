@@ -1,0 +1,487 @@
+# Bystra Knowledge Pack — Ontology
+# Taxonomy & classification. No rules. No logic.
+# Version: 1.0
+
+categories:
+  - Concept
+  - Structure
+  - Location
+  - Confirmation
+  - Risk
+  - Entry Pattern
+  - Setup
+  - Exit
+  - Market Condition
+  - Liquidity
+  - Trend
+  - Session
+  - Timeframe
+
+objects:
+
+  # ── Concept ───────────────────────────────────────────────────────────────
+
+  - id: BYS-C001
+    name: Price Action
+    category: Concept
+    version: "1.0"
+    status: ACTIVE
+    description: Movement of price over time without indicators.
+    aliases: [PA, Raw Price, Naked Chart]
+    tags: [core, price, movement]
+
+  - id: BYS-C002
+    name: Market Structure
+    category: Concept
+    version: "1.0"
+    status: ACTIVE
+    description: Framework of highs and lows defining trend direction.
+    aliases: [Structure, MS]
+    tags: [core, trend, highs, lows]
+
+  - id: BYS-C003
+    name: Momentum
+    category: Concept
+    version: "1.0"
+    status: ACTIVE
+    description: Speed and strength of price movement.
+    aliases: [Impulse Strength, Drive]
+    tags: [speed, strength, impulse]
+
+  - id: BYS-C004
+    name: Imbalance
+    category: Concept
+    version: "1.0"
+    status: ACTIVE
+    description: Area where price moved too fast leaving unfilled orders.
+    aliases: [Gap, FVG, Fair Value Gap]
+    tags: [orderflow, gap, unfilled]
+
+  # ── Structure ─────────────────────────────────────────────────────────────
+
+  - id: BYS-S001
+    name: Rally Base Rally
+    category: Structure
+    version: "1.0"
+    status: ACTIVE
+    description: Bullish continuation pattern — impulse, consolidation base, breakout.
+    aliases: [RBR]
+    tags: [bullish, continuation, base]
+
+  - id: BYS-S002
+    name: Drop Base Drop
+    category: Structure
+    version: "1.0"
+    status: ACTIVE
+    description: Bearish continuation pattern — impulse down, base, continuation down.
+    aliases: [DBD]
+    tags: [bearish, continuation, base]
+
+  - id: BYS-S003
+    name: Rally Base Drop
+    category: Structure
+    version: "1.0"
+    status: ACTIVE
+    description: Bearish reversal pattern — rally, base, drop from base.
+    aliases: [RBD]
+    tags: [bearish, reversal, base]
+
+  - id: BYS-S004
+    name: Drop Base Rally
+    category: Structure
+    version: "1.0"
+    status: ACTIVE
+    description: Bullish reversal pattern — drop, base, rally from base.
+    aliases: [DBR]
+    tags: [bullish, reversal, base]
+
+  - id: BYS-S005
+    name: Inside Bar
+    category: Structure
+    version: "1.0"
+    status: ACTIVE
+    description: Candle fully contained within previous candle's range. Compression signal.
+    aliases: [IB, Inside Candle]
+    tags: [compression, consolidation, range]
+
+  - id: BYS-S006
+    name: Engulfing
+    category: Structure
+    version: "1.0"
+    status: ACTIVE
+    description: Candle body fully engulfs previous candle body. Reversal signal.
+    aliases: [Engulf, BE, BullEngulf, BearEngulf]
+    tags: [reversal, momentum, body]
+
+  - id: BYS-S007
+    name: Manipulation
+    category: Structure
+    version: "1.0"
+    status: ACTIVE
+    description: False breakout + reversal pattern targeting stop losses.
+    aliases: [Fakey, Liquidity Grab, Stop Hunt]
+    tags: [manipulation, fakeout, stop-hunt]
+
+  - id: BYS-S008
+    name: Quasimodo
+    category: Structure
+    version: "1.0"
+    status: ACTIVE
+    description: Advanced reversal structure with shoulder-head-shoulder-like pattern.
+    aliases: [QM, QMR, QML, QMM]
+    tags: [reversal, advanced, structure]
+
+  # ── Location ──────────────────────────────────────────────────────────────
+
+  - id: BYS-L001
+    name: Support Zone
+    category: Location
+    version: "1.0"
+    status: ACTIVE
+    description: Price area where buying pressure historically exceeded selling.
+    aliases: [Support, S-Zone, Demand Area]
+    tags: [support, zone, demand]
+
+  - id: BYS-L002
+    name: Resistance Zone
+    category: Location
+    version: "1.0"
+    status: ACTIVE
+    description: Price area where selling pressure historically exceeded buying.
+    aliases: [Resistance, R-Zone, Supply Area]
+    tags: [resistance, zone, supply]
+
+  - id: BYS-L003
+    name: Support and Resistance Confluence
+    category: Location
+    version: "1.0"
+    status: ACTIVE
+    description: Zone where multiple S/R levels overlap — highest probability area.
+    aliases: [Confluence, SR Confluence, SNRC]
+    tags: [confluence, zone, high-probability]
+
+  - id: BYS-L004
+    name: Previous High
+    category: Location
+    version: "1.0"
+    status: ACTIVE
+    description: Swing high from previous price action — potential resistance.
+    aliases: [PH, Prior High, Swing High]
+    tags: [high, swing, reference]
+
+  - id: BYS-L005
+    name: Previous Low
+    category: Location
+    version: "1.0"
+    status: ACTIVE
+    description: Swing low from previous price action — potential support.
+    aliases: [PL, Prior Low, Swing Low]
+    tags: [low, swing, reference]
+
+  # ── Confirmation ──────────────────────────────────────────────────────────
+
+  - id: BYS-CF001
+    name: CK1 Entry
+    category: Confirmation
+    version: "1.0"
+    status: ACTIVE
+    description: Entry at base high/low breakout. Lowest confirmation. Higher risk.
+    aliases: [CK1, Level 1 Confirmation]
+    tags: [entry, low-confirmation, aggressive]
+
+  - id: BYS-CF002
+    name: CK2 Entry
+    category: Confirmation
+    version: "1.0"
+    status: ACTIVE
+    description: Entry after pullback to base zone. Medium confirmation.
+    aliases: [CK2, Level 2 Confirmation]
+    tags: [entry, medium-confirmation, retest]
+
+  - id: BYS-CF003
+    name: CK3 Entry
+    category: Confirmation
+    version: "1.0"
+    status: ACTIVE
+    description: Entry after multi-timeframe alignment confirmed. Highest confirmation.
+    aliases: [CK3, Level 3 Confirmation]
+    tags: [entry, high-confirmation, htf-aligned]
+
+  # ── Risk ──────────────────────────────────────────────────────────────────
+
+  - id: BYS-R001
+    name: Low Risk
+    category: Risk
+    version: "1.0"
+    status: ACTIVE
+    description: Setup with tight SL, high RR, strong confluence.
+    aliases: [Low, Safe]
+    tags: [risk, low, tight-sl]
+
+  - id: BYS-R002
+    name: Medium Risk
+    category: Risk
+    version: "1.0"
+    status: ACTIVE
+    description: Standard risk setup. Acceptable SL with decent RR.
+    aliases: [Medium, Normal]
+    tags: [risk, medium, standard]
+
+  - id: BYS-R003
+    name: High Risk
+    category: Risk
+    version: "1.0"
+    status: ACTIVE
+    description: Wide SL, low confluence, or counter-trend setup.
+    aliases: [High, Aggressive]
+    tags: [risk, high, wide-sl]
+
+  # ── Entry Pattern ─────────────────────────────────────────────────────────
+
+  - id: BYS-EP001
+    name: Break and Retest
+    category: Entry Pattern
+    version: "1.0"
+    status: ACTIVE
+    description: Price breaks key level, retests it as new support/resistance, then enters.
+    aliases: [BnR, B&R, Retest Entry]
+    tags: [entry, retest, breakout]
+
+  - id: BYS-EP002
+    name: Limit Entry
+    category: Entry Pattern
+    version: "1.0"
+    status: ACTIVE
+    description: Pending order placed at zone before price arrives.
+    aliases: [Limit Order, PO]
+    tags: [entry, pending, zone]
+
+  - id: BYS-EP003
+    name: Market Entry
+    category: Entry Pattern
+    version: "1.0"
+    status: ACTIVE
+    description: Immediate entry at current market price on confirmation.
+    aliases: [Market Order, MO, Instant]
+    tags: [entry, instant, aggressive]
+
+  # ── Setup ─────────────────────────────────────────────────────────────────
+
+  - id: BYS-ST001
+    name: SNRC1 BUY
+    category: Setup
+    version: "1.0"
+    status: ACTIVE
+    description: Bullish setup at S/R confluence zone. HTF bullish + pullback to support.
+    aliases: [SNRC1, SNRC BUY, Setup 1 BUY]
+    tags: [buy, confluence, htf-aligned, scalp]
+
+  - id: BYS-ST002
+    name: SNRC2 SELL
+    category: Setup
+    version: "1.0"
+    status: ACTIVE
+    description: Bearish setup at S/R confluence zone. HTF bearish + bounce to resistance.
+    aliases: [SNRC2, SNRC SELL, Setup 2 SELL]
+    tags: [sell, confluence, htf-aligned, scalp]
+
+  - id: BYS-ST003
+    name: Hybrid BUY
+    category: Setup
+    version: "1.0"
+    status: ACTIVE
+    description: BUY based on DBR/RBR pattern with HTF alignment.
+    aliases: [Hybrid1, H-BUY]
+    tags: [buy, structure, pattern]
+
+  - id: BYS-ST004
+    name: Hybrid SELL
+    category: Setup
+    version: "1.0"
+    status: ACTIVE
+    description: SELL based on RBD/DBD pattern with HTF alignment.
+    aliases: [Hybrid2, H-SELL]
+    tags: [sell, structure, pattern]
+
+  # ── Exit ──────────────────────────────────────────────────────────────────
+
+  - id: BYS-EX001
+    name: Partial Take Profit
+    category: Exit
+    version: "1.0"
+    status: ACTIVE
+    description: Close 50% at TP1, trail remaining to TP2.
+    aliases: [Partial TP, Split TP, TP1/TP2]
+    tags: [exit, partial, trail]
+
+  - id: BYS-EX002
+    name: Full Take Profit
+    category: Exit
+    version: "1.0"
+    status: ACTIVE
+    description: Close entire position at single TP target.
+    aliases: [Full TP, Target]
+    tags: [exit, full, target]
+
+  - id: BYS-EX003
+    name: Break Even
+    category: Exit
+    version: "1.0"
+    status: ACTIVE
+    description: Move SL to entry after TP1 hit. Zero-loss protection.
+    aliases: [BE, Zero Risk]
+    tags: [exit, sl-management, protection]
+
+  # ── Market Condition ──────────────────────────────────────────────────────
+
+  - id: BYS-MC001
+    name: Trending
+    category: Market Condition
+    version: "1.0"
+    status: ACTIVE
+    description: Price making consistent higher highs/lows (bull) or lower lows/highs (bear).
+    aliases: [Trend, Directional, Impulse Phase]
+    tags: [trend, directional, momentum]
+
+  - id: BYS-MC002
+    name: Ranging
+    category: Market Condition
+    version: "1.0"
+    status: ACTIVE
+    description: Price oscillating between defined support and resistance. No clear trend.
+    aliases: [Range, Consolidation, Sideways, Chop]
+    tags: [range, sideways, consolidation]
+
+  - id: BYS-MC003
+    name: High Volatility
+    category: Market Condition
+    version: "1.0"
+    status: ACTIVE
+    description: Abnormally wide candles. News-driven or institutional activity.
+    aliases: [HV, Volatile, News Spike]
+    tags: [volatility, high, news]
+
+  # ── Liquidity ─────────────────────────────────────────────────────────────
+
+  - id: BYS-LQ001
+    name: Stop Loss Cluster
+    category: Liquidity
+    version: "1.0"
+    status: ACTIVE
+    description: Area with concentrated stop orders above/below swing points.
+    aliases: [SL Cluster, Stop Pool, Liquidity Pool]
+    tags: [liquidity, stops, cluster]
+
+  - id: BYS-LQ002
+    name: Liquidity Sweep
+    category: Liquidity
+    version: "1.0"
+    status: ACTIVE
+    description: Price temporarily extends beyond key level to grab liquidity then reverses.
+    aliases: [Sweep, Grab, Hunt, Wick]
+    tags: [liquidity, sweep, reversal]
+
+  # ── Trend ─────────────────────────────────────────────────────────────────
+
+  - id: BYS-TR001
+    name: Bullish Trend
+    category: Trend
+    version: "1.0"
+    status: ACTIVE
+    description: Series of higher highs and higher lows.
+    aliases: [Uptrend, Bull, BULLISH]
+    tags: [trend, bullish, higher-high]
+
+  - id: BYS-TR002
+    name: Bearish Trend
+    category: Trend
+    version: "1.0"
+    status: ACTIVE
+    description: Series of lower lows and lower highs.
+    aliases: [Downtrend, Bear, BEARISH]
+    tags: [trend, bearish, lower-low]
+
+  - id: BYS-TR003
+    name: Neutral Trend
+    category: Trend
+    version: "1.0"
+    status: ACTIVE
+    description: No clear direction. Mixed highs/lows.
+    aliases: [Neutral, Sideways Trend, NEUTRAL]
+    tags: [trend, neutral, mixed]
+
+  # ── Session ───────────────────────────────────────────────────────────────
+
+  - id: BYS-SE001
+    name: Asian Session
+    category: Session
+    version: "1.0"
+    status: ACTIVE
+    description: Low volatility session. 00:00-09:00 UTC. Range-forming.
+    aliases: [Asia, Tokyo, ASIAN]
+    tags: [session, asia, low-vol]
+
+  - id: BYS-SE002
+    name: London Session
+    category: Session
+    version: "1.0"
+    status: ACTIVE
+    description: High volatility session. 07:00-16:00 UTC. Trend-forming.
+    aliases: [London, Euro, LONDON]
+    tags: [session, london, high-vol]
+
+  - id: BYS-SE003
+    name: New York Session
+    category: Session
+    version: "1.0"
+    status: ACTIVE
+    description: High volatility session. 12:00-21:00 UTC. Continuation or reversal.
+    aliases: [New York, NY, US, NEW_YORK]
+    tags: [session, new-york, high-vol]
+
+  - id: BYS-SE004
+    name: London-NY Overlap
+    category: Session
+    version: "1.0"
+    status: ACTIVE
+    description: Highest volatility window. 12:00-16:00 UTC. Best scalp opportunities.
+    aliases: [Overlap, Kill Zone, OVERLAP]
+    tags: [session, overlap, highest-vol]
+
+  # ── Timeframe ─────────────────────────────────────────────────────────────
+
+  - id: BYS-TF001
+    name: M5
+    category: Timeframe
+    version: "1.0"
+    status: ACTIVE
+    description: 5-minute chart. Primary execution timeframe for Bystra scalping.
+    aliases: [5m, 5min, M5]
+    tags: [timeframe, execution, scalp]
+
+  - id: BYS-TF002
+    name: M15
+    category: Timeframe
+    version: "1.0"
+    status: ACTIVE
+    description: 15-minute chart. Intermediate confirmation timeframe.
+    aliases: [15m, 15min, M15]
+    tags: [timeframe, confirmation, intermediate]
+
+  - id: BYS-TF003
+    name: H1
+    category: Timeframe
+    version: "1.0"
+    status: ACTIVE
+    description: 1-hour chart. Higher timeframe structure reference.
+    aliases: [1H, 1h, H1]
+    tags: [timeframe, htf, structure]
+
+  - id: BYS-TF004
+    name: H4
+    category: Timeframe
+    version: "1.0"
+    status: ACTIVE
+    description: 4-hour chart. Major trend and key zone reference.
+    aliases: [4H, 4h, H4]
+    tags: [timeframe, htf, major-trend]

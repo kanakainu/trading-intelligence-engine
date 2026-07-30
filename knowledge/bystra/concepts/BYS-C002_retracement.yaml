@@ -1,0 +1,39 @@
+id: BYS-C002
+name: Retracement
+aliases:
+- retrace
+- correction
+- pullback move
+category: Concept
+definition: A temporary counter-directional price move within an established trend,
+  representing a partial reversal of a prior impulse before the dominant direction
+  resumes.
+characteristics:
+- Price moves against the prior impulse direction
+- Smaller range and momentum than the preceding impulse
+- Does not fully negate the prior impulse's displacement
+- Often ends at a recognizable structure level or zone
+- Typically lower momentum than the move it retraces
+notes: Retracement differs from reversal in that it does not change the prevailing
+  trend structure. The distinction is qualitative and context-dependent.
+related_objects:
+- BYS-C001
+- BYS-C003
+- BYS-C009
+- BYS-C004
+references: []
+tags:
+- price_action
+- counter_move
+- correction
+- trend
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

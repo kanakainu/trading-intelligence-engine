@@ -1,0 +1,37 @@
+id: BYS-L021
+name: No Trade Zone
+aliases:
+- NTZ
+- Skip Area
+- Blackout Zone
+category: Location
+version: '1.0'
+definition: A price area or time period where no trade should be considered due to
+  uncertainty, news events, or structural ambiguity.
+location_type: RISK
+characteristics:
+- Before/during major news events
+- Structurally ambiguous
+- Spread widening
+- Illiquid session
+- Overlapping conflicting zones
+related_objects:
+- BYS-L019
+- BYS-C003
+used_by:
+- BYS-ST013
+references: []
+tags:
+- no-trade
+- blackout
+- skip
+- news
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

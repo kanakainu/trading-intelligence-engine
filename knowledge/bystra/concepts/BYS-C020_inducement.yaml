@@ -1,0 +1,41 @@
+id: BYS-C020
+name: Inducement
+aliases:
+- IDM
+- induced liquidity
+- false setup
+category: Concept
+definition: A price structure that appears to offer a valid setup or breakout signal
+  but is in reality a mechanism that draws traders into positions whose stops then
+  become the liquidity targeted by the subsequent move.
+characteristics:
+- Resembles a legitimate structural signal or pattern to attract participation
+- The apparent setup creates a predictable stop placement among participants
+- The positions taken against the inducement become the liquidity pool
+- Followed by a move that invalidates the apparent setup and triggers those stops
+- Often forms near a larger structural level where the actual intent of price becomes
+  apparent
+notes: Inducement is a structural description of how apparent signals can precede
+  liquidity collection. It is identified in retrospect by observing where stops were
+  placed and whether they were subsequently taken.
+related_objects:
+- BYS-C013
+- BYS-C014
+- BYS-C019
+- BYS-C015
+references: []
+tags:
+- liquidity
+- trap
+- structure
+- order_flow
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

@@ -1,0 +1,41 @@
+id: BYS-C027
+name: Inside Bar
+aliases:
+- IB
+- inside candle
+- contained bar
+- NR bar
+category: Concept
+definition: A candlestick whose complete range — from high to low — is contained within
+  the high-to-low range of the immediately preceding candle, indicating a period of
+  reduced volatility and directional indecision relative to the prior bar.
+characteristics:
+- High is lower than or equal to the prior candle's high
+- Low is higher than or equal to the prior candle's low
+- Entire price range is contained within the prior bar's range
+- Represents contraction of volatility relative to the preceding bar
+- The containing prior bar is called the mother bar
+notes: Inside bar is defined by range containment (high-low), not body containment.
+  Multiple consecutive inside bars indicate progressive compression. The pattern is
+  directionally neutral.
+related_objects:
+- BYS-C007
+- BYS-C029
+- BYS-C028
+- BYS-C031
+references: []
+tags:
+- candlestick
+- compression
+- volatility
+- single_bar
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

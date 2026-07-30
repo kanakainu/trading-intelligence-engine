@@ -1,0 +1,42 @@
+id: BYS-C013
+name: Liquidity
+aliases:
+- market liquidity
+- available liquidity
+- resting liquidity
+category: Concept
+definition: The aggregate of resting orders — stops, limits, and pending orders —
+  present at or near specific price levels that, when triggered, facilitate the execution
+  of larger opposing orders.
+characteristics:
+- Exists at price levels where a concentration of orders is expected
+- Includes stop-loss orders, take-profit orders, and pending limit orders
+- Becomes available to the market when price reaches the level triggering those orders
+- Concentrates at obvious technical levels such as swing highs, swing lows, and equal
+  price levels
+- Required by larger participants to fill positions without excessive slippage
+notes: Liquidity is a structural concept describing the presence of orders at specific
+  levels. It is directionally neutral and does not imply a specific outcome.
+related_objects:
+- BYS-C014
+- BYS-C015
+- BYS-C016
+- BYS-C019
+- BYS-C021
+- BYS-C022
+references: []
+tags:
+- order_flow
+- market_mechanics
+- orders
+- structure
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

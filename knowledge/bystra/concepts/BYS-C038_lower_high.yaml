@@ -1,0 +1,39 @@
+id: BYS-C038
+name: Lower High
+aliases:
+- LH
+- descending high
+- declining high
+category: Concept
+definition: A swing high that is positioned below the immediately preceding swing
+  high in the same trend sequence, confirming that rallies are weakening and downward
+  structural progression is being maintained.
+characteristics:
+- The current swing high price is below the prior swing high price
+- Confirmed only after the swing high is fully formed
+- One of two structural conditions required to define a downtrend
+- Indicates that supply is overwhelming demand at progressively lower levels
+- Failure to form a lower high signals potential trend weakness or reversal
+notes: Lower high is a relational descriptor comparing two consecutive swing highs.
+  Together with lower low, it defines the binary structural signature of a downtrend.
+related_objects:
+- BYS-C039
+- BYS-C034
+- BYS-C010
+- BYS-C036
+references: []
+tags:
+- structure
+- downtrend
+- swing
+- reference_level
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

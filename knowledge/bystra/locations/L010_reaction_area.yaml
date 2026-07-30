@@ -1,0 +1,41 @@
+id: BYS-L010
+name: Reaction Area
+aliases:
+- Reaction Zone
+- Response Zone
+- Bounce Area
+category: Location
+version: '1.0'
+definition: A price area where visible reaction candles confirm the zone's validity
+  — evidence of order presence.
+location_type: CONFIRMATION_ZONE
+characteristics:
+- Visible reaction candles at zone
+- Rejection wicks or engulfing visible
+- Zone shows evidence of order activity
+- Increases zone confidence
+related_objects:
+- BYS-C032
+- BYS-C026
+- BYS-L005
+- BYS-L006
+used_by:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+references: []
+tags:
+- reaction
+- evidence
+- confirmation-zone
+- validity
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

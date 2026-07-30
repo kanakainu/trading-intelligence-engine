@@ -1,0 +1,40 @@
+id: BYS-L012
+name: Discount Area
+aliases:
+- Discount
+- Below Equilibrium
+- Cheap Zone
+- Value Area
+category: Location
+version: '1.0'
+definition: Price region significantly below equilibrium (midpoint) of a range — where
+  price is considered cheap.
+location_type: RELATIVE_POSITION
+characteristics:
+- Below 50% of defined range
+- Buys are statistically favored in discount
+- Sellers at disadvantage
+- Part of premium/discount framework
+related_objects:
+- BYS-L013
+- BYS-L011
+- BYS-C041
+- BYS-C044
+used_by:
+- BYS-ST001
+- BYS-ST002
+references: []
+tags:
+- discount
+- cheap
+- position
+- range
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

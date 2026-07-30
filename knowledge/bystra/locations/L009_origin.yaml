@@ -1,0 +1,41 @@
+id: BYS-L009
+name: Origin Location
+aliases:
+- Origin Point
+- Creation Point
+- Zone Origin
+category: Location
+version: '1.0'
+definition: The exact price level or candle cluster from which an impulse originated
+  — the creation point of a zone.
+location_type: REFERENCE
+characteristics:
+- Starting candle(s) of a strong impulse
+- Left behind quickly by price
+- Narrow price area
+- Represents initial institutional activity
+related_objects:
+- BYS-C047
+- BYS-C001
+- BYS-L005
+- BYS-L006
+used_by:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+references: []
+tags:
+- origin
+- reference
+- creation
+- institutional
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

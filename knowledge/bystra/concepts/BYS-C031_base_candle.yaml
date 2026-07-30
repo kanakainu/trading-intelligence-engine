@@ -1,0 +1,40 @@
+id: BYS-C031
+name: Base Candle
+aliases:
+- base bar
+- pause candle
+- rest candle
+- indecision bar
+category: Concept
+definition: A candlestick with a small body and limited range relative to surrounding
+  candles, representing a period of reduced participation and directional indecision
+  within a larger price sequence.
+characteristics:
+- Small body relative to recent candles
+- Limited high-to-low range compared to surrounding bars
+- Neither buyers nor sellers dominate the period decisively
+- Often appears within consolidation phases or between impulse legs
+- Contrasts with momentum candles in size and directional clarity
+notes: Base candle is a relative descriptor evaluated against surrounding candle context.
+  It signals pause or equilibrium rather than a specific directional outcome.
+related_objects:
+- BYS-C029
+- BYS-C027
+- BYS-C005
+- BYS-C031
+references: []
+tags:
+- candlestick
+- pause
+- equilibrium
+- single_bar
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

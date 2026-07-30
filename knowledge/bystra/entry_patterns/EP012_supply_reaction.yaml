@@ -1,0 +1,41 @@
+id: BYS-EP012
+name: Supply Reaction Entry
+aliases:
+- Supply Zone Entry
+- Sell Zone Entry
+- SR Entry
+category: Concept
+version: '1.0'
+definition: Entry triggered at a supply zone when price arrives and shows a negative
+  reaction confirming supply presence.
+trigger_description: Price reaches a supply zone and a reaction candle (rejection,
+  engulfing, or momentum) confirms selling interest at the zone.
+prerequisites:
+- Supply zone identified
+- Price arrives at zone
+- Reaction candle visible at zone
+invalidation: Price passes through supply zone without reaction or closes above zone.
+related_objects:
+- BYS-L006
+- BYS-CF023
+- BYS-CF008
+- BYS-CF010
+- BYS-C043
+used_by:
+- BYS-CF025
+- BYS-CF026
+references: []
+tags:
+- supply
+- reaction
+- zone
+- sell
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

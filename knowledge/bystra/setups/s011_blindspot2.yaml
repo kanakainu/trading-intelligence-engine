@@ -1,0 +1,50 @@
+id: BYS-SETUP-011
+name: Blindspot 2
+engine: bystra
+category: Setup
+version: '1.0'
+setup_type: Reversal
+market_bias: NEUTRAL
+description: Same as Blindspot 1 plus trendline added as confluence.
+allowed_entry_patterns:
+- Break after failed engulfing
+required_locations:
+- TODO
+required_confirmations:
+- HTF confirmation
+- Failed Engulfing present
+- Significant Break present
+- Trendline confluence
+required_risks:
+- High risk
+required_structures:
+- Failed Engulfing
+- Significant Break
+required_concepts:
+- Reversal
+- Blindspot
+- Failed Engulfing
+- Significant Break
+- Trendline
+- Multi-Timeframe
+invalidate_conditions:
+- No failed engulfing
+- No significant break
+notes: Blindspot 1 + trendline confluence.
+references:
+- 'XAUUSD Bystra Secret Strategy - Setup #11: Blindspot 2 — Reversal'
+type: NEUTRAL
+requires:
+- BYS-C025
+invalid_if: []
+priority: 4
+confidence: 0.62
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_document: XAUUSD — Bystra Secret Strategy.md
+  source_location: knowledge/bystra/setups/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

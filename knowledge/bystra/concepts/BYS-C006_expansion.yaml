@@ -1,0 +1,38 @@
+id: BYS-C006
+name: Expansion
+aliases:
+- range expansion
+- volatility expansion
+- spread expansion
+category: Concept
+definition: A phase of increasing price range and momentum in which candles display
+  larger bodies, wider spreads, and greater displacement per bar than preceding periods.
+characteristics:
+- Candle bodies and total range increase relative to recent bars
+- Price moves more distance per unit of time
+- Often associated with above-average volume or participation
+- Contrasts with compression phases that precede it
+- Can occur in either directional impulses or volatile reversals
+notes: Expansion describes a quality of price behavior (range and momentum increasing)
+  and is directionally neutral unless combined with trend context.
+related_objects:
+- BYS-C001
+- BYS-C007
+- BYS-C008
+- BYS-C030
+references: []
+tags:
+- volatility
+- momentum
+- range
+- price_action
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

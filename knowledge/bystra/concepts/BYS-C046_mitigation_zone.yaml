@@ -1,0 +1,42 @@
+id: BYS-C046
+name: Mitigation Zone
+aliases:
+- mitigated zone
+- tested zone
+- absorbed zone
+- revisited zone
+category: Concept
+definition: A supply or demand zone that has been revisited by price after its original
+  formation, indicating that some or all of the original orders within the zone have
+  been absorbed, reducing its remaining structural significance.
+characteristics:
+- Price has returned to and entered the zone after the original departure
+- The original order imbalance has been partially or fully consumed
+- Subsequent reactions at the zone may be weaker than the original departure
+- Full mitigation occurs when price passes through the entire zone without reversing
+- Partial mitigation occurs when price enters but does not fully traverse the zone
+notes: Mitigation describes the process of order absorption at a supply or demand
+  zone. A fully mitigated zone no longer has the same structural weight as a fresh
+  zone of equivalent character.
+related_objects:
+- BYS-C043
+- BYS-C044
+- BYS-C045
+- BYS-C047
+references: []
+tags:
+- zone
+- supply
+- demand
+- mitigated
+- absorbed
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

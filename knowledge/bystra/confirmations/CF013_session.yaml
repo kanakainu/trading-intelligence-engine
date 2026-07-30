@@ -1,0 +1,40 @@
+id: BYS-CF013
+name: Session Confirmation
+aliases:
+- Active Session
+- Kill Zone
+- Session Alignment
+category: Confirmation
+version: '1.0'
+definition: Trade setup occurs during an active high-liquidity trading session — confirms
+  favorable timing.
+characteristics:
+- London or New York session
+- Overlap = highest confidence
+- Spread lower
+- Volume and volatility elevated
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C049
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- session
+- london
+- new-york
+- timing
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

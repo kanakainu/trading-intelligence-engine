@@ -1,0 +1,16 @@
+id: SETUP_TEMPLATE
+name: "Generic Setup Template"
+engine: custom
+type: LONG
+description: "Replace with plain-language description of what this setup looks for."
+requires:
+  - STRUCTURE_ID_HERE
+  - LOCATION_ID_HERE
+invalid_if:
+  - RISK_ID_HERE
+priority: 1
+confidence: 0.7
+metadata:
+  timeframe: ""
+  confirmation_level: ""
+  notes: ""

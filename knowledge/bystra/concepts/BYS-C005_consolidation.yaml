@@ -1,0 +1,41 @@
+id: BYS-C005
+name: Consolidation
+aliases:
+- range
+- ranging
+- base
+- chop
+category: Concept
+definition: A market condition in which price oscillates within a bounded range, exhibiting
+  no clear directional bias, as opposing forces of supply and demand reach temporary
+  equilibrium.
+characteristics:
+- Price oscillates between a defined high and low boundary
+- No sustained higher highs or lower lows are formed
+- Candle bodies tend to be smaller than impulse-phase candles
+- Volume may contract relative to prior impulse phases
+- Range boundaries act as reference levels for directional resolution
+notes: Consolidation can occur at any degree of trend and is often a precursor to
+  a new directional move. It is defined by the absence of trend structure, not the
+  presence of a specific pattern.
+related_objects:
+- BYS-C003
+- BYS-C007
+- BYS-C008
+- BYS-C035
+references: []
+tags:
+- price_action
+- range
+- equilibrium
+- structure
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

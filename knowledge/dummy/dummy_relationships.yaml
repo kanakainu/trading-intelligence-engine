@@ -1,0 +1,28 @@
+---
+# Dummy Relationships — TIE Sprint 1.4
+# Uses dummy knowledge objects from knowledge/dummy/
+relationships:
+  - source_id: S001
+    target_id: C001
+    relationship_type: used_by
+    description: Base Consolidation structure used by Market Momentum concept.
+
+  - source_id: CF001
+    target_id: S001
+    relationship_type: requires
+    description: Volume Confirmation requires Base Consolidation structure.
+
+  - source_id: ST001
+    target_id: L001
+    relationship_type: depends_on
+    description: Dummy Long Setup depends on Vertical Support location.
+
+  - source_id: R001
+    target_id: ST001
+    relationship_type: conflicts_with
+    description: Fixed Stop conflicts with Dummy Long Setup (tight SL vs wide setup).
+
+  - source_id: CF001
+    target_id: C001
+    relationship_type: extends
+    description: Volume Confirmation extends Market Momentum concept.

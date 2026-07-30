@@ -1,0 +1,41 @@
+id: BYS-EP010
+name: Engulfing Entry
+aliases:
+- Engulf Entry
+- Body Confirmation Entry
+- Momentum Entry
+category: Concept
+version: '1.0'
+definition: Entry triggered by an engulfing candle that confirms a shift in momentum
+  at a key structure or zone.
+trigger_description: A candle body fully engulfs the prior candle body in the opposite
+  direction, appearing at a key structure or zone.
+prerequisites:
+- Key zone or structure identified
+- Engulfing candle forms at zone
+- Body direction aligned with trade
+invalidation: Engulfing candle fails to close beyond the prior candle's open.
+related_objects:
+- BYS-CF007
+- BYS-CF008
+- BYS-C025
+- BYS-L001
+- BYS-L002
+used_by:
+- BYS-CF024
+- BYS-CF025
+references: []
+tags:
+- engulfing
+- momentum
+- body
+- confirmation
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

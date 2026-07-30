@@ -1,0 +1,41 @@
+id: BYS-CF010
+name: Rejection Candle Confirmation
+aliases:
+- Pin Bar Confirm
+- Wick Confirm
+- Level Rejection
+category: Confirmation
+version: '1.0'
+definition: A candle showing long wick rejecting a key level — confirms price was
+  rejected from that zone.
+characteristics:
+- Long wick pointing at rejected level
+- Small body
+- Close away from wick
+- Visible rejection at zone/level
+strengthens:
+- BYS-L001
+- BYS-L002
+- BYS-L005
+- BYS-L006
+related_objects:
+- BYS-C026
+- BYS-C032
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- rejection
+- pin-bar
+- wick
+- zone
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

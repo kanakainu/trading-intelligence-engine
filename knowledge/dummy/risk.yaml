@@ -1,0 +1,6 @@
+id: R001
+name: Fixed Stop
+category: Risk
+version: 1.0
+status: ACTIVE
+description: Pre-defined SL level.

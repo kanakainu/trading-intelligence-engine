@@ -1,0 +1,37 @@
+# TIE Knowledge Schema Definition v1.0
+# Defines structure for all Knowledge Objects
+
+base_fields:
+  id: string
+  name: string
+  category: enum [Concept, Structure, Location, Confirmation, Risk, Setup]
+  version: string
+  status: enum [DRAFT, ACTIVE, DEPRECATED]
+  description: string
+  tags: list
+  references: list
+  metadata: dict
+
+objects:
+  Concept:
+    required: [id, name, category, version, status]
+  
+  Structure:
+    required: [id, name, category, version, status]
+    optional: [characteristics]
+
+  Location:
+    required: [id, name, category, version, status]
+    optional: [zone_type]
+
+  Confirmation:
+    required: [id, name, category, version, status]
+    optional: [level]
+
+  Risk:
+    required: [id, name, category, version, status]
+    optional: [risk_type]
+
+  Setup:
+    required: [id, name, category, version, status]
+    optional: [requirements]

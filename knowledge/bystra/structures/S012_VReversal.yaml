@@ -1,0 +1,47 @@
+id: BYS-ST012
+name: V-Reversal
+aliases:
+- V-Bottom
+- V-Top
+- Sharp Reversal
+- Spike Reversal
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Sharp, fast reversal structure with minimal base — price reverses direction
+  almost immediately.
+sequence:
+- Impulse
+- Reversal Point
+- Counter-Impulse
+components:
+  impulse: Strong directional move
+  reversal_point: Single candle or very brief base
+  counter_impulse: Strong move in opposite direction
+characteristics:
+- Minimal consolidation at turning point
+- Both legs approximately equal strength
+- Sharp and decisive
+- Often triggered by news or key level
+invalidation: Price retraces more than 61.8% of counter-impulse.
+related_objects:
+- BYS-C001
+- BYS-C004
+- BYS-C026
+used_by:
+- BYS-EP003
+references: []
+tags:
+- reversal
+- v-shape
+- sharp
+- spike
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

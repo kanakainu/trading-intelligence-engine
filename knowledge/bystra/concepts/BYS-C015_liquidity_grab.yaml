@@ -1,0 +1,42 @@
+id: BYS-C015
+name: Liquidity Grab
+aliases:
+- grab
+- liq grab
+- stop grab
+- order grab
+category: Concept
+definition: A price move that briefly extends beyond a key structural level where
+  resting orders are concentrated, triggering those orders before price returns back
+  within the prior range or structure.
+characteristics:
+- Price penetrates a level where stops or pending orders reside
+- The penetration is short-lived — price does not sustain beyond the level
+- Triggers the resting orders at or beyond the structural level
+- Often leaves a wick or spike on the candle that penetrated the level
+- The returning price move reflects order absorption from the triggered liquidity
+notes: A liquidity grab describes the mechanism of order triggering at a structural
+  level. It does not specify direction of the subsequent move beyond what the structure
+  implies.
+related_objects:
+- BYS-C013
+- BYS-C014
+- BYS-C016
+- BYS-C019
+- BYS-C026
+references: []
+tags:
+- liquidity
+- order_triggering
+- wick
+- stop_run
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

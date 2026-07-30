@@ -1,0 +1,38 @@
+id: BYS-R008
+name: Late Entry Risk
+aliases:
+- Chasing Risk
+- Extended Entry
+- Missed Entry
+category: Risk
+version: '1.0'
+definition: Entering a trade significantly after the optimal entry point — price has
+  already moved substantially from structure.
+severity: HIGH
+characteristics:
+- Price far from base/structure
+- Small remaining distance to TP
+- Unfavorable RR
+- Zone already mitigated
+affects:
+- RR
+- Entry Quality
+- Setup
+related_objects:
+- BYS-L008
+- BYS-C009
+references: []
+tags:
+- late
+- chase
+- entry
+- poor-rr
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,43 @@
+id: BYS-ST003
+name: Rally Base Drop
+aliases:
+- RBD
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Bearish reversal structure — impulse up, consolidation base, impulse down.
+sequence:
+- Rally
+- Base
+- Drop
+components:
+  rally_leg: Bullish impulse
+  base: Horizontal consolidation
+  breakdown_leg: Bearish impulse breaking below base low
+characteristics:
+- Rally followed by base formation
+- Drop leg breaks below base low
+- Structure indicates supply absorption
+invalidation: Price closes above base high.
+related_objects:
+- BYS-C001
+- BYS-C005
+- BYS-C004
+used_by:
+- BYS-EP001
+- BYS-EP002
+references: []
+tags:
+- bearish
+- reversal
+- base
+- rbd
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

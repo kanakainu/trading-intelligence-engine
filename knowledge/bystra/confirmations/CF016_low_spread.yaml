@@ -1,0 +1,40 @@
+id: BYS-CF016
+name: Low Spread Confirmation
+aliases:
+- Tight Spread
+- Normal Spread
+- Spread OK
+category: Confirmation
+version: '1.0'
+definition: Current spread is within acceptable range — confirms execution conditions
+  are favorable.
+characteristics:
+- Spread below maximum threshold
+- Low slippage expected
+- No news/off-hours spread widening
+- Execution favorable
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C049
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- spread
+- execution
+- conditions
+- cost
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

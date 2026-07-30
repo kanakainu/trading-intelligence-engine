@@ -1,0 +1,38 @@
+id: BYS-R011
+name: Broken Structure Risk
+aliases:
+- Structure Break
+- Invalidated Structure
+- Failed Pattern
+category: Risk
+version: '1.0'
+definition: Market structure has been broken invalidating the original setup — continuation
+  no longer valid.
+severity: CRITICAL
+characteristics:
+- Key swing point violated
+- Setup invalidation criteria met
+- Original thesis invalidated
+- Continue in trade is high risk
+affects:
+- Setup
+- Decision
+- Position
+related_objects:
+- BYS-C012
+- BYS-C004
+references: []
+tags:
+- structure
+- broken
+- invalidated
+- critical
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

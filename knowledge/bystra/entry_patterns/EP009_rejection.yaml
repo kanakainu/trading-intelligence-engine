@@ -1,0 +1,42 @@
+id: BYS-EP009
+name: Rejection Entry
+aliases:
+- Pin Bar Entry
+- Wick Entry
+- Level Rejection Entry
+category: Concept
+version: '1.0'
+definition: Entry triggered by a candle showing a long wick rejecting a key level
+  — confirming price was refused at that zone.
+trigger_description: A candle with a long wick pointing at the zone closes away from
+  the zone, confirming rejection of the level.
+prerequisites:
+- Key zone or level identified
+- Long wick candle appears at zone
+- Wick points toward and away from level
+invalidation: Price closes in the direction of the wick instead of away from it.
+related_objects:
+- BYS-CF010
+- BYS-C026
+- BYS-L001
+- BYS-L002
+- BYS-L005
+- BYS-L006
+used_by:
+- BYS-CF024
+- BYS-CF025
+references: []
+tags:
+- rejection
+- pin-bar
+- wick
+- zone
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

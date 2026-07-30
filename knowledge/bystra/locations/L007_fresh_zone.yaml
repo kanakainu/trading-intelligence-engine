@@ -1,0 +1,42 @@
+id: BYS-L007
+name: Fresh Zone Location
+aliases:
+- Unmitigated Zone
+- Virgin Zone
+- Untested Zone
+category: Location
+version: '1.0'
+definition: Any support, resistance, supply, or demand zone that has NOT been revisited
+  since its creation.
+location_type: QUALITY
+characteristics:
+- Not retested after formation
+- Original orders likely still resting
+- Highest probability classification
+- First approach expected to react
+related_objects:
+- BYS-C045
+- BYS-L005
+- BYS-L006
+- BYS-L003
+- BYS-L004
+used_by:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+references: []
+tags:
+- fresh
+- unmitigated
+- quality
+- probability
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

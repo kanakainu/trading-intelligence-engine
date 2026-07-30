@@ -1,0 +1,39 @@
+id: BYS-C004
+name: Reversal
+aliases:
+- trend reversal
+- direction change
+- flip
+category: Concept
+definition: A sustained change in the prevailing direction of price movement, where
+  the prior dominant trend is replaced by a new opposing trend of comparable or greater
+  magnitude.
+characteristics:
+- Prior trend structure (higher highs/lows or lower highs/lows) is broken
+- New opposing swing structure begins to form
+- Often preceded by a market structure shift
+- Displacement away from prior trend is sustained, not temporary
+- Previous dominant direction loses dominance
+notes: Reversal is confirmed by structural evidence, not anticipated by a single candle.
+  It requires the formation of opposing structure to be valid.
+related_objects:
+- BYS-C002
+- BYS-C012
+- BYS-C033
+- BYS-C034
+references: []
+tags:
+- price_action
+- trend
+- structure
+- direction_change
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

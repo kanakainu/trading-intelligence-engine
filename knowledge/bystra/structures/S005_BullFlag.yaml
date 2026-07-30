@@ -1,0 +1,46 @@
+id: BYS-ST005
+name: Bull Flag
+aliases:
+- Bull Flag
+- Bullish Flag
+- Flag Up
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Bullish continuation structure — sharp impulse up (pole) followed by downward
+  channel (flag).
+sequence:
+- Pole
+- Flag Channel
+- Breakout
+components:
+  pole: Strong bullish impulse (flagpole)
+  flag: Downward parallel channel consolidation
+  breakout: Close above flag upper trendline
+characteristics:
+- Pole is sharp and impulsive
+- Flag drifts lower against trend
+- Parallel channel visible
+- Volume lower during flag
+invalidation: Price breaks below flag lower trendline.
+related_objects:
+- BYS-C001
+- BYS-C005
+- BYS-C003
+used_by:
+- BYS-EP001
+references: []
+tags:
+- bullish
+- continuation
+- flag
+- channel
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

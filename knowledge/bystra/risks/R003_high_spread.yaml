@@ -1,0 +1,38 @@
+id: BYS-R003
+name: High Spread Risk
+aliases:
+- Wide Spread
+- Spread Risk
+- Execution Cost
+category: Risk
+version: '1.0'
+definition: Current spread is abnormally wide — increases effective risk and reduces
+  net RR on trade.
+severity: HIGH
+characteristics:
+- Spread above normal threshold
+- Often during off-hours or news
+- Increases entry cost
+- Reduces net profit
+affects:
+- Execution
+- RR
+- Entry Cost
+related_objects:
+- BYS-CF016
+- BYS-L019
+references: []
+tags:
+- spread
+- high
+- execution
+- cost
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

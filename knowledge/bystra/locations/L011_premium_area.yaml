@@ -1,0 +1,40 @@
+id: BYS-L011
+name: Premium Area
+aliases:
+- Premium
+- Above Equilibrium
+- Expensive Zone
+- OB Area
+category: Location
+version: '1.0'
+definition: Price region significantly above equilibrium (midpoint) of a range — where
+  price is considered expensive.
+location_type: RELATIVE_POSITION
+characteristics:
+- Above 50% of defined range
+- Sells are statistically favored in premium
+- Buyers at disadvantage
+- Part of premium/discount framework
+related_objects:
+- BYS-L013
+- BYS-L012
+- BYS-C042
+- BYS-C043
+used_by:
+- BYS-ST003
+- BYS-ST004
+references: []
+tags:
+- premium
+- expensive
+- position
+- range
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

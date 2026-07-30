@@ -1,0 +1,42 @@
+id: BYS-C034
+name: Downtrend
+aliases:
+- bearish trend
+- falling trend
+- downward trend
+- bear trend
+category: Concept
+definition: A market condition characterized by a sequence of lower highs and lower
+  lows, where each successive peak and trough is positioned below the prior peak and
+  trough, indicating sustained dominance of selling pressure over time.
+characteristics:
+- Successive swing highs are lower than prior swing highs
+- Successive swing lows are lower than prior swing lows
+- Net directional displacement is downward over the observed period
+- Price spends more time moving down than up within the sequence
+- The pattern of lower highs and lower lows defines the structure
+notes: A downtrend is defined by the sequence of swing structure, not by any single
+  candle or indicator. Degree depends on timeframe and swing definition used.
+related_objects:
+- BYS-C033
+- BYS-C035
+- BYS-C038
+- BYS-C039
+- BYS-C010
+- BYS-C011
+references: []
+tags:
+- trend
+- bearish
+- structure
+- market_condition
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

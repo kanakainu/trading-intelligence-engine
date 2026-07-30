@@ -1,0 +1,48 @@
+id: BYS-SETUP-007
+name: QMC
+engine: bystra
+category: Setup
+version: '1.0'
+setup_type: Continuation
+market_bias: NEUTRAL
+description: 'Quasimodo Continuation. Same structure as QMR but with trendline added.
+  Appears in continuation trend only. Best entry: after a reversal has already occurred
+  (fresh setup). HH at 2nd drive → entry sell at 3rd drive. LL at 2nd drive → entry
+  buy at 3rd drive.'
+allowed_entry_patterns:
+- 3rd drive entry (after HH at 2nd drive for sell, LL at 2nd drive for buy)
+required_locations:
+- 2nd drive — HH for sell, LL for buy
+required_confirmations:
+- Trendline added as confluence
+- Appears in continuation trend only
+required_risks:
+- TODO
+required_structures:
+- Quasimodo
+required_concepts:
+- Continuation
+- Quasimodo
+- Trendline
+- 2nd Drive
+- 3rd Drive
+invalidate_conditions:
+- Appears in reversal trend (not continuation)
+notes: Same structure as QMR + trendline. Continuation trend only.
+references:
+- 'XAUUSD Bystra Secret Strategy - Setup #7: QMC — Continuation'
+type: NEUTRAL
+requires:
+- BYS-ST011
+invalid_if: []
+priority: 2
+confidence: 0.7
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_document: XAUUSD — Bystra Secret Strategy.md
+  source_location: knowledge/bystra/setups/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,39 @@
+id: BYS-R014
+name: Range Trap Risk
+aliases:
+- Box Trap
+- Range Chop
+- Consolidation Trap
+category: Risk
+version: '1.0'
+definition: Price appears to be setting up but is actually trapped in a range — false
+  directional signals.
+severity: MEDIUM
+characteristics:
+- Price oscillating between same levels
+- False breaks of range boundaries
+- Multiple trapped participants
+- No clear expansion
+affects:
+- Setup
+- Decision
+- Confirmation
+related_objects:
+- BYS-ST013
+- BYS-C035
+- BYS-L019
+references: []
+tags:
+- range
+- trap
+- chop
+- consolidation
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

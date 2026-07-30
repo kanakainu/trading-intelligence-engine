@@ -1,0 +1,42 @@
+id: BYS-EP007
+name: Continuation Entry
+aliases:
+- Trend Continuation
+- With-Trend Entry
+- Pullback Entry
+category: Concept
+version: '1.0'
+definition: Entry in the direction of the prevailing trend after a pullback provides
+  a lower-risk re-entry point.
+trigger_description: After a trending move, price pulls back to a structure or zone,
+  shows rejection, and a candle confirms trend continuation.
+prerequisites:
+- Clear trend direction established
+- Pullback to structure or zone
+- Rejection signal at pullback level
+invalidation: Pullback breaks the structure that defines the trend.
+related_objects:
+- BYS-C003
+- BYS-C009
+- BYS-C033
+- BYS-C034
+- BYS-CF004
+- BYS-CF006
+used_by:
+- BYS-CF025
+- BYS-CF026
+references: []
+tags:
+- continuation
+- trend
+- pullback
+- with-trend
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

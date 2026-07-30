@@ -1,0 +1,39 @@
+id: BYS-CF015
+name: ATR Confirmation
+aliases:
+- ATR Range
+- Average True Range Confirm
+category: Confirmation
+version: '1.0'
+definition: Current ATR reading supports the setup — confirms sufficient movement
+  potential to hit targets.
+characteristics:
+- ATR supports TP distance
+- Movement potential adequate
+- Not in dead-market conditions
+- Trade viable within ATR range
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C049
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- atr
+- range
+- movement
+- potential
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,38 @@
+id: BYS-R013
+name: Failed Retest Risk
+aliases:
+- Bad Retest
+- Weak Retest
+- Retest Failure
+category: Risk
+version: '1.0'
+definition: Price returned to retest a level but showed no rejection — level may not
+  hold, setup validity reduced.
+severity: MEDIUM
+characteristics:
+- Price returned to broken level
+- No rejection candle visible
+- Level may have flipped back
+- Setup confidence reduced
+affects:
+- Entry Pattern
+- Setup
+- Confirmation
+related_objects:
+- BYS-CF012
+- BYS-C008
+references: []
+tags:
+- retest
+- failed
+- weak
+- risk
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,43 @@
+id: BYS-CF017
+name: Liquidity Sweep Confirmation
+aliases:
+- Sweep Confirm
+- Stop Sweep
+- Level Sweep Confirm
+category: Confirmation
+version: '1.0'
+definition: Price swept liquidity above/below a key level then reversed — confirms
+  institutional activity and direction.
+characteristics:
+- Wick or engulf beyond key level
+- Swift reversal after sweep
+- Opposing momentum visible
+- Confirms trap is complete
+strengthens:
+- BYS-L014
+- BYS-L015
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C016
+- BYS-C015
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- liquidity-sweep
+- institutional
+- reversal
+- trap
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

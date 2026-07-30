@@ -1,0 +1,37 @@
+id: BYS-R007
+name: Weekend Gap Risk
+aliases:
+- Gap Risk
+- Weekend Open Risk
+- Sunday Gap
+category: Risk
+version: '1.0'
+definition: Price gap occurring between Friday close and Sunday/Monday open — exposes
+  positions held over weekend.
+severity: HIGH
+characteristics:
+- Market closed for weekend
+- Fundamental events may occur offline
+- Gap can be large in either direction
+- No way to place orders during gap
+affects:
+- Open Positions
+- SL
+- Execution
+related_objects:
+- BYS-L019
+references: []
+tags:
+- weekend
+- gap
+- overnight
+- risk
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

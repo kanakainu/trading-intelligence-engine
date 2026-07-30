@@ -1,0 +1,38 @@
+id: BYS-CF022
+name: Mitigation Confirmation
+aliases:
+- Zone Mitigation Confirm
+- Partial Fill Confirm
+category: Confirmation
+version: '1.0'
+definition: Price has returned to a zone and shows reaction — confirms remaining orders
+  are still active.
+characteristics:
+- Zone reached
+- Reaction visible at zone
+- Orders partially or fully filled
+- Confirms zone validity
+strengthens:
+- BYS-L007
+- BYS-L008
+- BYS-L005
+- BYS-L006
+related_objects:
+- BYS-C046
+used_by:
+- BYS-CF021
+references: []
+tags:
+- mitigation
+- zone
+- reaction
+- orders
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

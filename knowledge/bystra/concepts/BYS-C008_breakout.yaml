@@ -1,0 +1,42 @@
+id: BYS-C008
+name: Breakout
+aliases:
+- break
+- price break
+- level break
+- structure break
+category: Concept
+definition: The movement of price beyond a previously established boundary, such as
+  a consolidation range, swing high, swing low, or key structural level, indicating
+  a potential shift in the supply-demand balance at that level.
+characteristics:
+- Price closes beyond a defined structural boundary
+- The violated level was previously respected multiple times
+- Often accompanied by increased momentum or range
+- The breached level may subsequently act as support or resistance
+- Can be genuine (sustained) or false (price returns inside the boundary)
+notes: A breakout is defined by the price level breached and the context of that level,
+  not by a specific candle pattern. False breakouts are recognized after the fact
+  when price fails to sustain beyond the boundary.
+related_objects:
+- BYS-C005
+- BYS-C006
+- BYS-C010
+- BYS-C011
+- BYS-C015
+references: []
+tags:
+- structure
+- level_break
+- price_action
+- volatility
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

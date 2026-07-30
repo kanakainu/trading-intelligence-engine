@@ -1,0 +1,54 @@
+id: BYS-SETUP-010
+name: Blindspot
+engine: bystra
+category: Setup
+version: '1.0'
+setup_type: Reversal
+market_bias: NEUTRAL
+description: 'No clear entry point (no RBR/DBD/RBD/DBR). Appears in reversal trend.
+  Sometimes called ''swap'' — not all swaps are tradable. Key structure: Failed Engulfing
+  + Significant Break. Entry at the break after failed engulfing. Confirmation needed
+  on HTF.'
+allowed_entry_patterns:
+- Break after failed engulfing
+required_locations:
+- TODO
+required_confirmations:
+- HTF confirmation
+- Failed Engulfing present
+- Significant Break present
+required_risks:
+- High risk
+- Not all swaps are tradable
+required_structures:
+- Failed Engulfing
+- Significant Break
+required_concepts:
+- Reversal
+- Blindspot
+- Failed Engulfing
+- Significant Break
+- No clear entry point
+- Multi-Timeframe
+invalidate_conditions:
+- No failed engulfing
+- No significant break
+notes: No clear RBR/DBD/RBD/DBR entry point. Failed engulfing is key. Not all swaps
+  tradable.
+references:
+- 'XAUUSD Bystra Secret Strategy - Setup #10: Blindspot — Reversal'
+type: NEUTRAL
+requires:
+- BYS-C025
+invalid_if: []
+priority: 4
+confidence: 0.6
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_document: XAUUSD — Bystra Secret Strategy.md
+  source_location: knowledge/bystra/setups/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

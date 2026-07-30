@@ -1,0 +1,39 @@
+id: BYS-L019
+name: Danger Zone Location
+aliases:
+- DangerZone
+- Avoid Area
+- Trap Area
+- Chop Zone
+category: Location
+version: '1.0'
+definition: A price area characterized by poor risk conditions — conflicting structure,
+  between major levels, or historically choppy.
+location_type: RISK
+characteristics:
+- Between major S/R levels
+- Conflicting signals present
+- Poor RR potential
+- High noise, low directional conviction
+- Historical chop
+related_objects:
+- BYS-C048
+- BYS-L020
+- BYS-L013
+used_by:
+- BYS-ST013
+references: []
+tags:
+- danger
+- avoid
+- chop
+- risk
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

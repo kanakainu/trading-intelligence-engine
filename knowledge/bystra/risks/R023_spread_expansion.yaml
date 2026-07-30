@@ -1,0 +1,39 @@
+id: BYS-R023
+name: Spread Expansion Risk
+aliases:
+- Spread Spike
+- Dynamic Spread
+- Variable Spread
+category: Risk
+version: '1.0'
+definition: Risk that spread widens significantly at point of execution — common during
+  news, open, or off-hours.
+severity: HIGH
+characteristics:
+- Variable spread broker
+- News event approaching
+- Session open/close
+- Liquidity temporarily reduced
+affects:
+- Execution
+- Cost
+- RR
+related_objects:
+- BYS-R003
+- BYS-R005
+- BYS-R006
+references: []
+tags:
+- spread
+- expansion
+- variable
+- risk
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

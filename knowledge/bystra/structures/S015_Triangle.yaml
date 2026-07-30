@@ -1,0 +1,47 @@
+id: BYS-ST015
+name: Triangle
+aliases:
+- Converging Triangle
+- Symmetrical Triangle
+- Wedge
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Structure where price action forms converging highs and lows, indicating
+  compression before breakout.
+sequence:
+- First Swing
+- Converging Swings
+- Apex
+components:
+  first_swing: Initial wide swing establishing first boundary touch
+  converging_swings: Progressive tightening of swing highs and lows
+  apex: Point of maximum compression where lines converge
+characteristics:
+- Highs decreasing or flat
+- Lows increasing or flat
+- Lines converge toward apex
+- Volume typically decreases to apex
+invalidation: Price closes outside triangle before reaching apex (premature break).
+related_objects:
+- BYS-C007
+- BYS-C006
+- BYS-C010
+- BYS-C011
+used_by:
+- BYS-EP001
+references: []
+tags:
+- triangle
+- wedge
+- compression
+- converging
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

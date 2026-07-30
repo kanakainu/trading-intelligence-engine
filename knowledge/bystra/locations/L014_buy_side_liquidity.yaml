@@ -1,0 +1,39 @@
+id: BYS-L014
+name: Buy Side Liquidity
+aliases:
+- BSL
+- Buy Stops
+- Stops Above
+category: Location
+version: '1.0'
+definition: Concentration of buy stop orders (and sell stop orders positioned above
+  current price for breakout entries) resting above swing highs.
+location_type: LIQUIDITY
+characteristics:
+- Located above swing highs
+- Equal highs attract BSL
+- Retail breakout traders park stops here
+- Institutional targets for sweeps
+related_objects:
+- BYS-C013
+- BYS-C014
+- BYS-C017
+- BYS-C019
+used_by:
+- BYS-ST009
+- BYS-ST011
+references: []
+tags:
+- liquidity
+- buy-stops
+- above
+- sweep
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

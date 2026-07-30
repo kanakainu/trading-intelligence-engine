@@ -1,0 +1,40 @@
+id: BYS-R015
+name: Liquidity Trap Risk
+aliases:
+- Liq Trap
+- Order Trap
+- Stop Trap
+category: Risk
+version: '1.0'
+definition: Price moves to collect liquidity then reverses against the trade direction
+  — stops triggered falsely.
+severity: HIGH
+characteristics:
+- Price sweeps key level
+- Stops triggered
+- Rapid reversal follows
+- Participant caught on wrong side
+affects:
+- Setup
+- Decision
+- Position
+related_objects:
+- BYS-C015
+- BYS-C016
+- BYS-L014
+- BYS-L015
+references: []
+tags:
+- liquidity
+- trap
+- stop
+- sweep
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

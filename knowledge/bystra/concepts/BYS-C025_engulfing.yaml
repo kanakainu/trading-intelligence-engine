@@ -1,0 +1,42 @@
+id: BYS-C025
+name: Engulfing
+aliases:
+- engulfing candle
+- engulfing bar
+- engulf pattern
+category: Concept
+definition: A two-candle pattern in which the body of the second candle completely
+  contains the body of the preceding candle, with the second candle closing in the
+  opposite direction, indicating a shift in directional pressure.
+characteristics:
+- Second candle's body fully covers the first candle's body
+- Second candle closes in the opposite direction to the first
+- Directional shift is implied by the size and placement of the engulfing body
+- Can be bullish (second candle bullish, first bearish) or bearish (second candle
+  bearish, first bullish)
+- Larger the engulfing body relative to the prior candle, stronger the implied pressure
+  shift
+notes: Engulfing describes a two-bar relationship of body overlap and directional
+  opposition. The pattern is defined by body-to-body containment; wick overlap is
+  not required.
+related_objects:
+- BYS-C023
+- BYS-C024
+- BYS-C028
+- BYS-C030
+references: []
+tags:
+- candlestick
+- pattern
+- two_bar
+- reversal_pattern
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

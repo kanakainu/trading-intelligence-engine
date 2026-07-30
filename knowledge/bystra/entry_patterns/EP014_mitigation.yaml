@@ -1,0 +1,40 @@
+id: BYS-EP014
+name: Mitigation Entry
+aliases:
+- Mitigated Zone Entry
+- Second Chance Entry
+- MZE
+category: Concept
+version: '1.0'
+definition: Entry at a mitigation zone where remaining orders are expected to still
+  react, providing a second-chance setup.
+trigger_description: Price returns to a previously tested zone and shows a reaction
+  confirming remaining orders are still active.
+prerequisites:
+- Mitigation zone identified
+- Prior reaction at zone established
+- New reaction signal visible on return
+invalidation: Price passes through mitigation zone with no reaction.
+related_objects:
+- BYS-L008
+- BYS-CF022
+- BYS-L005
+- BYS-L006
+- BYS-C046
+used_by:
+- BYS-CF025
+references: []
+tags:
+- mitigation
+- zone
+- second-chance
+- reaction
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

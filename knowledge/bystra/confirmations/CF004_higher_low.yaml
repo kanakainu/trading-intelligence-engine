@@ -1,0 +1,36 @@
+id: BYS-CF004
+name: Higher Low Confirmation
+aliases:
+- HL Confirm
+- New Higher Low
+category: Confirmation
+version: '1.0'
+definition: Price creates a higher low relative to previous swing low — confirms bullish
+  pullback integrity.
+characteristics:
+- New swing low above prior low
+- Buyers stepping in earlier
+- Pullback stays shallow
+strengthens:
+- BYS-ST001
+- BYS-ST002
+related_objects:
+- BYS-C037
+- BYS-C033
+used_by:
+- BYS-CF003
+- BYS-CF005
+references: []
+tags:
+- higher-low
+- bullish
+- pullback
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

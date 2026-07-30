@@ -1,0 +1,39 @@
+id: BYS-L006
+name: Supply Zone
+aliases:
+- SZ
+- Sell Zone
+- Distribution Zone
+category: Location
+version: '1.0'
+definition: A price area where institutional selling orders are concentrated, identified
+  by the origin of a bearish impulse.
+location_type: SUPPLY
+characteristics:
+- Origin of a strong bearish move
+- Price left zone quickly
+- Candles show strong bearish momentum departing
+- Unfilled sell orders likely remain
+related_objects:
+- BYS-C043
+- BYS-C047
+- BYS-C022
+- BYS-L004
+used_by:
+- BYS-ST003
+- BYS-ST004
+references: []
+tags:
+- supply
+- zone
+- institutional
+- distribution
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

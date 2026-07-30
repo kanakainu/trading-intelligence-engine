@@ -1,0 +1,38 @@
+id: BYS-R009
+name: Chasing Price Risk
+aliases:
+- FOMO Entry
+- Impulse Chase
+- Breakout Chase
+category: Risk
+version: '1.0'
+definition: Entering trade driven by fear of missing out — after a strong move without
+  waiting for structure.
+severity: HIGH
+characteristics:
+- Emotional entry decision
+- Price moving fast
+- No structural confirmation
+- Often leads to late entry at exhaustion
+affects:
+- Entry Quality
+- RR
+- Decision
+related_objects:
+- BYS-C020
+- BYS-L019
+references: []
+tags:
+- fomo
+- chase
+- impulse
+- emotional
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

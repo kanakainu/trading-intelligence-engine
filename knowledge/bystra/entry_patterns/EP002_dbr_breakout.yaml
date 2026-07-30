@@ -1,0 +1,39 @@
+id: BYS-EP002
+name: DBR Breakout Entry
+aliases:
+- DBR Break
+- Drop-Base-Rally Breakout
+category: Concept
+version: '1.0'
+definition: Entry triggered when price breaks above the high of the Base within a
+  DBR structure, confirming bullish reversal.
+trigger_description: A candle closes above the Base High of the DBR structure after
+  an initial drop.
+prerequisites:
+- DBR structure identified
+- Base formed after initial drop
+- Base High clearly defined
+invalidation: Price closes below Base Low before breakout occurs.
+related_objects:
+- BYS-ST002
+- BYS-C008
+- BYS-CF011
+used_by:
+- BYS-CF024
+- BYS-CF025
+- BYS-CF026
+references: []
+tags:
+- dbr
+- breakout
+- bullish
+- reversal
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

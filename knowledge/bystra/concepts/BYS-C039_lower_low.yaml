@@ -1,0 +1,39 @@
+id: BYS-C039
+name: Lower Low
+aliases:
+- LL
+- descending low
+- declining low
+category: Concept
+definition: A swing low that is positioned below the immediately preceding swing low
+  in the same trend sequence, confirming continued downward structural progression.
+characteristics:
+- The current swing low price is below the prior swing low price
+- Confirmed only after the swing low is fully formed
+- One of two structural conditions required to define a downtrend
+- Each successive lower low marks a new trough in the downtrend sequence
+- Failure to form a lower low is the first structural warning of downtrend weakness
+notes: Lower low is a relational descriptor comparing two consecutive swing lows.
+  Its significance depends on the degree of the swings — minor swings produce minor
+  lower lows; major swings produce major lower lows.
+related_objects:
+- BYS-C038
+- BYS-C034
+- BYS-C011
+- BYS-C037
+references: []
+tags:
+- structure
+- downtrend
+- swing
+- reference_level
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

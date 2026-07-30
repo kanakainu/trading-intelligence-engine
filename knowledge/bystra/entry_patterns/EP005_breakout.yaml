@@ -1,0 +1,40 @@
+id: BYS-EP005
+name: Breakout Entry
+aliases:
+- Level Break Entry
+- Zone Break Entry
+category: Concept
+version: '1.0'
+definition: Entry triggered at the moment price breaks beyond a defined key level
+  or zone boundary with momentum.
+trigger_description: A candle closes decisively beyond the key level, confirming the
+  break is valid and not a wick.
+prerequisites:
+- Key level or zone clearly identified
+- Level has been tested previously
+- Momentum visible on breakout candle
+invalidation: Price wicks beyond level but closes back inside without follow-through.
+related_objects:
+- BYS-C008
+- BYS-C006
+- BYS-CF011
+- BYS-L001
+- BYS-L002
+used_by:
+- BYS-CF024
+- BYS-CF025
+references: []
+tags:
+- breakout
+- level
+- zone
+- momentum
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

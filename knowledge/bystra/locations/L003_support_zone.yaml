@@ -1,0 +1,38 @@
+id: BYS-L003
+name: Support Zone
+aliases:
+- S-Zone
+- Support Area
+- Broad Support
+category: Location
+version: '1.0'
+definition: A price range (not a single level) where buying pressure is historically
+  strong enough to halt decline.
+location_type: SUPPORT
+characteristics:
+- Range of prices (zone, not line)
+- Multiple touches within zone
+- Demand presence across zone
+- Zone may be wide or narrow
+related_objects:
+- BYS-C041
+- BYS-C044
+- BYS-L001
+used_by:
+- BYS-ST001
+- BYS-ST002
+references: []
+tags:
+- support
+- zone
+- demand
+- range
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

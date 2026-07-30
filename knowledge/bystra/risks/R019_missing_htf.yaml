@@ -1,0 +1,39 @@
+id: BYS-R019
+name: Missing HTF Alignment Risk
+aliases:
+- No HTF
+- HTF Misalign
+- Counter-Trend
+category: Risk
+version: '1.0'
+definition: Setup exists on lower timeframe but higher timeframe trend is contrary
+  — reduces setup probability significantly.
+severity: HIGH
+characteristics:
+- HTF trend opposes trade direction
+- Counter-trend setup
+- Higher probability of failure
+- Missing primary confluence
+affects:
+- Setup
+- Decision
+- Confirmation
+related_objects:
+- BYS-CF001
+- BYS-CF002
+- BYS-C040
+references: []
+tags:
+- htf
+- alignment
+- missing
+- counter-trend
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

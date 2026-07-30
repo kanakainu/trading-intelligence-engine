@@ -1,0 +1,46 @@
+id: BYS-ST006
+name: Bear Flag
+aliases:
+- Bear Flag
+- Bearish Flag
+- Flag Down
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Bearish continuation structure — sharp impulse down (pole) followed by
+  upward channel (flag).
+sequence:
+- Pole
+- Flag Channel
+- Breakdown
+components:
+  pole: Strong bearish impulse (flagpole)
+  flag: Upward parallel channel consolidation
+  breakdown: Close below flag lower trendline
+characteristics:
+- Pole is sharp and impulsive
+- Flag drifts higher against trend
+- Parallel channel visible
+- Volume lower during flag
+invalidation: Price breaks above flag upper trendline.
+related_objects:
+- BYS-C001
+- BYS-C005
+- BYS-C003
+used_by:
+- BYS-EP001
+references: []
+tags:
+- bearish
+- continuation
+- flag
+- channel
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

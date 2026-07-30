@@ -1,0 +1,41 @@
+id: BYS-L008
+name: Mitigation Zone Location
+aliases:
+- Mitigated Zone
+- Tested Zone
+- Used Zone
+category: Location
+version: '1.0'
+definition: Any zone that has been retested at least once, partially or fully consuming
+  resting orders.
+location_type: QUALITY
+characteristics:
+- Has been retested one or more times
+- Remaining orders reduced
+- Lower reaction probability
+- May still hold if partially mitigated
+related_objects:
+- BYS-C046
+- BYS-L007
+- BYS-L005
+- BYS-L006
+used_by:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+references: []
+tags:
+- mitigation
+- tested
+- quality
+- probability
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,35 @@
+id: BYS-R004
+name: Low Spread Condition
+aliases:
+- Tight Spread
+- Favorable Spread
+category: Risk
+version: '1.0'
+definition: Current spread is within favorable range — conditions suitable for trade
+  execution. Risk is LOW.
+severity: LOW
+characteristics:
+- Spread within acceptable range
+- Low execution cost
+- Favorable slippage
+- Active liquid session
+affects:
+- Execution
+- RR
+related_objects:
+- BYS-CF016
+references: []
+tags:
+- spread
+- low
+- favorable
+- liquid
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

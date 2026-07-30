@@ -1,0 +1,38 @@
+id: BYS-CF002
+name: Trend Alignment Confirmation
+aliases:
+- Trend Confirm
+- Same-Bias Confirmation
+- Directional Confirmation
+category: Confirmation
+version: '1.0'
+definition: All relevant timeframes show the same trend direction simultaneously.
+characteristics:
+- Same bias on M5, M15, H1
+- No conflicting structure across TFs
+- Higher probability continuation
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C040
+- BYS-C033
+- BYS-C034
+used_by:
+- BYS-CF005
+references: []
+tags:
+- trend
+- alignment
+- same-bias
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,40 @@
+id: BYS-CF009
+name: Strong Momentum Candle Confirmation
+aliases:
+- Big Candle
+- Momentum Bar
+- Strong Close
+category: Confirmation
+version: '1.0'
+definition: A large-bodied candle with minimal wicks closing near high/low — confirms
+  directional conviction.
+characteristics:
+- Large body (>70% of range)
+- Minimal wicks
+- Closes near high (bull) or low (bear)
+- High momentum indication
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C030
+- BYS-C001
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- momentum
+- strong
+- conviction
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

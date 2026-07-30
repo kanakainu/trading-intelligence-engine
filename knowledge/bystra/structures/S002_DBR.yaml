@@ -1,0 +1,44 @@
+id: BYS-ST002
+name: Drop Base Rally
+aliases:
+- DBR
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Bullish reversal structure — impulse down, consolidation base, impulse
+  up.
+sequence:
+- Drop
+- Base
+- Rally
+components:
+  drop_leg: Bearish impulse
+  base: Horizontal consolidation
+  rally_leg: Bullish impulse breaking above base high
+characteristics:
+- Drop followed by base formation
+- Rally leg breaks above base high
+- Structure indicates demand absorption
+invalidation: Price closes below base low.
+related_objects:
+- BYS-C001
+- BYS-C005
+- BYS-C004
+used_by:
+- BYS-EP001
+- BYS-EP002
+references: []
+tags:
+- bullish
+- reversal
+- base
+- dbr
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

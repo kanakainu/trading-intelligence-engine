@@ -1,0 +1,41 @@
+id: BYS-C009
+name: Pullback
+aliases:
+- retrace
+- dip
+- throwback
+category: Concept
+definition: A short-term counter-directional price move against the prevailing trend
+  that does not break the trend's structural integrity, often returning price toward
+  a prior level or zone before the trend resumes.
+characteristics:
+- Counter-directional to the current trend
+- Does not break key swing levels that define the trend
+- Smaller in range and momentum than the preceding impulse
+- Price returns toward a structural reference before reversing
+- Maintains the trend's overall sequence of highs and lows
+notes: Pullback is functionally similar to retracement but typically implies a shallower,
+  shorter-duration counter-move within a defined trend context.
+related_objects:
+- BYS-C001
+- BYS-C002
+- BYS-C033
+- BYS-C034
+- BYS-C041
+- BYS-C042
+references: []
+tags:
+- price_action
+- trend
+- counter_move
+- correction
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

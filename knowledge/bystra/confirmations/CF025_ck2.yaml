@@ -1,0 +1,39 @@
+id: BYS-CF025
+name: CK2 Entry Confirmation
+aliases:
+- CK2
+- Level 2
+- Medium Confirmation
+category: Confirmation
+version: '1.0'
+definition: Entry after pullback retest to base zone — requires pattern to confirm
+  on retest.
+characteristics:
+- Pullback to base after breakout
+- Rejection visible on retest
+- Two-layer confirmation
+- Lower risk than CK1
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C049
+used_by:
+- BYS-CF024
+references: []
+tags:
+- ck2
+- entry
+- retest
+- medium-confirmation
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

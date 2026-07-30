@@ -1,0 +1,40 @@
+id: BYS-C042
+name: Resistance
+aliases:
+- resistance level
+- resistance zone
+- supply ceiling
+- price ceiling
+category: Concept
+definition: A price level or zone at which upward price movement has previously stalled
+  or reversed, reflecting a historical concentration of supply sufficient to absorb
+  available demand at that level.
+characteristics:
+- Price has previously reversed downward from the level at least once
+- The level is defined by prior swing highs or congestion zones
+- Represents a price at which supply has historically exceeded demand
+- Can be a precise price level or a broader zone depending on context
+- Significance increases with the number of times the level has been respected
+notes: Resistance is a historical structural observation, not a guarantee of future
+  behavior. A resistance level that is broken may subsequently act as support.
+related_objects:
+- BYS-C041
+- BYS-C043
+- BYS-C010
+- BYS-C042
+references: []
+tags:
+- structure
+- level
+- supply
+- reference_level
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

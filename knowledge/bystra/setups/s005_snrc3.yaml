@@ -1,0 +1,51 @@
+id: BYS-SETUP-005
+name: SNRC3
+engine: bystra
+category: Setup
+version: '1.0'
+setup_type: Continuation
+market_bias: NEUTRAL
+description: 'SNRC1 variant where Strong S/R is replaced by an Engulfing candle. Battle
+  between Bearish and Bullish Engulfing. Buy: Strong Support becomes Bullish Engulfing
+  — entry aligned with it. Sell: Strong Resistance becomes Bearish Engulfing — entry
+  aligned with it. Uses Failed Bearish Engulfing / Failed Bullish Engulfing formations.'
+allowed_entry_patterns:
+- Engulfing candle (replaces S/R)
+required_locations:
+- Engulfing candle location replaces Strong S/R
+required_confirmations:
+- Bullish Engulfing at buy location
+- Bearish Engulfing at sell location
+required_risks:
+- TODO
+required_structures:
+- Engulfing
+required_concepts:
+- Continuation
+- Bullish Engulfing
+- Bearish Engulfing
+- Failed Engulfing
+- Multi-Timeframe
+invalidate_conditions:
+- TODO
+notes: Not a completely separate setup — variant of SNRC1. S/R replaced by engulfing
+  candle.
+references:
+- 'XAUUSD Bystra Secret Strategy - Setup #5: SNRC3 — Continuation'
+type: NEUTRAL
+requires:
+- BYS-CF007
+- BYS-CF008
+- BYS-C025
+invalid_if: []
+priority: 2
+confidence: 0.75
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_document: XAUUSD — Bystra Secret Strategy.md
+  source_location: knowledge/bystra/setups/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,41 @@
+id: BYS-CF008
+name: Bearish Engulfing Confirmation
+aliases:
+- Bear Engulf
+- Bearish Candle Confirmation
+- Red Engulf
+category: Confirmation
+version: '1.0'
+definition: A bearish candle body fully engulfs the prior bullish candle body — confirms
+  selling momentum shift.
+characteristics:
+- Current bearish body > previous bullish body
+- Close below prior open
+- Strong momentum signal
+- More significant at key levels
+strengthens:
+- BYS-ST003
+- BYS-ST004
+- BYS-L002
+- BYS-L004
+related_objects:
+- BYS-C025
+- BYS-C024
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- bearish
+- engulfing
+- momentum
+- reversal
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,43 @@
+id: BYS-C026
+name: Pin Bar
+aliases:
+- pinbar
+- hammer
+- shooting star
+- rejection candle
+- spike bar
+category: Concept
+definition: A candlestick characterized by a small body and a disproportionately long
+  wick on one end, indicating that price was pushed strongly in one direction during
+  the period but rejected and closed near the opposite end of the candle's range.
+characteristics:
+- Long wick (shadow) on one side, typically at least two to three times the body length
+- Small body positioned near one extreme of the candle's range
+- Short or minimal wick on the opposite side
+- The long wick represents the rejected price area
+- Directionally classified by the wick direction (upper wick = bearish rejection,
+  lower wick = bullish rejection)
+notes: Pin bar describes the shape of a single candle reflecting rejection of a price
+  area. The term is directionally neutral; context determines its significance.
+related_objects:
+- BYS-C015
+- BYS-C026
+- BYS-C023
+- BYS-C024
+- BYS-C032
+references: []
+tags:
+- candlestick
+- rejection
+- wick
+- single_bar
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

@@ -1,0 +1,50 @@
+id: BYS-ST011
+name: Quasimodo
+aliases:
+- QM
+- QMR
+- QML
+- QMB
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Advanced reversal structure with a failed higher high (or lower low) followed
+  by a break of prior swing.
+sequence:
+- Leg 1
+- Shoulder
+- Head
+- Shoulder Break
+components:
+  leg_1: Initial impulse establishing first swing
+  shoulder: First shoulder swing point
+  head: Overextended swing (failed new high/low)
+  shoulder_break: Break and close beyond shoulder level
+characteristics:
+- Head exceeds prior swing point
+- Break of shoulder level confirms structure
+- Asymmetric pattern
+- Head represents last liquidity grab
+invalidation: Price extends beyond head without reversal.
+related_objects:
+- BYS-C010
+- BYS-C011
+- BYS-C004
+- BYS-C015
+used_by:
+- BYS-EP001
+references: []
+tags:
+- reversal
+- quasimodo
+- advanced
+- structure
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

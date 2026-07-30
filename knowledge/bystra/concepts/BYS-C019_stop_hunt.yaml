@@ -1,0 +1,41 @@
+id: BYS-C019
+name: Stop Hunt
+aliases:
+- stop run
+- stop raid
+- stop fishing
+category: Concept
+definition: A price move engineered or coincident with the triggering of accumulated
+  stop-loss orders beyond a well-known structural level, after which price reverses
+  back in the prior direction once the stops have been executed.
+characteristics:
+- Price extends beyond an obvious structural high or low where stops are expected
+- The extension is sufficient to trigger the resting stops at that level
+- Price reverses after the stop orders are triggered and absorbed
+- The resulting candle often shows a pronounced wick beyond the structural level
+- The level breached was previously visible and widely watched
+notes: A stop hunt describes the outcome of price triggering stops at a structural
+  level. The concept applies to any market and does not require deliberate intent
+  by any single participant.
+related_objects:
+- BYS-C013
+- BYS-C014
+- BYS-C015
+- BYS-C016
+- BYS-C020
+references: []
+tags:
+- liquidity
+- stop_loss
+- order_triggering
+- manipulation_pattern
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

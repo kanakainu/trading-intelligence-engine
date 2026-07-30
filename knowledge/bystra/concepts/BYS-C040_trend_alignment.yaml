@@ -1,0 +1,41 @@
+id: BYS-C040
+name: Trend Alignment
+aliases:
+- multi-timeframe alignment
+- directional alignment
+- timeframe confluence
+category: Concept
+definition: The condition in which the directional bias of a market is consistent
+  across multiple timeframes simultaneously, with higher timeframe and lower timeframe
+  trend structures pointing in the same direction.
+characteristics:
+- Higher timeframe trend direction matches lower timeframe trend direction
+- Structural sequences (HH/HL or LH/LL) are directionally consistent across timeframes
+- The degree of alignment can involve two or more timeframes
+- Misalignment means different timeframes show opposing directional structures
+- Full alignment means all observed timeframes share the same directional bias
+notes: Trend alignment is a descriptive state, not a signal. It characterizes the
+  degree of directional consensus across timeframes without implying any specific
+  action.
+related_objects:
+- BYS-C033
+- BYS-C034
+- BYS-C049
+- BYS-C036
+- BYS-C037
+references: []
+tags:
+- multi_timeframe
+- trend
+- alignment
+- structure
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

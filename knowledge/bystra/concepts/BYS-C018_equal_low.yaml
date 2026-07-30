@@ -1,0 +1,43 @@
+id: BYS-C018
+name: Equal Low
+aliases:
+- EQL
+- double bottom level
+- equal lows
+- matching lows
+category: Concept
+definition: A price structure in which two or more swing lows occur at approximately
+  the same price level, creating a horizontal cluster that signals a concentration
+  of resting buy-stop orders just below that level.
+characteristics:
+- Two or more swing lows share the same or nearly identical price
+- The shared price level is visually prominent on the chart
+- Implies a concentration of stop-loss orders from long positions and pending buy
+  orders below the level
+- The horizontal alignment makes the level conspicuous and therefore a target for
+  liquidity
+- Can form at any timeframe or degree of trend
+notes: Equal lows are structurally significant because repeated support at the same
+  price concentrates protective orders just below. The proximity threshold for "equal"
+  is contextual and instrument-specific.
+related_objects:
+- BYS-C011
+- BYS-C014
+- BYS-C015
+- BYS-C017
+references: []
+tags:
+- structure
+- liquidity
+- equal_level
+- horizontal_level
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

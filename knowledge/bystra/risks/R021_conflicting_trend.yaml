@@ -1,0 +1,39 @@
+id: BYS-R021
+name: Conflicting Trend Risk
+aliases:
+- Mixed Bias
+- Trend Conflict
+- Opposing Signals
+category: Risk
+version: '1.0'
+definition: Different timeframes show opposing trend directions — creates ambiguity
+  about true market direction.
+severity: MEDIUM
+characteristics:
+- Higher TF shows one direction
+- Lower TF shows opposite
+- Mixed signals across TFs
+- No clear alignment
+affects:
+- Setup
+- Decision
+- Confirmation
+related_objects:
+- BYS-CF002
+- BYS-C040
+- BYS-C035
+references: []
+tags:
+- conflict
+- trend
+- mixed
+- ambiguous
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

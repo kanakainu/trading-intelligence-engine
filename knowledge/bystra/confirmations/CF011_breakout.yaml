@@ -1,0 +1,43 @@
+id: BYS-CF011
+name: Breakout Confirmation
+aliases:
+- Level Break
+- Zone Break
+- Structural Break Confirm
+category: Confirmation
+version: '1.0'
+definition: Price closes beyond a key level or zone boundary — confirms the break
+  is valid.
+characteristics:
+- Candle closes beyond level
+- Not just a wick
+- Momentum behind break
+- Ideally with strong body
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+- BYS-L001
+- BYS-L002
+related_objects:
+- BYS-C008
+- BYS-C006
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- breakout
+- break
+- close
+- level
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

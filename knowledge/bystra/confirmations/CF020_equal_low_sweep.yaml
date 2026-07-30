@@ -1,0 +1,41 @@
+id: BYS-CF020
+name: Equal Low Sweep Confirmation
+aliases:
+- EQL Sweep
+- SSL Sweep
+- Sell Stops Hit
+category: Confirmation
+version: '1.0'
+definition: Price swept equal lows (sell-side liquidity) then reversed — confirms
+  bullish intent after grab.
+characteristics:
+- Equal lows swept
+- Price extends below both lows
+- Reversal candle visible
+- Sell stops triggered
+strengthens:
+- BYS-L018
+- BYS-L015
+- BYS-ST001
+- BYS-ST002
+related_objects:
+- BYS-C018
+- BYS-C016
+used_by:
+- BYS-CF007
+- BYS-CF017
+references: []
+tags:
+- equal-low
+- sweep
+- ssl
+- bullish
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

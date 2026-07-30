@@ -1,0 +1,40 @@
+id: BYS-CF014
+name: Volatility Confirmation
+aliases:
+- Normal Volatility
+- ATR Aligned
+- Healthy Spread
+category: Confirmation
+version: '1.0'
+definition: Market volatility is within normal range — confirms conditions are suitable
+  for trade execution.
+characteristics:
+- ATR within expected range
+- Spread not abnormally wide
+- No news spike volatility
+- Candle ranges normal
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C049
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- volatility
+- atr
+- spread
+- conditions
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

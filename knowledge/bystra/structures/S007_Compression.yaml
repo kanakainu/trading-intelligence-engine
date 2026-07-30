@@ -1,0 +1,46 @@
+id: BYS-ST007
+name: Compression Structure
+aliases:
+- Squeeze Structure
+- Narrowing Pattern
+- Contraction Pattern
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Structure where price range progressively narrows, indicating energy accumulation
+  before expansion.
+sequence:
+- Initial Range
+- Compression Phase
+- Contraction Point
+components:
+  initial_range: Wide price movement establishing boundaries
+  compression: Progressively narrowing candle ranges
+  contraction: Minimal range, maximum energy
+characteristics:
+- Each successive swing has smaller range than prior
+- Both highs and lows converge
+- Volume typically decreases
+- Precedes expansion
+invalidation: Range expands without clean directional breakout.
+related_objects:
+- BYS-C007
+- BYS-C006
+- BYS-C005
+used_by:
+- BYS-EP001
+references: []
+tags:
+- compression
+- squeeze
+- range
+- energy
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

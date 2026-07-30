@@ -1,0 +1,63 @@
+id: BYS-SETUP-004
+name: SNRC2
+engine: bystra
+category: Setup
+version: '1.0'
+setup_type: Continuation
+market_bias: NEUTRAL
+description: 'Entry point: RBD (sell) or DBR (buy). At Strong Support (sell — RBD)
+  or Strong Resistance (buy — DBR). RBD must break previous Strong Support; DBR must
+  break previous Strong Resistance. Must NOT touch Danger Zone. Confirmation: same
+  as SNRC1 (HTF engulfing/body candle).'
+allowed_entry_patterns:
+- RBD
+- DBR
+required_locations:
+- Strong Support (sell via RBD)
+- Strong Resistance (buy via DBR)
+required_confirmations:
+- HTF engulfing or body candle
+- Danger Zone untouched on HTF
+required_risks:
+- Danger Zone must NOT be touched
+required_structures:
+- RBD
+- DBR
+required_concepts:
+- Continuation
+- Strong Support break
+- Strong Resistance break
+- Multi-Timeframe
+- Danger Zone
+invalidate_conditions:
+- Price touches Danger Zone
+- No HTF confirmation
+- RBD does not break previous Strong Support
+- DBR does not break previous Strong Resistance
+notes: RBD must break previous Strong Support. DBR must break previous Strong Resistance.
+  Low risk setup.
+references:
+- 'XAUUSD Bystra Secret Strategy - Setup #4: SNRC2 — Continuation'
+type: NEUTRAL
+requires:
+- BYS-ST003
+- BYS-ST002
+- BYS-L001
+- BYS-L002
+- BYS-CF007
+- BYS-CF008
+- BYS-L019
+invalid_if:
+- BYS-R011
+- BYS-R019
+priority: 1
+confidence: 0.8
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_document: XAUUSD — Bystra Secret Strategy.md
+  source_location: knowledge/bystra/setups/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,47 @@
+id: BYS-ST013
+name: Range
+aliases:
+- Horizontal Range
+- Trading Range
+- Box
+- Consolidation Box
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Structure where price oscillates between defined horizontal support and
+  resistance levels.
+sequence:
+- Support Level
+- Oscillation
+- Resistance Level
+components:
+  support_level: Lower horizontal boundary with multiple touches
+  oscillation: Price movement between boundaries
+  resistance_level: Upper horizontal boundary with multiple touches
+characteristics:
+- Minimum 2 touches on each boundary
+- Boundaries approximately horizontal
+- Price contained within boundaries
+- No clear directional trend
+invalidation: Price closes decisively outside boundaries with momentum.
+related_objects:
+- BYS-C005
+- BYS-C041
+- BYS-C042
+used_by:
+- BYS-EP001
+references: []
+tags:
+- range
+- consolidation
+- horizontal
+- box
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

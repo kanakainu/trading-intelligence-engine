@@ -1,0 +1,38 @@
+id: BYS-R001
+name: High Volatility Risk
+aliases:
+- HV Risk
+- Volatile Market
+- Spike Risk
+category: Risk
+version: '1.0'
+definition: Market condition where price range is abnormally wide — increases slippage,
+  widens spread, and makes SL placement difficult.
+severity: HIGH
+characteristics:
+- ATR significantly above average
+- Wide candle ranges
+- Unpredictable price swings
+- Spread often widens during HV
+affects:
+- Execution
+- Spread
+- SL Placement
+related_objects:
+- BYS-L019
+- BYS-CF014
+references: []
+tags:
+- volatility
+- high
+- spike
+- risk
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

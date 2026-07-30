@@ -1,0 +1,46 @@
+id: BYS-SETUP-013
+name: CLAB
+engine: bystra
+category: Setup
+version: '1.0'
+setup_type: Confirmation
+market_bias: NEUTRAL
+description: Confirmation Like a Boss. NOT a setup — a confirmation introduction method.
+  Involves engulfing + confluence. Multiple confirmation points (1, 2, 3, 4 in diagrams).
+allowed_entry_patterns:
+- TODO — CLAB is a confirmation method, not a standalone entry
+required_locations:
+- TODO
+required_confirmations:
+- Engulfing + confluence
+- Multiple confirmation points
+required_risks:
+- TODO
+required_structures:
+- Engulfing
+required_concepts:
+- Confirmation
+- CLAB
+- Engulfing
+- Confluence
+invalidate_conditions:
+- TODO
+notes: NOT a setup. Confirmation introduction method. Multiple confirmation points
+  (1-4) in Nora diagrams.
+references:
+- 'XAUUSD Bystra Secret Strategy - Setup #13: CLAB'
+type: NEUTRAL
+requires:
+- BYS-C025
+invalid_if: []
+priority: 5
+confidence: 0.7
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_document: XAUUSD — Bystra Secret Strategy.md
+  source_location: knowledge/bystra/setups/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

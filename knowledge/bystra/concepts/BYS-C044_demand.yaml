@@ -1,0 +1,42 @@
+id: BYS-C044
+name: Demand
+aliases:
+- demand zone
+- demand area
+- demand region
+- buyer zone
+category: Concept
+definition: A price zone in which an excess of buy orders over sell orders previously
+  caused price to reverse upward, representing an area where aggressive buying activity
+  was accumulated into available supply.
+characteristics:
+- Price departed the zone with a strong upward move
+- The zone marks the price range where buy orders were accumulated
+- Often originates from a consolidation followed by a sharp bullish impulse
+- Unmitigated demand zones retain their structural significance until revisited
+- Defined by the candle bodies and wicks of the origin sequence
+notes: Demand describes the structural origin of excess buy pressure at a specific
+  price area. It refers to a specific zone on the chart rather than the general economic
+  concept of demand.
+related_objects:
+- BYS-C043
+- BYS-C041
+- BYS-C045
+- BYS-C046
+- BYS-C047
+references: []
+tags:
+- zone
+- demand
+- structure
+- origin
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

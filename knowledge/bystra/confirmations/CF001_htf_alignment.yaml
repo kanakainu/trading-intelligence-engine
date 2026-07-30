@@ -1,0 +1,39 @@
+id: BYS-CF001
+name: HTF Alignment Confirmation
+aliases:
+- HTF Align
+- Higher TF Alignment
+- Multi-TF Bias
+category: Confirmation
+version: '1.0'
+definition: Higher timeframe trend direction aligns with the trade direction on lower
+  timeframe — confirms directional bias.
+characteristics:
+- H4/H1 trend matches M5/M15 direction
+- Reduces counter-trend risk
+- Adds directional confidence
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C040
+- BYS-C049
+used_by:
+- BYS-CF005
+references: []
+tags:
+- htf
+- alignment
+- trend
+- confluence
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

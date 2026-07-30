@@ -1,0 +1,41 @@
+id: BYS-EP011
+name: Demand Reaction Entry
+aliases:
+- Demand Zone Entry
+- Buy Zone Entry
+- DR Entry
+category: Concept
+version: '1.0'
+definition: Entry triggered at a demand zone when price arrives and shows a positive
+  reaction confirming demand presence.
+trigger_description: Price reaches a demand zone and a reaction candle (rejection,
+  engulfing, or momentum) confirms buying interest at the zone.
+prerequisites:
+- Demand zone identified
+- Price arrives at zone
+- Reaction candle visible at zone
+invalidation: Price passes through demand zone without reaction or closes below zone.
+related_objects:
+- BYS-L005
+- BYS-CF023
+- BYS-CF007
+- BYS-CF010
+- BYS-C044
+used_by:
+- BYS-CF025
+- BYS-CF026
+references: []
+tags:
+- demand
+- reaction
+- zone
+- buy
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

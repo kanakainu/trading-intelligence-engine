@@ -1,0 +1,40 @@
+id: BYS-C023
+name: Bullish Candle
+aliases:
+- up candle
+- green candle
+- positive candle
+- advance candle
+category: Concept
+definition: A candlestick in which the closing price is higher than the opening price,
+  indicating that buyers dominated price movement over the candle's time period.
+characteristics:
+- Close price is above open price
+- Body color is conventionally green or white
+- Body spans from open (bottom) to close (top)
+- Upper wick extends from close to the period high
+- Lower wick extends from open to the period low
+notes: A bullish candle describes the net result of buying versus selling pressure
+  within its time period. The size of the body relative to wicks provides additional
+  information about conviction.
+related_objects:
+- BYS-C024
+- BYS-C030
+- BYS-C025
+- BYS-C026
+references: []
+tags:
+- candlestick
+- price_action
+- bullish
+- bar_type
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

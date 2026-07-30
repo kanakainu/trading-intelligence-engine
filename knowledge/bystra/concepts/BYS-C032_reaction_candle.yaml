@@ -1,0 +1,39 @@
+id: BYS-C032
+name: Reaction Candle
+aliases:
+- reaction bar
+- response candle
+- counter candle
+category: Concept
+definition: A candlestick that moves counter to the preceding directional move, representing
+  a temporary response by opposing market participants after a significant price displacement.
+characteristics:
+- Directionally opposite to the immediately preceding candle or sequence
+- Typically smaller than the move it reacts against
+- Indicates the presence of opposing pressure at or near the current price
+- Does not necessarily invalidate the prior move's direction
+- Can occur at structural levels, zones, or simply as natural counter-pressure
+notes: Reaction candle is defined by its directional relationship to the prior move
+  and its appearance as a counter-response. It is neutral as to whether it marks the
+  start of a reversal or merely a pause.
+related_objects:
+- BYS-C002
+- BYS-C009
+- BYS-C026
+- BYS-C030
+references: []
+tags:
+- candlestick
+- counter_move
+- response
+- single_bar
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

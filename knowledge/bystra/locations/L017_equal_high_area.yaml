@@ -1,0 +1,39 @@
+id: BYS-L017
+name: Equal High Area
+aliases:
+- EQH Zone
+- Double Top Area
+- BSL Area
+category: Location
+version: '1.0'
+definition: A price area where two or more swing highs form at approximately the same
+  level, concentrating buy-side liquidity above.
+location_type: LIQUIDITY
+characteristics:
+- Two or more highs at same level
+- Buy stops clustered above
+- Visible on chart as double/triple top shape
+- Attractive for liquidity sweeps
+related_objects:
+- BYS-C017
+- BYS-L014
+- BYS-L016
+- BYS-C010
+used_by:
+- BYS-ST009
+- BYS-ST011
+references: []
+tags:
+- equal-high
+- bsl
+- double-top
+- liquidity
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

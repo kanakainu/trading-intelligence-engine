@@ -1,0 +1,43 @@
+id: BYS-C033
+name: Uptrend
+aliases:
+- bullish trend
+- rising trend
+- upward trend
+- bull trend
+category: Concept
+definition: A market condition characterized by a sequence of higher highs and higher
+  lows, where each successive peak and trough is positioned above the prior peak and
+  trough, indicating sustained dominance of buying pressure over time.
+characteristics:
+- Successive swing highs are higher than prior swing highs
+- Successive swing lows are higher than prior swing lows
+- Net directional displacement is upward over the observed period
+- Price spends more time moving up than down within the sequence
+- The pattern of higher highs and higher lows defines the structure
+notes: An uptrend is defined by the sequence of swing structure, not by any single
+  candle or indicator. The degree of the trend (minor, intermediate, major) depends
+  on the timeframe and swing definition used.
+related_objects:
+- BYS-C034
+- BYS-C035
+- BYS-C036
+- BYS-C037
+- BYS-C010
+- BYS-C011
+references: []
+tags:
+- trend
+- bullish
+- structure
+- market_condition
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

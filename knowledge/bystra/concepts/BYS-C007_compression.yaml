@@ -1,0 +1,40 @@
+id: BYS-C007
+name: Compression
+aliases:
+- range compression
+- volatility compression
+- squeeze
+- coiling
+category: Concept
+definition: A phase of decreasing price range and momentum in which candles display
+  smaller bodies, narrower spreads, and reduced displacement per bar, reflecting diminishing
+  directional conviction.
+characteristics:
+- Candle bodies and total range decrease relative to recent bars
+- Price moves less distance per unit of time
+- Often associated with contracting volume or participation
+- Frequently precedes a period of expansion
+- Can manifest as inside bars, doji clusters, or tight ranging
+notes: Compression is the counterpart to expansion. It describes the coiling of energy
+  within the market and is often observed before significant directional moves.
+related_objects:
+- BYS-C005
+- BYS-C006
+- BYS-C027
+- BYS-C029
+references: []
+tags:
+- volatility
+- range
+- consolidation
+- price_action
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

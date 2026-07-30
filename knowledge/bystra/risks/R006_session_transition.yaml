@@ -1,0 +1,38 @@
+id: BYS-R006
+name: Session Transition Risk
+aliases:
+- Session Change Risk
+- Overlap Risk
+- Open Risk
+category: Risk
+version: '1.0'
+definition: Risk period occurring during transition between trading sessions — spread
+  widens, liquidity temporarily drops.
+severity: MEDIUM
+characteristics:
+- Between session close and new session open
+- Reduced liquidity momentarily
+- Spread may widen
+- Unpredictable short-term moves
+affects:
+- Spread
+- Liquidity
+- Execution
+related_objects:
+- BYS-CF013
+- BYS-L021
+references: []
+tags:
+- session
+- transition
+- overlap
+- risk
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

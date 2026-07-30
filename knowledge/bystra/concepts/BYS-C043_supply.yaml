@@ -1,0 +1,42 @@
+id: BYS-C043
+name: Supply
+aliases:
+- supply zone
+- supply area
+- supply region
+- seller zone
+category: Concept
+definition: A price zone in which an excess of sell orders over buy orders previously
+  caused price to reverse downward, representing an area where aggressive selling
+  activity was distributed into available demand.
+characteristics:
+- Price departed the zone with a strong downward move
+- The zone marks the price range where sell orders were accumulated and distributed
+- Often originates from a consolidation followed by a sharp bearish impulse
+- Unmitigated supply zones retain their structural significance until revisited
+- Defined by the candle bodies and wicks of the origin sequence
+notes: Supply describes the structural origin of excess sell pressure at a specific
+  price area. It is distinct from the general concept of supply in economics; it refers
+  to a specific zone on the chart.
+related_objects:
+- BYS-C044
+- BYS-C042
+- BYS-C045
+- BYS-C046
+- BYS-C047
+references: []
+tags:
+- zone
+- supply
+- structure
+- origin
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

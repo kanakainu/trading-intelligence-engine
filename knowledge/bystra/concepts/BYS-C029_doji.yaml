@@ -1,0 +1,39 @@
+id: BYS-C029
+name: Doji
+aliases:
+- doji candle
+- cross candle
+- neutral candle
+category: Concept
+definition: A candlestick in which the opening and closing prices are equal or nearly
+  equal, resulting in a minimal or absent body, indicating that buying and selling
+  pressure were in equilibrium over the candle's period.
+characteristics:
+- Open and close are at the same or very similar price level
+- Body is absent or negligible relative to the candle's total range
+- Wicks may extend in both directions, reflecting intraperiod price exploration
+- Indicates balance between supply and demand during the period
+- Variants include standard doji, long-legged doji, dragonfly doji, and gravestone
+  doji
+notes: Doji describes a state of equilibrium within a single period. Variants differ
+  in wick length and placement but share the defining feature of near-zero body size.
+related_objects:
+- BYS-C027
+- BYS-C031
+- BYS-C029
+references: []
+tags:
+- candlestick
+- equilibrium
+- indecision
+- single_bar
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

@@ -1,0 +1,38 @@
+id: BYS-C003
+name: Continuation
+aliases:
+- trend continuation
+- directional continuation
+category: Concept
+definition: The resumption of a price move in the same direction as the prior dominant
+  impulse after a period of retracement or consolidation.
+characteristics:
+- Price resumes the prior impulse direction
+- Prior structure highs or lows are extended
+- Follows a recognizable pause, pullback, or base
+- Momentum character is consistent with the original impulse
+- Trend structure is preserved or extended
+notes: Continuation describes the outcome of a sequence (impulse → pause → impulse)
+  rather than any single candle or bar.
+related_objects:
+- BYS-C001
+- BYS-C002
+- BYS-C005
+- BYS-C033
+- BYS-C034
+references: []
+tags:
+- price_action
+- trend
+- sequence
+- directional
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

@@ -1,0 +1,41 @@
+id: BYS-C028
+name: Outside Bar
+aliases:
+- outside candle
+- engulfing bar
+- wide range bar
+- OB
+category: Concept
+definition: A candlestick whose complete range — from high to low — exceeds the high-to-low
+  range of the immediately preceding candle on both sides, indicating an expansion
+  of volatility that engulfs the prior bar's entire range.
+characteristics:
+- High is higher than the prior candle's high
+- Low is lower than the prior candle's low
+- Both extremes of the prior bar are exceeded
+- Represents expansion of range relative to the preceding bar
+- The close position within the outside bar's range indicates net directional pressure
+notes: Outside bar is defined by range expansion in both directions (high-low). It
+  is directionally neutral by structure; the close relative to the midpoint provides
+  directional information.
+related_objects:
+- BYS-C006
+- BYS-C025
+- BYS-C027
+- BYS-C030
+references: []
+tags:
+- candlestick
+- expansion
+- volatility
+- single_bar
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

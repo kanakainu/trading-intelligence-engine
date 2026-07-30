@@ -1,0 +1,37 @@
+id: BYS-L004
+name: Resistance Zone
+aliases:
+- R-Zone
+- Resistance Area
+- Broad Resistance
+category: Location
+version: '1.0'
+definition: A price range where selling pressure is historically strong enough to
+  halt advance.
+location_type: RESISTANCE
+characteristics:
+- Range of prices (zone, not line)
+- Multiple rejections within zone
+- Supply presence across zone
+related_objects:
+- BYS-C042
+- BYS-C043
+- BYS-L002
+used_by:
+- BYS-ST003
+- BYS-ST004
+references: []
+tags:
+- resistance
+- zone
+- supply
+- range
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

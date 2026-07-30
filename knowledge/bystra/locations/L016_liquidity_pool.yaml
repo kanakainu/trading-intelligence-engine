@@ -1,0 +1,41 @@
+id: BYS-L016
+name: Liquidity Pool Location
+aliases:
+- LP
+- Order Pool
+- Dense Liquidity
+category: Location
+version: '1.0'
+definition: A concentrated area with unusually high density of pending orders, typically
+  at obvious technical levels.
+location_type: LIQUIDITY
+characteristics:
+- High order density
+- At visible technical levels
+- Magnet for price
+- Often near equal highs/lows or swing extremes
+related_objects:
+- BYS-C014
+- BYS-L014
+- BYS-L015
+- BYS-C017
+- BYS-C018
+used_by:
+- BYS-ST009
+- BYS-ST010
+- BYS-ST011
+references: []
+tags:
+- liquidity-pool
+- dense
+- orders
+- magnet
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

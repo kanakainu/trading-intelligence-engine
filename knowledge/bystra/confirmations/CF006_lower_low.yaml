@@ -1,0 +1,34 @@
+id: BYS-CF006
+name: Lower Low Confirmation
+aliases:
+- LL Confirm
+- New Low Confirm
+category: Confirmation
+version: '1.0'
+definition: Price creates a lower low — confirms bearish structure continuation.
+characteristics:
+- New swing low below prior low
+- Bearish momentum maintained
+- Sellers in full control
+strengthens:
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C039
+- BYS-C034
+used_by:
+- BYS-CF005
+references: []
+tags:
+- lower-low
+- bearish
+- structure
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

@@ -1,0 +1,39 @@
+id: BYS-C037
+name: Higher Low
+aliases:
+- HL
+- ascending low
+- rising low
+category: Concept
+definition: A swing low that is positioned above the immediately preceding swing low
+  in the same trend sequence, confirming that retracements are becoming shallower
+  and upward structural progression is being maintained.
+characteristics:
+- The current swing low price exceeds the prior swing low price
+- Confirmed only after the swing low is fully formed with higher lows on both sides
+- One of two structural conditions required to define an uptrend
+- Indicates that demand is absorbing supply at progressively higher levels
+- Failure to form a higher low signals potential trend weakness or reversal
+notes: Higher low is a relational descriptor comparing two consecutive swing lows.
+  Together with higher high, it defines the binary structural signature of an uptrend.
+related_objects:
+- BYS-C036
+- BYS-C033
+- BYS-C011
+- BYS-C039
+references: []
+tags:
+- structure
+- uptrend
+- swing
+- reference_level
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

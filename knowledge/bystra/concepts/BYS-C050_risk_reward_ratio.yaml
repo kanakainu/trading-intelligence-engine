@@ -1,0 +1,41 @@
+id: BYS-C050
+name: Risk Reward Ratio
+aliases:
+- RR
+- R:R
+- risk-to-reward
+- reward-to-risk ratio
+category: Concept
+definition: The quantitative relationship between the maximum potential loss and the
+  maximum potential gain of a trade, expressed as a ratio comparing the distance from
+  entry to stop-loss against the distance from entry to take-profit.
+characteristics:
+- Calculated as potential gain divided by potential loss at defined price levels
+- Expressed as a ratio (e.g., 1:2 means risking 1 unit to potentially gain 2 units)
+- Determined by the relative distances between entry, stop-loss, and take-profit levels
+- Is a mathematical property of the price levels chosen, not of market conditions
+- Higher ratios indicate greater potential gain relative to potential loss
+notes: Risk reward ratio is a numerical descriptor of a trade's geometric structure
+  — the ratio of distances between specific price levels. It is a neutral measurement
+  and does not carry information about probability of outcome.
+related_objects:
+- BYS-C041
+- BYS-C042
+- BYS-C043
+- BYS-C044
+references: []
+tags:
+- risk_management
+- ratio
+- measurement
+- trade_structure
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

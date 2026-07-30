@@ -1,0 +1,42 @@
+id: BYS-L020
+name: Safe Zone
+aliases:
+- SafeZone
+- High Probability Area
+- Clean Zone
+category: Location
+version: '1.0'
+definition: A price area with clear structure, strong confluence, and favorable risk
+  conditions for trade consideration.
+location_type: RISK
+characteristics:
+- Clear directional bias
+- Multiple confluences present
+- Low noise
+- Strong zone nearby
+- Favorable RR potential
+related_objects:
+- BYS-C041
+- BYS-C042
+- BYS-L007
+- BYS-L019
+used_by:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+references: []
+tags:
+- safe
+- high-probability
+- clean
+- confluence
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

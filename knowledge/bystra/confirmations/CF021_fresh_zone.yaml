@@ -1,0 +1,38 @@
+id: BYS-CF021
+name: Fresh Zone Confirmation
+aliases:
+- Unmitigated Confirm
+- Virgin Zone Confirm
+category: Confirmation
+version: '1.0'
+definition: Setup is at a fresh (unmitigated) zone — confirms higher probability of
+  order presence.
+characteristics:
+- Zone not yet retested
+- Original orders likely still resting
+- First approach expected
+- Strongest version of zone
+strengthens:
+- BYS-L007
+- BYS-L005
+- BYS-L006
+related_objects:
+- BYS-C045
+used_by:
+- BYS-CF022
+- BYS-CF023
+references: []
+tags:
+- fresh
+- unmitigated
+- quality
+- orders
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

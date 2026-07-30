@@ -1,0 +1,42 @@
+id: BYS-C021
+name: Resting Orders
+aliases:
+- pending orders
+- limit orders
+- dormant orders
+- sitting orders
+category: Concept
+definition: Orders placed in the market at a specific price level that have not yet
+  been triggered, including stop-loss orders, take-profit orders, and limit entry
+  orders waiting for price to reach them.
+characteristics:
+- Exist at specific price levels in the order book or as conditional orders
+- Remain inactive until price reaches the specified trigger level
+- Include stop-losses, limit entries, and take-profit orders from all active positions
+- Represent latent supply or demand not yet reflected in executed price action
+- Concentrate at predictable structural levels where traders conventionally place
+  orders
+notes: Resting orders are the raw material of liquidity pools. Their presence at a
+  level is inferred from price structure and trader behavior rather than directly
+  observed in most retail contexts.
+related_objects:
+- BYS-C013
+- BYS-C014
+- BYS-C019
+- BYS-C022
+references: []
+tags:
+- orders
+- liquidity
+- market_mechanics
+- pending
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

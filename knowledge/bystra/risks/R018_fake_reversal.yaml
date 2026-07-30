@@ -1,0 +1,40 @@
+id: BYS-R018
+name: Fake Reversal Risk
+aliases:
+- False Reversal
+- Dead Cat Bounce
+- Bull Trap
+category: Risk
+version: '1.0'
+definition: Price shows signs of reversing but resumes original trend — reversal traders
+  caught on wrong side.
+severity: HIGH
+characteristics:
+- Reversal signal appears
+- Counter-trend move starts
+- Fails to maintain reversal
+- Original trend resumes
+affects:
+- Setup
+- Decision
+- Confirmation
+related_objects:
+- BYS-C004
+- BYS-C012
+- BYS-CF008
+- BYS-CF007
+references: []
+tags:
+- fake-reversal
+- trap
+- 'false'
+- trend
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

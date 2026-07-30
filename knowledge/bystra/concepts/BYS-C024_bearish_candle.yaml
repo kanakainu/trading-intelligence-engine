@@ -1,0 +1,40 @@
+id: BYS-C024
+name: Bearish Candle
+aliases:
+- down candle
+- red candle
+- negative candle
+- decline candle
+category: Concept
+definition: A candlestick in which the closing price is lower than the opening price,
+  indicating that sellers dominated price movement over the candle's time period.
+characteristics:
+- Close price is below open price
+- Body color is conventionally red or black
+- Body spans from close (bottom) to open (top)
+- Upper wick extends from open to the period high
+- Lower wick extends from close to the period low
+notes: A bearish candle describes the net result of selling versus buying pressure
+  within its time period. Body size relative to wicks indicates the degree of seller
+  conviction over the period.
+related_objects:
+- BYS-C023
+- BYS-C030
+- BYS-C025
+- BYS-C026
+references: []
+tags:
+- candlestick
+- price_action
+- bearish
+- bar_type
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

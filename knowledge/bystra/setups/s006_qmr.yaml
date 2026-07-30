@@ -1,0 +1,51 @@
+id: BYS-SETUP-006
+name: QMR
+engine: bystra
+category: Setup
+version: '1.0'
+setup_type: Reversal
+market_bias: NEUTRAL
+description: 'Quasimodo Reversal. Named after cartoon hunchback — M shape on buy,
+  W on sell. HH → entry sell (at right shoulder / 3rd drive). LL → entry buy (at right
+  shoulder / 3rd drive). Popular among SnD traders. Big trader manipulation zone.
+  Confirmation mandatory: HTF engulfing. High risk setup.'
+allowed_entry_patterns:
+- Right shoulder (3rd drive) — HH for sell, LL for buy
+required_locations:
+- Right shoulder of Quasimodo structure
+required_confirmations:
+- HTF engulfing confirmation (mandatory)
+required_risks:
+- High risk
+required_structures:
+- Quasimodo
+required_concepts:
+- Reversal
+- Quasimodo
+- Right Shoulder
+- 3rd Drive
+- Big Trader Manipulation
+- Multi-Timeframe
+invalidate_conditions:
+- No HTF engulfing confirmation
+notes: High risk. HTF confirmation mandatory. Structure looks like M (buy) or W (sell).
+references:
+- 'XAUUSD Bystra Secret Strategy - Setup #6: QMR — Reversal (High Risk)'
+type: NEUTRAL
+requires:
+- BYS-ST011
+- BYS-CF007
+- BYS-CF008
+invalid_if:
+- BYS-R020
+priority: 3
+confidence: 0.65
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_document: XAUUSD — Bystra Secret Strategy.md
+  source_location: knowledge/bystra/setups/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

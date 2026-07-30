@@ -1,0 +1,42 @@
+id: BYS-C045
+name: Fresh Zone
+aliases:
+- untested zone
+- virgin zone
+- unmitigated zone
+- pristine zone
+category: Concept
+definition: A supply or demand zone that has not been revisited by price since its
+  original formation, indicating that the orders which created the zone have not yet
+  been absorbed or tested.
+characteristics:
+- Price has not returned to the zone since the original impulsive departure
+- The original orders that formed the zone remain unexecuted or partially unexecuted
+- The zone boundary closest to current price has not been touched
+- Retains full structural significance because the underlying order imbalance is intact
+- Contrasts with mitigated zones where price has already returned and absorbed orders
+notes: Fresh is a temporal and structural descriptor indicating the zone's order activity
+  has not been consumed. The zone transitions to mitigated status once price returns
+  and interacts with it.
+related_objects:
+- BYS-C043
+- BYS-C044
+- BYS-C046
+- BYS-C047
+references: []
+tags:
+- zone
+- supply
+- demand
+- unmitigated
+- fresh
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

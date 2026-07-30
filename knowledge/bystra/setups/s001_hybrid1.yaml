@@ -1,0 +1,59 @@
+id: BYS-SETUP-001
+name: Hybrid 1
+engine: bystra
+category: Setup
+version: '1.0'
+setup_type: Reversal
+market_bias: NEUTRAL
+description: 'Price reverses signaling the end of a trend. Retests at RBR, DBD, or
+  QMR level. Must NOT touch the Danger Zone. Note from Nora: not her favored setup
+  (widely used by retail). She often skips (''puasa'') this setup.'
+allowed_entry_patterns:
+- RBR
+- DBD
+- QMR
+required_locations:
+- Strong Support or Resistance
+- RBR level
+- DBD level
+- QMR level
+required_confirmations:
+- HTF confirmation (engulfing or body candle)
+- Danger Zone untouched
+required_risks:
+- Danger Zone must NOT be touched
+required_structures:
+- RBR
+- DBD
+- QMR
+required_concepts:
+- Reversal
+- Retest
+- Danger Zone
+- Multi-Timeframe
+invalidate_conditions:
+- Price touches Danger Zone
+notes: Entry at retest level after confirmation. Nora often skips this setup.
+references:
+- 'XAUUSD Bystra Secret Strategy - Setup #1: Hybrid 1 — Reversal'
+type: NEUTRAL
+requires:
+- BYS-ST001
+- BYS-ST004
+- BYS-ST011
+- BYS-L001
+- BYS-L002
+- BYS-L019
+invalid_if:
+- BYS-R011
+priority: 1
+confidence: 0.7
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_document: XAUUSD — Bystra Secret Strategy.md
+  source_location: knowledge/bystra/setups/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

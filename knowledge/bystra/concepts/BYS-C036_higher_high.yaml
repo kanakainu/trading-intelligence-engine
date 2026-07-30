@@ -1,0 +1,39 @@
+id: BYS-C036
+name: Higher High
+aliases:
+- HH
+- new high
+- ascending high
+category: Concept
+definition: A swing high that is positioned above the immediately preceding swing
+  high in the same trend sequence, confirming continued upward structural progression.
+characteristics:
+- The current swing high price exceeds the prior swing high price
+- Confirmed only after the swing high is fully formed with lower highs on both sides
+- One of two structural conditions required to define an uptrend
+- Each successive higher high marks a new peak in the uptrend sequence
+- Failure to form a higher high is the first structural warning of trend weakness
+notes: Higher high is a relational descriptor comparing two consecutive swing highs.
+  Its significance depends on the degree of the swings being compared — minor swings
+  produce minor higher highs; major swings produce major higher highs.
+related_objects:
+- BYS-C037
+- BYS-C033
+- BYS-C010
+- BYS-C038
+references: []
+tags:
+- structure
+- uptrend
+- swing
+- reference_level
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

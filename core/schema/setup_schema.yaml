@@ -1,0 +1,68 @@
+# TIE Setup Schema — Generic Contract v1.0
+# No trading logic. No engine-specific references. Reusable across all Knowledge Packs.
+
+version: "1.0"
+schema_name: setup_schema
+
+fields:
+  id:
+    type: string
+    required: true
+    description: Unique identifier for the Setup object.
+    example: "SETUP_001"
+
+  name:
+    type: string
+    required: true
+    description: Human-readable name of the Setup.
+    example: "My First Setup"
+
+  engine:
+    type: string
+    required: true
+    description: Knowledge Pack that owns this Setup (e.g. any registered pack name).
+    example: "custom"
+
+  type:
+    type: string
+    required: true
+    enum: [LONG, SHORT, NEUTRAL]
+    description: Trade direction this Setup targets.
+    example: "LONG"
+
+  description:
+    type: string
+    required: true
+    description: Plain-language description of what this Setup represents.
+
+  requires:
+    type: list
+    required: true
+    description: List of Knowledge Object IDs that must be present for this Setup to be valid.
+    example: ["BYS-ST001", "BYS-L001"]
+
+  invalid_if:
+    type: list
+    required: false
+    description: Conditions that immediately invalidate this Setup.
+    example: ["BYS-R011", "BYS-R005"]
+
+  priority:
+    type: integer
+    required: true
+    description: Evaluation priority (1=highest). Lower number = evaluated first.
+    example: 1
+
+  confidence:
+    type: float
+    required: true
+    description: Base confidence value (0.0–1.0). Not a scoring formula — only base weight.
+    example: 0.8
+
+  metadata:
+    type: dict
+    required: false
+    description: Arbitrary key-value pairs for Knowledge Pack-specific context.
+    example:
+      timeframe: "M5"
+      confirmation_level: "CK3"

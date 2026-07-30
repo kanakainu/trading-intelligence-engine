@@ -1,0 +1,39 @@
+id: BYS-L005
+name: Demand Zone
+aliases:
+- DZ
+- Buy Zone
+- Accumulation Zone
+category: Location
+version: '1.0'
+definition: A price area where institutional buying orders are concentrated, identified
+  by the origin of a bullish impulse.
+location_type: DEMAND
+characteristics:
+- Origin of a strong bullish move
+- Price left zone quickly
+- Candles show strong bullish momentum departing
+- Unfilled buy orders likely remain
+related_objects:
+- BYS-C044
+- BYS-C047
+- BYS-C022
+- BYS-L003
+used_by:
+- BYS-ST001
+- BYS-ST002
+references: []
+tags:
+- demand
+- zone
+- institutional
+- accumulation
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

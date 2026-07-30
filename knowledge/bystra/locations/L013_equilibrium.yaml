@@ -1,0 +1,41 @@
+id: BYS-L013
+name: Equilibrium
+aliases:
+- EQ
+- 50% Level
+- Midpoint
+- Fair Value
+category: Location
+version: '1.0'
+definition: The exact midpoint of a defined price range — the balance point between
+  premium and discount areas.
+location_type: RELATIVE_POSITION
+characteristics:
+- Exact 50% of range
+- Neither premium nor discount
+- Price often consolidates here
+- Can act as support or resistance
+related_objects:
+- BYS-L011
+- BYS-L012
+- BYS-C005
+used_by:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+references: []
+tags:
+- equilibrium
+- midpoint
+- fair-value
+- balance
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

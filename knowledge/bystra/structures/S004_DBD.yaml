@@ -1,0 +1,44 @@
+id: BYS-ST004
+name: Drop Base Drop
+aliases:
+- DBD
+category: Structure
+version: '1.0'
+abstraction_level: STRUCTURE
+definition: Bearish continuation structure — impulse down, consolidation base, second
+  impulse down.
+sequence:
+- Drop
+- Base
+- Drop
+components:
+  drop_leg: Bearish impulse creating new swing low
+  base: Horizontal consolidation
+  breakdown_leg: Bearish breakdown below base low
+characteristics:
+- Two bearish impulses separated by a base
+- Base contained within prior drop range
+- Second drop breaks below base low
+invalidation: Price closes above base high before breakdown.
+related_objects:
+- BYS-C001
+- BYS-C005
+- BYS-C003
+used_by:
+- BYS-EP001
+- BYS-EP002
+references: []
+tags:
+- bearish
+- continuation
+- base
+- dbd
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/structures/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

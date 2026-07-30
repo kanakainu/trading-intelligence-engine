@@ -1,0 +1,136 @@
+pack_id: bystra-v1
+name: Bystra Knowledge Pack
+version: 1.0.0
+status: LOCKED
+author: Riri & Sasa — Hermes Agent
+description: Bystra Secret Strategy knowledge pack — XAUUSD scalping framework by
+  Nora. 13 setups, 4 entry patterns, 3 CK levels.
+engine_version: TIE v1.x
+created_at: '2026-07-30'
+last_updated: '2026-07-30'
+total_objects: 164
+integrity_sha256: 95980b5d3ae5ad1c88fc51a0a8be6d45d60b0f358db929a905f631f9816c9537
+categories:
+  Concept: 50
+  Structure: 15
+  Location: 21
+  Confirmation: 26
+  Risk: 23
+  Entry Pattern: 16
+  Setup: 13
+supported_markets:
+- XAUUSD
+supported_timeframes:
+- M5
+- M15
+- H1
+- H4
+supported_setups:
+- Hybrid 1
+- Hybrid 2
+- SNRC1
+- SNRC2
+- SNRC3
+- QMR
+- QMC
+- QM2P
+- QMM
+- Blindspot
+- Blindspot 2
+- Manipulation
+- CLAB
+supported_entry_patterns:
+- RBR Breakout Entry
+- DBR Breakout Entry
+- RBD Breakdown Entry
+- DBD Breakdown Entry
+- Breakout Entry
+- Retest Entry
+- Continuation Entry
+- Reversal Entry
+- Rejection Entry
+- Engulfing Entry
+- Demand Reaction Entry
+- Supply Reaction Entry
+- Fresh Zone Entry
+- Mitigation Entry
+- Liquidity Sweep Entry
+- Liquidity Grab Entry
+supported_confirmations:
+- HTF Alignment Confirmation
+- Trend Alignment Confirmation
+- Higher High Confirmation
+- Higher Low Confirmation
+- Lower High Confirmation
+- Lower Low Confirmation
+- Bullish Engulfing Confirmation
+- Bearish Engulfing Confirmation
+- Strong Momentum Candle Confirmation
+- Rejection Candle Confirmation
+- Breakout Confirmation
+- Retest Confirmation
+- Session Confirmation
+- Volatility Confirmation
+- ATR Confirmation
+- Low Spread Confirmation
+- Liquidity Sweep Confirmation
+- Liquidity Grab Confirmation
+- Equal High Sweep Confirmation
+- Equal Low Sweep Confirmation
+- Fresh Zone Confirmation
+- Mitigation Confirmation
+- Reaction Confirmation
+- CK1 Entry Confirmation
+- CK2 Entry Confirmation
+- CK3 Entry Confirmation
+supported_structures:
+- Rally Base Rally
+- Drop Base Rally
+- Rally Base Drop
+- Drop Base Drop
+- Bull Flag
+- Bear Flag
+- Compression Structure
+- Expansion Structure
+- Double Top
+- Double Bottom
+- Quasimodo
+- V-Reversal
+- Range
+- Channel
+- Triangle
+supported_risks:
+- High Volatility Risk
+- Low Volatility Risk
+- High Spread Risk
+- Low Spread Condition
+- News Event Risk
+- Session Transition Risk
+- Weekend Gap Risk
+- Late Entry Risk
+- Chasing Price Risk
+- Weak Structure Risk
+- Broken Structure Risk
+- Failed Breakout Risk
+- Failed Retest Risk
+- Range Trap Risk
+- Liquidity Trap Risk
+- Stop Hunt Risk
+- Fake Breakout Risk
+- Fake Reversal Risk
+- Missing HTF Alignment Risk
+- Missing Confirmation Risk
+- Conflicting Trend Risk
+- Slippage Risk
+- Spread Expansion Risk
+supported_locations:
+- Support V
+- Resistance V
+- Support Zone
+- Resistance Zone
+- Demand Zone
+- Supply Zone
+- Fresh Zone Location
+- Mitigation Zone Location
+- Origin Location
+- Reaction Area

@@ -1,0 +1,41 @@
+id: BYS-CF023
+name: Reaction Confirmation
+aliases:
+- Zone Reaction
+- Price Reaction
+- Level Response
+category: Confirmation
+version: '1.0'
+definition: Visible reaction candles appear at a zone — confirms price acknowledged
+  the level.
+characteristics:
+- Reaction candle or pattern at zone
+- Rejection or bounce visible
+- Zone shown to be 'live'
+- Not just a random touch
+strengthens:
+- BYS-L010
+- BYS-L001
+- BYS-L002
+- BYS-L005
+- BYS-L006
+related_objects:
+- BYS-C032
+used_by:
+- BYS-CF021
+- BYS-CF022
+references: []
+tags:
+- reaction
+- zone
+- candle
+- live
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

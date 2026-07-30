@@ -1,0 +1,44 @@
+id: BYS-C049
+name: Multi Timeframe Confirmation
+aliases:
+- MTF confirmation
+- timeframe confluence
+- multi-TF
+- cross-timeframe alignment
+category: Concept
+definition: The condition in which structural signals, zones, or bias derived from
+  multiple timeframes converge and point in the same direction at the same price area,
+  increasing the weight of evidence for a particular structural interpretation.
+characteristics:
+- Two or more timeframes show consistent structural bias or zone alignment at the
+  same price
+- Higher timeframe provides broader context; lower timeframe provides precision
+- Convergence of zones or structural signals across timeframes strengthens their significance
+- Divergence between timeframes indicates conflicting structural evidence
+- The number of aligned timeframes and their degree of separation determine confluence
+  strength
+notes: Multi timeframe confirmation is a descriptive state of structural agreement
+  across timeframes. It does not guarantee any outcome; it describes the degree of
+  confluence in the available structural evidence.
+related_objects:
+- BYS-C040
+- BYS-C033
+- BYS-C034
+- BYS-C043
+- BYS-C044
+references: []
+tags:
+- multi_timeframe
+- confluence
+- structure
+- alignment
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

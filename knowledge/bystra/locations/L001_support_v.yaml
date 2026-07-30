@@ -1,0 +1,40 @@
+id: BYS-L001
+name: Support V
+aliases:
+- SV
+- V-Support
+- Vertical Support
+- Hard Support
+category: Location
+version: '1.0'
+definition: A well-defined price level where price has made a clear, sharp reversal
+  upward — a V-shaped bounce.
+location_type: SUPPORT
+characteristics:
+- Sharp V-shaped bounce visible
+- Multiple rejections from exact level
+- Clean horizontal level
+- Strong demand present
+related_objects:
+- BYS-C041
+- BYS-C044
+- BYS-ST002
+- BYS-ST001
+used_by:
+- BYS-ST001
+- BYS-ST002
+references: []
+tags:
+- support
+- v-shape
+- level
+- demand
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

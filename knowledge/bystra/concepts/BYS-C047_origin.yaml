@@ -1,0 +1,42 @@
+id: BYS-C047
+name: Origin
+aliases:
+- zone origin
+- base origin
+- departure point
+- impulse origin
+category: Concept
+definition: The specific price area from which an impulsive directional move departed,
+  representing the candles or bars immediately preceding the impulse that define the
+  supply or demand zone responsible for the move.
+characteristics:
+- Defined by the consolidation or base candles immediately before the impulsive departure
+- The price boundaries of the origin candles define the supply or demand zone
+- Marks the location where the order imbalance causing the impulse was concentrated
+- The origin is identified by working backward from the start of the impulse
+- Can be a single candle or a short sequence of base candles
+notes: Origin is a structural reference point that defines a supply or demand zone.
+  The quality of the origin (sharpness of departure, number of base candles) influences
+  the zone's assessed significance.
+related_objects:
+- BYS-C043
+- BYS-C044
+- BYS-C045
+- BYS-C046
+- BYS-C001
+references: []
+tags:
+- zone
+- origin
+- structure
+- departure
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

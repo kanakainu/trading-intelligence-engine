@@ -1,0 +1,38 @@
+id: BYS-CF024
+name: CK1 Entry Confirmation
+aliases:
+- CK1
+- Level 1
+- Low Confirmation
+category: Confirmation
+version: '1.0'
+definition: Entry at base high/low breakout — first available entry point with lowest
+  confirmation requirement.
+characteristics:
+- Breakout of base high/low
+- Minimal additional filters
+- First mover advantage
+- Higher risk, less waiting
+strengthens:
+- BYS-ST001
+- BYS-ST002
+- BYS-ST003
+- BYS-ST004
+related_objects:
+- BYS-C049
+used_by: []
+references: []
+tags:
+- ck1
+- entry
+- breakout
+- low-confirmation
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/confirmations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

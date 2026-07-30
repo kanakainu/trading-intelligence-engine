@@ -1,0 +1,42 @@
+id: BYS-C048
+name: Danger Zone
+aliases:
+- risk area
+- structural risk zone
+- invalidation zone
+- overlap zone
+category: Concept
+definition: A price area in which a supply or demand zone has been significantly compromised,
+  either through deep penetration, multiple revisits, or structural changes that have
+  reduced its reliability as a reference level.
+characteristics:
+- The zone has been penetrated deeply or revisited multiple times
+- Original order imbalance is significantly absorbed or dissipated
+- Structural context surrounding the zone has changed materially
+- Continued use of the zone as a reference carries elevated uncertainty
+- Identified by comparing current price behavior to the original zone boundaries
+notes: Danger zone is a qualitative assessment of a supply or demand zone's degraded
+  structural reliability. It signals that the zone should be treated with caution
+  or discounted as a reference.
+related_objects:
+- BYS-C043
+- BYS-C044
+- BYS-C046
+- BYS-C045
+references: []
+tags:
+- zone
+- risk
+- structure
+- compromised
+- reliability
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/concepts/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
+version: '1.0'

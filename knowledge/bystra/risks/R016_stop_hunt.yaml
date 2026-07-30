@@ -1,0 +1,40 @@
+id: BYS-R016
+name: Stop Hunt Risk
+aliases:
+- SH Risk
+- Stop Run Risk
+- Stop Raid
+category: Risk
+version: '1.0'
+definition: Institutional price manipulation to trigger retail stop orders before
+  moving in intended direction.
+severity: HIGH
+characteristics:
+- Price extends briefly beyond key level
+- Stop orders triggered
+- Reversal immediately follows
+- Retail participants stopped out
+affects:
+- Position
+- Decision
+- SL Placement
+related_objects:
+- BYS-C019
+- BYS-C015
+- BYS-L014
+- BYS-L015
+references: []
+tags:
+- stop-hunt
+- raid
+- manipulation
+- risk
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/risks/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

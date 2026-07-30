@@ -1,0 +1,40 @@
+id: BYS-L002
+name: Resistance V
+aliases:
+- RV
+- V-Resistance
+- Vertical Resistance
+- Hard Resistance
+category: Location
+version: '1.0'
+definition: A well-defined price level where price has made a clear, sharp reversal
+  downward — an inverted V rejection.
+location_type: RESISTANCE
+characteristics:
+- Sharp inverted-V rejection visible
+- Multiple rejections from exact level
+- Clean horizontal level
+- Strong supply present
+related_objects:
+- BYS-C042
+- BYS-C043
+- BYS-ST003
+- BYS-ST004
+used_by:
+- BYS-ST003
+- BYS-ST004
+references: []
+tags:
+- resistance
+- v-shape
+- level
+- supply
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/locations/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'

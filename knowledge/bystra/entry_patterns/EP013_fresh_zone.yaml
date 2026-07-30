@@ -1,0 +1,41 @@
+id: BYS-EP013
+name: Fresh Zone Entry
+aliases:
+- Unmitigated Entry
+- Virgin Zone Entry
+- FZE
+category: Concept
+version: '1.0'
+definition: Entry triggered at a fresh (unmitigated) zone — highest probability zone
+  entry as original orders likely intact.
+trigger_description: Price arrives at a fresh zone for the first time since its creation
+  and shows a reaction confirming order presence.
+prerequisites:
+- Fresh zone confirmed (not yet retested)
+- Price approaches zone for first time
+- Reaction signal visible
+invalidation: Zone has been previously retested (becomes mitigation zone, lower probability).
+related_objects:
+- BYS-L007
+- BYS-CF021
+- BYS-L005
+- BYS-L006
+- BYS-C045
+used_by:
+- BYS-CF025
+- BYS-CF026
+references: []
+tags:
+- fresh
+- unmitigated
+- zone
+- high-probability
+status: ACTIVE
+provenance:
+  source_type: knowledge_pack
+  source_name: Bystra
+  source_location: knowledge/bystra/entry_patterns/
+  evidence_level: practitioner
+  confidence: 0.9
+  reviewed_by: bystra_team
+  last_verified: '2026-07-30'
