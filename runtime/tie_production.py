@@ -60,6 +60,9 @@ def _get_spread(client, symbol: str) -> float:
     except Exception: return 10.0
 
 while True:
+    all_pairs_data = {}  # Accumulate ALL pairs per loop
+    status_path = "/home/ubuntu/tie-dashboard/data/tie_status.json"
+    
     for sym in SYMBOLS:
         try:
             log.info(f"--- Scanning {sym} ---")
@@ -180,22 +183,7 @@ while True:
             if contracts:
                 pos_monitor.tick(pos_states, contracts, market_update)
             
-            # Write dashboard status - accumulate ALL pairs
-            import json, os
-            status_path = "/home/ubuntu/tie-dashboard/data/tie_status.json"
-            
-            # Read existing status to accumulate pairs
-            all_pairs_data = {}
-            if os.path.exists(status_path):
-                try:
-                    with open(status_path, "r") as f:
-                        existing = json.load(f)
-                        if "pairs" in existing:
-                            all_pairs_data = existing["pairs"]
-                except:
-                    all_pairs_data = {}
-            
-            # Update this pair's data
+            # Build pair_data for dashboard
             pair_data = {
                 "price": price,
                 "support": sr["h1_support"],
@@ -222,26 +210,33 @@ while True:
                 }
             
             all_pairs_data[sym] = pair_data
-            
-            # Build aggregated status
-            status_data = {
-                "ts": datetime.now(timezone.utc).isoformat(),
-                "balance": balance,
-                "equity": equity,
-                "floating_pnl": sum(p.profit_pts * p.volume for p in pos_states),
-                "margin_percent": 0.0,
-                "pairs": all_pairs_data,
-                "positions": [{"side": p.direction, "volume": p.volume, "entry": p.entry_price, "sl": p.stop_loss, "tp": p.take_profit, "pnl": p.profit_pts * p.volume, "symbol": p.symbol} for p in pos_states],
-                "total_setups": sum(1 for p in all_pairs_data.values() if p.get("setup")),
-            }
-            
-            os.makedirs(os.path.dirname(status_path), exist_ok=True)
-            with open(status_path, "w") as f:
-                json.dump(status_data, f)
-            
-            monitor.update()
-            
+        
         except Exception as e:
             log.error(f"Error scanning {sym}: {e}")
+    
+    # Write aggregated JSON AFTER all symbols scanned
+    try:
+        account_data = broker.get_account_info()
+        balance = account_data.balance
+        equity = account_data.equity
+        pos_states = broker.get_positions()
+        
+        status_data = {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "balance": balance,
+            "equity": equity,
+            "floating_pnl": sum(getattr(p, 'profit_pts', 0) * getattr(p, 'volume', 0) for p in pos_states),
+            "margin_percent": 0.0,
+            "pairs": all_pairs_data,
+            "positions": [{"side": getattr(p, 'direction', ''), "volume": getattr(p, 'volume', 0), "entry": getattr(p, 'entry_price', 0), "sl": getattr(p, 'stop_loss', 0), "tp": getattr(p, 'take_profit', 0), "pnl": getattr(p, 'profit_pts', 0) * getattr(p, 'volume', 0), "symbol": getattr(p, 'symbol', '')} for p in pos_states],
+            "total_setups": sum(1 for p in all_pairs_data.values() if p.get("setup")),
+        }
+        
+        import os, json
+        os.makedirs(os.path.dirname(status_path), exist_ok=True)
+        with open(status_path, "w") as f:
+            json.dump(status_data, f)
+    except Exception as e:
+        log.error(f"Dashboard write failed: {e}")
     
     time.sleep(10)
