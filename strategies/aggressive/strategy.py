@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 
 class AggressiveStrategy(BaseStrategy):
     """Aggressive scalping strategy — full integration."""
+    COOLDOWN_SECONDS = 120  # post-loss cooldown
 
     def __init__(self):
         super().__init__(AGGRESSIVE_METADATA)
@@ -35,6 +36,7 @@ class AggressiveStrategy(BaseStrategy):
             MomentumBurst(), VWAPMagnet(), RibbonRide(),
             CompressionBreak(), VelocitySpike(), PullbackQuality(), LiquidityVacuum()
         ]
+        self._last_loss_time: float = 0.0  # epoch seconds
 
     def initialize(self) -> None:
         self._initialized = True
@@ -48,6 +50,12 @@ class AggressiveStrategy(BaseStrategy):
         features = context.scan.features
         if not features:
             return StrategyResult(signal=None, confidence=0.0, reason="no_features")
+
+        # -1. Cooldown gate (post-loss, 120s)
+        import time
+        if time.time() - self._last_loss_time < self.COOLDOWN_SECONDS:
+            remaining = int(self.COOLDOWN_SECONDS - (time.time() - self._last_loss_time))
+            return StrategyResult(signal=None, confidence=0.0, reason=f"cooldown={remaining}s")
 
         # 0. Session gate
         session = evaluate_session(features.timestamp)
@@ -147,7 +155,12 @@ class AggressiveStrategy(BaseStrategy):
         )
 
     def learn(self, reflection: TradeReflection) -> None:
-        pass
+        """Record loss time for cooldown guard."""
+        import time
+        from core.learning.learning_models import TradeOutcome
+        if reflection.outcome == TradeOutcome.LOSS:
+            self._last_loss_time = time.time()
+            logger.info(f"Loss recorded — cooldown {self.COOLDOWN_SECONDS}s active")
 
     def shutdown(self) -> None:
         self._initialized = False

@@ -39,19 +39,38 @@ class MomentumDecay:
 
 
 class VelocityDrop:
-    """Exit when velocity drops (last 3 candles slow)."""
+    """Exit when tick speed drops drastically (momentum drying up).
+
+    Uses estimated tick_speed from M1 body ratio — faster than trailing stop.
+    """
     def evaluate(self, features: FeatureSnapshot, position: Dict) -> ExitEvaluation:
-        candles = features.candles.get("M5", [])
-        if len(candles) < 5:
+        candles_m1 = features.candles.get("M1", [])
+        if len(candles_m1) < 5:
             return ExitEvaluation(ExitDecision.HOLD, "insufficient_data", 0.0, {})
 
-        velocity = sum(candles[i]["close"] - candles[i-1]["close"] for i in range(-3, 0))
-        atr = features.get_atr("M5") or 1.0
-        vel_atr_ratio = abs(velocity) / atr
+        # Tick speed = body/range ratio. Recent 3 vs prior 5.
+        def _avg_body_ratio(cs):
+            ratios = []
+            for c in cs:
+                rng = float(c["high"]) - float(c["low"])
+                ratios.append(abs(float(c["close"]) - float(c["open"])) / rng if rng > 0 else 0)
+            return sum(ratios) / len(ratios)
 
-        if vel_atr_ratio < 0.5:  # Slow movement
-            return ExitEvaluation(ExitDecision.TRAIL, "velocity_drop", 0.5, {"velocity": velocity, "atr": atr})
-        return ExitEvaluation(ExitDecision.HOLD, "velocity_ok", 0.0, {"velocity": velocity})
+        recent_speed = _avg_body_ratio(candles_m1[-3:])
+        prior_speed  = _avg_body_ratio(candles_m1[-8:-3]) if len(candles_m1) >= 8 else recent_speed
+
+        drop_ratio = recent_speed / (prior_speed + 1e-9)
+        # tick speed dropped to < 30% of prior avg = velocity stop
+        if drop_ratio < 0.3:
+            return ExitEvaluation(ExitDecision.FULL_CLOSE, "velocity_stop",
+                                  0.90, {"recent_speed": round(recent_speed, 3),
+                                         "prior_speed": round(prior_speed, 3),
+                                         "drop_ratio": round(drop_ratio, 3)})
+        # Moderate slow: trail
+        if drop_ratio < 0.5:
+            return ExitEvaluation(ExitDecision.TRAIL, "velocity_drop",
+                                  0.55, {"drop_ratio": round(drop_ratio, 3)})
+        return ExitEvaluation(ExitDecision.HOLD, "velocity_ok", 0.0, {"drop_ratio": round(drop_ratio, 3)})
 
 
 class LiquidityCollapse:
@@ -64,15 +83,20 @@ class LiquidityCollapse:
 
 
 class TimeStop:
-    """Exit after max hold time (5 M5 candles = 25 min)."""
+    """Exit after 6 min no profit (momentum strategy needs momentum)."""
+    MAX_HOLD = 6 * 60  # 360s
+
     def evaluate(self, features: FeatureSnapshot, position: Dict) -> ExitEvaluation:
         entry_time = position.get("entry_time", 0)
-        current_time = features.timestamp.timestamp()
-        hold_seconds = current_time - entry_time
-        max_hold = 25 * 60  # 25 min
+        hold_seconds = features.timestamp.timestamp() - entry_time
+        entry = position.get("entry_price", 0)
+        current = position.get("current_price", 0)
+        direction = position.get("direction", "BUY")
+        profit = (current - entry) if direction == "BUY" else (entry - current)
 
-        if hold_seconds > max_hold:
-            return ExitEvaluation(ExitDecision.FULL_CLOSE, "time_stop", 0.7, {"hold_seconds": hold_seconds})
+        if hold_seconds > self.MAX_HOLD and profit <= 0:
+            return ExitEvaluation(ExitDecision.FULL_CLOSE, "time_stop_no_profit",
+                                  0.85, {"hold_seconds": hold_seconds, "profit": profit})
         return ExitEvaluation(ExitDecision.HOLD, "time_ok", 0.0, {"hold_seconds": hold_seconds})
 
 
