@@ -36,3 +36,11 @@ class BystraBaseDetector(DetectorInterface):
     def _get_candles(self, context: MarketContext, timeframe: str, count: int) -> List[Any]:
         """Helper to extract candles from context metadata or history."""
         return context.metadata.get("candles", {}).get(timeframe, [])[:count]
+
+    def _get_features(self, context: Any):
+        """Get FeatureSnapshot if injected via ScanContext/metadata. Returns None if unavailable."""
+        # ScanContext path
+        if hasattr(context, "features"):
+            return context.features
+        # Legacy MarketContext path (features injected via metadata)
+        return context.metadata.get("features")
