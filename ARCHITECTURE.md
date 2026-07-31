@@ -84,7 +84,7 @@ Builds `MarketContext` per symbol per scan:
 - H1 Trend (bullish/bearish)
 - Spread, session, balance, equity
 
-### 3. Detectors (9 Active)
+### 3. Detectors (14 Active)
 | Detector | Setup | TF | Key Logic |
 |----------|-------|-----|-----------|
 | SNRC1 | Support/Resistance + Candle | M5/M15 | Base zone, retest, engulfing |
@@ -94,8 +94,12 @@ Builds `MarketContext` per symbol per scan:
 | Hybrid2 | SR + Trend + Candle v2 | M5/M15 | Different weights |
 | Manipulation | HTF Engulfing | H1→M5 | HTF engulf + M5 entry |
 | QMR | Quasimodo Reversal | M5/M15 | Head/shoulders structure |
-| QMM | Quasimodo Momentum | M5/M15 | Momentum variant |
+| QMC | Quasimodo Confirmation | M5/M15 | QM with confirmation |
 | QM2P | QM 2-Pattern | M5/M15 | Double QM |
+| QMM | Quasimodo Momentum | M5/M15 | Momentum variant |
+| Blindspot | Blindspot Pattern | M5/M15 | Hidden liquidity + reaction |
+| Blindspot_2 | Blindspot v2 | M5/M15 | Variant with different filter |
+| CLAB | Clab Pattern | M5/M15 | Consolidation + breakout |
 | **Mother Candle** | **NEW** | **H1** | **1 MC shadows 4 inside, B1/B2/B3 breakout** |
 
 **Output per detector:** `PatternFact` with metadata:
@@ -315,7 +319,9 @@ cd /home/ubuntu/tie-dashboard && python3 api/tie_serve.py &
 - `detectors/snrc1_detector.py` ... `snrc3_detector.py`
 - `detectors/hybrid1_detector.py`, `hybrid2_detector.py`
 - `detectors/manipulation_detector.py`
-- `detectors/qmr_detector.py`, `qmm_detector.py`, `qm2p_detector.py`
+- `detectors/qmr_detector.py`, `qmc_detector.py`, `qmm_detector.py`, `qm2p_detector.py`
+- `detectors/blindspot_detector.py`, `blindspot2_detector.py`
+- `detectors/clab_detector.py`
 - `detectors/mother_candle_detector.py` — NEW
 
 ### Risk

@@ -286,5 +286,29 @@
     "status": "OPEN",
     "reason": "Detected SNRC3 on M5. WAITING_PULLBACK. | LLM: LLM confirmed. Setup history winrate: 50.0%",
     "timestamp": "2026-07-31T09:45:35.343732+00:00"
+  },
+  {
+    "order_id": "3560802700",
+    "setup": "QMM",
+    "action": "BUY",
+    "symbol": "XAUUSD",
+    "entry": 4058.713,
+    "sl": 4052.815,
+    "tp": 4087.564,
+    "status": "OPEN",
+    "reason": "Detected QMM on M5. WAITING_PULLBACK. | LLM: LLM confirmed. Setup history winrate: 50.0%",
+    "timestamp": "2026-07-31T12:15:13.327335+00:00"
+  },
+  {
+    "order_id": "3560802811",
+    "setup": "QMM",
+    "action": "BUY",
+    "symbol": "XAUUSD",
+    "entry": 4058.396,
+    "sl": 4052.815,
+    "tp": 4087.564,
+    "status": "OPEN",
+    "reason": "Detected QMM on M5. WAITING_PULLBACK. | LLM: LLM confirmed. Setup history winrate: 50.0%",
+    "timestamp": "2026-07-31T12:15:15.513687+00:00"
   }
 ]
