@@ -42,6 +42,7 @@ class FeatureEngine:
         vwap_data = self._compute_vwap_all_tfs(candles, tf_list)
         vwap_dist_data = self._compute_vwap_distance(vwap_data, candles, tf_list)
         swing_data = self._compute_swings(candles, tf_list)
+        sr_data = self._compute_nearest_sr(candles, tf_list)
 
         # Market microstructure
         spread = inputs.spread
@@ -70,6 +71,8 @@ class FeatureEngine:
             price_velocity=price_velocity,
             last_swing_high=swing_data["high"],
             last_swing_low=swing_data["low"],
+            nearest_support=sr_data["support"],
+            nearest_resistance=sr_data["resistance"],
             candles=candles,  # pass-through for raw access
         )
 
@@ -271,6 +274,28 @@ class FeatureEngine:
 
         return {"high": high, "low": low}
 
+    def _compute_nearest_sr(
+        self,
+        candles: Dict[str, List[Dict]],
+        tf_list: List[str]
+    ) -> Dict[str, Dict[str, float]]:
+        """Compute nearest support/resistance per TF using _find_swing_pivots."""
+        nearest_support = {}
+        nearest_resistance = {}
+        for tf in tf_list:
+            tf_candles = candles.get(tf, [])
+            if len(tf_candles) < 7:
+                continue
+            price = float(tf_candles[-1]["close"])
+            pivots = self._find_swing_pivots(tf_candles, n=3)
+            lows  = [p["price"] for p in pivots if p["type"] == "low"  and p["price"] < price]
+            highs = [p["price"] for p in pivots if p["type"] == "high" and p["price"] > price]
+            if lows:
+                nearest_support[tf]    = max(lows)
+            if highs:
+                nearest_resistance[tf] = min(highs)
+        return {"support": nearest_support, "resistance": nearest_resistance}
+
     def _compute_microstructure(self, current_tick: Optional[Dict]) -> tuple:
         """Compute tick speed and price velocity from tick data."""
         if not current_tick:
@@ -291,6 +316,20 @@ class FeatureEngine:
         for v in values[period:]:
             ema = alpha * v + (1 - alpha) * ema
         return ema
+
+    def _find_swing_pivots(self, candles: List[Dict], n: int = 3) -> List[Dict]:
+        """Find local pivot highs/lows where candle[i] is extreme of prev n and next n."""
+        pivots = []
+        for i in range(n, len(candles) - n):
+            is_high = all(float(candles[i]["high"]) > float(candles[j]["high"]) for j in range(i-n, i)) and \
+                      all(float(candles[i]["high"]) > float(candles[j]["high"]) for j in range(i+1, i+n+1))
+            is_low = all(float(candles[i]["low"]) < float(candles[j]["low"]) for j in range(i-n, i)) and \
+                     all(float(candles[i]["low"]) < float(candles[j]["low"]) for j in range(i+1, i+n+1))
+            if is_high:
+                pivots.append({"type": "high", "price": float(candles[i]["high"]), "index": i})
+            if is_low:
+                pivots.append({"type": "low", "price": float(candles[i]["low"]), "index": i})
+        return pivots
 
     def _atr(self, candles: List[Dict], period: int) -> float:
         """Average True Range."""
