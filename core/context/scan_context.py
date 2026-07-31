@@ -57,7 +57,7 @@ class ScanContext:
     @property
     def h1_resistance(self) -> Optional[float]:
         val = self.features.get_swing("H1", "high")
-        return val if val is not None else 999999.0
+        return val if val is not None else None
     
     @property
     def atr(self) -> float:

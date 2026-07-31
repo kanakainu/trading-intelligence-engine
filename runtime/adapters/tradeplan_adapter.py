@@ -1,15 +1,16 @@
 """TradePlanAdapter — convert TradePlan → TradeDecision for production pipeline.
 
-Phase D2: shadow mode only. Old orchestrator still executes.
-New MultiStrategyRuntime runs in parallel, logs differences.
-No execution behavior change.
+Phase D3: Full production. MultiStrategyRuntime as main decision engine.
 """
 from __future__ import annotations
 import logging
 from typing import Optional
+from datetime import datetime, timezone
 
 from core.decision.trade_decision import TradeDecision, BUY, SELL, WAIT
 from core.planner.planner_models import TradePlan
+from strategies.aggressive.regime.regime_snapshot import AggressiveRegimeSnapshot, AggressiveRegime
+from core.regime.regime_models import RegimeSnapshot, Regime, TrendDirection
 
 log = logging.getLogger("TradePlanAdapter")
 
@@ -23,11 +24,14 @@ def plan_to_decision(plan: Optional[TradePlan]) -> TradeDecision:
     action = BUY if direction == "BUY" else SELL if direction == "SELL" else WAIT
     setup_name = f"MSR_{direction}"
 
+    # Normalize confidence to 0-1 range
+    normalized_confidence = min(max(plan.confidence, 0.0), 1.0)
+    
     decision = TradeDecision(
         action=action,
         setup_id=plan.plan_id,
         setup_name=setup_name,
-        confidence=plan.risk_reward / 3.0,  # normalize RR→confidence proxy
+        confidence=normalized_confidence,
         reason=f"MSR plan rr={plan.risk_reward:.2f}",
         explanation=f"entry={plan.entry_zone} sl={plan.sl} tp={plan.tp} rr={plan.risk_reward:.2f}",
     )
@@ -61,8 +65,6 @@ def log_shadow_diff(sym: str, old: TradeDecision, new: TradeDecision) -> None:
         new.metadata.get("sl"), new.metadata.get("take_profit"),
     )
 
-from strategies.aggressive.regime.regime_snapshot import AggressiveRegimeSnapshot, AggressiveRegime
-from core.regime.regime_models import RegimeSnapshot, Regime, TrendDirection
 
 def aggressive_regime_to_core_regime(agg_regime: AggressiveRegimeSnapshot) -> RegimeSnapshot:
     """Converts AggressiveRegimeSnapshot to core RegimeSnapshot.
@@ -74,10 +76,10 @@ def aggressive_regime_to_core_regime(agg_regime: AggressiveRegimeSnapshot) -> Re
     regime_map = {
         AggressiveRegime.TRENDING_BULL: Regime.TRENDING,
         AggressiveRegime.TRENDING_BEAR: Regime.TRENDING,
-        AggressiveRegime.WEAK_TREND: Regime.EARLY_TREND, # Best fit for weak trend
+        AggressiveRegime.WEAK_TREND: Regime.EARLY_TREND,
         AggressiveRegime.RANGING: Regime.RANGE,
         AggressiveRegime.CHOPPY: Regime.CHOPPY,
-        AggressiveRegime.HIGH_VOLATILITY: Regime.NEWS, # High vol often linked to news
+        AggressiveRegime.HIGH_VOLATILITY: Regime.NEWS,
         AggressiveRegime.LOW_LIQUIDITY: Regime.LOW_LIQUIDITY,
     }
 
@@ -94,8 +96,5 @@ def aggressive_regime_to_core_regime(agg_regime: AggressiveRegimeSnapshot) -> Re
         regime=core_regime_enum,
         trend_direction=trend_direction_enum,
         confidence=agg_regime.confidence,
-        # Placeholder for other fields if needed, or get from FeatureSnapshot in main loop
-        timestamp=agg_regime.timestamp, 
-        symbol=agg_regime.symbol if hasattr(agg_regime, 'symbol') else "",
-        scan_id=agg_regime.scan_id if hasattr(agg_regime, 'scan_id') else "",
+        timestamp=agg_regime.timestamp,
     )

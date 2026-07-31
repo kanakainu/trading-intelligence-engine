@@ -56,15 +56,16 @@ context_engine = ContextEngine()
 log.info(f"TIE Production Multi-Symbol started: {SYMBOLS}. Risk Gate active.")
 
 def _compute_real_sr(candles_h1: list, price: float = 0.0) -> dict:
-    if not candles_h1: return {"h1_support": price, "h1_resistance": price} # Use current price as support/resistance if no candles
-    support = find_nearest_support(candles_h1, price) if price else 0.0
-    resistance = find_nearest_resistance(candles_h1, price) if price else 999999.0
+    if not candles_h1:
+        return {"h1_support": price, "h1_resistance": price}
+    support = find_nearest_support(candles_h1, price) if price else None
+    resistance = find_nearest_resistance(candles_h1, price) if price else None
     if not support or not resistance:
         pivots = find_swing_pivots(candles_h1, n=2)
         highs = [p["price"] for p in pivots if p["type"] == "high"]
         lows  = [p["price"] for p in pivots if p["type"] == "low"]
-        if not support:    support    = max(lows)  if lows  else 0.0
-        if not resistance: resistance = min(highs) if highs else 999999.0
+        if not support:    support    = max(lows)  if lows  else None
+        if not resistance: resistance = min(highs) if highs else None
     return {"h1_support": support, "h1_resistance": resistance}
 
 def _get_spread(client, symbol: str) -> float:
