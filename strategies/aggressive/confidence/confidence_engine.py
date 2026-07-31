@@ -8,6 +8,9 @@ from typing import List, Optional
 
 from strategies.aggressive.detectors.detector_result import DetectorResult
 from strategies.aggressive.regime.regime_snapshot import AggressiveRegime, AggressiveRegimeSnapshot
+from strategies.aggressive.liquidity.liquidity_engine import LiquiditySnapshot, LiquidityState
+from strategies.aggressive.market_pulse.market_pulse import PulseSnapshot
+from strategies.aggressive.session.session_profile import SessionSnapshot
 
 
 @dataclass
@@ -18,20 +21,28 @@ class ConfidenceScore:
     detector_agreement: float   # 0-100
     liquidity_quality: float    # 0-100
     momentum_quality: float     # 0-100
-    historical_success: float   # 0-100 (placeholder — needs actual backtest data)
+    historical_success: float   # 0-100 (placeholder)
     verdict: str                # REJECT | WATCH | GOOD | EXCELLENT
 
 
 def compute_confidence(
     results: List[Optional[DetectorResult]],
     regime: AggressiveRegimeSnapshot,
+    liquidity: Optional[LiquiditySnapshot] = None,
+    pulse: Optional[PulseSnapshot] = None,
+    session: Optional[SessionSnapshot] = None,
 ) -> ConfidenceScore:
-    """
-    Compute meta-confidence from regime + detector agreement + liquidity + momentum.
+    """Compute meta-confidence from regime + detectors + liquidity + pulse + session."""
 
-    Historical success rate = placeholder (0.0) until backtest integration.
-    """
-    # 1. Regime Quality (0-100)
+    # 0. Session gate
+    if session is not None and not session.allowed:
+        return ConfidenceScore(
+            confidence=0.0, regime_quality=0.0, detector_agreement=0.0,
+            liquidity_quality=0.0, momentum_quality=0.0, historical_success=0.0,
+            verdict="REJECT",
+        )
+
+    # 1. Regime quality
     regime_map = {
         AggressiveRegime.TRENDING_BULL:  90,
         AggressiveRegime.TRENDING_BEAR:  90,
@@ -41,53 +52,55 @@ def compute_confidence(
         AggressiveRegime.HIGH_VOLATILITY:50,
         AggressiveRegime.LOW_LIQUIDITY:  10,
     }
-    regime_quality = regime_map.get(regime.regime, 50)
+    regime_quality = float(regime_map.get(regime.regime, 50))
 
-    # 2. Detector Agreement (0-100)
+    # 2. Detector agreement
     valid = [r for r in results if r is not None]
     if not valid:
         detector_agreement = 0.0
     else:
         buy = sum(1 for r in valid if r.direction == "BUY")
         sell = sum(1 for r in valid if r.direction == "SELL")
-        total = len(valid)
         dominant = max(buy, sell)
-        # Agreement = (dominant detectors / total) * 100
-        detector_agreement = (dominant / total) * 100 if total else 0
+        detector_agreement = (dominant / len(valid)) * 100
 
-    # 3. Liquidity Quality (0-100)
-    liq = regime.liquidity_score
-    liquidity_quality = min(liq * 100, 100)
-
-    # 4. Momentum Quality (0-100)
-    # Proxy: average strength from fired detectors
-    if not valid:
-        momentum_quality = 0.0
+    # 3. Liquidity quality — use LiquiditySnapshot.score if available
+    if liquidity is not None:
+        if liquidity.state == LiquidityState.TOXIC:
+            return ConfidenceScore(
+                confidence=0.0, regime_quality=regime_quality,
+                detector_agreement=detector_agreement, liquidity_quality=0.0,
+                momentum_quality=0.0, historical_success=0.0, verdict="REJECT",
+            )
+        liquidity_quality = liquidity.score
     else:
-        avg_strength = sum(r.strength for r in valid) / len(valid)
-        momentum_quality = avg_strength * 100
+        liquidity_quality = min(regime.liquidity_score * 100, 100.0)
 
-    # 5. Historical Success Rate (0-100)
-    # Placeholder — needs actual backtest/learning data
-    historical_success = 0.0  # TODO: integrate with LearningEngine
+    # 4. Momentum quality — use MarketPulse.pulse if available
+    if pulse is not None:
+        momentum_quality = pulse.pulse
+    elif valid:
+        momentum_quality = (sum(r.strength for r in valid) / len(valid)) * 100
+    else:
+        momentum_quality = 0.0
 
-    # Aggregate confidence (weighted avg)
-    weights = {
-        "regime": 0.25,
-        "detector": 0.30,
-        "liquidity": 0.20,
-        "momentum": 0.20,
-        "historical": 0.05,  # low weight until backtest ready
-    }
+    # 5. Historical (placeholder)
+    historical_success = 0.0
+
+    weights = {"regime": 0.25, "detector": 0.30, "liquidity": 0.20,
+               "momentum": 0.20, "historical": 0.05}
     confidence = (
-        regime_quality * weights["regime"]
+        regime_quality    * weights["regime"]
         + detector_agreement * weights["detector"]
-        + liquidity_quality * weights["liquidity"]
-        + momentum_quality * weights["momentum"]
+        + liquidity_quality  * weights["liquidity"]
+        + momentum_quality   * weights["momentum"]
         + historical_success * weights["historical"]
     )
 
-    # Verdict
+    # Session score multiplier
+    if session is not None:
+        confidence *= (session.score / 100.0)
+
     if confidence >= 80:
         verdict = "EXCELLENT"
     elif confidence >= 65:
