@@ -95,8 +95,8 @@ async def fetch_gateway_data():
                 }
 
             # Update EntryMonitor status (simplified)
-            entry_monitor.tick(CACHE["positions"])
-            CACHE["entry_monitor_status"] = "Active" if len(entry_monitor._active_setups) > 0 else "Idle"
+            entry_monitor.update()
+            CACHE["entry_monitor_status"] = "Active" if len(entry_monitor.watchlist) > 0 else "Idle"
 
             CACHE["last_scan_time"] = datetime.now(timezone.utc).isoformat()
             CACHE["status"] = "LIVE"
