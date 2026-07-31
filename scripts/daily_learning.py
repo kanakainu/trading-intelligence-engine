@@ -11,6 +11,7 @@ logging.basicConfig(level=logging.INFO)
 
 def run():
     broker = MT5BrokerAdapter(GATEWAY_URL, GATEWAY_TOKEN)
+    broker.initialize()
     brain = LearningBrain(broker)
     brain.run_daily_analysis()
 

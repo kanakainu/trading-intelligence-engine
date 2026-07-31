@@ -167,5 +167,12 @@ class MT5BrokerAdapter(BrokerAdapterBase):
         except Exception as e:
             return OrderResponse(order_id=position_id, status="REJECTED", error=str(e))
 
+
     def get_orders(self) -> List[OrderResponse]:
-        return []  # MT5: no pending orders in scalping mode
+        return []  # MT5: no pending orders in scalping mode, return empty list to fulfill abstract contract
+
+    def get_closed_trades(self, days: int = 1) -> List[Position]:
+        # Fallback for gateways that don't expose trade history directly.
+        # This will need to be improved if a history endpoint becomes available.
+        log.warning("MT5 gateway does not expose a direct 'history/deals' or 'account/history' endpoint. Returning empty list for closed trades.")
+        return []

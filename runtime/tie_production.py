@@ -29,7 +29,7 @@ from core.context.context_engine import ContextEngine
 from reasoning.llm_reasoner import LLMReasoner
 import uuid
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(name)s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)s %(message)s')
 log = logging.getLogger("TIE_Production")
 
 URL = 'https://chips-extension-extensions-wearing.trycloudflare.com'

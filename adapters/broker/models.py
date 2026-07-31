@@ -37,6 +37,9 @@ class Position:
     take_profit: Optional[float] = None
     unrealized_profit: float = 0.0
     open_time: Optional[datetime] = None
+    pnl: float = 0.0 # Profit/Loss for closed trades, or current for open
+    comment: str = "" # Comment associated with the trade
+
 
 
 @dataclass
