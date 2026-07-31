@@ -88,7 +88,7 @@ class MultiStrategyRuntime:
         dt = (time.perf_counter() - t0) * 1000
         logger.info(
             "Scan %.1fms — strategies=%d signals=%d dir=%s",
-            dt, len(results), len(signals), sig.direction.value,
+            dt, len(results), len(signals), fused.direction,
         )
         return plan
 

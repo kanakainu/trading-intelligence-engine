@@ -14,8 +14,9 @@ from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
 from core.strategy_manager.manager import StrategyManager
 from strategies.bystra.strategy import BystraStrategy
 from strategies.aggressive.strategy import AggressiveStrategy
+from strategies.aggressive.regime.regime_engine import AggressiveRegimeEngine
 from runtime.multi_strategy_runtime import MultiStrategyRuntime
-from runtime.adapters.tradeplan_adapter import plan_to_decision
+from runtime.adapters.tradeplan_adapter import plan_to_decision, aggressive_regime_to_core_regime
 from runtime.entry_monitor import EntryMonitor
 from runtime.position_monitor import PositionMonitor
 from runtime.position_state import PositionState
@@ -143,8 +144,11 @@ while True:
                 nearest_resistance={"H1": sr["h1_resistance"]},
             )
             log.debug(f"GBPJPY FeatureSnapshot candles: {candles}")
-            _regime = RegimeSnapshot(regime=Regime(1), trend_direction=TrendDirection(1), confidence=0.6) # Placeholder
-            _opp = OpportunitySnapshot(market_allowed=True, reason=BlockReason("none"), # Placeholder
+            _regime_engine = AggressiveRegimeEngine()
+            agg_regime_snapshot = _regime_engine.classify(_features)
+            _regime = aggressive_regime_to_core_regime(agg_regime_snapshot)
+
+            _opp = OpportunitySnapshot(market_allowed=True, reason=BlockReason.NONE,
                 priority=7, confidence=0.8, symbol=sym, timestamp=_now, scan_id=_sid)
             _scan_ctx = ScanContext(market=ctx, features=_features, regime=_regime,
                 opportunity=_opp, scan_id=_sid, timestamp=_now)
@@ -271,4 +275,7 @@ while True:
     except Exception as e:
         log.error(f"Dashboard write failed: {e}")
     
+    # Update EntryMonitor for all active setups
+    monitor.update()
+
     time.sleep(10)
