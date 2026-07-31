@@ -15,7 +15,7 @@ from core.context.scan_context import ScanContext
 from core.strategy.strategy_context import StrategyContext
 from core.strategy.strategy_result import StrategyResult
 from core.strategy_manager.manager import StrategyManager
-from core.fusion.fusion_engine import FusionEngine
+from core.fusion.fusion_engine import SignalFusion as FusionEngine
 from core.fusion.fusion_models import FusionInputs
 from core.signals.signal import Signal
 from core.planner.trade_planner import TradePlanner
