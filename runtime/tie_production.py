@@ -7,7 +7,15 @@ sys.path.insert(0, '/home/ubuntu/trading-intelligence-engine')
 
 from gateway_client import MT5GatewayClient
 from core.context.context_model import MarketContext
-from strategy.orchestrator import StrategyOrchestrator
+from core.context.scan_context import ScanContext
+from core.features.feature_models import FeatureSnapshot
+from core.regime.regime_models import RegimeSnapshot, Regime, TrendDirection
+from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
+from core.strategy_manager.manager import StrategyManager
+from strategies.bystra.strategy import BystraStrategy
+from strategies.aggressive.strategy import AggressiveStrategy
+from runtime.multi_strategy_runtime import MultiStrategyRuntime
+from runtime.adapters.tradeplan_adapter import plan_to_decision
 from runtime.entry_monitor import EntryMonitor
 from runtime.position_monitor import PositionMonitor
 from runtime.position_state import PositionState
@@ -18,8 +26,9 @@ from core.rules.plugins.plugin_interface import RuleResult
 from detectors.common import find_swing_pivots, find_nearest_support, find_nearest_resistance, sl_buffer
 from core.context.context_engine import ContextEngine
 from reasoning.llm_reasoner import LLMReasoner
+import uuid
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)s %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(name)s %(message)s')
 log = logging.getLogger("TIE_Production")
 
 URL = 'https://chips-extension-extensions-wearing.trycloudflare.com'
@@ -33,7 +42,11 @@ client = MT5GatewayClient(URL, TOKEN)
 broker = MT5BrokerAdapter(base_url=URL, token=TOKEN)
 broker.initialize()
 
-orc = StrategyOrchestrator(min_confidence=0.55)
+mgr = StrategyManager()
+mgr.load(BystraStrategy)
+mgr.load(AggressiveStrategy)
+
+rt = MultiStrategyRuntime(mgr)
 monitor = EntryMonitor(broker=broker, gateway=client)
 pos_monitor = PositionMonitor()
 risk_gate = build_risk_registry()
@@ -41,12 +54,8 @@ context_engine = ContextEngine()
 
 log.info(f"TIE Production Multi-Symbol started: {SYMBOLS}. Risk Gate active.")
 
-# D2 shadow runtime — initialized once, reused every scan
-class _MSRState: pass
-_msr_runtime = _MSRState()
-
 def _compute_real_sr(candles_h1: list, price: float = 0.0) -> dict:
-    if not candles_h1: return {"h1_support": 0.0, "h1_resistance": 999999.0}
+    if not candles_h1: return {"h1_support": price, "h1_resistance": price} # Use current price as support/resistance if no candles
     support = find_nearest_support(candles_h1, price) if price else 0.0
     resistance = find_nearest_resistance(candles_h1, price) if price else 999999.0
     if not support or not resistance:
@@ -78,7 +87,7 @@ while True:
             price_data = client.price(sym)
             price = price_data['ask']
             spread = _get_spread(client, sym)
-            
+
             account_info = client.account() or {}
             raw_positions = client.positions() or []
             balance = float(account_info.get("balance", 0))
@@ -110,61 +119,39 @@ while True:
                     # NOTIF OFF: if hit: notifier.notify_tp_hit(...)
             
             sr = _compute_real_sr(candles.get("H1", []), price)
+            log.debug(f"GBPJPY H1 candles after _compute_real_sr: {candles.get('H1', [])}")
             ctx = MarketContext(symbol=sym, timestamp=datetime.now(timezone.utc))
             spread_buf_val = sl_buffer(ctx)
             ctx.metadata.update({
                 "candles": candles, "current_price": price,
                 "atr": context_engine._calc_atr(candles.get("H1", [])),
                 "h1_support": sr["h1_support"], "h1_resistance": sr["h1_resistance"],
-                "h1_trend": "bearish" if candles["H1"][-1]['close'] < candles["H1"][-5]['close'] else "bullish",
+                "h1_trend": "bearish" if candles["H1"] and candles["H1"][-1]['close'] < candles["H1"][-5]['close'] else "bullish",
                 "nearest_support": sr["h1_support"], "nearest_resistance": sr["h1_resistance"],
                 "spread": spread, "spread_buffer": spread_buf_val,
                 "balance": balance, "equity": equity,
                 "open_positions": len(raw_positions),
             })
             
-            decision = orc.best_decision(ctx)
+            # Build ScanContext for MultiStrategyRuntime
+            _sid = str(uuid.uuid4())
+            _now = datetime.now(timezone.utc)
+            _features = FeatureSnapshot(symbol=sym, timestamp=_now, scan_id=_sid,
+                candles=candles,
+                atr={tf: ctx.metadata.get("atr", 0.0) for tf in candles},
+                nearest_support={"H1": sr["h1_support"]},
+                nearest_resistance={"H1": sr["h1_resistance"]},
+            )
+            log.debug(f"GBPJPY FeatureSnapshot candles: {candles}")
+            _regime = RegimeSnapshot(regime=Regime(1), trend_direction=TrendDirection(1), confidence=0.6) # Placeholder
+            _opp = OpportunitySnapshot(market_allowed=True, reason=BlockReason("none"), # Placeholder
+                priority=7, confidence=0.8, symbol=sym, timestamp=_now, scan_id=_sid)
+            _scan_ctx = ScanContext(market=ctx, features=_features, regime=_regime,
+                opportunity=_opp, scan_id=_sid, timestamp=_now)
 
-            # ── D2 SHADOW MODE ─────────────────────────────────────────────
-            # MultiStrategyRuntime runs in parallel — log only, never executes.
-            try:
-                from core.context.scan_context import ScanContext
-                from core.features.feature_models import FeatureSnapshot
-                from core.regime.regime_models import RegimeSnapshot, Regime, TrendDirection
-                from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
-                from core.strategy_manager.manager import StrategyManager
-                from strategies.bystra.strategy import BystraStrategy
-                from runtime.multi_strategy_runtime import MultiStrategyRuntime
-                from runtime.adapters.tradeplan_adapter import plan_to_decision, log_shadow_diff
-                import uuid as _uuid
+            trade_plan = rt.scan(_scan_ctx)
+            decision = plan_to_decision(trade_plan)
 
-                _sid = str(_uuid.uuid4())
-                _now = datetime.now(timezone.utc)
-                _features = FeatureSnapshot(symbol=sym, timestamp=_now, scan_id=_sid,
-                    candles=candles,
-                    atr={tf: ctx.metadata.get("atr", 0.0) for tf in candles},
-                    nearest_support={"H1": sr["h1_support"]},
-                    nearest_resistance={"H1": sr["h1_resistance"]},
-                )
-                _regime = RegimeSnapshot(regime=Regime(1), trend_direction=TrendDirection(1), confidence=0.6)
-                _opp = OpportunitySnapshot(market_allowed=True, reason=BlockReason("none"),
-                    priority=7, confidence=0.8, symbol=sym, timestamp=_now, scan_id=_sid)
-                _scan_ctx = ScanContext(market=ctx, features=_features, regime=_regime,
-                    opportunity=_opp, scan_id=_sid, timestamp=_now)
-
-                if not hasattr(_msr_runtime, "_ready"):
-                    _msr_mgr = StrategyManager()
-                    _msr_mgr.load(BystraStrategy)
-                    _msr_runtime._mgr = _msr_mgr
-                    _msr_runtime._rt = MultiStrategyRuntime(_msr_mgr)
-                    _msr_runtime._ready = True
-
-                _plan = _msr_runtime._rt.scan(_scan_ctx)
-                _new_decision = plan_to_decision(_plan)
-                log_shadow_diff(sym, decision, _new_decision)
-            except Exception as _e:
-                log.debug("[SHADOW ERR] %s: %s", sym, _e)
-            # ── END SHADOW MODE ────────────────────────────────────────────
             if decision.action != "WAIT":
                 log.info(f"Setup detected: {decision.setup_name} {decision.action} conf={decision.confidence:.0%}")
                 risk_ctx = {
