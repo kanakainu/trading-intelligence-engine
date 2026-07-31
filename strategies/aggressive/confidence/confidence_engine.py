@@ -11,6 +11,7 @@ from strategies.aggressive.regime.regime_snapshot import AggressiveRegime, Aggre
 from strategies.aggressive.liquidity.liquidity_engine import LiquiditySnapshot, LiquidityState
 from strategies.aggressive.market_pulse.market_pulse import PulseSnapshot
 from strategies.aggressive.session.session_profile import SessionSnapshot
+from strategies.aggressive.opportunity.opportunity_engine import OpportunitySnapshot
 
 
 @dataclass
@@ -21,6 +22,7 @@ class ConfidenceScore:
     detector_agreement: float   # 0-100
     liquidity_quality: float    # 0-100
     momentum_quality: float     # 0-100
+    opportunity_quality: float  # 0-100 (new)
     historical_success: float   # 0-100 (placeholder)
     verdict: str                # REJECT | WATCH | GOOD | EXCELLENT
 
@@ -31,26 +33,24 @@ def compute_confidence(
     liquidity: Optional[LiquiditySnapshot] = None,
     pulse: Optional[PulseSnapshot] = None,
     session: Optional[SessionSnapshot] = None,
+    opportunity: Optional[OpportunitySnapshot] = None,
 ) -> ConfidenceScore:
-    """Compute meta-confidence from regime + detectors + liquidity + pulse + session."""
+    """Compute meta-confidence from regime + detectors + liquidity + pulse + session + opportunity."""
 
     # 0. Session gate
     if session is not None and not session.allowed:
         return ConfidenceScore(
             confidence=0.0, regime_quality=0.0, detector_agreement=0.0,
             liquidity_quality=0.0, momentum_quality=0.0, historical_success=0.0,
-            verdict="REJECT",
+            verdict="REJECT", opportunity_quality=0.0
         )
 
-    # 1. Regime quality
+    # 1. Regime quality (updated to map old to new states)
     regime_map = {
-        AggressiveRegime.TRENDING_BULL:  90,
-        AggressiveRegime.TRENDING_BEAR:  90,
-        AggressiveRegime.WEAK_TREND:     60,
-        AggressiveRegime.RANGING:        40,
-        AggressiveRegime.CHOPPY:         20,
-        AggressiveRegime.HIGH_VOLATILITY:50,
-        AggressiveRegime.LOW_LIQUIDITY:  10,
+        AggressiveRegime.BULL:  90,
+        AggressiveRegime.BEAR:  90,
+        AggressiveRegime.MINOR_TREND: 60,
+        AggressiveRegime.FLAT:        40,
     }
     regime_quality = float(regime_map.get(regime.regime, 50))
 
@@ -71,6 +71,7 @@ def compute_confidence(
                 confidence=0.0, regime_quality=regime_quality,
                 detector_agreement=detector_agreement, liquidity_quality=0.0,
                 momentum_quality=0.0, historical_success=0.0, verdict="REJECT",
+                opportunity_quality=0.0
             )
         liquidity_quality = liquidity.score
     else:
@@ -84,16 +85,20 @@ def compute_confidence(
     else:
         momentum_quality = 0.0
 
-    # 5. Historical (placeholder)
+    # 5. Opportunity quality (new)
+    opportunity_quality = opportunity.score if opportunity else 0.0
+
+    # 6. Historical (placeholder)
     historical_success = 0.0
 
-    weights = {"regime": 0.25, "detector": 0.30, "liquidity": 0.20,
-               "momentum": 0.20, "historical": 0.05}
+    weights = {"regime": 0.20, "detector": 0.25, "liquidity": 0.15,
+               "momentum": 0.15, "opportunity": 0.15, "historical": 0.10}
     confidence = (
         regime_quality    * weights["regime"]
         + detector_agreement * weights["detector"]
         + liquidity_quality  * weights["liquidity"]
         + momentum_quality   * weights["momentum"]
+        + opportunity_quality * weights["opportunity"]
         + historical_success * weights["historical"]
     )
 
@@ -116,6 +121,7 @@ def compute_confidence(
         detector_agreement=round(detector_agreement, 2),
         liquidity_quality=round(liquidity_quality, 2),
         momentum_quality=round(momentum_quality, 2),
+        opportunity_quality=round(opportunity_quality, 2),
         historical_success=round(historical_success, 2),
         verdict=verdict,
     )

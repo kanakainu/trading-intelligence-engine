@@ -5,13 +5,10 @@ from datetime import datetime
 
 
 class AggressiveRegime(Enum):
-    TRENDING_BULL = "trending_bull"
-    TRENDING_BEAR = "trending_bear"
-    WEAK_TREND = "weak_trend"
-    RANGING = "ranging"
-    CHOPPY = "choppy"
-    HIGH_VOLATILITY = "high_volatility"
-    LOW_LIQUIDITY = "low_liquidity"
+    BULL = "bull"
+    BEAR = "bear"
+    MINOR_TREND = "minor_trend"
+    FLAT = "flat"
 
 
 @dataclass

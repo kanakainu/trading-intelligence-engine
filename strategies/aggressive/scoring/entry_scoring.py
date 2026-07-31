@@ -8,30 +8,26 @@ from strategies.aggressive.regime.regime_snapshot import AggressiveRegime, Aggre
 
 # ── Weights (sum = 1.0) ───────────────────────────────────────────────────────
 WEIGHTS: Dict[str, float] = {
-    "MomentumBurst":    0.20,
-    "VWAPMagnet":       0.15,
-    "RibbonRide":       0.15,
-    "CompressionBreak": 0.15,
-    "VelocitySpike":    0.15,
-    "LiquidityVacuum":  0.10,
-    "PullbackQuality":  0.10,
+    "Pulse":            0.25,
+    "Opportunity":      0.20,
+    "MomentumBurst":    0.15,
+    "Liquidity":        0.15,
+    "Detector":         0.15,
+    "Confidence":       0.10,
 }
 
 # ── Regime multipliers ────────────────────────────────────────────────────────
 REGIME_MULTIPLIER: Dict[AggressiveRegime, float] = {
-    AggressiveRegime.TRENDING_BULL:  1.10,
-    AggressiveRegime.TRENDING_BEAR:  1.10,
-    AggressiveRegime.WEAK_TREND:     0.90,
-    AggressiveRegime.RANGING:        0.80,
-    AggressiveRegime.CHOPPY:         0.60,
-    AggressiveRegime.HIGH_VOLATILITY:0.75,
-    AggressiveRegime.LOW_LIQUIDITY:  0.50,
+    AggressiveRegime.BULL:  1.15,
+    AggressiveRegime.BEAR:  1.15,
+    AggressiveRegime.MINOR_TREND: 1.00,
+    AggressiveRegime.FLAT:  0.80,
 }
 
 # ── Thresholds ────────────────────────────────────────────────────────────────
-REJECT   = 60
-WATCH    = 75
-GOOD     = 85
+REJECT   = 80
+WATCH    = 89
+EXECUTE  = 90
 
 
 @dataclass
