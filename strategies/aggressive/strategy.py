@@ -11,6 +11,9 @@ from core.learning.learning_models import TradeReflection
 
 from strategies.aggressive.metadata import AGGRESSIVE_METADATA
 from strategies.aggressive.regime import AggressiveRegimeEngine
+from strategies.aggressive.liquidity.liquidity_engine import evaluate_liquidity
+from strategies.aggressive.market_pulse.market_pulse import compute_pulse
+from strategies.aggressive.session.session_profile import evaluate_session
 from strategies.aggressive.detectors import (
     MomentumBurst, VWAPMagnet, RibbonRide,
     CompressionBreak, VelocitySpike, PullbackQuality, LiquidityVacuum
@@ -41,25 +44,42 @@ class AggressiveStrategy(BaseStrategy):
         pass
 
     def analyze(self, context: StrategyContext) -> StrategyResult:
-        """
-        Pipeline: Regime → Detectors → Confidence Engine → Entry Scoring → Signal
-        """
+        """Pipeline: Session → Liquidity → Pulse → Regime → Detectors → Confidence → Entry Scoring → Signal"""
         features = context.scan.features
         if not features:
             return StrategyResult(signal=None, confidence=0.0, reason="no_features")
 
-        # 1. Regime
+        # 0. Session gate
+        session = evaluate_session(features.timestamp)
+        if not session.allowed:
+            logger.debug(f"Session REJECT: {session.session} score={session.score}")
+            return StrategyResult(signal=None, confidence=0.0, reason=f"session_reject={session.session}")
+
+        # 1. Liquidity
+        candles_m1 = features.candles.get("M1", [])
+        spread = features.spread if isinstance(features.spread, float) else 0.0
+        atr = features.get_atr("M1") or 0.0
+        volume_ratio = features.volume_ratio.get("M1", 1.0)
+        liquidity = evaluate_liquidity(features.symbol, spread, atr, candles_m1, volume_ratio)
+        logger.debug(f"Liquidity: {liquidity.state.value} score={liquidity.score}")
+
+        # 2. Market Pulse
+        candles_m5 = features.candles.get("M5", [])
+        pulse = compute_pulse(candles_m5)
+        logger.debug(f"Pulse: {pulse.pulse} {pulse.verdict}")
+
+        # 3. Regime
         regime = self._regime_engine.classify(features)
         logger.debug(f"Regime: {regime.regime.value} conf={regime.confidence:.2f}")
 
-        # 2. Detectors
+        # 4. Detectors
         results = [d.detect(features, regime) for d in self._detectors]
         fired = [r for r in results if r is not None]
         if not fired:
             return StrategyResult(signal=None, confidence=0.0, reason="no_detector_fired")
 
-        # 3. Confidence Engine (meta-validation)
-        conf = compute_confidence(results, regime)
+        # 5. Confidence Engine (meta-validation with new inputs)
+        conf = compute_confidence(results, regime, liquidity=liquidity, pulse=pulse, session=session)
         logger.debug(f"Confidence: {conf.confidence} {conf.verdict}")
         if conf.verdict == "REJECT":
             return StrategyResult(signal=None, confidence=0.0, reason=f"confidence_reject={conf.confidence}")
@@ -86,6 +106,12 @@ class AggressiveStrategy(BaseStrategy):
                 "entry_label": entry.label,
                 "confidence_verdict": conf.verdict,
                 "component_scores": entry.component_scores,
+                "liquidity": liquidity.state.value,
+                "liquidity_score": liquidity.score,
+                "pulse": pulse.pulse,
+                "pulse_verdict": pulse.verdict,
+                "session": session.session,
+                "session_score": session.score,
             }
         )
 
