@@ -41,6 +41,10 @@ context_engine = ContextEngine()
 
 log.info(f"TIE Production Multi-Symbol started: {SYMBOLS}. Risk Gate active.")
 
+# D2 shadow runtime — initialized once, reused every scan
+class _MSRState: pass
+_msr_runtime = _MSRState()
+
 def _compute_real_sr(candles_h1: list, price: float = 0.0) -> dict:
     if not candles_h1: return {"h1_support": 0.0, "h1_resistance": 999999.0}
     support = find_nearest_support(candles_h1, price) if price else 0.0
@@ -120,6 +124,47 @@ while True:
             })
             
             decision = orc.best_decision(ctx)
+
+            # ── D2 SHADOW MODE ─────────────────────────────────────────────
+            # MultiStrategyRuntime runs in parallel — log only, never executes.
+            try:
+                from core.context.scan_context import ScanContext
+                from core.features.feature_models import FeatureSnapshot
+                from core.regime.regime_models import RegimeSnapshot, Regime, TrendDirection
+                from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
+                from core.strategy_manager.manager import StrategyManager
+                from strategies.bystra.strategy import BystraStrategy
+                from runtime.multi_strategy_runtime import MultiStrategyRuntime
+                from runtime.adapters.tradeplan_adapter import plan_to_decision, log_shadow_diff
+                import uuid as _uuid
+
+                _sid = str(_uuid.uuid4())
+                _now = datetime.now(timezone.utc)
+                _features = FeatureSnapshot(symbol=sym, timestamp=_now, scan_id=_sid,
+                    candles=candles,
+                    atr={tf: ctx.metadata.get("atr", 0.0) for tf in candles},
+                    nearest_support={"H1": sr["h1_support"]},
+                    nearest_resistance={"H1": sr["h1_resistance"]},
+                )
+                _regime = RegimeSnapshot(regime=Regime(1), trend_direction=TrendDirection(1), confidence=0.6)
+                _opp = OpportunitySnapshot(market_allowed=True, reason=BlockReason("none"),
+                    priority=7, confidence=0.8, symbol=sym, timestamp=_now, scan_id=_sid)
+                _scan_ctx = ScanContext(market=ctx, features=_features, regime=_regime,
+                    opportunity=_opp, scan_id=_sid, timestamp=_now)
+
+                if not hasattr(_msr_runtime, "_ready"):
+                    _msr_mgr = StrategyManager()
+                    _msr_mgr.load(BystraStrategy)
+                    _msr_runtime._mgr = _msr_mgr
+                    _msr_runtime._rt = MultiStrategyRuntime(_msr_mgr)
+                    _msr_runtime._ready = True
+
+                _plan = _msr_runtime._rt.scan(_scan_ctx)
+                _new_decision = plan_to_decision(_plan)
+                log_shadow_diff(sym, decision, _new_decision)
+            except Exception as _e:
+                log.debug("[SHADOW ERR] %s: %s", sym, _e)
+            # ── END SHADOW MODE ────────────────────────────────────────────
             if decision.action != "WAIT":
                 log.info(f"Setup detected: {decision.setup_name} {decision.action} conf={decision.confidence:.0%}")
                 risk_ctx = {
