@@ -22,7 +22,7 @@ class PositionMonitor:
         Called each market tick.
         positions: list of live PositionState
         contracts: dict mapping position_id -> ExecutionContract
-        market_update: dict mapping symbol -> current price + atr
+        market_update: dict mapping symbol -> current price + atr + candles
         Returns list of ExecutionResults.
         """
         results = []
@@ -32,14 +32,16 @@ class PositionMonitor:
             if isinstance(symbol_data, dict):
                 pos.current_price = symbol_data.get("price", pos.current_price)
                 atr = symbol_data.get("atr", 0.0)
+                candles = symbol_data.get("candles", None)
             else:
                 atr = 0.0
+                candles = None
 
             contract = contracts.get(pos.position_id)
             if not contract:
                 continue
 
-            result = self._executor.evaluate(pos, contract, atr)
+            result = self._executor.evaluate(pos, contract, atr, candles, m5_candles=candles.get("M5") if isinstance(candles, dict) else None)
             if result.action != "none":
                 self._on_result(pos, result)
             results.append(result)

@@ -103,10 +103,12 @@ class MT5BrokerAdapter(BrokerAdapterBase):
         direction = req.side.lower()
         if direction == "buy":
             ticket = self._client.buy(req.symbol.upper(), req.volume,
-                                      sl=req.stop_loss, tp=req.take_profit)
+                                      sl=req.stop_loss, tp=req.take_profit,
+                                      comment=req.comment)
         elif direction == "sell":
             ticket = self._client.sell(req.symbol.upper(), req.volume,
-                                       sl=req.stop_loss, tp=req.take_profit)
+                                       sl=req.stop_loss, tp=req.take_profit,
+                                       comment=req.comment)
         else:
             return OrderResponse(status="REJECTED", error=f"Unknown side: {req.side}")
 

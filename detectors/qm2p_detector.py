@@ -3,7 +3,8 @@ from detectors.base_detector import BystraBaseDetector
 from detectors.common import (
     htf_confirm_solid, find_nearest_support,
     find_nearest_resistance, find_swing_pivots, check_retest,
-    is_bullish, is_bearish
+    is_bullish, is_bearish,
+    sl_buffer,
 )
 
 
@@ -23,6 +24,8 @@ class Qm2pDetector(BystraBaseDetector):
         pivots = find_swing_pivots(candles)
         if len(pivots) < 4:
             return []
+
+        h1_candles = self._get_candles(context, "H1", 30)
 
         for i in range(4, len(pivots)):
             p4, p3, p2, p1, p0 = pivots[i - 4], pivots[i - 3], pivots[i - 2], pivots[i - 1], pivots[i]
@@ -64,8 +67,8 @@ class Qm2pDetector(BystraBaseDetector):
             # HTF confirmation mandatory
             htf_tf = "M15" if tf == "M5" else "H1"
             htf_candles = self._get_candles(context, htf_tf, 10)
-            dz_level = find_nearest_resistance(candles, entry_level) if direction == "BUY" \
-                else find_nearest_support(candles, entry_level)
+            dz_level = find_nearest_resistance(candles, entry_level, h1_candles) if direction == "BUY" \
+                else find_nearest_support(candles, entry_level, h1_candles)
 
             if not htf_confirm_solid(htf_candles, direction, dz_level):
                 continue
@@ -75,10 +78,11 @@ class Qm2pDetector(BystraBaseDetector):
                 continue
 
             # SL = beyond head (similar to QMR but now trendline is at same head level)
-            sl = head_price + 0.5 if direction == "SELL" else head_price - 0.5
+            _buf = sl_buffer(context)
+            sl = head_price + _buf if direction == "SELL" else head_price - _buf
             # TP = nearest target beyond opposite shoulder
-            tp = find_nearest_resistance(candles, p3["price"]) if direction == "BUY" \
-                else find_nearest_support(candles, p3["price"])
+            tp = find_nearest_resistance(candles, p3["price"], h1_candles) if direction == "BUY" \
+                else find_nearest_support(candles, p3["price"], h1_candles)
 
             return [self._create_pattern_fact("QM2P", 0.85, {
                 "entry_zone": base_zone,

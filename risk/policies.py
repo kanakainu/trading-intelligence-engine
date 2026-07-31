@@ -94,7 +94,8 @@ class MinimumRiskRewardPolicy(RiskPolicyBase):
         if risk == 0: return False, "Risk cannot be zero"
 
         current_rr = reward / risk
-        if current_rr < min_rr:
+        # Float tolerance
+        if current_rr < min_rr - 0.005:
             return False, f"R/R {current_rr:.2f} below min {min_rr}"
         return True, ""
 

@@ -1,9 +1,10 @@
 from typing import Dict, Any, List
 from detectors.base_detector import BystraBaseDetector
 from detectors.common import (
-    get_base_zone, htf_confirm_solid, find_nearest_support, 
+    get_base_zone, htf_confirm_solid, find_nearest_support,
     find_nearest_resistance, find_swing_pivots, check_retest,
-    is_bullish, is_bearish, body_size, is_engulfing
+    is_bullish, is_bearish, body_size, is_engulfing,
+    sl_buffer,
 )
 
 
@@ -58,7 +59,14 @@ class Blindspot2Detector(BystraBaseDetector):
             if not check_retest(candles, base_zone, direction): continue
 
             # SL = beyond base zone + buffer
-            sl = float(base_zone["low"]) - 0.5 if direction == "BUY" else float(base_zone["high"]) + 0.5
+            all_pivots = find_swing_pivots(candles, n=2)
+            buf = sl_buffer(context)
+            if direction == "BUY":
+                lows = [p["price"] for p in all_pivots if p["type"] == "low" and p["price"] < float(base_zone["low"])]
+                sl = (max(lows) if lows else float(base_zone["low"])) - buf
+            else:
+                highs = [p["price"] for p in all_pivots if p["type"] == "high" and p["price"] > float(base_zone["high"])]
+                sl = (min(highs) if highs else float(base_zone["high"])) + buf
             # TP = beyond current move (e.g. 2x ATR or next S/R)
             tp = find_nearest_resistance(candles, float(curr.get("high"))) if direction == "BUY" \
                 else find_nearest_support(candles, float(curr.get("low")))

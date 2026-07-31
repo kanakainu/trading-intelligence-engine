@@ -3,7 +3,8 @@ from detectors.base_detector import BystraBaseDetector
 from detectors.common import (
     get_base_zone, htf_confirm_solid, find_nearest_support,
     find_nearest_resistance, find_swing_pivots, check_retest,
-    is_bullish, is_bearish, body_size
+    is_bullish, is_bearish, body_size,
+    sl_buffer,
 )
 
 
@@ -26,6 +27,8 @@ class QmcDetector(BystraBaseDetector):
 
         trendline_bull = context.metadata.get("trendline_bullish", False)
         trendline_bear = context.metadata.get("trendline_bearish", False)
+
+        h1_candles = self._get_candles(context, "H1", 30)
 
         for i in range(4, len(pivots)):
             p4, p3, p2, p1, p0 = pivots[i - 4], pivots[i - 3], pivots[i - 2], pivots[i - 1], pivots[i]
@@ -65,8 +68,8 @@ class QmcDetector(BystraBaseDetector):
             # HTF confirmation mandatory (M15 or H1)
             htf_tf = "M15" if tf == "M5" else "H1"
             htf_candles = self._get_candles(context, htf_tf, 10)
-            dz_level = find_nearest_resistance(candles, entry_level) if direction == "BUY" \
-                else find_nearest_support(candles, entry_level)
+            dz_level = find_nearest_resistance(candles, entry_level, h1_candles) if direction == "BUY" \
+                else find_nearest_support(candles, entry_level, h1_candles)
 
             if not htf_confirm_solid(htf_candles, direction, dz_level):
                 continue
@@ -76,9 +79,10 @@ class QmcDetector(BystraBaseDetector):
                 continue
 
             # SL = beyond head (p2), TP = nearest target in trend direction
-            sl = p2["price"] + 0.5 if direction == "SELL" else p2["price"] - 0.5
-            tp = find_nearest_resistance(candles, p1["price"]) if direction == "BUY" \
-                else find_nearest_support(candles, p1["price"])
+            _buf = sl_buffer(context)
+            sl = p2["price"] + _buf if direction == "SELL" else p2["price"] - _buf
+            tp = find_nearest_resistance(candles, p1["price"], h1_candles) if direction == "BUY" \
+                else find_nearest_support(candles, p1["price"], h1_candles)
 
             return [self._create_pattern_fact("QMC", 0.85, {
                 "entry_zone": base_zone,

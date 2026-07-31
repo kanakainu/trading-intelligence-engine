@@ -1,1 +1,2 @@
-from .base_detector import BystraBaseDetector
+from detectors.regime_hmm import HMMRegimeDetector
+from detectors.base_detector import BystraBaseDetector

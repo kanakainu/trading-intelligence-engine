@@ -8,6 +8,25 @@ TF_CHAIN = {
     "M15": {"confirm": "M30", "bias": "H1"},
 }
 
+# Per-pair structural buffer in price units (approx 1-2 pips + spread).
+# XAUUSD: 1 pip = 0.1 USD. BTCUSD: 1 pip = 1.0 USD. GBPUSD: 1 pip = 0.0001.
+PAIR_BUFFER = {
+    "XAUUSD": 0.25,
+    "BTCUSD": 25.0,
+    "GBPUSD": 0.00025,
+    "GBPJPY": 0.0025,
+}
+
+def sl_buffer(context, fallback: float = 0.25) -> float:
+    """Structural buffer for context symbol. Falls back to spread_buffer (price units)
+    when present, then per-pair default."""
+    sym = str(getattr(context, "symbol", "") or "").upper()
+    buf = PAIR_BUFFER.get(sym, fallback)
+    sb = context.metadata.get("spread_buffer")
+    if sb:
+        buf = max(buf, float(sb))
+    return buf
+
 def get_candles(context, timeframe: str, count: int = 30) -> List[Dict]:
     """Legacy wrapper. Detectors should migrate to _get_candles on base."""
     return context.metadata.get("candles", {}).get(timeframe, [])[:count]
@@ -49,13 +68,21 @@ def find_swing_pivots(candles: List[Dict], n: int = 3) -> List[Dict]:
             pivots.append({"type": "low", "price": float(candles[i]["low"]), "index": i})
     return pivots
 
-def find_nearest_support(candles: List[Dict], price: float) -> float:
-    pivots = find_swing_pivots(candles)
+def find_nearest_support(candles: List[Dict], price: float, htf_candles: List[Dict] = None) -> float:
+    """Find nearest swing low below price. If htf_candles provided, use H1 pivots."""
+    if htf_candles:
+        pivots = find_swing_pivots(htf_candles)
+    else:
+        pivots = find_swing_pivots(candles)
     lows = [p["price"] for p in pivots if p["type"] == "low" and p["price"] < price]
     return max(lows) if lows else 0.0
 
-def find_nearest_resistance(candles: List[Dict], price: float) -> float:
-    pivots = find_swing_pivots(candles)
+def find_nearest_resistance(candles: List[Dict], price: float, htf_candles: List[Dict] = None) -> float:
+    """Find nearest swing high above price. If htf_candles provided, use H1 pivots."""
+    if htf_candles:
+        pivots = find_swing_pivots(htf_candles)
+    else:
+        pivots = find_swing_pivots(candles)
     highs = [p["price"] for p in pivots if p["type"] == "high" and p["price"] > price]
     return min(highs) if highs else 999999.0
 

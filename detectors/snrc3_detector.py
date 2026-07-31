@@ -31,26 +31,34 @@ class Snrc3Detector(BystraBaseDetector):
             # HTF Confirmation
             htf_tf = "M15" if tf == "M5" else "H1"
             htf_candles = self._get_candles(context, htf_tf, 10)
-            dz_level = find_nearest_resistance(candles, base_zone["high"]) if direction == "BUY" else find_nearest_support(candles, base_zone["low"])
+            h1_candles = self._get_candles(context, "H1", 30)
+            
+            # Danger Zone check
+            if direction == "BUY":
+                dz_level = find_nearest_resistance(candles, base_zone["high"], h1_candles)
+                if dz_level >= 999999.0: dz_level = base_zone["high"] * 1.05  # fallback 5% above
+            else:
+                dz_level = find_nearest_support(candles, base_zone["low"], h1_candles)
+                if dz_level <= 0: dz_level = base_zone["low"] * 0.95  # fallback 5% below
             
             if not htf_confirm_solid(htf_candles, direction, dz_level):
                 continue
-
+            
             # Retest
             if not check_retest(candles, base_zone, direction):
                 continue
-
+            
             # Levels
             all_pivots = find_swing_pivots(candles)
             if direction == "BUY":
                 sl_pivot = [p["price"] for p in all_pivots if p["type"] == "low" and p["price"] < base_zone["low"]]
                 sl = (max(sl_pivot) if sl_pivot else base_zone["low"]) - 0.5
-                tp = find_nearest_resistance(candles, base_zone["high"])
+                tp = find_nearest_resistance(candles, base_zone["high"], h1_candles)
             else:
                 sl_pivot = [p["price"] for p in all_pivots if p["type"] == "high" and p["price"] > base_zone["high"]]
                 sl = (min(sl_pivot) if sl_pivot else base_zone["high"]) + 0.5
-                tp = find_nearest_support(candles, base_zone["low"])
-
+                tp = find_nearest_support(candles, base_zone["low"], h1_candles)
+            
             md = {
                 "entry_zone": {"high": base_zone["high"], "low": base_zone["low"]},
                 "sl": float(sl),

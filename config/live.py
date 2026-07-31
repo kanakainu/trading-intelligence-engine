@@ -4,5 +4,6 @@ import os
 GATEWAY_URL   = os.getenv("MT5_GATEWAY_URL",   "https://chips-extension-extensions-wearing.trycloudflare.com")
 GATEWAY_TOKEN = os.getenv("MT5_GATEWAY_TOKEN", "Jojo_56790@_000tUi_OO9")
 SYMBOLS       = ["XAUUSD"]
+TELEGRAM_CHAT_ID = "1987405029"
 DEFAULT_LOT   = 0.01
 CANONICAL_ID  = "boskuh"

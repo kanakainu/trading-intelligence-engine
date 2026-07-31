@@ -20,6 +20,7 @@ class TradeDecision:
     trace: List[str] = field(default_factory=list)
     explanation: str = ""
     timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    metadata: Dict[str, Any] = field(default_factory=dict)  # mutable metadata for runtime
 
     def __repr__(self):
         return f"<TradeDecision {self.action} setup={self.setup_id} conf={self.confidence:.0%}>"

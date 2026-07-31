@@ -22,7 +22,8 @@ class RRRule(RulePluginInterface):
             return RuleResult("REJECT", "SL = entry (zero risk)", priority=self.priority())
 
         rr = reward / risk
-        if rr < self._min_rr:
+        # Float tolerance: 1.50 should pass 1.5 min
+        if rr < self._min_rr - 0.005:
             return RuleResult("REJECT", f"RR {rr:.2f} < min {self._min_rr}",
                               metadata={"rr": rr, "risk": risk, "reward": reward},
                               priority=self.priority())

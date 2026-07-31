@@ -18,14 +18,14 @@ from core.rules.plugins.daily_target import DailyTargetPlugin
 DEFAULT_RISK_RULES: List[tuple] = [
     ("confidence",    ConfidenceRule,         {}),
     ("session",       SessionRule,            {"allowed_sessions": ["LONDON", "NEW_YORK", "ASIA"]}),
-    ("spread",        SpreadRule,             {"max_spread": 300}),
+    ("spread",        SpreadRule,             {"max_spread": 800}),
     ("rr",            RRRule,                 {"min_rr": 1.5}),
     ("sl_validation", SLValidationRule,       {}),
     ("tp_validation", TPValidationRule,       {}),
     ("news",          NewsFilterPlugin,       {"window_minutes": 30}),
-    ("drawdown",      AdaptiveDrawdownPlugin, {"limit_pct": 0.05}),
+    ("drawdown",      AdaptiveDrawdownPlugin, {"limit_pct": 0.30}),
     ("daily_target",  DailyTargetPlugin,      {"target_usd": 30.0}),
-    ("lot",           DynamicLotPlugin,       {"min_lot": 0.01, "max_lot": 1.0}),
+    ("lot",           DynamicLotPlugin,       {"min_lot": 0.01, "max_lot": 0.3, "risk_pct": 0.03}),
 ]
 
 

@@ -31,8 +31,8 @@ class RiskConfig:
             global_enabled=True,
             default_policy_threshold=0.0,
             policies={
-                "max_position_size": PolicyConfig(enabled=True, params={"max_volume": 1.0}),
-                "max_open_positions": PolicyConfig(enabled=True, params={"max_count": 5}),
+                "max_position_size": PolicyConfig(enabled=True, params={"max_volume": 0.1}),
+                "max_open_positions": PolicyConfig(enabled=True, params={"max_count": 8}),
                 "daily_loss_limit": PolicyConfig(enabled=True, params={"max_loss_usd": 100.0}),
                 "maximum_drawdown": PolicyConfig(enabled=True, params={"max_drawdown_percent": 0.05}),
                 "margin_availability": PolicyConfig(enabled=True, params={"min_free_margin_percent": 0.1}),

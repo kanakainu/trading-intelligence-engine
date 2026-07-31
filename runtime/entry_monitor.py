@@ -9,6 +9,8 @@ from datetime import datetime, timezone
 
 from core.decision.trade_decision import TradeDecision, BUY, SELL
 from adapters.broker.models import OrderRequest
+from runtime.telegram_notifier import TelegramNotifier
+from runtime.trade_journal import TradeJournal
 
 log = logging.getLogger("EntryMonitor")
 
@@ -30,6 +32,8 @@ class EntryMonitor:
         self.broker = broker
         self.gateway = gateway
         self.watchlist: List[ActiveSetup] = []
+        self.notifier = TelegramNotifier("1987405029")
+        self.journal = TradeJournal()
 
     def add_setup(self, decision: TradeDecision):
         """Add new setup to monitor. metadata must contain entry_zone."""
@@ -46,6 +50,7 @@ class EntryMonitor:
 
         self.watchlist.append(setup)
         log.info(f"Added {setup.setup_name} {setup.direction} to watchlist. Waiting for pullback...")
+        # self.notifier.notify_setup_detected(setup.setup_name, setup.direction, setup.decision.confidence, 0)  # DISABLED — spam
 
     def update(self):
         """Main loop tick: check price vs zones for all setups."""
@@ -60,10 +65,12 @@ class EntryMonitor:
                 # 1. Check Danger Zone
                 if setup.direction == "SELL" and setup.danger_zone and price >= setup.danger_zone:
                     log.info(f"Setup {setup.setup_name} INVALID: Price hit Danger Zone {setup.danger_zone}")
+                    # NOTIF OFF: self.notifier.notify_danger_zone(...)
                     self.watchlist.remove(setup)
                     continue
                 if setup.direction == "BUY" and setup.danger_zone and price <= setup.danger_zone:
                     log.info(f"Setup {setup.setup_name} INVALID: Price hit Danger Zone {setup.danger_zone}")
+                    # NOTIF OFF: self.notifier.notify_danger_zone(...)
                     self.watchlist.remove(setup)
                     continue
 
@@ -75,17 +82,23 @@ class EntryMonitor:
                     if in_zone:
                         setup.status = "IN_ZONE"
                         log.info(f"Setup {setup.setup_name} entered Entry Zone. Monitoring reaction...")
+                        # self.notifier.notify_entry_zone(setup.setup_name, setup.symbol, price)  # DISABLED
 
                 elif setup.status == "IN_ZONE":
                     # Check Rejection (Simple: price is in zone and last candle on M1 shows wick or flip)
                     # For now: if price is in zone and hasn't broken SL, we look for 'rejection'
                     # Better reaction logic: wait 1 min candle close inside zone
+        # is_rejected = self._check_reaction(setup, price)
+        # if is_rejected:
+        #    log.info(f"REACTION CONFIRMED for {setup.setup_name}. Executing Market Order...")
+        #    self._execute_market(setup, price)
+        #    self.watchlist.remove(setup)
                     is_rejected = self._check_reaction(setup, price)
                     if is_rejected:
                         log.info(f"REACTION CONFIRMED for {setup.setup_name}. Executing Market Order...")
+                        self.notifier.notify_entry_zone(setup.setup_name, setup.symbol, price)
                         self._execute_market(setup, price)
                         self.watchlist.remove(setup)
-
             except Exception as e:
                 log.error(f"Error monitoring {setup.setup_name}: {e}")
 
@@ -108,10 +121,23 @@ class EntryMonitor:
             order_type="market",
             stop_loss=setup.sl,
             take_profit=setup.tp,
-            comment=f"Bystra_{setup.setup_name}"
+            comment=f"Riri_{setup.setup_name.upper()}"
         )
         res = self.broker.submit_order(req)
         if res.status == "FILLED":
             log.info(f"Order {res.order_id} FILLED for {setup.setup_name}")
+            # NOTIF OFF: self.notifier.notify_order_filled(...)
+            # Journal entry
+            self.journal.log_trade({
+                "order_id": res.order_id,
+                "setup": setup.setup_name,
+                "action": setup.direction,
+                "symbol": setup.symbol,
+                "entry": price,
+                "sl": setup.sl,
+                "tp": setup.tp,
+                "status": "OPEN",
+                "reason": setup.decision.reason,
+            })
         else:
             log.error(f"Order REJECTED for {setup.setup_name}: {res.error}")
