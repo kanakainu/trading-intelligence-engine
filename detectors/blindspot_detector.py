@@ -1,8 +1,7 @@
 from typing import Dict, Any, List
 from detectors.base_detector import BystraBaseDetector
 from detectors.common import (
-    get_base_zone, htf_confirm_solid, find_nearest_support,
-    find_nearest_resistance, find_swing_pivots, check_retest,
+    get_base_zone, htf_confirm_solid, check_retest,
     is_bullish, is_bearish, body_size, sl_buffer
 )
 
@@ -25,10 +24,11 @@ class BlindspotDetector(BystraBaseDetector):
                     base_zone = get_base_zone(candles, i-1)
                     
                     buf = sl_buffer(context)
-                    all_pivots = find_swing_pivots(candles, n=2)
+                    all_pivots = self._get_pivots(candles, n=2)
                     highs = [p["price"] for p in all_pivots if p["type"] == "high" and p["price"] > float(base_zone["high"])]
                     sl = (min(highs) if highs else float(base_zone["high"])) + buf
-                    tp = find_nearest_support(candles, float(base_zone["low"]), h1_candles)
+                    features = self._get_features(context)
+                    tp = (features.get_nearest_support("H1") if features else None) or float(base_zone["low"]) * 0.98
                     dz_level = float(curr["high"])  # DZ = above engulfing high
                     
                     htf_tf = "M15" if tf == "M5" else "H1"
