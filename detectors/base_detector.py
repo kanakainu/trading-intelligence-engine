@@ -44,3 +44,17 @@ class BystraBaseDetector(DetectorInterface):
             return context.features
         # Legacy MarketContext path (features injected via metadata)
         return context.metadata.get("features")
+
+    def _get_pivots(self, candles: list, n: int = 3) -> list:
+        """Swing pivots — pure math, no common.py import."""
+        pivots = []
+        for i in range(n, len(candles) - n):
+            is_high = all(float(candles[i]["high"]) > float(candles[j]["high"]) for j in range(i-n, i)) and \
+                      all(float(candles[i]["high"]) > float(candles[j]["high"]) for j in range(i+1, i+n+1))
+            is_low  = all(float(candles[i]["low"])  < float(candles[j]["low"])  for j in range(i-n, i)) and \
+                      all(float(candles[i]["low"])  < float(candles[j]["low"])  for j in range(i+1, i+n+1))
+            if is_high:
+                pivots.append({"type": "high", "price": float(candles[i]["high"]), "index": i})
+            if is_low:
+                pivots.append({"type": "low",  "price": float(candles[i]["low"]),  "index": i})
+        return pivots

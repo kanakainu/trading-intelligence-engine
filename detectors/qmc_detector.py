@@ -21,7 +21,7 @@ class QmcDetector(BystraBaseDetector):
         if len(candles) < 15:
             return []
 
-        pivots = find_swing_pivots(candles)
+        pivots = self._get_pivots(candles)
         if len(pivots) < 4:
             return []
 

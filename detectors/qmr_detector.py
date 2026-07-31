@@ -1,8 +1,7 @@
 from typing import Dict, Any, List
 from detectors.base_detector import BystraBaseDetector
 from detectors.common import (
-    get_base_zone, htf_confirm_solid, find_nearest_support,
-    find_nearest_resistance, find_swing_pivots, check_retest,
+    get_base_zone, htf_confirm_solid, check_retest,
     is_bullish, is_bearish, sl_buffer
 )
 
@@ -13,7 +12,7 @@ class QmrDetector(BystraBaseDetector):
         candles = self._get_candles(context, tf, 40)
         if len(candles) < 15: return []
         
-        pivots = find_swing_pivots(candles)
+        pivots = self._get_pivots(candles)
         if len(pivots) < 4: return []
         
         h1_candles = self._get_candles(context, "H1", 30)
@@ -49,7 +48,13 @@ class QmrDetector(BystraBaseDetector):
 
             buf = sl_buffer(context)
             sl = p2["price"] + buf if direction == "SELL" else p2["price"] - buf
-            tp = find_nearest_resistance(candles, entry_level, h1_candles) if direction == "BUY" else find_nearest_support(candles, entry_level, h1_candles)
+            features = self._get_features(context)
+            if features:
+                tp = features.get_nearest_resistance("H1") if direction == "BUY" else features.get_nearest_support("H1")
+                tp = tp or (entry_level * 1.02 if direction == "BUY" else entry_level * 0.98)
+            else:
+                from detectors.common import find_nearest_support, find_nearest_resistance
+                tp = find_nearest_resistance(candles, entry_level, h1_candles) if direction == "BUY" else find_nearest_support(candles, entry_level, h1_candles)
 
             return [self._create_pattern_fact("QMR", 0.8, {
                 "entry_zone": base_zone,

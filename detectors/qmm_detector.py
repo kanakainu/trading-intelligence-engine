@@ -1,8 +1,7 @@
 from typing import Dict, Any, List
 from detectors.base_detector import BystraBaseDetector
 from detectors.common import (
-    get_base_zone, htf_confirm_solid, find_nearest_support,
-    find_nearest_resistance, find_swing_pivots, check_retest,
+    get_base_zone, htf_confirm_solid, check_retest,
     is_bullish, is_bearish, is_engulfing, sl_buffer
 )
 
@@ -14,7 +13,7 @@ class QmmDetector(BystraBaseDetector):
         candles = self._get_candles(context, tf, 40)
         if len(candles) < 15: return []
         
-        pivots = find_swing_pivots(candles)
+        pivots = self._get_pivots(candles)
         if len(pivots) < 5: return []
         
         h1_candles = self._get_candles(context, "H1", 30)
@@ -36,7 +35,8 @@ class QmmDetector(BystraBaseDetector):
                 
                 buf = sl_buffer(context)
                 sl = p3["price"] + buf
-                tp = find_nearest_support(candles, ls_level, h1_candles)
+                features = self._get_features(context)
+                tp = (features.get_nearest_support("H1") if features else None) or ls_level * 0.98
                 dz_level = p2["price"]  # DZ = beyond head
                 
                 htf_tf = "M15" if tf == "M5" else "H1"
@@ -64,7 +64,8 @@ class QmmDetector(BystraBaseDetector):
                     
                 buf = sl_buffer(context)
                 sl = p3["price"] - buf
-                tp = find_nearest_resistance(candles, ls_level, h1_candles)
+                features = self._get_features(context)
+                tp = (features.get_nearest_resistance("H1") if features else None) or ls_level * 1.02
                 dz_level = p2["price"]
                 
                 htf_tf = "M15" if tf == "M5" else "H1"
