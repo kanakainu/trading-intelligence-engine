@@ -213,10 +213,18 @@ while True:
                     if now - last_seen < DEDUP_WINDOW:
                         log.info(f"Dedup: skip {decision.setup_name} {decision.action} {sym} (seen {(now-last_seen):.0f}s ago)")
                     else:
-                        _seen_setups[dedup_key] = now
-                        log.info(f"Risk Gate: ✅ PASS — {sym}")
-                        push_decision(decision)
-                        monitor.add_setup(decision)
+                        # Mandate enforcement — Vibe enforcement.py pattern
+                        vol = risk_ctx.get("lot", 0.01)
+                        notional = price * vol * 100  # approx USD notional
+                        if notional > 50_000:
+                            log.warning(f"Mandate DENY {sym}: notional ${notional:.0f} > $50k limit")
+                        elif sym not in SYMBOLS:
+                            log.warning(f"Mandate DENY {sym}: not in allowed symbols {SYMBOLS}")
+                        else:
+                            _seen_setups[dedup_key] = now
+                            log.info(f"Risk Gate: ✅ PASS — {sym}")
+                            push_decision(decision)
+                            monitor.add_setup(decision)
                 else:
                     reasons = "; ".join(f"{n}={r.status}:{r.reason}" for n, r in risk_results.items() if r.status != "APPROVE")
                     log.info(f"Risk Gate: ❌ BLOCKED {sym}. {reasons}")
