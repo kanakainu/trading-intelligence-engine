@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """TIE Production Runtime — Multi-Symbol Support (XAUUSD, BTCUSD, GBPUSD)."""
-import sys, time, logging
+import sys, time, logging, os
 from datetime import datetime, timezone
 sys.path.insert(0, '/home/ubuntu/.hermes/trading')
 sys.path.insert(0, '/home/ubuntu/trading-intelligence-engine')
@@ -74,10 +74,18 @@ def _get_spread(client, symbol: str) -> float:
         return float(price_data.get("spread", 0))
     except Exception: return 10.0
 
+HALT_FLAG = "/tmp/tie_halt"  # touch /tmp/tie_halt to stop all trading; rm to resume
+
 while True:
+    # Kill Switch — sentinel file pattern (Vibe halt.py)
+    if os.path.exists(HALT_FLAG):
+        log.warning("HALT FLAG active — skipping scan. rm /tmp/tie_halt to resume.")
+        time.sleep(10)
+        continue
+
     all_pairs_data = {}  # Accumulate ALL pairs per loop
     status_path = "/home/ubuntu/tie-dashboard/data/tie_status.json"
-    
+
     for sym in SYMBOLS:
         try:
             log.info(f"--- Scanning {sym} ---")
