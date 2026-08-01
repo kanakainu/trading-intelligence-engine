@@ -56,8 +56,8 @@ class TradePostmortemWriter:
         or other bots' positions are ignored — episode memory must stay clean.
         """
         tag = getattr(outcome, "comment", "") or getattr(outcome, "magic", "") or ""
-        if tag and not str(tag).upper().startswith("RIRI_"):
-            log.info("skip non-TIE trade: tag=%s", tag)
+        if tag and not str(tag).upper().startswith("RIRI_MSR_"):
+            log.info("skip non-TIE V3 trade: tag=%s", tag)
             return False
 
         try:
