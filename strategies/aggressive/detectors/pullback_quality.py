@@ -18,7 +18,7 @@ class PullbackQuality(BaseDetector):
         if len(candles) < 10:
             return None
 
-        if regime.regime not in (AggressiveRegime.TRENDING_BULL, AggressiveRegime.TRENDING_BEAR):
+        if regime.regime not in (AggressiveRegime.BULL, AggressiveRegime.BEAR):
             return None
 
         ema20 = features.get_ema("M5", 20)
@@ -34,7 +34,7 @@ class PullbackQuality(BaseDetector):
             return None
 
         # Check last 3 candles = pullback (opposite of trend)
-        if regime.regime == AggressiveRegime.TRENDING_BULL:
+        if regime.regime == AggressiveRegime.BULL:
             pullback = all(candles[i]["close"] < candles[i - 1]["close"] for i in range(-3, 0))
             if not pullback:
                 return None

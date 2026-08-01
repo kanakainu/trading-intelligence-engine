@@ -14,7 +14,7 @@ class RibbonRide(BaseDetector):
     def detect(
         self, features: FeatureSnapshot, regime: AggressiveRegimeSnapshot
     ) -> Optional[DetectorResult]:
-        if regime.regime not in (AggressiveRegime.TRENDING_BULL, AggressiveRegime.TRENDING_BEAR):
+        if regime.regime not in (AggressiveRegime.BULL, AggressiveRegime.BEAR):
             return None
 
         ema20 = features.get_ema("M5", 20)
@@ -23,7 +23,7 @@ class RibbonRide(BaseDetector):
             return None
 
         # Ribbon aligned = EMA20 > EMA50 (bull) or EMA20 < EMA50 (bear)
-        if regime.regime == AggressiveRegime.TRENDING_BULL:
+        if regime.regime == AggressiveRegime.BULL:
             if ema20 <= ema50:
                 return None
             direction = "BUY"
