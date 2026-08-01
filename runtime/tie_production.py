@@ -12,6 +12,7 @@ from core.features.feature_models import FeatureSnapshot
 from core.regime.regime_models import RegimeSnapshot, Regime, TrendDirection
 from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
 from core.strategy_manager.manager import StrategyManager
+from core.strategy.exit_orchestrator import ExitOrchestrator, ExitProfile
 from strategies.bystra.strategy import BystraStrategy
 from strategies.aggressive.strategy import AggressiveStrategy
 from strategies.semi_hft.strategy import SemiHFTStrategy
@@ -45,6 +46,7 @@ broker = MT5BrokerAdapter(base_url=URL, token=TOKEN)
 broker.initialize()
 
 mgr = StrategyManager()
+orch = ExitOrchestrator(min_gate_rr=1.5)
 mgr.load(BystraStrategy)
 mgr.load(AggressiveStrategy)
 mgr.load(SemiHFTStrategy)
@@ -206,6 +208,27 @@ while True:
             decision = plan_to_decision(trade_plan)
 
             if decision.action != "WAIT":
+                # --- ADAPTIVE EXIT ORCHESTRATOR ---
+                _entry = (decision.metadata.get("entry_zone") or {}).get("high") or price
+                _sl = decision.metadata.get("sl") or 0.0
+                _tp = decision.metadata.get("take_profit") or 0.0
+
+                if _sl and _tp:
+                    opt = orch.optimize(
+                        strategy_id=decision.setup_name,
+                        symbol=sym,
+                        entry=_entry,
+                        sl=_sl,
+                        tp=_tp,
+                    )
+                    decision.metadata["sl"] = opt.sl
+                    decision.metadata["take_profit"] = opt.tp
+                    decision.metadata["risk_reward"] = opt.rr
+                    decision.metadata["trailing_type"] = opt.trailing_type
+                    decision.metadata["is_adjusted"] = opt.adjusted
+                    log.info("ExitOrchestrator adjusted SL/TP for %s: new SL=%.2f TP=%.2f RR=%.2f (adj=%s)",
+                             decision.setup_name, opt.sl, opt.tp, opt.rr, opt.adjusted)
+
                 log.info(f"Setup detected: {decision.setup_name} {decision.action} conf={decision.confidence:.0%}")
                 risk_ctx = {
                     "symbol": sym, "entry": (decision.metadata.get("entry_zone") or {}).get("high"),
