@@ -1,6 +1,9 @@
 """TradePostmortemWriter — writes trade lesson to HCK after position closes."""
+import logging
 from dataclasses import dataclass
 from typing import Any, Optional
+
+log = logging.getLogger("TradePostmortemWriter")
 
 
 @dataclass
@@ -47,13 +50,22 @@ class TradePostmortemWriter:
         self._hck = hck_bridge
 
     def write(self, canonical_id: str, outcome: TradeOutcome) -> bool:
-        """Write postmortem to HCK semantic memory + episode store."""
+        """Write postmortem to HCK semantic memory + episode store.
+
+        Only records trades opened by TIE V3 (comment=Riri_*). Manual trades
+        or other bots' positions are ignored — episode memory must stay clean.
+        """
+        tag = getattr(outcome, "comment", "") or getattr(outcome, "magic", "") or ""
+        if tag and not str(tag).upper().startswith("RIRI_"):
+            log.info("skip non-TIE trade: tag=%s", tag)
+            return False
+
         try:
             from strategies.aggressive.confidence.episode_store import record as _ep_record
             _ep_record(outcome.symbol, outcome.setup or "aggressive", getattr(outcome, "direction", "BUY"), outcome.outcome, outcome.realized_pnl)
         except Exception as e:
             import logging
-            logging.getLogger("TradePostmortemWriter").warning(f"episode record failed: {e}")
+            log.warning(f"episode record failed: {e}")
 
         if not self._hck: return False
         try:
@@ -70,7 +82,7 @@ class TradePostmortemWriter:
             return True
         except Exception as e:
             import logging
-            logging.getLogger("TradePostmortemWriter").warning(f"write failed: {e}")
+            log.warning(f"write failed: {e}")
             return False
 
     @staticmethod
