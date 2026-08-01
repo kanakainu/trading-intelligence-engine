@@ -123,12 +123,21 @@ td { padding: 8px; border-bottom: 1px solid #21262d; }
     </table>
   </div>
 
-  <!-- Setup Signals -->
+  <!-- Setup Signals (Approved) -->
   <div class="card">
-    <div class="card-title">Setup Signals</div>
+    <div class="card-title">✅ Setup Approved (Ready to Execute)</div>
     <table>
-      <thead><tr><th>Symbol</th><th>Setup</th><th>Dir</th><th>Conf</th><th>SL/TP</th></tr></thead>
-      <tbody id="sig-body"><tr><td colspan="5" style="color:var(--muted);text-align:center">No active signals</td></tr></tbody>
+      <thead><tr><th>Symbol</th><th>Strategy</th><th>Setup</th><th>Dir</th><th>Conf</th><th>Entry</th><th>SL</th><th>TP</th><th>RR</th></tr></thead>
+      <tbody id="sig-approved"><tr><td colspan="9" style="color:var(--muted);text-align:center">No approved signals</td></tr></tbody>
+    </table>
+  </div>
+
+  <!-- Setup Signals (Blocked) -->
+  <div class="card">
+    <div class="card-title">❌ Setup Blocked (Risk Gate Reject)</div>
+    <table>
+      <thead><tr><th>Symbol</th><th>Strategy</th><th>Setup</th><th>Dir</th><th>Conf</th><th>Reason</th></tr></thead>
+      <tbody id="sig-blocked"><tr><td colspan="6" style="color:var(--muted);text-align:center">No blocked signals</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -188,22 +197,52 @@ function updateUI() {
       posBody.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center">No open positions</td></tr>';
     }
 
-    // Signals — iterate symbols_data for setups
-    const sigBody = document.getElementById('sig-body');
-    const sigs = [];
+    // Signals — split into Approved vs Blocked
+    const approvedBody = document.getElementById('sig-approved');
+    const blockedBody = document.getElementById('sig-blocked');
+    const approved = [];
+    const blocked = [];
+    
     Object.entries(syms).forEach(([sym, v]) => {
-      if (v.setup) sigs.push({sym, ...v.setup});
+      if (v.setup) {
+        const s = v.setup;
+        if (s.status === 'APPROVED') {
+          approved.push({sym, ...s});
+        } else if (s.status === 'BLOCKED' || s.status === 'DEDUP') {
+          blocked.push({sym, ...s});
+        }
+      }
     });
-    if (sigs.length) {
-      sigBody.innerHTML = sigs.map(s => `<tr>
+    
+    // Approved signals
+    if (approved.length) {
+      approvedBody.innerHTML = approved.map(s => `<tr>
         <td class="accent">${s.sym}</td>
-        <td>${s.name||'—'}</td>
+        <td>${s.strategy||'—'}</td>
+        <td>${s.setup_name||'—'}</td>
         <td class="${dirClass(s.direction)}">${(s.direction||'').toUpperCase()}</td>
-        <td class="accent">${s.confidence ? (s.confidence*100).toFixed(0)+'%' : '—'}</td>
-        <td style="font-size:11px;color:var(--muted)">${fmt(s.sl,2)} / ${fmt(s.tp||s.take_profit,2)}</td>
+        <td class="accent">${s.confidence?s.confidence.toFixed(0)+'%':'—'}</td>
+        <td>${fmt(s.entry, s.sym==='BTCUSD'?2:5)}</td>
+        <td style="color:var(--down)">${fmt(s.sl, s.sym==='BTCUSD'?2:5)}</td>
+        <td style="color:var(--up)">${fmt(s.tp, s.sym==='BTCUSD'?2:5)}</td>
+        <td>${fmt(s.risk_reward,2)}</td>
       </tr>`).join('');
     } else {
-      sigBody.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center">No active signals</td></tr>';
+      approvedBody.innerHTML = '<tr><td colspan="9" style="color:var(--muted);text-align:center">No approved signals</td></tr>';
+    }
+    
+    // Blocked signals
+    if (blocked.length) {
+      blockedBody.innerHTML = blocked.map(s => `<tr>
+        <td class="accent">${s.sym}</td>
+        <td>${s.strategy||'—'}</td>
+        <td>${s.setup_name||'—'}</td>
+        <td class="${dirClass(s.direction)}">${(s.direction||'').toUpperCase()}</td>
+        <td class="accent">${s.confidence?s.confidence.toFixed(0)+'%':'—'}</td>
+        <td style="color:var(--down);font-size:11px">${s.gate_reason||'Unknown'}</td>
+      </tr>`).join('');
+    } else {
+      blockedBody.innerHTML = '<tr><td colspan="6" style="color:var(--muted);text-align:center">No blocked signals</td></tr>';
     }
   }).catch(e => console.error('Poll failed:', e));
 }

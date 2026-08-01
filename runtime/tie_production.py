@@ -137,8 +137,15 @@ while True:
                 candles[tf] = client.candles(sym, tf, count)
             
             price_data = client.price(sym)
-            price = price_data['ask']
+            if not isinstance(price_data, dict):
+                log.error(f"Price data for {sym} is not a dict: {price_data}")
+                continue
+            price = float(price_data.get('ask', 0.0)) # Ensure it's a float, default 0.0
             spread = _get_spread(client, sym)
+
+            if price == 0.0: # If we still have no valid price, skip this scan
+                log.warning(f"Skipping {sym} scan: no valid price data from gateway. Price data: {price_data}")
+                continue
 
             account_info = client.account() or {}
             raw_positions = client.positions() or []
@@ -208,70 +215,98 @@ while True:
             decision = plan_to_decision(trade_plan)
 
             if decision.action != "WAIT":
-                # --- ADAPTIVE EXIT ORCHESTRATOR ---
-                _entry = (decision.metadata.get("entry_zone") or {}).get("high") or price
-                _sl = decision.metadata.get("sl") or 0.0
-                _tp = decision.metadata.get("take_profit") or 0.0
+                            # --- ADAPTIVE EXIT ORCHESTRATOR ---
+                            _entry = (decision.metadata.get("entry_zone") or {}).get("high") or price
+                            _sl = decision.metadata.get("sl") or 0.0
+                            _tp = decision.metadata.get("take_profit") or 0.0
 
-                if _sl and _tp:
-                    opt = orch.optimize(
-                        strategy_id=decision.setup_name,
-                        symbol=sym,
-                        entry=_entry,
-                        sl=_sl,
-                        tp=_tp,
-                    )
-                    decision.metadata["sl"] = opt.sl
-                    decision.metadata["take_profit"] = opt.tp
-                    decision.metadata["risk_reward"] = opt.rr
-                    decision.metadata["trailing_type"] = opt.trailing_type
-                    decision.metadata["is_adjusted"] = opt.adjusted
-                    log.info("ExitOrchestrator adjusted SL/TP for %s: new SL=%.2f TP=%.2f RR=%.2f (adj=%s)",
-                             decision.setup_name, opt.sl, opt.tp, opt.rr, opt.adjusted)
+                            if _sl and _tp:
+                                opt = orch.optimize(
+                                    strategy_id=decision.setup_name,
+                                    symbol=sym,
+                                    entry=_entry,
+                                    sl=_sl,
+                                    tp=_tp,
+                                )
+                                decision.metadata["sl"] = opt.sl
+                                decision.metadata["take_profit"] = opt.tp
+                                decision.metadata["risk_reward"] = opt.rr
+                                decision.metadata["trailing_type"] = opt.trailing_type
+                                decision.metadata["is_adjusted"] = opt.adjusted
+                                log.info("ExitOrchestrator adjusted SL/TP for %s: new SL=%.2f TP=%.2f RR=%.2f (adj=%s)",
+                                         decision.setup_name, opt.sl, opt.tp, opt.rr, opt.adjusted)
 
-                log.info(f"Setup detected: {decision.setup_name} {decision.action} conf={decision.confidence:.0%}")
-                risk_ctx = {
-                    "symbol": sym, "entry": (decision.metadata.get("entry_zone") or {}).get("high"),
-                    "sl": decision.metadata.get("sl"), "tp": decision.metadata.get("take_profit"),
-                    "direction": decision.action, "confidence": decision.confidence,
-                    "spread": spread, "balance": balance, "equity": equity,
-                    "open_positions": len(raw_positions), "lot": 0.01, "sl_pips": 0, "time": time.time(),
-                }
-                if risk_ctx["sl"] and risk_ctx["entry"]:
-                    risk_ctx["sl_pips"] = abs(risk_ctx["entry"] - risk_ctx["sl"]) * 10
-                if sym in ("BTCUSD", "ETHUSD"):
-                    risk_ctx["sl_pips"] = 0
-                
-                risk_results = {}
-                for rule_name in risk_gate.list_enabled():
-                    plugin = risk_gate.get(rule_name)
-                    if plugin: risk_results[rule_name] = plugin.evaluate(risk_ctx, {}, decision)
-                
-                if all(r.status == "APPROVE" for r in risk_results.values()):
-                    dedup_key = (sym, decision.setup_name, decision.action)
-                    now = time.time()
-                    last_seen = _seen_setups.get(dedup_key, 0.0)
-                    if now - last_seen < DEDUP_WINDOW:
-                        log.info(f"Dedup: skip {decision.setup_name} {decision.action} {sym} (seen {(now-last_seen):.0f}s ago)")
-                    else:
-                        # Mandate enforcement — Vibe enforcement.py pattern
-                        vol = risk_ctx.get("lot", 0.01)
-                        notional = price * vol * 100  # approx USD notional
-                        if notional > 50_000:
-                            log.warning(f"Mandate DENY {sym}: notional ${notional:.0f} > $50k limit")
-                        elif sym not in SYMBOLS:
-                            log.warning(f"Mandate DENY {sym}: not in allowed symbols {SYMBOLS}")
-                        else:
-                            _seen_setups[dedup_key] = now
-                            log.info(f"Risk Gate: ✅ PASS — {sym}")
-                            push_decision(decision)
-                            monitor.add_setup(decision)
-                else:
-                    reasons = "; ".join(f"{n}={r.status}:{r.reason}" for n, r in risk_results.items() if r.status != "APPROVE")
-                    log.info(f"Risk Gate: ❌ BLOCKED {sym}. {reasons}")
-                    # NOTIF OFF: notifier.notify_risk_gate_blocked(...)
+                            log.info(f"Setup detected: {decision.setup_name} {decision.action} conf={decision.confidence:.0%}")
+                            risk_ctx = {
+                                "symbol": sym, "entry": (decision.metadata.get("entry_zone") or {}).get("high"),
+                                "sl": decision.metadata.get("sl"), "tp": decision.metadata.get("take_profit"),
+                                "direction": decision.action, "confidence": decision.confidence,
+                                "spread": spread, "balance": balance, "equity": equity,
+                                "open_positions": len(raw_positions), "lot": 0.01, "sl_pips": 0, "time": time.time(),
+                            }
+                            if risk_ctx["sl"] and risk_ctx["entry"]:
+                                risk_ctx["sl_pips"] = abs(risk_ctx["entry"] - risk_ctx["sl"]) * 10
+                            if sym in ("BTCUSD", "ETHUSD"):
+                                risk_ctx["sl_pips"] = 0
+
+                            risk_results = {}
+                            for rule_name in risk_gate.list_enabled():
+                                plugin = risk_gate.get(rule_name)
+                                if plugin: risk_results[rule_name] = plugin.evaluate(risk_ctx, {}, decision)
+
+                            # Build setup detail for dashboard (capture BEFORE gate decision)
+                            entry_zone = decision.metadata.get("entry_zone") or {}
+                            setup_detail = {
+                                "strategy": decision.setup_name.split("_")[0] if "_" in decision.setup_name else "Unknown",
+                                "setup_name": decision.setup_name,
+                                "direction": decision.action,
+                                "confidence": round(decision.confidence * 100, 1),
+                                "entry": round(entry_zone.get("high") or entry_zone.get("low") or price, 5),
+                                "sl": round(decision.metadata.get("sl") or 0.0, 5),
+                                "tp": round(decision.metadata.get("take_profit") or 0.0, 5),
+                                "danger_zone": round(decision.metadata.get("danger_zone") or 0.0, 5),
+                                "risk_reward": round(decision.metadata.get("risk_reward") or 0.0, 2),
+                                "trailing_type": decision.metadata.get("trailing_type", "fixed"),
+                                "is_adjusted": decision.metadata.get("is_adjusted", False),
+                                "timestamp": datetime.now(timezone.utc).isoformat(),
+                            }
+
+                            if all(r.status == "APPROVE" for r in risk_results.values()):
+                                dedup_key = (sym, decision.setup_name, decision.action)
+                                now = time.time()
+                                last_seen = _seen_setups.get(dedup_key, 0.0)
+                                if now - last_seen < DEDUP_WINDOW:
+                                    log.info(f"Dedup: skip {decision.setup_name} {decision.action} {sym} (seen {(now-last_seen):.0f}s ago)")
+                                    setup_detail["status"] = "DEDUP"
+                                    setup_detail["gate_reason"] = f"Dedup: seen {(now-last_seen):.0f}s ago"
+                                else:
+                                    # Mandate enforcement — Vibe enforcement.py pattern
+                                    vol = risk_ctx.get("lot", 0.01)
+                                    notional = price * vol * 100  # approx USD notional
+                                    if notional > 50_000:
+                                        log.warning(f"Mandate DENY {sym}: notional ${notional:.0f} > $50k limit")
+                                        setup_detail["status"] = "BLOCKED"
+                                        setup_detail["gate_reason"] = f"Mandate: notional ${notional:.0f} > $50k limit"
+                                    elif sym not in SYMBOLS:
+                                        log.warning(f"Mandate DENY {sym}: not in allowed symbols {SYMBOLS}")
+                                        setup_detail["status"] = "BLOCKED"
+                                        setup_detail["gate_reason"] = f"Mandate: symbol not in allowed list"
+                                    else:
+                                        _seen_setups[dedup_key] = now
+                                        log.info(f"Risk Gate: ✅ PASS — {sym}")
+                                        setup_detail["status"] = "APPROVED"
+                                        setup_detail["gate_reason"] = "All gates passed"
+                                        push_decision(decision)
+                                        monitor.add_setup(decision)
+                            else:
+                                reasons = "; ".join(f"{n}={r.status}:{r.reason}" for n, r in risk_results.items() if r.status != "APPROVE")
+                                log.info(f"Risk Gate: ❌ BLOCKED {sym}. {reasons}")
+                                setup_detail["status"] = "BLOCKED"
+                                setup_detail["gate_reason"] = reasons
+                                # NOTIF OFF: notifier.notify_risk_gate_blocked(...)
             else:
                 log.info(f"No setup for {sym} (WAIT)")
+                setup_detail = None
             
             # Position monitoring - pass M5 candles for early exit detection
             market_update = {
@@ -310,25 +345,14 @@ while True:
                 "atr": ctx.metadata.get("atr", 0.0),
                 "session": ctx.metadata.get("h1_trend", "ASIA").upper(),
                 "last_scan": datetime.now(timezone.utc).isoformat(),
-                "setup": None
+                "setup": setup_detail  # Full setup detail with status, reason, strategy, SL/TP
             }
-            
-            if decision.action != "WAIT":
-                pair_data["setup"] = {
-                    "name": decision.setup_name,
-                    "direction": decision.action,
-                    "confidence": decision.confidence,
-                    "entry_zone": decision.metadata.get("entry_zone"),
-                    "sl": decision.metadata.get("sl"),
-                    "tp": decision.metadata.get("take_profit"),
-                    "danger_zone": decision.metadata.get("danger_zone"),
-                    "timestamp": datetime.now(timezone.utc).isoformat()
-                }
             
             all_pairs_data[sym] = pair_data
         
         except Exception as e:
-            log.error(f"Error scanning {sym}: {e}")
+            import traceback
+            log.error(f"Error scanning {sym}: {e}\n{traceback.format_exc()}")
     
     # Write aggregated JSON AFTER all symbols scanned
     try:
