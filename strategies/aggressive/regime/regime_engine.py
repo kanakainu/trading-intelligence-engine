@@ -38,11 +38,58 @@ class AggressiveRegimeEngine:
         )
 
     def _compute_metrics(self, features: FeatureSnapshot) -> M5RegimeMetrics:
-        ema9 = features.get_ema("M5", 9) or 0.0
-        ema21 = features.get_ema("M5", 21) or 0.0
-        ema_slope = features.get_ema_slope("M5", 9) or 0.0 # Slope of EMA9
-        adx = features.get_adx("M5") or 0.0
-        return M5RegimeMetrics(ema9=ema9, ema21=ema21, ema_slope=ema_slope, adx=adx)
+        candles = features.candles.get("M5", [])
+        closes = [float(c["close"]) for c in candles]
+        ema9   = self._ema(closes, 9)
+        ema21  = self._ema(closes, 21)
+        # slope = last 3 EMA9 values diff
+        ema9_series = [self._ema(closes[:i], 9) for i in range(len(closes)-2, len(closes)+1)]
+        slope = (ema9_series[-1] - ema9_series[0]) / 2 if len(ema9_series) == 3 else 0.0
+        adx   = self._calc_adx(candles)
+        return M5RegimeMetrics(ema9=ema9, ema21=ema21, ema_slope=slope, adx=adx)
+
+    @staticmethod
+    def _ema(closes: list, period: int) -> float:
+        if len(closes) < period:
+            return 0.0
+        k = 2 / (period + 1)
+        val = sum(closes[:period]) / period
+        for c in closes[period:]:
+            val = c * k + val * (1 - k)
+        return val
+
+    @staticmethod
+    def _calc_adx(candles: list, period: int = 14) -> float:
+        """Simplified ADX from M5 candles (Wilder's smoothing, period=14)."""
+        if len(candles) < period + 1:
+            return 0.0
+        try:
+            highs  = [float(c["high"])  for c in candles]
+            lows   = [float(c["low"])   for c in candles]
+            closes = [float(c["close"]) for c in candles]
+            trs, pdms, mdms = [], [], []
+            for i in range(1, len(candles)):
+                tr  = max(highs[i]-lows[i], abs(highs[i]-closes[i-1]), abs(lows[i]-closes[i-1]))
+                pdm = max(highs[i]-highs[i-1], 0) if (highs[i]-highs[i-1]) > (lows[i-1]-lows[i]) else 0
+                mdm = max(lows[i-1]-lows[i], 0) if (lows[i-1]-lows[i]) > (highs[i]-highs[i-1]) else 0
+                trs.append(tr); pdms.append(pdm); mdms.append(mdm)
+            def smooth(vals):
+                s = sum(vals[:period])
+                result = [s]
+                for v in vals[period:]:
+                    s = s - s/period + v
+                    result.append(s)
+                return result
+            str_ = smooth(trs); spdm = smooth(pdms); smdm = smooth(mdms)
+            dxs = []
+            for atr, sp, sm in zip(str_, spdm, smdm):
+                if atr == 0: continue
+                pdi = 100*sp/atr; mdi = 100*sm/atr
+                dx  = 100*abs(pdi-mdi)/(pdi+mdi) if (pdi+mdi) > 0 else 0
+                dxs.append(dx)
+            return sum(dxs[-period:]) / period if len(dxs) >= period else 0.0
+        except Exception:
+            return 0.0
 
     def _classify_regime(self, metrics: M5RegimeMetrics) -> AggressiveRegime:
         if metrics.ema9 > metrics.ema21 and metrics.ema_slope > 0.0:
