@@ -64,9 +64,10 @@ class AggressiveRegimeEngine:
         if len(candles) < period + 1:
             return 0.0
         try:
-            highs  = [float(c["high"])  for c in candles]
-            lows   = [float(c["low"])   for c in candles]
-            closes = [float(c["close"]) for c in candles]
+            def _k(c, k): return float(c.get(k) or c.get(k.capitalize()) or c.get(k.upper()) or 0)
+            highs  = [_k(c,"high")  for c in candles]
+            lows   = [_k(c,"low")   for c in candles]
+            closes = [_k(c,"close") for c in candles]
             trs, pdms, mdms = [], [], []
             for i in range(1, len(candles)):
                 tr  = max(highs[i]-lows[i], abs(highs[i]-closes[i-1]), abs(lows[i]-closes[i-1]))
