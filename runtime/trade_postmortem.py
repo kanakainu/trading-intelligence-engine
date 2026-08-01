@@ -47,7 +47,14 @@ class TradePostmortemWriter:
         self._hck = hck_bridge
 
     def write(self, canonical_id: str, outcome: TradeOutcome) -> bool:
-        """Write postmortem to HCK semantic memory."""
+        """Write postmortem to HCK semantic memory + episode store."""
+        try:
+            from strategies.aggressive.confidence.episode_store import record as _ep_record
+            _ep_record(outcome.symbol, outcome.setup or "aggressive", getattr(outcome, "direction", "BUY"), outcome.outcome, outcome.realized_pnl)
+        except Exception as e:
+            import logging
+            logging.getLogger("TradePostmortemWriter").warning(f"episode record failed: {e}")
+
         if not self._hck: return False
         try:
             content = self._build_postmortem(outcome)
