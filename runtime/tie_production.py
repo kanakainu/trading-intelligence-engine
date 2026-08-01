@@ -14,6 +14,7 @@ from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
 from core.strategy_manager.manager import StrategyManager
 from strategies.bystra.strategy import BystraStrategy
 from strategies.aggressive.strategy import AggressiveStrategy
+from strategies.semi_hft.strategy import SemiHFTStrategy
 from strategies.aggressive.regime.regime_engine import AggressiveRegimeEngine
 from runtime.multi_strategy_runtime import MultiStrategyRuntime
 from runtime.adapters.tradeplan_adapter import plan_to_decision, aggressive_regime_to_core_regime
@@ -46,6 +47,7 @@ broker.initialize()
 mgr = StrategyManager()
 mgr.load(BystraStrategy)
 mgr.load(AggressiveStrategy)
+mgr.load(SemiHFTStrategy)
 
 rt = MultiStrategyRuntime(mgr)
 monitor = EntryMonitor(broker=broker, gateway=client)
