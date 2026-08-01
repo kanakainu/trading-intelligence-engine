@@ -82,6 +82,8 @@ class MultiStrategyRuntime:
             detector_sl=md.get("sl"),
             candles=scan_ctx.market.metadata.get("candles", {}),
             scan_id=scan_id,
+            balance=getattr(scan_ctx.market, "balance", 1000.0),
+            risk_per_trade_pct=1.0,
         )
         plan = self._planner.plan(planner_inputs)
 
