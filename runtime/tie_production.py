@@ -101,6 +101,22 @@ while True:
         time.sleep(10)
         continue
 
+    # Drawdown Guard — block all new signals if DD ≥ 35% from peak equity
+    try:
+        _acct = client.account() or {}
+        _equity = float(_acct.get("equity", 0))
+        _balance = float(_acct.get("balance", _equity))
+        _peak = max(_equity, _balance)
+        if _peak > 0:
+            _dd_pct = (_peak - _equity) / _peak * 100
+            if _dd_pct >= 35.0:
+                log.warning("DD GUARD: equity=%.2f peak=%.2f DD=%.1f%% ≥ 35%% — all scans blocked.", _equity, _peak, _dd_pct)
+                time.sleep(30)
+                continue
+    except Exception as _e:
+        log.warning("DD Guard check failed: %s", _e)
+
+
     all_pairs_data = {}  # Accumulate ALL pairs per loop
     status_path = "/home/ubuntu/tie-dashboard/data/tie_status.json"
 
