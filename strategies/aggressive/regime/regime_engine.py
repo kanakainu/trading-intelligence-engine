@@ -18,7 +18,7 @@ class M5RegimeMetrics:
 class AggressiveRegimeEngine:
     def classify(self, features: FeatureSnapshot) -> AggressiveRegimeSnapshot:
         candles_m5 = features.candles.get("M5", [])
-        if len(candles_m5) < 50: # Need enough data for EMAs/ADX
+        if len(candles_m5) < 30: # Need enough data for EMAs/ADX
             return self._fallback(features.timestamp)
 
         metrics = self._compute_metrics(features)
