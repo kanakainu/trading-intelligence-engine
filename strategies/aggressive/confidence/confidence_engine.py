@@ -12,6 +12,7 @@ from strategies.aggressive.liquidity.liquidity_engine import LiquiditySnapshot, 
 from strategies.aggressive.market_pulse.market_pulse import PulseSnapshot
 from strategies.aggressive.session.session_profile import SessionSnapshot
 from strategies.aggressive.opportunity.opportunity_engine import OpportunitySnapshot
+from strategies.aggressive.confidence.episode_store import success_rate as _episode_success_rate
 
 
 @dataclass
@@ -34,6 +35,8 @@ def compute_confidence(
     pulse: Optional[PulseSnapshot] = None,
     session: Optional[SessionSnapshot] = None,
     opportunity: Optional[OpportunitySnapshot] = None,
+    symbol: str = "",
+    setup_name: str = "",
 ) -> ConfidenceScore:
     """Compute meta-confidence from regime + detectors + liquidity + pulse + session + opportunity."""
 
@@ -88,8 +91,8 @@ def compute_confidence(
     # 5. Opportunity quality (new)
     opportunity_quality = opportunity.score if opportunity else 0.0
 
-    # 6. Historical (placeholder)
-    historical_success = 0.0
+    # 6. Historical — Episode Memory (sqlite3, Vibe episode_store pattern)
+    historical_success = _episode_success_rate(symbol, setup_name) if symbol and setup_name else 50.0
 
     weights = {"regime": 0.20, "detector": 0.25, "liquidity": 0.15,
                "momentum": 0.15, "opportunity": 0.15, "historical": 0.10}

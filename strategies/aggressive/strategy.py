@@ -98,7 +98,7 @@ class AggressiveStrategy(BaseStrategy):
             return StrategyResult(signal=None, confidence=0.0, reason="no_detector_fired")
 
         # 6. Confidence Engine
-        conf = compute_confidence(results, regime, liquidity=liquidity, pulse=pulse, session=session, opportunity=opportunity)
+        conf = compute_confidence(results, regime, liquidity=liquidity, pulse=pulse, session=session, opportunity=opportunity, symbol=features.symbol, setup_name="aggressive")
         if conf.verdict == "REJECT":
             return StrategyResult(signal=None, confidence=0.0, reason=f"confidence_reject={conf.confidence}")
 
