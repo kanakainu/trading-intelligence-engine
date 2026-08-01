@@ -76,6 +76,24 @@ def _get_spread(client, symbol: str) -> float:
 
 HALT_FLAG = "/tmp/tie_halt"  # touch /tmp/tie_halt to stop all trading; rm to resume
 
+# Market session hours UTC — Vibe triggers.py pattern
+# ponytail: add Asian/London/NY session awareness when SessionProfile lands
+_CFD_24_5 = {"XAUUSD", "GBPJPY"}  # closed Fri 21:00–Sun 22:00 UTC
+_CRYPTO_247 = {"BTCUSD"}
+
+def _market_open(sym: str, now_utc: datetime) -> bool:
+    """Return False if CFD market is closed (weekend gap)."""
+    if sym.upper() in _CRYPTO_247:
+        return True
+    # Fri 21:00 UTC → Sun 22:00 UTC = closed
+    wd = now_utc.weekday()  # Mon=0 … Fri=4, Sat=5, Sun=6
+    h  = now_utc.hour
+    if wd == 4 and h >= 21: return False   # Friday after close
+    if wd == 5: return False               # All Saturday
+    if wd == 6 and h < 22: return False    # Sunday before open
+    return True
+
+
 while True:
     # Kill Switch — sentinel file pattern (Vibe halt.py)
     if os.path.exists(HALT_FLAG):
@@ -88,6 +106,10 @@ while True:
 
     for sym in SYMBOLS:
         try:
+            now_utc = datetime.now(timezone.utc)
+            if not _market_open(sym, now_utc):
+                log.info("Market closed for %s (%s) — skip scan", sym, now_utc.strftime("%a %H:%M UTC"))
+                continue
             log.info(f"--- Scanning {sym} ---")
             candles = {}
             for tf in ["M5", "M15", "M30", "H1"]:
