@@ -20,7 +20,6 @@ def read_status() -> dict:
         with open(STATUS_PATH) as f:
             data = json.load(f)
         data["status"] = "LIVE"
-        # Normalise symbols_data from 'pairs' key written by tie_production
         if "pairs" in data and "symbols_data" not in data:
             data["symbols_data"] = data["pairs"]
         return data
@@ -61,69 +60,181 @@ HTML = """<!DOCTYPE html>
 :root {
   --bg: #0d1117; --card: #161b22; --accent: #00ff88;
   --text: #c9d1d9; --muted: #8b949e; --border: #30363d;
-  --up: #3fb950; --down: #f85149;
+  --up: #3fb950; --down: #f85149; --sidebar: #0d1117;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 16px; }
-h1 { color: var(--accent); font-size: 18px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
-.card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
-.card-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+body { 
+  background: var(--bg); 
+  color: var(--text); 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+}
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+.sidebar-title {
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+}
+.sidebar-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.nav-section {
+  padding: 10px 0;
+}
+.nav-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 20px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 13px;
+}
+.nav-item:hover { background: rgba(255,255,255,0.05); }
+.nav-item.active { background: rgba(0,255,136,0.1); color: var(--accent); border-left: 3px solid var(--accent); }
+
+/* Main Content */
+.main {
+  flex: 1;
+  margin-left: 240px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.clock { color: var(--muted); font-size: 12px; }
+
+/* Cards */
+.card { 
+  background: var(--card); 
+  border: 1px solid var(--border); 
+  border-radius: 8px; 
+  padding: 16px;
+}
+.card-title { 
+  font-size: 11px; 
+  font-weight: 600; 
+  color: var(--muted); 
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
-th { color: var(--muted); font-weight: normal; text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
-td { padding: 8px; border-bottom: 1px solid #21262d; }
+th { color: var(--muted); font-weight: normal; text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
+td { padding: 10px 8px; border-bottom: 1px solid #21262d; }
 .up { color: var(--up); } .down { color: var(--down); } .accent { color: var(--accent); }
-.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: bold; }
 .badge-live { background: rgba(63,185,80,.15); color: var(--up); }
 .badge-wait { background: rgba(139,148,158,.1); color: var(--muted); }
-.badge-err  { background: rgba(248,81,73,.15); color: var(--down); }
-.kv { display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px; border-bottom: 1px solid #21262d; }
-.kv:last-child { border-bottom: none; }
-.kv-label { color: var(--muted); }
-#clock { color: var(--muted); font-size: 12px; }
-#status-badge { margin-left: 8px; }
+.badge-err { background: rgba(248,81,73,.15); color: var(--down); }
+
+/* Sidebar mini cards */
+.sidebar-card {
+  background: rgba(255,255,255,0.03);
+  border-radius: 6px;
+  padding: 12px;
+  margin: 0 12px 12px;
+}
+.sidebar-kv {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 4px 0;
+}
+.sidebar-kv-label { color: var(--muted); }
 </style>
 </head>
 <body>
-<h1>
-  TIE v3 Terminal
-  <span>
-    <span id="status-badge" class="badge">—</span>
-    &nbsp;<span id="clock"></span>
-  </span>
-</h1>
 
-<div class="grid">
-  <!-- Market Watch -->
-  <div class="card">
-    <div class="card-title">Market Watch</div>
-    <table>
-      <thead><tr><th>Symbol</th><th>Price</th><th>Spread</th><th>Trend</th><th>Status</th></tr></thead>
-      <tbody id="mw-body"><tr><td colspan="5" style="color:var(--muted);text-align:center">Loading…</td></tr></tbody>
-    </table>
-  </div>
-
-  <!-- Account -->
-  <div class="card">
-    <div class="card-title">Account</div>
-    <div id="acct-body">
-      <div class="kv"><span class="kv-label">Balance</span><span id="acct-balance">—</span></div>
-      <div class="kv"><span class="kv-label">Equity</span><span id="acct-equity">—</span></div>
-      <div class="kv"><span class="kv-label">Floating PnL</span><span id="acct-pnl">—</span></div>
-      <div class="kv"><span class="kv-label">Last Scan</span><span id="last-scan">—</span></div>
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">TIE v3 Terminal</div>
+    <div class="sidebar-status">
+      <span id="status-badge" class="badge">—</span>
+      <span id="clock" class="clock"></span>
     </div>
   </div>
+  
+  <nav class="nav-section">
+    <div class="nav-title">Markets</div>
+    <div id="nav-markets"></div>
+  </nav>
+  
+  <nav class="nav-section">
+    <div class="nav-title">Account</div>
+    <div class="sidebar-card" id="sidebar-acct">
+      <div class="sidebar-kv"><span class="sidebar-kv-label">Balance</span><span id="acct-balance">—</span></div>
+      <div class="sidebar-kv"><span class="sidebar-kv-label">Equity</span><span id="acct-equity">—</span></div>
+      <div class="sidebar-kv"><span class="sidebar-kv-label">Floating</span><span id="acct-pnl">—</span></div>
+    </div>
+  </nav>
+  
+  <nav class="nav-section">
+    <div class="nav-title">System</div>
+    <div class="nav-item"><span>⚙️</span> Settings</div>
+    <div class="nav-item"><span>📊</span> Logs</div>
+  </nav>
+</aside>
 
+<!-- Main Content -->
+<main class="main">
+  <div class="main-header">
+    <div></div>
+    <div id="last-scan" style="color:var(--muted);font-size:11px;">Last scan: —</div>
+  </div>
+  
   <!-- Open Positions -->
   <div class="card">
-    <div class="card-title">Open Positions</div>
+    <div class="card-title">📈 Open Positions</div>
     <table>
-      <thead><tr><th>Symbol</th><th>Dir</th><th>Vol</th><th>Entry</th><th>PnL</th></tr></thead>
-      <tbody id="pos-body"><tr><td colspan="5" style="color:var(--muted);text-align:center">No open positions</td></tr></tbody>
+      <thead><tr><th>Symbol</th><th>Dir</th><th>Vol</th><th>Entry</th><th>SL</th><th>TP</th><th>PnL</th></tr></thead>
+      <tbody id="pos-body"><tr><td colspan="7" style="color:var(--muted);text-align:center">No open positions</td></tr></tbody>
     </table>
   </div>
-
-  <!-- Setup Signals (Approved) -->
+  
+  <!-- Setup Approved -->
   <div class="card">
     <div class="card-title">✅ Setup Approved (Ready to Execute)</div>
     <table>
@@ -131,8 +242,8 @@ td { padding: 8px; border-bottom: 1px solid #21262d; }
       <tbody id="sig-approved"><tr><td colspan="9" style="color:var(--muted);text-align:center">No approved signals</td></tr></tbody>
     </table>
   </div>
-
-  <!-- Setup Signals (Blocked) -->
+  
+  <!-- Setup Blocked -->
   <div class="card">
     <div class="card-title">❌ Setup Blocked (Risk Gate Reject)</div>
     <table>
@@ -140,7 +251,7 @@ td { padding: 8px; border-bottom: 1px solid #21262d; }
       <tbody id="sig-blocked"><tr><td colspan="6" style="color:var(--muted);text-align:center">No blocked signals</td></tr></tbody>
     </table>
   </div>
-</div>
+</main>
 
 <script>
 function fmt(n, dec=2) { return n != null ? (+n).toFixed(dec) : '—'; }
@@ -153,35 +264,31 @@ function updateUI() {
     const badge = document.getElementById('status-badge');
     badge.textContent = d.status || '—';
     badge.className = 'badge badge-' + (d.status==='LIVE'?'live': d.status==='ERROR'?'err':'wait');
-
+    
     // Account
     const ai = d.account_info || {};
     document.getElementById('acct-balance').textContent = '$' + fmt(d.balance ?? ai.balance);
-    document.getElementById('acct-equity').textContent  = '$' + fmt(d.equity  ?? ai.equity);
+    document.getElementById('acct-equity').textContent = '$' + fmt(d.equity ?? ai.equity);
     const pnl = d.floating_pnl ?? 0;
     const pnlEl = document.getElementById('acct-pnl');
     pnlEl.textContent = (pnl >= 0 ? '+' : '') + fmt(pnl);
     pnlEl.className = pnl >= 0 ? 'up' : 'down';
-    document.getElementById('last-scan').textContent = ts(d.ts);
-
-    // Market Watch
+    document.getElementById('last-scan').textContent = 'Last scan: ' + ts(d.ts);
+    
+    // Sidebar markets
     const syms = d.symbols_data || d.pairs || {};
-    const mwBody = document.getElementById('mw-body');
-    const mwRows = Object.entries(syms).map(([sym, v]) => {
+    const navMarkets = document.getElementById('nav-markets');
+    navMarkets.innerHTML = Object.entries(syms).map(([sym, v]) => {
       const closed = !v.price;
-      const statusBadge = closed
-        ? '<span class="badge badge-wait">CLOSED</span>'
-        : '<span class="badge badge-live">LIVE</span>';
-      return `<tr>
-        <td class="accent">${sym}</td>
-        <td>${v.price ? fmt(v.price, sym==='BTCUSD'?2:5) : '—'}</td>
-        <td>${v.spread || '—'}</td>
-        <td class="${(v.trend||'').includes('bull')?'up':'down'}">${v.trend||'—'}</td>
-        <td>${statusBadge}</td>
-      </tr>`;
-    }).join('');
-    mwBody.innerHTML = mwRows || '<tr><td colspan="5" style="color:var(--muted);text-align:center">No data</td></tr>';
-
+      const badgeClass = closed ? 'badge-wait' : 'badge-live';
+      const badgeText = closed ? 'CLOSED' : 'LIVE';
+      return `<div class="nav-item">
+        <span>${closed ? '💤' : '📊'}</span>
+        <span>${sym}</span>
+        <span class="badge ${badgeClass}" style="margin-left:auto">${badgeText}</span>
+      </div>`;
+    }).join('') || '<div class="nav-item" style="color:var(--muted)">No data</div>';
+    
     // Positions
     const positions = d.positions || [];
     const posBody = document.getElementById('pos-body');
@@ -190,13 +297,15 @@ function updateUI() {
         <td class="accent">${p.symbol||'—'}</td>
         <td class="${dirClass(p.side)}">${(p.side||'').toUpperCase()}</td>
         <td>${fmt(p.volume,2)}</td>
-        <td>${fmt(p.entry,2)}</td>
+        <td>${fmt(p.entry, p.symbol==='BTCUSD'?2:5)}</td>
+        <td style="color:var(--down)">${fmt(p.sl, p.symbol==='BTCUSD'?2:5)}</td>
+        <td style="color:var(--up)">${fmt(p.tp, p.symbol==='BTCUSD'?2:5)}</td>
         <td class="${(p.pnl||0)>=0?'up':'down'}">${fmt(p.pnl,2)}</td>
       </tr>`).join('');
     } else {
-      posBody.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center">No open positions</td></tr>';
+      posBody.innerHTML = '<tr><td colspan="7" style="color:var(--muted);text-align:center">No open positions</td></tr>';
     }
-
+    
     // Signals — split into Approved vs Blocked
     const approvedBody = document.getElementById('sig-approved');
     const blockedBody = document.getElementById('sig-blocked');
@@ -252,7 +361,8 @@ setInterval(() => { document.getElementById('clock').textContent = new Date().to
 updateUI();
 </script>
 </body>
-</html>"""
+</html>
+"""
 
 
 if __name__ == "__main__":
