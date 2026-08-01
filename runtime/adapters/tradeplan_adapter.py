@@ -74,22 +74,19 @@ def aggressive_regime_to_core_regime(agg_regime: AggressiveRegimeSnapshot) -> Re
     """
     # Map AggressiveRegime to core.regime.Regime
     regime_map = {
-        AggressiveRegime.TRENDING_BULL: Regime.TRENDING,
-        AggressiveRegime.TRENDING_BEAR: Regime.TRENDING,
-        AggressiveRegime.WEAK_TREND: Regime.EARLY_TREND,
-        AggressiveRegime.RANGING: Regime.RANGE,
-        AggressiveRegime.CHOPPY: Regime.CHOPPY,
-        AggressiveRegime.HIGH_VOLATILITY: Regime.NEWS,
-        AggressiveRegime.LOW_LIQUIDITY: Regime.LOW_LIQUIDITY,
+        AggressiveRegime.BULL:         Regime.TRENDING,
+        AggressiveRegime.BEAR:         Regime.TRENDING,
+        AggressiveRegime.MINOR_TREND:  Regime.EARLY_TREND,
+        AggressiveRegime.FLAT:         Regime.RANGE,
     }
 
     core_regime_enum = regime_map.get(agg_regime.regime, Regime.UNKNOWN)
 
     # Map TrendDirection
     trend_direction_enum = TrendDirection.FLAT
-    if agg_regime.regime == AggressiveRegime.TRENDING_BULL:
+    if agg_regime.regime == AggressiveRegime.BULL:
         trend_direction_enum = TrendDirection.UP
-    elif agg_regime.regime == AggressiveRegime.TRENDING_BEAR:
+    elif agg_regime.regime == AggressiveRegime.BEAR:
         trend_direction_enum = TrendDirection.DOWN
 
     return RegimeSnapshot(
