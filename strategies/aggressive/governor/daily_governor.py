@@ -9,7 +9,7 @@ class GovernorStatus:
     trades_today: int
 
 class DailyProfitGovernor:
-    def __init__(self, profit_target=30.0, max_loss=20.0):
+    def __init__(self, profit_target=30.0, max_loss=50.0):
         self.target = profit_target
         self.max_loss = max_loss
         self.daily_pnl = 0.0
