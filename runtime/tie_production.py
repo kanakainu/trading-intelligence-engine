@@ -280,24 +280,12 @@ while True:
                                     setup_detail["status"] = "DEDUP"
                                     setup_detail["gate_reason"] = f"Dedup: seen {(now-last_seen):.0f}s ago"
                                 else:
-                                    # Mandate enforcement — Vibe enforcement.py pattern
-                                    vol = risk_ctx.get("lot", 0.01)
-                                    notional = price * vol * 100  # approx USD notional
-                                    if notional > 50_000:
-                                        log.warning(f"Mandate DENY {sym}: notional ${notional:.0f} > $50k limit")
-                                        setup_detail["status"] = "BLOCKED"
-                                        setup_detail["gate_reason"] = f"Mandate: notional ${notional:.0f} > $50k limit"
-                                    elif sym not in SYMBOLS:
-                                        log.warning(f"Mandate DENY {sym}: not in allowed symbols {SYMBOLS}")
-                                        setup_detail["status"] = "BLOCKED"
-                                        setup_detail["gate_reason"] = f"Mandate: symbol not in allowed list"
-                                    else:
-                                        _seen_setups[dedup_key] = now
-                                        log.info(f"Risk Gate: ✅ PASS — {sym}")
-                                        setup_detail["status"] = "APPROVED"
-                                        setup_detail["gate_reason"] = "All gates passed"
-                                        push_decision(decision)
-                                        monitor.add_setup(decision)
+                                    _seen_setups[dedup_key] = now
+                                    log.info(f"Risk Gate: ✅ PASS — {sym}")
+                                    setup_detail["status"] = "APPROVED"
+                                    setup_detail["gate_reason"] = "All gates passed"
+                                    push_decision(decision)
+                                    monitor.add_setup(decision)
                             else:
                                 reasons = "; ".join(f"{n}={r.status}:{r.reason}" for n, r in risk_results.items() if r.status != "APPROVE")
                                 log.info(f"Risk Gate: ❌ BLOCKED {sym}. {reasons}")

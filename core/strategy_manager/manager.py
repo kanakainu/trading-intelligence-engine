@@ -99,14 +99,23 @@ class StrategyManager:
     def run_all(self, context: StrategyContext) -> List[StrategyResult]:
         """Run all enabled strategies. Returns list of results."""
         results = []
+        sym = context.scan.market.symbol.upper() if context.scan and context.scan.market else ""
         for sid, strategy in sorted(self._registry.items(), key=lambda x: -x[1].priority):
             if not self._enabled.get(sid, False):
+                continue
+            # Symbol filter — strategy only runs on supported symbols
+            meta = getattr(strategy, "metadata", None)
+            supported = getattr(meta, "supported_symbols", None)
+            if supported and sym and sym not in [s.upper() for s in supported]:
+                logger.debug("Strategy %s skipped for %s (supported=%s)", sid, sym, supported)
                 continue
             try:
                 result = strategy.analyze(context)
                 if result:
                     self._metrics[sid].record(result)
                     results.append(result)
+                    if result.signal is None:
+                        logger.info("Strategy %s returned WAIT: %s", sid, result.reason)
             except Exception as e:
                 logger.error("Strategy %s failed: %s", sid, e)
         return results
