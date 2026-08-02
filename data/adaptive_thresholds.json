@@ -1,0 +1,14 @@
+{
+  "thresholds": {
+    "default": 55.0,
+    "MomentumBurst": 45,
+    "LiquidityGrab": 45
+  },
+  "budgets": {
+    "bystra": 5,
+    "aggressive": 15,
+    "semi_hft": 25,
+    "momentumburst": 20,
+    "liquiditygrab": 5
+  }
+}

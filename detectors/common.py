@@ -54,18 +54,24 @@ def is_engulfing(prev: Dict, curr: Dict) -> str:
 
 # ── New Structural Swing S/R ────────────────────────────────────────────────
 
+def _candle_val(c, k):
+    """Safe candle value access — handles lowercase/uppercase/null keys."""
+    if not isinstance(c, dict):
+        return 0.0
+    return float(c.get(k) or c.get(k.capitalize()) or c.get(k.upper()) or 0.0)
+
 def find_swing_pivots(candles: List[Dict], n: int = 3) -> List[Dict]:
     """Find local pivot highs/lows where candle[i] is extreme of prev n and next n."""
     pivots = []
     for i in range(n, len(candles) - n):
-        is_high = all(float(candles[i]["high"]) > float(candles[j]["high"]) for j in range(i-n, i)) and \
-                  all(float(candles[i]["high"]) > float(candles[j]["high"]) for j in range(i+1, i+n+1))
-        is_low = all(float(candles[i]["low"]) < float(candles[j]["low"]) for j in range(i-n, i)) and \
-                 all(float(candles[i]["low"]) < float(candles[j]["low"]) for j in range(i+1, i+n+1))
+        is_high = all(_candle_val(candles[i], "high") > _candle_val(candles[j], "high") for j in range(i-n, i)) and \
+                  all(_candle_val(candles[i], "high") > _candle_val(candles[j], "high") for j in range(i+1, i+n+1))
+        is_low = all(_candle_val(candles[i], "low") < _candle_val(candles[j], "low") for j in range(i-n, i)) and \
+                 all(_candle_val(candles[i], "low") < _candle_val(candles[j], "low") for j in range(i+1, i+n+1))
         if is_high:
-            pivots.append({"type": "high", "price": float(candles[i]["high"]), "index": i})
+            pivots.append({"type": "high", "price": _candle_val(candles[i], "high"), "index": i})
         if is_low:
-            pivots.append({"type": "low", "price": float(candles[i]["low"]), "index": i})
+            pivots.append({"type": "low", "price": _candle_val(candles[i], "low"), "index": i})
     return pivots
 
 def find_nearest_support(candles: List[Dict], price: float, htf_candles: List[Dict] = None) -> float:
@@ -88,7 +94,7 @@ def find_nearest_resistance(candles: List[Dict], price: float, htf_candles: List
 
 def danger_zone_touched(htf_candle: Dict, dz_level: float, direction: str) -> bool:
     """HTF candle body touches Danger Zone."""
-    c_open, c_close = float(htf_candle["open"]), float(htf_candle["close"])
+    c_open, c_close = _candle_val(htf_candle, "open"), _candle_val(htf_candle, "close")
     body_min, body_max = min(c_open, c_close), max(c_open, c_close)
     if direction == "BUY":
         return body_max >= dz_level  # Resistance is DZ for BUY
@@ -120,19 +126,19 @@ def htf_confirm_solid(htf_candles: List[Dict], direction: str, dz_level: float) 
 def get_base_zone(candles: List[Dict], index: int) -> Dict[str, float]:
     """Base zone is the high/low of the base candle."""
     return {
-        "high": float(candles[index]["high"]),
-        "low": float(candles[index]["low"])
+        "high": _candle_val(candles[index], "high"),
+        "low": _candle_val(candles[index], "low")
     }
 
 def check_retest(candles: List[Dict], base_zone: Dict[str, float], direction: str) -> bool:
     """Check if any recent candle (after breakout) touched the base zone."""
     curr = candles[-1]
-    curr_low, curr_high = float(curr["low"]), float(curr["high"])
+    curr_low, curr_high = _candle_val(curr, "low"), _candle_val(curr, "high")
     
     if direction == "BUY":
-        return curr_low <= base_zone["high"] and float(curr["close"]) > base_zone["low"]
+        return curr_low <= base_zone["high"] and _candle_val(curr, "close") > base_zone["low"]
     else:
-        return curr_high >= base_zone["low"] and float(curr["close"]) < base_zone["high"]
+        return curr_high >= base_zone["low"] and _candle_val(curr, "close") < base_zone["high"]
 
 # ── Legacy Pattern Detectors (backward compat) ──────────────────────────────
 
@@ -140,39 +146,39 @@ def detect_rbr(candles: List[Dict]) -> Optional[Dict]:
     """Rally → Base → Rally: swing high → pullback → break above base high."""
     if len(candles) < 5: return None
     for i in range(2, len(candles) - 2):
-        h2, h1, h0 = float(candles[i-2]["high"]), float(candles[i-1]["high"]), float(candles[i]["high"])
+        h2, h1, h0 = _candle_val(candles[i-2], "high"), _candle_val(candles[i-1], "high"), _candle_val(candles[i], "high")
         if not (h2 < h1 and h0 < h1):
             continue
         base_high = float(candles[i].get("high", 0))
         base_low  = float(candles[i].get("low", 0))
         brk = candles[i+1]
         if float(brk.get("close", 0)) > base_high and is_bullish(brk):
-            return {"base_high": base_high, "base_low": base_low, "entry": float(brk["close"])}
+            return {"base_high": base_high, "base_low": base_low, "entry": _candle_val(brk, "close")}
     return None
 
 def detect_dbd(candles: List[Dict]) -> Optional[Dict]:
     """Drop → Base → Drop: swing low → pullback → break below base low."""
     if len(candles) < 5: return None
     for i in range(2, len(candles) - 2):
-        l2, l1, l0 = float(candles[i-2]["low"]), float(candles[i-1]["low"]), float(candles[i]["low"])
+        l2, l1, l0 = _candle_val(candles[i-2], "low"), _candle_val(candles[i-1], "low"), _candle_val(candles[i], "low")
         if not (l2 > l1 and l0 > l1):
             continue
         base_high = float(candles[i].get("high", 0))
         base_low  = float(candles[i].get("low", 0))
         brk = candles[i+1]
         if float(brk.get("close", 0)) < base_low and is_bearish(brk):
-            return {"base_high": base_high, "base_low": base_low, "entry": float(brk["close"])}
+            return {"base_high": base_high, "base_low": base_low, "entry": _candle_val(brk, "close")}
     return None
 
 def detect_rbd(candles: list) -> dict:
     """Rally → Base → Drop."""
     if len(candles) < 5: return None
     for i in range(2, len(candles) - 2):
-        h2, h1, h0 = float(candles[i-2]["high"]), float(candles[i-1]["high"]), float(candles[i]["high"])
+        h2, h1, h0 = _candle_val(candles[i-2], "high"), _candle_val(candles[i-1], "high"), _candle_val(candles[i], "high")
         if not (h2 < h1 and h0 < h1): continue
-        base_high, base_low = float(candles[i]["high"]), float(candles[i]["low"])
+        base_high, base_low = _candle_val(candles[i], "high"), _candle_val(candles[i], "low")
         brk = candles[i+1]
-        if float(brk["close"]) < base_low and float(brk["close"]) < float(brk["open"]):
+        if _candle_val(brk, "close") < base_low and _candle_val(brk, "close") < _candle_val(brk, "open"):
             return {"base_high": base_high, "base_low": base_low}
     return None
 
@@ -180,11 +186,11 @@ def detect_dbr(candles: list) -> dict:
     """Drop → Base → Rally."""
     if len(candles) < 5: return None
     for i in range(2, len(candles) - 2):
-        l2, l1, l0 = float(candles[i-2]["low"]), float(candles[i-1]["low"]), float(candles[i]["low"])
+        l2, l1, l0 = _candle_val(candles[i-2], "low"), _candle_val(candles[i-1], "low"), _candle_val(candles[i], "low")
         if not (l2 > l1 and l0 > l1): continue
-        base_high, base_low = float(candles[i]["high"]), float(candles[i]["low"])
+        base_high, base_low = _candle_val(candles[i], "high"), _candle_val(candles[i], "low")
         brk = candles[i+1]
-        if float(brk["close"]) > base_high and float(brk["close"]) > float(brk["open"]):
+        if _candle_val(brk, "close") > base_high and _candle_val(brk, "close") > _candle_val(brk, "open"):
             return {"base_high": base_high, "base_low": base_low}
     return None
 

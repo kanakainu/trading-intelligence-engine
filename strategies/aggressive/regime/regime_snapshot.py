@@ -9,6 +9,8 @@ class AggressiveRegime(Enum):
     BEAR = "bear"
     MINOR_TREND = "minor_trend"
     FLAT = "flat"
+    LOW_LIQUIDITY = "low_liquidity"
+    CHOPPY = "choppy"
 
 
 @dataclass

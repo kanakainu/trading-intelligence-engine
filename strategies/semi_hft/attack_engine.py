@@ -12,19 +12,21 @@ class AttackPlan:
     rr:      float
 
 SL_BUFFER = 1.5
-MIN_TP = 1.5; MAX_TP = 3.0
+MIN_TP = 1.5
 
 def _h(c,k): return float(c.get(k) or c.get(k.capitalize()) or 0)
 
 def _swing_pivot(candles_m1, signal):
     """Last 3-bar swing low (BUY) or high (SELL)."""
-    cs=candles_m1[-10:]
+    cs=candles_m1[-10:] if candles_m1 else []
+    if not cs:
+        return 0.0  # fallback
     if signal==MicroSignal.BUY:
         lows=[_h(c,"low") for c in cs]
-        pivot=min(lows)
+        pivot=min(lows) if lows else 0.0
     else:
         highs=[_h(c,"high") for c in cs]
-        pivot=max(highs)
+        pivot=max(highs) if highs else 0.0
     return pivot
 
 def _lot(equity: float) -> float:
@@ -45,7 +47,7 @@ def plan(signal: MicroSignal, entry: float,
         sl=pivot+SL_BUFFER
         sl_dist=sl-entry
     sl_dist=max(sl_dist, 0.5)
-    tp_dist=min(max(sl_dist*1.5, MIN_TP), MAX_TP)
+    tp_dist=max(sl_dist*1.5, MIN_TP)
     tp=entry+tp_dist if signal==MicroSignal.BUY else entry-tp_dist
     rr=round(tp_dist/sl_dist,2)
     return AttackPlan(

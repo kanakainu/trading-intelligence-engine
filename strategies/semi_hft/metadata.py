@@ -6,4 +6,4 @@ class StrategyMetadata:
     version: str
     symbols: list
 
-SEMI_HFT_METADATA = StrategyMetadata(name="SemiHFT", version="1.0", symbols=["XAUUSD"])
+SEMI_HFT_METADATA = StrategyMetadata(name="SemiHFT", version="1.0", symbols=["XAUUSD", "BTCUSD"])

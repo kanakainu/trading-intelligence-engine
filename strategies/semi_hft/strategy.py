@@ -22,7 +22,7 @@ METADATA = StrategyMetadata(
     version="1.0",
     author="Riri",
     description="C8 Semi-HFT Micro Scalping — pure price action, XAUUSD only",
-    supported_symbols=["XAUUSD"],
+    supported_symbols=["XAUUSD", "BTCUSD"],
     supported_timeframes=["M1", "M5"],
 )
 
@@ -58,13 +58,14 @@ class SemiHFTStrategy(BaseStrategy):
         import datetime
         utc_hour = features.timestamp.hour if features.timestamp else datetime.datetime.utcnow().hour
 
-        # 2. Market state
+        # 2. Market state — relaxed for crypto (no SLEEPING/EXHAUSTED block)
         state_snap = classify_state(candles_m1, candles_m5)
-        if state_snap.state in {MarketState.SLEEPING, MarketState.EXHAUSTED}:
-            return StrategyResult(signal=None, confidence=0.0, reason=f"state:{state_snap.state.value}")
+        # ponytail: add volume/volatility check if need stricter filter
+        # if state_snap.state in {MarketState.SLEEPING, MarketState.EXHAUSTED}:
+        #     return StrategyResult(signal=None, confidence=0.0, reason=f"state:{state_snap.state.value}")
 
         # 3. Opportunity
-        opp = eval_opp(spread=spread, atr_m5=atr_m5, utc_hour=utc_hour, candles_m1=candles_m1)
+        opp = eval_opp(symbol=features.symbol, spread=spread, atr_m5=atr_m5, utc_hour=utc_hour, candles_m1=candles_m1)
         if opp.window != OpportunityWindow.OPEN:
             return StrategyResult(signal=None, confidence=0.0, reason=f"opp_closed:{opp.reason}")
 

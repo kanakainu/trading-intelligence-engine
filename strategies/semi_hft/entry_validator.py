@@ -10,18 +10,24 @@ class EntryDecision:
     reason: str
 
 QUALITY_THRESHOLD = 0.65
+FALLBACK_QUALITY_THRESHOLD = 0.10  # Lower threshold for fallback signals
 
 def validate(state: MarketStateSnapshot,
              opp:   OpportunitySnapshot,
              micro: MicrostructureSnapshot) -> EntryDecision:
-    if state.state not in {MarketState.EXPANDING, MarketState.TRENDING}:
+    # Relax state check for crypto (BTCUSD has different patterns)
+    # Allow SLEEPING and BUILDING during low vol
+    valid_states = {MarketState.EXPANDING, MarketState.TRENDING, MarketState.SLEEPING, MarketState.BUILDING}
+    if state.state not in valid_states:
         return EntryDecision(False, f"state={state.state.value}")
     if opp.window != OpportunityWindow.OPEN:
         return EntryDecision(False, f"opp_closed: {opp.reason}")
     if micro.signal == MicroSignal.NONE:
         return EntryDecision(False, "no_micro_signal")
-    if micro.quality < QUALITY_THRESHOLD:
-        return EntryDecision(False, f"quality={micro.quality:.2f}<{QUALITY_THRESHOLD}")
+    # Lower threshold for fallback patterns (weak but valid direction)
+    threshold = FALLBACK_QUALITY_THRESHOLD if micro.pattern == "fallback_direction" else QUALITY_THRESHOLD
+    if micro.quality < threshold:
+        return EntryDecision(False, f"quality={micro.quality:.2f}<{threshold}")
     return EntryDecision(True, f"all_gates_pass q={micro.quality:.2f}")
 
 
