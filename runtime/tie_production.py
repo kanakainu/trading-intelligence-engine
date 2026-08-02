@@ -6,6 +6,7 @@ sys.path.insert(0, '/home/ubuntu/.hermes/trading')
 sys.path.insert(0, '/home/ubuntu/trading-intelligence-engine')
 
 from gateway_client import MT5GatewayClient
+from runtime.gate_observatory import GateObservatory, create_trace
 from core.context.context_model import MarketContext
 from core.context.scan_context import ScanContext
 from core.features.feature_models import FeatureSnapshot
@@ -56,8 +57,9 @@ monitor = EntryMonitor(broker=broker, gateway=client)
 pos_monitor = PositionMonitor()
 risk_gate = build_risk_registry()
 context_engine = ContextEngine()
+observatory = GateObservatory()
 
-log.info(f"TIE Production Multi-Symbol started: {SYMBOLS}. Risk Gate active.")
+log.info(f"TIE Production Multi-Symbol started: {SYMBOLS}. Risk Gate active. Observatory enabled.")
 
 def _compute_real_sr(candles_h1: list, price: float = 0.0) -> dict:
     if not candles_h1:
@@ -259,7 +261,7 @@ while True:
                             setup_detail = {
                                 "strategy": decision.setup_name.split("_")[0] if "_" in decision.setup_name else "Unknown",
                                 "setup_name": decision.setup_name,
-                                "direction": decision.action,
+                                "direction": decision.action,  # TradeDecision uses 'action'
                                 "confidence": round(decision.confidence * 100, 1),
                                 "entry": round(entry_zone.get("high") or entry_zone.get("low") or price, 5),
                                 "sl": round(decision.metadata.get("sl") or 0.0, 5),
