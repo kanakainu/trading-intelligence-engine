@@ -216,87 +216,96 @@ while True:
             trade_plan = rt.scan(_scan_ctx)
             decision = plan_to_decision(trade_plan)
 
+            # === DECISION TRACE V2 ===
+            trace = create_trace(scan_id=_sid, symbol=sym, strategy="TIE_V3")
+
             if decision.action != "WAIT":
-                            # --- ADAPTIVE EXIT ORCHESTRATOR ---
-                            _entry = (decision.metadata.get("entry_zone") or {}).get("high") or price
-                            _sl = decision.metadata.get("sl") or 0.0
-                            _tp = decision.metadata.get("take_profit") or 0.0
+                observatory.log_gate(trace, "Detector", "PASS", current_value=decision.confidence * 100, reason=f"setup={decision.setup_name}")
+                # --- ADAPTIVE EXIT ORCHESTRATOR ---
+                _entry = (decision.metadata.get("entry_zone") or {}).get("high") or price
+                _sl = decision.metadata.get("sl") or 0.0
+                _tp = decision.metadata.get("take_profit") or 0.0
 
-                            if _sl and _tp:
-                                opt = orch.optimize(
-                                    strategy_id=decision.setup_name,
-                                    symbol=sym,
-                                    entry=_entry,
-                                    sl=_sl,
-                                    tp=_tp,
-                                )
-                                decision.metadata["sl"] = opt.sl
-                                decision.metadata["take_profit"] = opt.tp
-                                decision.metadata["risk_reward"] = opt.rr
-                                decision.metadata["trailing_type"] = opt.trailing_type
-                                decision.metadata["is_adjusted"] = opt.adjusted
-                                log.info("ExitOrchestrator adjusted SL/TP for %s: new SL=%.2f TP=%.2f RR=%.2f (adj=%s)",
-                                         decision.setup_name, opt.sl, opt.tp, opt.rr, opt.adjusted)
+                if _sl and _tp:
+                    opt = orch.optimize(
+                        strategy_id=decision.setup_name,
+                        symbol=sym,
+                        entry=_entry,
+                        sl=_sl,
+                        tp=_tp,
+                    )
+                    decision.metadata["sl"] = opt.sl
+                    decision.metadata["take_profit"] = opt.tp
+                    decision.metadata["risk_reward"] = opt.rr
+                    decision.metadata["trailing_type"] = opt.trailing_type
+                    decision.metadata["is_adjusted"] = opt.adjusted
+                    log.info("ExitOrchestrator adjusted SL/TP for %s: new SL=%.2f TP=%.2f RR=%.2f (adj=%s)",
+                             decision.setup_name, opt.sl, opt.tp, opt.rr, opt.adjusted)
 
-                            log.info(f"Setup detected: {decision.setup_name} {decision.action} conf={decision.confidence:.0%}")
-                            risk_ctx = {
-                                "symbol": sym, "entry": (decision.metadata.get("entry_zone") or {}).get("high"),
-                                "sl": decision.metadata.get("sl"), "tp": decision.metadata.get("take_profit"),
-                                "direction": decision.action, "confidence": decision.confidence,
-                                "spread": spread, "balance": balance, "equity": equity,
-                                "open_positions": len(raw_positions), "lot": 0.01, "sl_pips": 0, "time": time.time(),
-                            }
-                            if risk_ctx["sl"] and risk_ctx["entry"]:
-                                risk_ctx["sl_pips"] = abs(risk_ctx["entry"] - risk_ctx["sl"]) * 10
-                            if sym in ("BTCUSD", "ETHUSD"):
-                                risk_ctx["sl_pips"] = 0
+                log.info(f"Setup detected: {decision.setup_name} {decision.action} conf={decision.confidence:.0%}")
+                risk_ctx = {
+                    "symbol": sym, "entry": (decision.metadata.get("entry_zone") or {}).get("high"),
+                    "sl": decision.metadata.get("sl"), "tp": decision.metadata.get("take_profit"),
+                    "direction": decision.action, "confidence": decision.confidence,
+                    "spread": spread, "balance": balance, "equity": equity,
+                    "open_positions": len(raw_positions), "lot": 0.01, "sl_pips": 0, "time": time.time(),
+                }
+                if risk_ctx["sl"] and risk_ctx["entry"]:
+                    risk_ctx["sl_pips"] = abs(risk_ctx["entry"] - risk_ctx["sl"]) * 10
+                if sym in ("BTCUSD", "ETHUSD"):
+                    risk_ctx["sl_pips"] = 0
 
-                            risk_results = {}
-                            for rule_name in risk_gate.list_enabled():
-                                plugin = risk_gate.get(rule_name)
-                                if plugin: risk_results[rule_name] = plugin.evaluate(risk_ctx, {}, decision)
+                risk_results = {}
+                for rule_name in risk_gate.list_enabled():
+                    plugin = risk_gate.get(rule_name)
+                    if plugin: risk_results[rule_name] = plugin.evaluate(risk_ctx, {}, decision)
 
-                            # Build setup detail for dashboard (capture BEFORE gate decision)
-                            entry_zone = decision.metadata.get("entry_zone") or {}
-                            setup_detail = {
-                                "strategy": decision.setup_name.split("_")[0] if "_" in decision.setup_name else "Unknown",
-                                "setup_name": decision.setup_name,
-                                "direction": decision.action,  # TradeDecision uses 'action'
-                                "confidence": round(decision.confidence * 100, 1),
-                                "entry": round(entry_zone.get("high") or entry_zone.get("low") or price, 5),
-                                "sl": round(decision.metadata.get("sl") or 0.0, 5),
-                                "tp": round(decision.metadata.get("take_profit") or 0.0, 5),
-                                "danger_zone": round(decision.metadata.get("danger_zone") or 0.0, 5),
-                                "risk_reward": round(decision.metadata.get("risk_reward") or 0.0, 2),
-                                "trailing_type": decision.metadata.get("trailing_type", "fixed"),
-                                "is_adjusted": decision.metadata.get("is_adjusted", False),
-                                "timestamp": datetime.now(timezone.utc).isoformat(),
-                            }
+                # Build setup detail for dashboard (capture BEFORE gate decision)
+                entry_zone = decision.metadata.get("entry_zone") or {}
+                setup_detail = {
+                    "strategy": decision.setup_name.split("_")[0] if "_" in decision.setup_name else "Unknown",
+                    "setup_name": decision.setup_name,
+                    "direction": decision.action,  # TradeDecision uses 'action'
+                    "confidence": round(decision.confidence * 100, 1),
+                    "entry": round(entry_zone.get("high") or entry_zone.get("low") or price, 5),
+                    "sl": round(decision.metadata.get("sl") or 0.0, 5),
+                    "tp": round(decision.metadata.get("take_profit") or 0.0, 5),
+                    "danger_zone": round(decision.metadata.get("danger_zone") or 0.0, 5),
+                    "risk_reward": round(decision.metadata.get("risk_reward") or 0.0, 2),
+                    "trailing_type": decision.metadata.get("trailing_type", "fixed"),
+                    "is_adjusted": decision.metadata.get("is_adjusted", False),
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                }
 
-                            if all(r.status == "APPROVE" for r in risk_results.values()):
-                                dedup_key = (sym, decision.setup_name, decision.action)
-                                now = time.time()
-                                last_seen = _seen_setups.get(dedup_key, 0.0)
-                                if now - last_seen < DEDUP_WINDOW:
-                                    log.info(f"Dedup: skip {decision.setup_name} {decision.action} {sym} (seen {(now-last_seen):.0f}s ago)")
-                                    setup_detail["status"] = "DEDUP"
-                                    setup_detail["gate_reason"] = f"Dedup: seen {(now-last_seen):.0f}s ago"
-                                else:
-                                    _seen_setups[dedup_key] = now
-                                    log.info(f"Risk Gate: ✅ PASS — {sym}")
-                                    setup_detail["status"] = "APPROVED"
-                                    setup_detail["gate_reason"] = "All gates passed"
-                                    push_decision(decision)
-                                    monitor.add_setup(decision)
-                            else:
-                                reasons = "; ".join(f"{n}={r.status}:{r.reason}" for n, r in risk_results.items() if r.status != "APPROVE")
-                                log.info(f"Risk Gate: ❌ BLOCKED {sym}. {reasons}")
-                                setup_detail["status"] = "BLOCKED"
-                                setup_detail["gate_reason"] = reasons
-                                # NOTIF OFF: notifier.notify_risk_gate_blocked(...)
+                if all(r.status == "APPROVE" for r in risk_results.values()):
+                    dedup_key = (sym, decision.setup_name, decision.action)
+                    now = time.time()
+                    last_seen = _seen_setups.get(dedup_key, 0.0)
+                    if now - last_seen < DEDUP_WINDOW:
+                        log.info(f"Dedup: skip {decision.setup_name} {decision.action} {sym} (seen {(now-last_seen):.0f}s ago)")
+                        setup_detail["status"] = "DEDUP"
+                        setup_detail["gate_reason"] = f"Dedup: seen {(now-last_seen):.0f}s ago"
+                        observatory.log_gate(trace, "Dedup", "FAIL", reason=f"seen {(now-last_seen):.0f}s ago")
+                    else:
+                        _seen_setups[dedup_key] = now
+                        log.info(f"Risk Gate: ✅ PASS — {sym}")
+                        setup_detail["status"] = "APPROVED"
+                        setup_detail["gate_reason"] = "All gates passed"
+                        observatory.log_gate(trace, "RiskGate", "PASS", reason="all rules approve")
+                        push_decision(decision)
+                        monitor.add_setup(decision)
+                        observatory.log_gate(trace, "Execution", "PASS", reason="decision pushed")
+                else:
+                    reasons = "; ".join(f"{n}={r.status}:{r.reason}" for n, r in risk_results.items() if r.status != "APPROVE")
+                    log.info(f"Risk Gate: ❌ BLOCKED {sym}. {reasons}")
+                    setup_detail["status"] = "BLOCKED"
+                    setup_detail["gate_reason"] = reasons
+                    observatory.log_gate(trace, "RiskGate", "FAIL", reason=reasons)
+                    # NOTIF OFF: notifier.notify_risk_gate_blocked(...)
             else:
                 log.info(f"No setup for {sym} (WAIT)")
                 setup_detail = None
+                observatory.finalize_trace(trace, "NO_TRADE", rejection_reason="no_signal")
             
             # Position monitoring - pass M5 candles for early exit detection
             market_update = {
