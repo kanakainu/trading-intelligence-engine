@@ -1,7 +1,9 @@
-"""Confidence Engine — meta-layer validating setup quality before entry scoring.
+"""Confidence Engine — REFACTORED v2.
 
-Inputs: Regime, Detector Agreement, Liquidity, Momentum Quality, Historical Success Rate
-Output: Confidence Score (0-100) → gates Entry Scoring Engine
+Confidence = ranking only, NOT a gate.
+Evaluates ONLY: detector agreement, regime fit, momentum quality, historical reliability.
+
+NO session/opportunity/liquidity weights (those are gates, not confidence factors).
 """
 from dataclasses import dataclass
 from typing import List, Optional
@@ -21,10 +23,8 @@ class ConfidenceScore:
     confidence: float           # 0-100
     regime_quality: float       # 0-100
     detector_agreement: float   # 0-100
-    liquidity_quality: float    # 0-100
     momentum_quality: float     # 0-100
-    opportunity_quality: float  # 0-100 (new)
-    historical_success: float   # 0-100 (placeholder)
+    historical_success: float   # 0-100
     verdict: str                # REJECT | WATCH | GOOD | EXCELLENT
 
 
@@ -38,17 +38,24 @@ def compute_confidence(
     symbol: str = "",
     setup_name: str = "",
 ) -> ConfidenceScore:
-    """Compute meta-confidence from regime + detectors + liquidity + pulse + session + opportunity."""
+    """Compute meta-confidence from regime + detectors + momentum + history.
 
-    # 0. Session gate
+    REFACTORED: No session/opportunity/liquidity weights (those are gates).
+    Confidence = ranking only, NOT a gate.
+    """
+
+    # 0. Session gate (early exit)
     if session is not None and not session.allowed:
         return ConfidenceScore(
-            confidence=0.0, regime_quality=0.0, detector_agreement=0.0,
-            liquidity_quality=0.0, momentum_quality=0.0, historical_success=0.0,
-            verdict="REJECT", opportunity_quality=0.0
+            confidence=0.0,
+            regime_quality=0.0,
+            detector_agreement=0.0,
+            momentum_quality=0.0,
+            historical_success=0.0,
+            verdict="REJECT"
         )
 
-    # 1. Regime quality (updated to map old to new states)
+    # 1. Regime quality
     regime_map = {
         AggressiveRegime.BULL:  90,
         AggressiveRegime.BEAR:  90,
@@ -67,20 +74,7 @@ def compute_confidence(
         dominant = max(buy, sell)
         detector_agreement = (dominant / len(valid)) * 100
 
-    # 3. Liquidity quality — use LiquiditySnapshot.score if available
-    if liquidity is not None:
-        if liquidity.state == LiquidityState.TOXIC:
-            return ConfidenceScore(
-                confidence=0.0, regime_quality=regime_quality,
-                detector_agreement=detector_agreement, liquidity_quality=0.0,
-                momentum_quality=0.0, historical_success=0.0, verdict="REJECT",
-                opportunity_quality=0.0
-            )
-        liquidity_quality = liquidity.score
-    else:
-        liquidity_quality = min(regime.liquidity_score * 100, 100.0)
-
-    # 4. Momentum quality — use MarketPulse.pulse if available
+    # 3. Momentum quality
     if pulse is not None:
         momentum_quality = pulse.pulse
     elif valid:
@@ -88,32 +82,31 @@ def compute_confidence(
     else:
         momentum_quality = 0.0
 
-    # 5. Opportunity quality (new)
-    opportunity_quality = opportunity.score if opportunity else 0.0
-
-    # 6. Historical — Episode Memory (sqlite3, Vibe episode_store pattern)
+    # 4. Historical success — Episode Memory (sqlite3)
     historical_success = _episode_success_rate(symbol, setup_name) if symbol and setup_name else 50.0
 
-    weights = {"regime": 0.20, "detector": 0.25, "liquidity": 0.15,
-               "momentum": 0.15, "opportunity": 0.15, "historical": 0.10}
+    # 5. Weights and aggregation (REFACTORED — no session/opportunity/liquidity)
+    # Confidence = ranking only, NOT a gate
+    weights = {
+        "regime": 0.30,
+        "detector": 0.40,
+        "momentum": 0.20,
+        "historical": 0.10,
+    }
+
     confidence = (
-        regime_quality    * weights["regime"]
+        regime_quality * weights["regime"]
         + detector_agreement * weights["detector"]
-        + liquidity_quality  * weights["liquidity"]
-        + momentum_quality   * weights["momentum"]
-        + opportunity_quality * weights["opportunity"]
+        + momentum_quality * weights["momentum"]
         + historical_success * weights["historical"]
     )
 
-    # Session score multiplier
-    if session is not None:
-        confidence *= (session.score / 100.0)
-
+    # Verdict thresholds (lowered to 55 for GOOD)
     if confidence >= 80:
         verdict = "EXCELLENT"
-    elif confidence >= 65:
+    elif confidence >= 55:
         verdict = "GOOD"
-    elif confidence >= 50:
+    elif confidence >= 40:
         verdict = "WATCH"
     else:
         verdict = "REJECT"
@@ -122,9 +115,7 @@ def compute_confidence(
         confidence=round(confidence, 2),
         regime_quality=round(regime_quality, 2),
         detector_agreement=round(detector_agreement, 2),
-        liquidity_quality=round(liquidity_quality, 2),
         momentum_quality=round(momentum_quality, 2),
-        opportunity_quality=round(opportunity_quality, 2),
         historical_success=round(historical_success, 2),
         verdict=verdict,
     )
