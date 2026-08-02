@@ -10,6 +10,9 @@ from runtime.gate_observatory import GateObservatory, create_trace
 from runtime.trading_intelligence import DailyProfitGovernorV2, TradeBudgetManager, OpportunityLifecycle
 from runtime.adaptive_learning import PostMortemAnalyzer, AdaptiveThresholdManager
 from runtime.execution_analytics import ExecutionTracker
+from runtime.health_monitor import HealthMonitor
+from runtime.auto_optimizer import ThresholdOptimizer
+from runtime.portfolio_intelligence import PortfolioCoordinator
 from core.context.context_model import MarketContext
 from core.context.scan_context import ScanContext
 from core.features.feature_models import FeatureSnapshot
@@ -67,6 +70,9 @@ opp_lifecycle = OpportunityLifecycle()
 adaptive_mgr = AdaptiveThresholdManager()
 pma = PostMortemAnalyzer(lookback_days=30)
 exec_tracker = ExecutionTracker()
+health_monitor = HealthMonitor(gateway_url=URL)
+optimizer = ThresholdOptimizer(lookback_days=30)
+portfolio_coord = PortfolioCoordinator(max_exposure=500.0)
 
 log.info(f"TIE Production Multi-Symbol started: {SYMBOLS}. Risk Gate active. Observatory enabled. Governor enabled.")
 
