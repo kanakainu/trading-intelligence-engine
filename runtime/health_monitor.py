@@ -5,7 +5,6 @@ Gateway delay, memory, CPU, tick freeze, reconnect count.
 NO trading logic. Pure observability.
 """
 import time
-import psutil
 import sqlite3
 import logging
 from dataclasses import dataclass, field
@@ -89,9 +88,15 @@ class HealthMonitor:
         return self._record("gateway_latency_ms", latency_ms, "ms", status)
 
     def check_memory(self) -> HealthMetric:
-        """Check memory usage."""
-        mem = psutil.virtual_memory()
-        percent = mem.percent
+        """Check memory usage from /proc/meminfo."""
+        try:
+            with open("/proc/meminfo") as f:
+                lines = f.readlines()
+            mem_total = int([l for l in lines if "MemTotal" in l][0].split()[1])
+            mem_available = int([l for l in lines if "MemAvailable" in l][0].split()[1])
+            percent = ((mem_total - mem_available) / mem_total) * 100
+        except Exception:
+            percent = 0.0
         status = "OK"
         if percent > 80:
             status = "WARN"
@@ -100,8 +105,16 @@ class HealthMonitor:
         return self._record("memory_percent", percent, "%", status)
 
     def check_cpu(self) -> HealthMetric:
-        """Check CPU usage."""
-        percent = psutil.cpu_percent(interval=1)
+        """Check CPU usage from /proc/stat."""
+        try:
+            with open("/proc/stat") as f:
+                line = f.readline()
+            parts = line.split()[1:8]
+            idle = int(parts[3])
+            total = sum(int(p) for p in parts)
+            percent = 100.0 * (1.0 - idle / total)
+        except Exception:
+            percent = 0.0
         status = "OK"
         if percent > 80:
             status = "WARN"
