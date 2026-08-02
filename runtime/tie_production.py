@@ -8,6 +8,7 @@ sys.path.insert(0, '/home/ubuntu/trading-intelligence-engine')
 from gateway_client import MT5GatewayClient
 from runtime.gate_observatory import GateObservatory, create_trace
 from runtime.trading_intelligence import DailyProfitGovernorV2, TradeBudgetManager, OpportunityLifecycle
+from runtime.adaptive_learning import PostMortemAnalyzer, AdaptiveThresholdManager
 from core.context.context_model import MarketContext
 from core.context.scan_context import ScanContext
 from core.features.feature_models import FeatureSnapshot
@@ -62,6 +63,8 @@ observatory = GateObservatory()
 governor = DailyProfitGovernorV2(daily_target=30.0, daily_loss_limit=50.0)
 budget_mgr = TradeBudgetManager()
 opp_lifecycle = OpportunityLifecycle()
+adaptive_mgr = AdaptiveThresholdManager()
+pma = PostMortemAnalyzer(lookback_days=30)
 
 log.info(f"TIE Production Multi-Symbol started: {SYMBOLS}. Risk Gate active. Observatory enabled. Governor enabled.")
 
