@@ -418,4 +418,34 @@ while True:
     # Update EntryMonitor for all active setups
     monitor.update()
 
+    # === 5 INTELLIGENCE ENGINES ACTIVE ===
+    # P3: Health check every 60 scans (~10 min)
+    if not hasattr(monitor, '_health_counter'): monitor._health_counter = 0
+    monitor._health_counter += 1
+    if monitor._health_counter >= 60:
+        health_status = health_monitor.get_status()
+        if health_status['status'] != 'OK':
+            log.warning(f"Health: {health_status}")
+        monitor._health_counter = 0
+
+    # P1: Adaptive learning — apply recommendations every 6 hours
+    if not hasattr(monitor, '_adapt_counter'): monitor._adapt_counter = 0
+    monitor._adapt_counter += 1
+    if monitor._adapt_counter >= 2160:  # 6 hours * 360 scans
+        recs = pma.recommend_adjustments()
+        if recs:
+            adaptive_mgr.apply_recommendations(recs)
+            log.info(f"Adaptive: applied {len(recs)} adjustments")
+        monitor._adapt_counter = 0
+
+    # P4: Auto optimization — run daily
+    if not hasattr(monitor, '_opt_counter'): monitor._opt_counter = 0
+    monitor._opt_counter += 1
+    if monitor._opt_counter >= 8640:  # 24 hours * 360 scans
+        opt_results = optimizer.optimize_all()
+        if opt_results:
+            optimizer.apply_to_adaptive_manager(opt_results, adaptive_mgr)
+            log.info(f"Optimizer: {len(opt_results)} detectors optimized")
+        monitor._opt_counter = 0
+
     time.sleep(10)
