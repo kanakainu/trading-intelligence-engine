@@ -9,6 +9,7 @@ from gateway_client import MT5GatewayClient
 from runtime.gate_observatory import GateObservatory, create_trace
 from runtime.trading_intelligence import DailyProfitGovernorV2, TradeBudgetManager, OpportunityLifecycle
 from runtime.adaptive_learning import PostMortemAnalyzer, AdaptiveThresholdManager
+from runtime.execution_analytics import ExecutionTracker
 from core.context.context_model import MarketContext
 from core.context.scan_context import ScanContext
 from core.features.feature_models import FeatureSnapshot
@@ -65,6 +66,7 @@ budget_mgr = TradeBudgetManager()
 opp_lifecycle = OpportunityLifecycle()
 adaptive_mgr = AdaptiveThresholdManager()
 pma = PostMortemAnalyzer(lookback_days=30)
+exec_tracker = ExecutionTracker()
 
 log.info(f"TIE Production Multi-Symbol started: {SYMBOLS}. Risk Gate active. Observatory enabled. Governor enabled.")
 
