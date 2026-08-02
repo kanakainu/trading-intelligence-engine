@@ -7,6 +7,7 @@ sys.path.insert(0, '/home/ubuntu/trading-intelligence-engine')
 
 from gateway_client import MT5GatewayClient
 from runtime.gate_observatory import GateObservatory, create_trace
+from runtime.trading_intelligence import DailyProfitGovernorV2, TradeBudgetManager, OpportunityLifecycle
 from core.context.context_model import MarketContext
 from core.context.scan_context import ScanContext
 from core.features.feature_models import FeatureSnapshot
@@ -58,8 +59,11 @@ pos_monitor = PositionMonitor()
 risk_gate = build_risk_registry()
 context_engine = ContextEngine()
 observatory = GateObservatory()
+governor = DailyProfitGovernorV2(daily_target=30.0, daily_loss_limit=50.0)
+budget_mgr = TradeBudgetManager()
+opp_lifecycle = OpportunityLifecycle()
 
-log.info(f"TIE Production Multi-Symbol started: {SYMBOLS}. Risk Gate active. Observatory enabled.")
+log.info(f"TIE Production Multi-Symbol started: {SYMBOLS}. Risk Gate active. Observatory enabled. Governor enabled.")
 
 def _compute_real_sr(candles_h1: list, price: float = 0.0) -> dict:
     if not candles_h1:
@@ -288,13 +292,35 @@ while True:
                         observatory.log_gate(trace, "Dedup", "FAIL", reason=f"seen {(now-last_seen):.0f}s ago")
                     else:
                         _seen_setups[dedup_key] = now
-                        log.info(f"Risk Gate: ✅ PASS — {sym}")
-                        setup_detail["status"] = "APPROVED"
-                        setup_detail["gate_reason"] = "All gates passed"
-                        observatory.log_gate(trace, "RiskGate", "PASS", reason="all rules approve")
-                        push_decision(decision)
-                        monitor.add_setup(decision)
-                        observatory.log_gate(trace, "Execution", "PASS", reason="decision pushed")
+                        
+                        # === TRADING INTELLIGENCE GATES ===
+                        can_trade, gov_reason = governor.can_trade()
+                        if not can_trade:
+                            log.info(f"Governor STOP: {gov_reason}")
+                            setup_detail["status"] = "GOVERNOR_HALT"
+                            setup_detail["gate_reason"] = gov_reason
+                            observatory.log_gate(trace, "Governor", "FAIL", reason=gov_reason)
+                        elif not budget_mgr.can_consume(decision.setup_name.split("_")[0].lower()):
+                            log.info(f"Budget exhausted for {decision.setup_name}")
+                            setup_detail["status"] = "BUDGET_EXHAUSTED"
+                            setup_detail["gate_reason"] = f"Trade budget consumed"
+                            observatory.log_gate(trace, "TradeBudget", "FAIL", reason="budget exhausted")
+                        else:
+                            budget_mgr.consume(decision.setup_name.split("_")[0].lower())
+                            opp_lifecycle.add(
+                                strategy=decision.setup_name.split("_")[0].lower(),
+                                symbol=sym,
+                                direction=decision.action,
+                                confidence=decision.confidence,
+                                spread=spread
+                            )
+                            log.info(f"Risk Gate: ✅ PASS — {sym}")
+                            setup_detail["status"] = "APPROVED"
+                            setup_detail["gate_reason"] = "All gates passed"
+                            observatory.log_gate(trace, "RiskGate", "PASS", reason="all rules approve")
+                            push_decision(decision)
+                            monitor.add_setup(decision)
+                            observatory.log_gate(trace, "Execution", "PASS", reason="decision pushed")
                 else:
                     reasons = "; ".join(f"{n}={r.status}:{r.reason}" for n, r in risk_results.items() if r.status != "APPROVE")
                     log.info(f"Risk Gate: ❌ BLOCKED {sym}. {reasons}")
