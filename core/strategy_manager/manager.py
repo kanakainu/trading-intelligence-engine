@@ -145,6 +145,14 @@ class StrategyManager:
                             "breakdown": {k: v for k, v in result.metadata.items() if k != "score"},
                             "timestamp": context.scan.timestamp.isoformat() if context.scan and context.scan.timestamp else "",
                         }
+                        # Persist to file for cross-process dashboard access
+                        try:
+                            import json as _json
+                            _scores_path = "/home/ubuntu/trading-intelligence-engine/data/last_scores.json"
+                            with open(_scores_path, "w") as _f:
+                                _json.dump(self._last_scores, _f)
+                        except Exception:
+                            pass
                     if result.signal is None:
                         logger.info("Strategy %s returned WAIT: %s", sid, result.reason)
             except Exception as e:

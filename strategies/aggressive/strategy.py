@@ -20,11 +20,11 @@ from strategies.aggressive.cooldown.cooldown_engine import AdaptiveCooldown
 # RME Score Engines (R1-R3)
 from strategies.aggressive.market_snapshot import snapshot as get_snapshot
 from strategies.aggressive.opportunity_window import get_session_score
-from strategies.aggressive.momentum_engine import calculate_score as momentum_score
-from strategies.aggressive.velocity_engine import calculate_score as velocity_score
-from strategies.aggressive.microstructure_engine import calculate_score as micro_score
-from strategies.aggressive.liquidity_engine import calculate_score as liquidity_score
-from strategies.aggressive.vwap_context_engine import calculate_score as vwap_score
+from strategies.aggressive.momentum_engine import calculate_score as calc_momentum_score
+from strategies.aggressive.velocity_engine import calculate_score as calc_velocity_score
+from strategies.aggressive.microstructure_engine import calculate_score as calc_micro_score
+from strategies.aggressive.liquidity_engine import calculate_score as calc_liquidity_score
+from strategies.aggressive.vwap_context_engine import calculate_score as calc_vwap_score
 from strategies.aggressive.entry_score_engine import calculate as entry_score, EntryScore
 
 logger = logging.getLogger(__name__)
@@ -100,7 +100,7 @@ class RiriMicroScalpEngine(BaseStrategy):
         if not es.entry_ok:
             return StrategyResult(signal=None, confidence=0.0, reason=f"rme:{es.reason}",
                                   metadata={"score": es.score, "momentum": mom, "velocity": vel,
-                                            "micro": micro, "liquidity": liq, "vwap": vwap_score, "trend": trend})
+                                            "micro": micro, "liquidity": liq, "vwap": vwap_sc, "trend": trend})
 
         # 7. Signal
         sig = Signal(
@@ -114,7 +114,7 @@ class RiriMicroScalpEngine(BaseStrategy):
             quality_score=es.score,
             metadata={
                 "score": es.score, "momentum": mom, "velocity": vel,
-                "micro": micro, "liquidity": liq, "vwap": vwap_s,
+                "micro": micro, "liquidity": liq, "vwap": vwap_sc,
                 "trend": trend, "session": sess, "state": snap.state,
             }
         )
