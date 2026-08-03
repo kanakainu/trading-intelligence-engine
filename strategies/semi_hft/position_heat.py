@@ -9,7 +9,7 @@ class HeatSnapshot:
     heat_score: float           # 0-100: higher = more risky
     reason: str
 
-def calculate(positions: List[Dict], equity: float) -> HeatSnapshot:
+def calculate(positions: List, equity: float) -> HeatSnapshot:
     """Calculate portfolio heat score 0-100. Higher = dangerous concentration."""
     if not positions or equity <= 0:
         return HeatSnapshot(0.0, 0, 0.0, "no_positions")
