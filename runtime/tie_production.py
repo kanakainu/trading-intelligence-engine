@@ -361,13 +361,17 @@ while True:
                             setup_detail["status"] = "GOVERNOR_HALT"
                             setup_detail["gate_reason"] = gov_reason
                             observatory.log_gate(trace, "Governor", "FAIL", reason=gov_reason)
-                        elif not budget_mgr.can_consume(decision.setup_name.split("_")[0].lower()):
+                        # Extract strategy key from setup_name (B_BUY -> bystra, A_SELL -> aggressive, S_BUY -> semi_hft)
+                        strat_key = decision.setup_name.split("_")[0].lower()
+                        strat_map = {"b": "bystra", "a": "aggressive", "s": "semi_hft"}
+                        strategy_name = strat_map.get(strat_key, strat_key)
+                        if not budget_mgr.can_consume(strategy_name):
                             log.info(f"Budget exhausted for {decision.setup_name}")
                             setup_detail["status"] = "BUDGET_EXHAUSTED"
                             setup_detail["gate_reason"] = f"Trade budget consumed"
                             observatory.log_gate(trace, "TradeBudget", "FAIL", reason="budget exhausted")
                         else:
-                            budget_mgr.consume(decision.setup_name.split("_")[0].lower())
+                            budget_mgr.consume(strategy_name)
                             opp_lifecycle.add(
                                 strategy=decision.setup_name.split("_")[0].lower(),
                                 symbol=sym,
