@@ -1,11 +1,8 @@
 """manual_trailing.py — Trailing manager for manual positions (non-TIE orders).
 Polls gateway every 5s, applies money-based trailing to all positions without TIE_ comment.
-Torto V4 logic: start_usd=$5, dist_usd=$2.5, step_usd=$1, be_trigger=1R.
+Torto V4 logic: start_usd=$5, dist_usd=$2.5, step_usd=$1.
 """
-import time, logging, os, sys
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
-from gateway_client import MT5GatewayClient
+import time, logging, os, requests
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 log = logging.getLogger("ManualTrailing")
@@ -21,10 +18,13 @@ STEP_USD  = 1.0
 _peak: dict = {}
 
 
-def get_manual_positions(client):
+def get_manual_positions():
     """Return positions where comment does NOT start with TIE_."""
     try:
-        positions = client.positions() or []
+        headers = {"Authorization": f"Bearer {TOKEN}"}
+        r = requests.get(f"{URL}/account/positions", headers=headers, timeout=5)
+        r.raise_for_status()
+        positions = r.json() or []
         return [p for p in positions if not str(p.get("comment", "")).startswith("TIE_")]
     except Exception as e:
         log.error(f"positions fetch fail: {e}")
@@ -38,25 +38,22 @@ def compute_new_sl(pos: dict, peak_profit: float) -> float | None:
     profit = pos['profit'] in account currency (MT5 auto-converts).
     """
     profit    = pos.get("profit", 0.0)
-    entry     = pos.get("price_open", 0.0)
-    current   = pos.get("price_current", 0.0)
+    entry     = pos.get("open_price", 0.0)
+    current   = pos.get("current_price", 0.0)
     sl        = pos.get("sl") or 0.0
-    is_buy    = str(pos.get("type", "")).lower() in ("buy", "0")
+    direction = str(pos.get("direction", "")).lower()
+    is_buy    = direction == "buy"
 
     if profit < START_USD:
-        return None  # not enough profit yet
+        return None
 
-    # Update peak
     if profit > peak_profit:
-        return None  # still rising, no trail yet (caller updates peak)
+        return None
 
-    # profit pulled back from peak — lock floor
     lock_floor = peak_profit - DIST_USD
     if lock_floor <= 0:
         return None
 
-    # Convert lock_floor (USD) to price points
-    # price_dist_per_usd = (current - entry) / profit  [approx, same direction]
     if profit == 0:
         return None
     pts_per_usd = abs(current - entry) / abs(profit)
@@ -65,7 +62,7 @@ def compute_new_sl(pos: dict, peak_profit: float) -> float | None:
     if is_buy:
         new_sl = entry + sl_price_offset
         if new_sl <= sl + STEP_USD * pts_per_usd:
-            return None  # not a meaningful improvement
+            return None
         return round(new_sl, 2)
     else:
         new_sl = entry - sl_price_offset
@@ -74,18 +71,32 @@ def compute_new_sl(pos: dict, peak_profit: float) -> float | None:
         return round(new_sl, 2)
 
 
+def modify_order(ticket: str, stop_loss: float):
+    """Modify SL via gateway REST API."""
+    try:
+        headers = {"Authorization": f"Bearer {TOKEN}"}
+        r = requests.post(
+            f"{URL}/order/modify",
+            json={"ticket": ticket, "sl": stop_loss},
+            headers=headers,
+            timeout=5
+        )
+        r.raise_for_status()
+        return r.json()
+    except Exception as e:
+        raise Exception(f"modify fail: {e}")
+
+
 def run():
-    client = MT5GatewayClient(URL, TOKEN)
     log.info(f"ManualTrailing started. Gateway: {URL}")
 
     while True:
-        positions = get_manual_positions(client)
+        positions = get_manual_positions()
 
         for pos in positions:
             ticket = str(pos.get("ticket"))
             profit = pos.get("profit", 0.0)
 
-            # Update peak profit
             if ticket not in _peak:
                 _peak[ticket] = profit
             elif profit > _peak[ticket]:
@@ -94,12 +105,11 @@ def run():
             new_sl = compute_new_sl(pos, _peak[ticket])
             if new_sl:
                 try:
-                    resp = client.modify_order(ticket, stop_loss=new_sl)
+                    modify_order(ticket, new_sl)
                     log.info(f"[{ticket}] Trail SL {pos.get('sl')} -> {new_sl} | profit={profit:.2f}")
                 except Exception as e:
                     log.error(f"[{ticket}] modify fail: {e}")
 
-        # Cleanup closed tickets
         active = {str(p.get("ticket")) for p in positions}
         for t in list(_peak.keys()):
             if t not in active:
