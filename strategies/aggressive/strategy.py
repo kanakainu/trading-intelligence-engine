@@ -94,6 +94,7 @@ class RiriMicroScalpEngine(BaseStrategy):
             liquidity_score=liq,
             vwap_score=vwap_sc,
             trend_score=trend,
+            direction=direction,
         )
 
         if not es.entry_ok:
