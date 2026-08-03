@@ -156,6 +156,7 @@ class MT5BrokerAdapter(BrokerAdapterBase):
                 take_profit=p.get("tp"),
                 unrealized_profit=float(p.get("profit", 0)),
                 open_time=ts,
+                comment=p.get("comment", ""),  # Add comment for strategy identification
             ))
         return result
 

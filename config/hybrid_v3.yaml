@@ -1,0 +1,41 @@
+HYBRID_V3:
+  rule_engine:
+    enabled: true
+    strategies: ["bystra", "aggressive", "semi_hft"]
+  
+  llm_filter:
+    enabled: false
+    mode: "advisory"
+    timeout_ms: 1500
+    filters:
+      regime_confirmation: true
+      news_guard: true
+      correlation_check: true
+      funding_filter: true
+    symbols: ["XAUUSD", "BTCUSD", "GBPJPY"]
+    strategies: ["bystra", "aggressive"]
+    cost_cap_usd_day: 5.00
+  
+  riri_analysis:
+    enabled: false
+    mode: "advisory"
+    timeout_ms: 3000
+    min_methodologies_agree: 2
+    symbols: ["XAUUSD", "BTCUSD", "GBPJPY"]
+    strategies: ["bystra"]
+    cost_cap_usd_day: 10.00
+  
+  trailing_system:
+    enabled: true
+    adaptive: true
+    riri_override: true
+    profiles: "config/trailing_profiles.yaml"
+  
+  safety:
+    llm_timeout_ms: 1500
+    circuit_breaker_threshold: 3
+    circuit_breaker_cooldown_sec: 600
+    max_llm_cost_usd_day: 15.00
+    max_trail_distance_atr: 3
+    min_lock_profit_r: 0.2
+    hard_kill_switch: "/tmp/tie_halt"

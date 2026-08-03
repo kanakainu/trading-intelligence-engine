@@ -2,6 +2,26 @@
 """TIE Production Runtime — Multi-Symbol Support (XAUUSD, BTCUSD, GBPUSD)."""
 import sys, time, logging, os
 from datetime import datetime, timezone
+
+# === SINGLETON LOCK ===
+PID_FILE = "/tmp/tie_production.pid"
+def acquire_singleton():
+    """Prevent duplicate instances."""
+    if os.path.exists(PID_FILE):
+        try:
+            with open(PID_FILE) as f:
+                old_pid = int(f.read().strip())
+            os.kill(old_pid, 0)  # Check if process exists
+            print(f"ERROR: tie_production.py already running (PID {old_pid})")
+            sys.exit(1)
+        except (ValueError, ProcessLookupError):
+            pass  # Stale PID file, continue
+    with open(PID_FILE, "w") as f:
+        f.write(str(os.getpid()))
+
+acquire_singleton()
+# === END SINGLETON ===
+
 sys.path.insert(0, '/home/ubuntu/.hermes/trading')
 sys.path.insert(0, '/home/ubuntu/trading-intelligence-engine')
 
@@ -60,7 +80,7 @@ mgr.load(SemiHFTStrategy)
 
 rt = MultiStrategyRuntime(mgr)
 monitor = EntryMonitor(broker=broker, gateway=client)
-pos_monitor = PositionMonitor()
+pos_monitor = PositionMonitor(broker=broker)
 risk_gate = build_risk_registry()
 context_engine = ContextEngine()
 observatory = GateObservatory()
@@ -181,11 +201,41 @@ while True:
                 current_price=price if p.get("symbol") == sym else p.get("price_current", 0),
                 stop_loss=p.get("sl"),
                 take_profit=p.get("tp"),
-                volume=p.get("volume", 0)
+                volume=p.get("volume", 0),
+                comment=p.get("comment", ""),
+                # Extended fields for TrailingManager
+                strategy_id="unknown",  # Will be extracted from comment below
+                unrealized_profit=p.get("profit", 0.0),  # USD PnL from broker
+                rr=0.0,  # Calculate below if SL/TP available
+                sl_dist_pts=0.0,  # Calculate below
+                point_value=0.1,  # Default XAUUSD 0.01 lot = $0.1/point
+                digits=2  # XAUUSD default
             ) for p in raw_positions]
             
             for ps in pos_states:
                 if ps.symbol != sym: continue
+                
+                # Extract strategy_id from comment (e.g., "TIE_B_SELL" -> "bystra")
+                if ps.comment and ps.comment.startswith("TIE_"):
+                    parts = ps.comment.split("_")
+                    if len(parts) >= 2:
+                        strategy_code = parts[1]  # B, BA, BAS, A, S
+                        strategy_map = {
+                            "B": "bystra",
+                            "BA": "bystra_aggressive",
+                            "BAS": "bystra_aggressive_semi_hft",
+                            "A": "aggressive",
+                            "S": "semi_hft"
+                        }
+                        ps.strategy_id = strategy_map.get(strategy_code, "unknown")
+                
+                # Calculate rr, sl_dist_pts if SL/TP available
+                if ps.stop_loss and ps.take_profit and ps.entry_price:
+                    sl_dist = abs(ps.entry_price - ps.stop_loss)
+                    tp_dist = abs(ps.take_profit - ps.entry_price)
+                    ps.sl_dist_pts = sl_dist
+                    ps.rr = tp_dist / sl_dist if sl_dist > 0 else 0.0
+                
                 profit = ps.profit_pts * ps.volume * 100
                 if ps.stop_loss:
                     hit = (ps.is_buy and price <= ps.stop_loss) or (not ps.is_buy and price >= ps.stop_loss)
@@ -329,9 +379,29 @@ while True:
                             setup_detail["status"] = "APPROVED"
                             setup_detail["gate_reason"] = "All gates passed"
                             observatory.log_gate(trace, "RiskGate", "PASS", reason="all rules approve")
-                            push_decision(decision)
-                            monitor.add_setup(decision)
-                            observatory.log_gate(trace, "Execution", "PASS", reason="decision pushed")
+                            
+                            # === EXECUTE ORDER TO MT5 ===
+                            from adapters.broker.models import OrderRequest
+                            try:
+                                req = OrderRequest(
+                                    symbol=sym,
+                                    side=decision.action,  # BUY/SELL
+                                    volume=decision.metadata.get("lot", 0.01),
+                                    stop_loss=decision.metadata.get("sl"),
+                                    take_profit=decision.metadata.get("take_profit"),
+                                    comment=f"TIE_{decision.setup_name}"
+                                )
+                                resp = broker.submit_order(req)
+                                if resp.status == "FILLED":
+                                    log.info(f"✅ ORDER EXECUTED: {sym} {decision.action} {req.volume} lot | SL={req.stop_loss} TP={req.take_profit} ticket={resp.order_id}")
+                                    observatory.log_gate(trace, "Execution", "PASS", reason=f"order placed ticket={resp.order_id}")
+                                    monitor.add_setup(decision)
+                                else:
+                                    log.error(f"❌ ORDER FAILED: {resp.error}")
+                                    observatory.log_gate(trace, "Execution", "FAIL", reason=resp.error or "rejected")
+                            except Exception as ex:
+                                log.error(f"Order exception: {ex}")
+                                observatory.log_gate(trace, "Execution", "FAIL", reason=str(ex))
                 else:
                     reasons = "; ".join(f"{n}={r.status}:{r.reason}" for n, r in risk_results.items() if r.status != "APPROVE")
                     log.info(f"Risk Gate: ❌ BLOCKED {sym}. {reasons}")
@@ -356,13 +426,30 @@ while True:
             contracts = {}
             for ps in pos_states:
                 if ps.symbol == sym:
-                    # Create minimal contract with execution params
+                    # Extract strategy code from comment (e.g., "TIE_B_SELL" -> "B")
+                    strategy_code = "B"  # default
+                    if ps.comment and ps.comment.startswith("TIE_"):
+                        parts = ps.comment.split("_")
+                        if len(parts) >= 2:
+                            strategy_code = parts[1]  # B, BA, BAS, A, S
+                    
+                    # Strategy-specific exit config
+                    exit_configs = {
+                        "B":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # Bystra swing
+                        "BA":  {"be_trigger_atr": 0.4, "trail_trigger_atr": 0.8, "trail_offset_atr": 0.3, "partial_tp_pct": 0.4},      # Bystra+Aggressive
+                        "BAS": {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.2, "partial_tp_pct": 0.3},      # All 3
+                        "A":   {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.25, "partial_tp_pct": 0.4},      # Aggressive momentum
+                        "S":   {"be_trigger_atr": 0.15, "trail_trigger_atr": 0.3, "trail_offset_atr": 0.15, "partial_tp_pct": 0.3},      # SemiHFT scalping
+                    }
+                    cfg = exit_configs.get(strategy_code, exit_configs["B"])
+                    
+                    # Create contract with strategy-specific execution params
                     contracts[ps.position_id] = type('Contract', (), {
                         'metadata': {
-                            'be_trigger_atr': 1.0,
-                            'trail_trigger_atr': 1.5,
-                            'trail_offset_atr': 0.5,
-                            'partial_tp_pct': 0.5,
+                            'be_trigger_atr': cfg["be_trigger_atr"],
+                            'trail_trigger_atr': cfg["trail_trigger_atr"],
+                            'trail_offset_atr': cfg["trail_offset_atr"],
+                            'partial_tp_pct': cfg["partial_tp_pct"],
                             'early_exit_reversal': True,
                         }
                     })()
@@ -401,10 +488,10 @@ while True:
             "ts": datetime.now(timezone.utc).isoformat(),
             "balance": balance,
             "equity": equity,
-            "floating_pnl": sum(getattr(p, 'profit_pts', 0) * getattr(p, 'volume', 0) for p in pos_states),
+            "floating_pnl": sum(getattr(p, 'unrealized_profit', 0) for p in pos_states),
             "margin_percent": 0.0,
             "pairs": all_pairs_data,
-            "positions": [{"side": getattr(p, 'direction', ''), "volume": getattr(p, 'volume', 0), "entry": getattr(p, 'entry_price', 0), "sl": getattr(p, 'stop_loss', 0), "tp": getattr(p, 'take_profit', 0), "pnl": getattr(p, 'profit_pts', 0) * getattr(p, 'volume', 0), "symbol": getattr(p, 'symbol', '')} for p in pos_states],
+            "positions": [{"side": getattr(p, 'side', ''), "volume": getattr(p, 'volume', 0), "entry": getattr(p, 'entry_price', 0), "sl": getattr(p, 'stop_loss', 0), "tp": getattr(p, 'take_profit', 0), "pnl": getattr(p, 'unrealized_profit', 0), "symbol": getattr(p, 'symbol', '')} for p in pos_states],
             "total_setups": sum(1 for p in all_pairs_data.values() if p.get("setup")),
         }
         

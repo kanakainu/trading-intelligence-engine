@@ -46,9 +46,9 @@ def evaluate(symbol: str, spread: float, atr_m5: float, utc_hour: int,
         atr_max = 500.0 # BTCUSD ATR can be very high
         tick_speed_min = 0.1 # BTCUSD might have lower tick consistency due to lower vol during consolidation
     else:
-        spread_threshold = 30.0 # Default for XAUUSD/GBPJPY
-        atr_min = 0.5
-        atr_max = 8.0
+        spread_threshold = 30.0  # Default for XAUUSD/GBPJPY
+        atr_min = 0.3
+        atr_max = 50.0  # Raised from 8.0 — ATR is not SemiHFT core gate
         tick_speed_min = 0.20
 
     if session_score < 60:

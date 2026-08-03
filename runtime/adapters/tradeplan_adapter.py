@@ -22,7 +22,9 @@ def plan_to_decision(plan: Optional[TradePlan]) -> TradeDecision:
 
     direction = plan.direction.upper()
     action = BUY if direction == "BUY" else SELL if direction == "SELL" else WAIT
-    setup_name = f"MSR_{direction}"
+    # Use injected strategy code (B, BA, BAS) instead of fixed MSR
+    code = (plan.metadata or {}).get("strategy_code", "MSR")
+    setup_name = f"{code}_{direction}"
 
     # Normalize confidence to 0-1 range
     normalized_confidence = min(max(plan.confidence, 0.0), 1.0)

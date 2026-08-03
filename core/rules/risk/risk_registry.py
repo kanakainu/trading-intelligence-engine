@@ -19,7 +19,7 @@ DEFAULT_RISK_RULES: List[tuple] = [
     ("confidence",    ConfidenceRule,         {}),
     ("session",       SessionRule,            {"allowed_sessions": ["LONDON", "NEW_YORK", "ASIA"]}),
     ("spread",        SpreadRule,             {"max_spread": 800}),
-    ("rr",            RRRule,                 {"min_rr": 1.5}),
+    # ("rr",          RRRule,                 {"min_rr": 1.5}),  # REMOVED: RR is SL/TP output, not entry gate (CFD architecture)
     ("sl_validation", SLValidationRule,       {}),
     ("tp_validation", TPValidationRule,       {}),
     ("news",          NewsFilterPlugin,       {"window_minutes": 30}),

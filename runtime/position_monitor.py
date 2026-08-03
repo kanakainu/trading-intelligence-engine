@@ -2,18 +2,21 @@
 from typing import Any, Callable, Dict, List, Optional
 from runtime.position_state import PositionState
 from runtime.contract_executor import ContractExecutor, ExecutionResult
+import logging
+
+log = logging.getLogger("PositionMonitor")
 
 
 class PositionMonitor:
     """
-    Monitors live positions. No broker access. No trading decisions.
-    Delegates evaluation to ContractExecutor.
-    Emits results via on_result callback.
+    Monitors live positions. Delegates evaluation to ContractExecutor.
+    Executes modify/close via broker when ContractExecutor decides.
     """
 
-    def __init__(self, on_result: Optional[Callable] = None):
+    def __init__(self, on_result: Optional[Callable] = None, broker: Any = None):
         self._executor = ContractExecutor()
         self._on_result = on_result or (lambda pos, result: None)
+        self._broker = broker
 
     def tick(self, positions: List[PositionState],
              contracts: Dict[str, Any],
@@ -44,5 +47,23 @@ class PositionMonitor:
             result = self._executor.evaluate(pos, contract, atr, candles, m5_candles=candles.get("M5") if isinstance(candles, dict) else None)
             if result.action != "none":
                 self._on_result(pos, result)
+                self._exec_followup(pos, result)
             results.append(result)
         return results
+
+    def _exec_followup(self, pos: PositionState, result: ExecutionResult):
+        """Push trailing SL / partial close to broker."""
+        if self._broker is None:
+            return
+        try:
+            if result.action == "modify":
+                new_sl = getattr(result, "new_sl", None)
+                new_tp = getattr(result, "new_tp", None)
+                if new_sl is not None or new_tp is not None:
+                    resp = self._broker.modify_order(str(pos.position_id), stop_loss=new_sl, take_profit=new_tp)
+                    log.info(f"Modify {pos.position_id}: SL={new_sl} TP={new_tp} -> {getattr(resp,'status','?')}")
+            elif result.action == "close":
+                resp = self._broker.close_position(str(pos.position_id))
+                log.info(f"Close {pos.position_id} -> {getattr(resp,'status','?')}")
+        except Exception as e:
+            log.error(f"Exec follow-up {pos.position_id}: {e}")

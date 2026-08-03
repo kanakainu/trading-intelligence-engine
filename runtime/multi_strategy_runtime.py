@@ -60,8 +60,12 @@ class MultiStrategyRuntime:
         if not fused or fused.decision.value in ("conflict", "no_signals"):
             return None
 
-        # Reconstruct signal from fused result
-        # Pick source signal matching fused direction for metadata
+        # Build strategy code prefix for comment
+        strategy_codes = {"bystra": "B", "aggressive": "A", "semi_hft": "S"}
+        contributing = [s.strategy.split("_")[0] for s in signals if s.direction.value.lower() == fused.direction]
+        code_str = "".join(sorted([strategy_codes.get(s, s[0].upper()) for s in contributing]))
+        
+        # Pick best source for metadata
         best_src = next(
             (s for s in signals if s.direction.value.lower() == fused.direction),
             signals[0]
@@ -86,6 +90,12 @@ class MultiStrategyRuntime:
             risk_per_trade_pct=1.0,
         )
         plan = self._planner.plan(planner_inputs)
+        
+        # Inject strategy code into metadata for order comment
+        if plan and plan.metadata is None:
+            object.__setattr__(plan, 'metadata', {})
+        if plan:
+            plan.metadata['strategy_code'] = code_str  # B, BA, BAS
 
         dt = (time.perf_counter() - t0) * 1000
         logger.info(

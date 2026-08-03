@@ -14,9 +14,11 @@ from typing import Dict, List, Optional
 class GovernorState:
     trading_day: str = ""          # YYYY-MM-DD UTC
     day_start_equity: float = 0.0
-    realized_pnl: float = 0.0      # today's realized
+    realized_pnl: float = 0.0      # today's realized (closed positions only)
     daily_target: float = 30.0
     daily_loss_limit: float = 50.0
+    max_daily_trades: int = 100    # max closed trades per day
+    trades_today: int = 0
     halted: bool = False
     halt_reason: str = ""
 
@@ -44,12 +46,16 @@ class DailyProfitGovernorV2:
     def record_realized(self, pnl: float) -> None:
         self._maybe_roll_day()
         self.state.realized_pnl += pnl
+        self.state.trades_today += 1
         if self.state.realized_pnl >= self.state.daily_target:
             self.state.halted = True
             self.state.halt_reason = f"target reached ({self.state.realized_pnl:.2f} >= {self.state.daily_target:.2f})"
         elif self.state.realized_pnl <= -self.state.daily_loss_limit:
             self.state.halted = True
             self.state.halt_reason = f"loss limit hit ({self.state.realized_pnl:.2f} <= -{self.state.daily_loss_limit:.2f})"
+        elif self.state.trades_today >= self.state.max_daily_trades:
+            self.state.halted = True
+            self.state.halt_reason = f"max daily trades reached ({self.state.trades_today} >= {self.state.max_daily_trades})"
 
     def can_trade(self) -> tuple[bool, str]:
         self._maybe_roll_day()
@@ -72,7 +78,7 @@ class StrategyBudget:
 class TradeBudgetManager:
     """Per-strategy daily trade budget. Reset at day rollover."""
 
-    DEFAULTS = {"bystra": 5, "aggressive": 15, "semi_hft": 25}
+    DEFAULTS = {"bystra": 100, "aggressive": 100, "semi_hft": 100}
 
     def __init__(self):
         self._budgets: Dict[str, StrategyBudget] = {}

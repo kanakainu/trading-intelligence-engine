@@ -69,37 +69,20 @@ class ContractExecutor:
             if reversal:
                 return ExecutionResult("close", f"early_exit_reversal_{reversal}")
 
-        # 4. Trailing stop trigger — market-structure aware (adaptive, faster)
-        if atr > 0 and profit >= trail_atr_mult * atr:
-            # Try market structure trailing if candles available
-            market_sl = None
-            if candles and len(candles) >= 5:
-                try:
-                    buffer = atr * 0.5
-                    if pos.is_buy:
-                        sup = find_nearest_support(candles, pos.current_price)
-                        if sup > 0:
-                            market_sl = round(sup - buffer, 6)
-                    else:
-                        res = find_nearest_resistance(candles, pos.current_price)
-                        if res < 999999.0:
-                            market_sl = round(res + buffer, 6)
-                except Exception:
-                    market_sl = None  # fallback
-
-            if market_sl is not None:
-                new_sl = market_sl
-            else:
-                # Fallback: ATR-offset trail
-                offset = trail_offset * atr
-                new_sl = round(pos.current_price - (direction * offset), 6)
-
-            sl_improves = (
-                (pos.is_buy  and new_sl > (pos.stop_loss or float("-inf"))) or
-                (not pos.is_buy and new_sl < (pos.stop_loss or float("inf")))
-            )
-            if sl_improves:
-                return ExecutionResult("modify", "trailing_stop", new_sl=new_sl)
+        # 4. Trailing stop trigger — using TrailingManager (Money-based Torto Logic)
+        from runtime.trailing_manager import TrailingManager, TrailingProfile
+        
+        # Define profiles based on Torto V4 design
+        profiles = {
+            "bystra": TrailingProfile("bystra", 5.0, 2.5, 1.0, 1.0, 360),
+            "aggressive": TrailingProfile("aggressive", 3.0, 1.5, 0.5, 0.5, 30),
+            "semi_hft": TrailingProfile("semi_hft", 1.0, 0.5, 0.2, 0.3, 5),
+        }
+        trailing_mgr = TrailingManager(profiles)
+        
+        new_sl = trailing_mgr.evaluate(pos, pos.current_price, atr, [])
+        if new_sl:
+             return ExecutionResult("modify", "trailing_stop", new_sl=new_sl)
 
         return ExecutionResult("none", "hold")
 

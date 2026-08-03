@@ -18,6 +18,14 @@ class PositionState:
     updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     comment: str = ""
     metadata: Dict[str, Any] = field(default_factory=dict)
+    
+    # Extended fields for TrailingManager
+    strategy_id: str = "unknown"           # e.g., "bystra", "aggressive", "semi_hft"
+    unrealized_profit: float = 0.0         # PnL in USD from broker
+    rr: float = 0.0                        # Risk:Reward ratio
+    sl_dist_pts: float = 0.0               # SL distance in points
+    point_value: float = 0.1               # USD per point (symbol-specific)
+    digits: int = 2                        # Symbol digits for rounding
 
     @property
     def profit_pts(self) -> float:

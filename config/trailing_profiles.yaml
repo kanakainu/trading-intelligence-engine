@@ -1,0 +1,27 @@
+# Trailing Profiles — Money-based Torto Logic (adapted from TortoScalps)
+# Per-strategy trailing configuration
+# Values in USD (currency-agnostic, MT5 broker auto-converts)
+
+bystra:
+  strategy_id: "bystra"
+  min_profit_usd_start_trail: 5.0    # Start trailing at $5 profit
+  trail_distance_usd: 2.5            # Trail distance $2.5
+  trail_step_usd: 1.0                # Step size $1
+  min_rr_breakeven_trigger: 1.0     # Breakeven at 1R (1:1)
+  time_exit_minutes: 360            # 6 hours max hold
+
+aggressive:
+  strategy_id: "aggressive"
+  min_profit_usd_start_trail: 3.0
+  trail_distance_usd: 1.5
+  trail_step_usd: 0.5
+  min_rr_breakeven_trigger: 0.5
+  time_exit_minutes: 30
+
+semi_hft:
+  strategy_id: "semi_hft"
+  min_profit_usd_start_trail: 1.0
+  trail_distance_usd: 0.5
+  trail_step_usd: 0.2
+  min_rr_breakeven_trigger: 0.3
+  time_exit_minutes: 5

@@ -1,0 +1,26 @@
+[
+  {
+    "order_id": "3566715855",
+    "setup": "B_SELL",
+    "action": "SELL",
+    "symbol": "XAUUSD",
+    "entry": 4059.445,
+    "sl": 4063.713,
+    "tp": 4053.3405,
+    "status": "OPEN",
+    "reason": "MSR plan rr=2.19",
+    "timestamp": "2026-08-03T02:45:20.043212+00:00"
+  },
+  {
+    "order_id": "3566715856",
+    "setup": "B_SELL",
+    "action": "SELL",
+    "symbol": "XAUUSD",
+    "entry": 4059.445,
+    "sl": 4063.713,
+    "tp": 4053.3405,
+    "status": "OPEN",
+    "reason": "MSR plan rr=2.19",
+    "timestamp": "2026-08-03T02:45:20.063238+00:00"
+  }
+]

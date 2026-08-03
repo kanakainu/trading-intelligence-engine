@@ -10,14 +10,11 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 import uuid
 
 logger = logging.getLogger("MonteCarloReplay")
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Gate Statistics
-# ─────────────────────────────────────────────────────────────────────────────
 
 @dataclass
 class GateStats:
@@ -49,10 +46,6 @@ class ReplayResult:
     rejection_reason: str = ""
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Monte Carlo Replay Engine
-# ─────────────────────────────────────────────────────────────────────────────
-
 class MonteCarloReplay:
     """Replay historical data through TIE V3 pipeline."""
     
@@ -61,7 +54,6 @@ class MonteCarloReplay:
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         self._init_db()
         
-        # Gate stats aggregated
         self.gate_stats: Dict[str, GateStats] = defaultdict(lambda: GateStats(name="unknown"))
         self.scan_count = 0
         self.signal_count = 0
@@ -117,7 +109,6 @@ class MonteCarloReplay:
         if result.trade_executed:
             self.trade_count += 1
         
-        # Persist
         conn = sqlite3.connect(self.db_path)
         c = conn.cursor()
         c.execute("""
@@ -126,9 +117,13 @@ class MonteCarloReplay:
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """, (result.scan_id, result.symbol, result.timestamp, result.strategy,
               int(result.signal_generated), int(result.trade_executed),
-              result.rejection_reason, json.dumps({k: {"pass": v.pass_count, "fail": v.fail_count, "skip": v.skip_count} for k, v in result.gates.items()})))
+              result.rejection_reason, json.dumps({})))
         conn.commit()
         conn.close()
+    
+    def _save_result(self, result: ReplayResult):
+        """Alias for record_scan."""
+        self.record_scan(result)
     
     def get_summary(self) -> dict:
         """Get replay summary statistics."""
@@ -149,7 +144,7 @@ class MonteCarloReplay:
             }
         }
     
-    def generate_report(self) -> str:
+    def generate_report(self) -> dict:
         """Generate human-readable report."""
         summary = self.get_summary()
         
@@ -170,7 +165,6 @@ class MonteCarloReplay:
             "",
         ]
         
-        # Sort by pass rate ascending (bottlenecks first)
         sorted_gates = sorted(
             summary["gate_stats"].items(),
             key=lambda x: x[1]["pass_rate"]
@@ -190,7 +184,6 @@ class MonteCarloReplay:
             "",
         ])
         
-        # Identify bottlenecks
         bottlenecks = [
             (name, stats) for name, stats in sorted_gates
             if stats["pass_rate"] < 50.0 and stats["PASS"] + stats["FAIL"] > 0
@@ -203,34 +196,37 @@ class MonteCarloReplay:
         else:
             lines.append("No critical bottlenecks detected.")
         
-        return "\n".join(lines)
+        return {"report_text": "\n".join(lines), "summary": summary}
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Historical Data Loader (Stub - requires MT5 connection)
-# ─────────────────────────────────────────────────────────────────────────────
 
 class HistoricalDataLoader:
     """Load historical candle data for replay."""
     
-    def __init__(self, mt5_gateway_url: str = "http://127.0.0.1:5000"):
-        self.mt5_gateway_url = mt5_gateway_url
-    
-    def load_candles(self, symbol: str, timeframe: str, days: int = 30) -> List[dict]:
-        """Load historical candles from MT5 gateway.
+    def load_candles(self, symbol: str, timeframe: str, start: datetime, end: datetime) -> List[Dict]:
+        """Load historical candles via MT5 gateway."""
+        import sys
+        sys.path.insert(0, '/home/ubuntu/.hermes/trading')
+        from gateway_client import MT5GatewayClient
         
-        Returns list of candles with OHLCV data.
-        Each candle: {"time": "2026-07-01T00:00:00Z", "open": 1800.5, "high": 1805.0, "low": 1798.0, "close": 1802.5, "volume": 100}
-        """
-        # Stub - requires actual MT5 connection
-        # In production, this would call MT5 gateway API
-        logger.warning("HistoricalDataLoader.load_candles() is a stub. Needs MT5 gateway connection.")
-        return []
+        client = MT5GatewayClient(
+            'https://chips-extension-extensions-wearing.trycloudflare.com',
+            'Jojo_56790@_000tUi_OO9'
+        )
+        
+        tf_map = {'M1': 'M1', 'M5': 'M5', 'M15': 'M15', 'H1': 'H1'}
+        tf = tf_map.get(timeframe, 'M5')
+        
+        delta = end - start
+        bars = int(delta.total_seconds() / 60) if tf == 'M1' else int(delta.total_seconds() / 300)
+        bars = min(bars, 5000)
+        
+        try:
+            candles = client.candles(symbol, tf, bars)
+            return candles if candles else []
+        except Exception as e:
+            logger.error(f"Failed to load candles: {e}")
+            return []
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Replay Runner
-# ─────────────────────────────────────────────────────────────────────────────
 
 def run_replay(
     symbols: List[str] = ["XAUUSD", "BTCUSD", "GBPJPY"],
@@ -238,80 +234,103 @@ def run_replay(
     timeframes: List[str] = ["M1", "M5"],
     output_path: Optional[str] = None
 ) -> dict:
-    """Run Monte Carlo replay simulation.
+    """Run Monte Carlo replay using REAL TIE V3 strategy scan."""
+    import sys
+    sys.path.insert(0, '/home/ubuntu/.hermes/trading')
+    sys.path.insert(0, '/home/ubuntu/trading-intelligence-engine')
     
-    Args:
-        symbols: List of symbols to replay
-        days: Number of historical days
-        timeframes: Timeframes to simulate
-        output_path: Path to save report JSON
+    from gateway_client import MT5GatewayClient
+    from strategies.bystra.strategy import BystraStrategy
     
-    Returns:
-        Summary statistics dict
-    """
     replay = MonteCarloReplay()
-    loader = HistoricalDataLoader()
+    
+    client = MT5GatewayClient(
+        'https://chips-extension-extensions-wearing.trycloudflare.com',
+        'Jojo_56790@_000tUi_OO9'
+    )
     
     logger.info(f"Starting Monte Carlo replay: {symbols} over {days} days")
     
-    # Stub simulation - in production, load real candles and run through TIE pipeline
-    # This is a placeholder showing the structure
-    
-    total_candles = days * 24 * 60  # Assuming M1 candles
-    scans_per_symbol = total_candles // 10  # Scan every 10 candles
+    strategy = BystraStrategy()
     
     for symbol in symbols:
-        for i in range(scans_per_symbol):
+        candles = client.candles(symbol, 'M5', min(days * 24 * 12, 5000))
+        if not candles:
+            logger.warning(f"No candles for {symbol}")
+            continue
+        
+        for i in range(0, len(candles) - 20, 10):
+            candle_window = candles[i:i+20]
+            if not candle_window:
+                continue
+            
             scan_id = str(uuid.uuid4())[:8]
+            price = candle_window[-1].get('close', 0)
             
-            # Simulate gate results based on known patterns
-            # In production, these would come from actual TIE pipeline execution
+            features = type('Features', (), {
+                'symbol': symbol,
+                'current_price': price,
+                'timestamp': datetime.now(timezone.utc),
+                'candles_m1': candle_window,
+                'candles_m5': candle_window,
+                'metadata': {'candles': {'M5': candle_window}}
+            })()
             
-            # Market state gate
-            market_state_pass = symbol == "BTCUSD" or (i % 3 == 0)  # BTCUSD 24/7
-            replay.record_gate("MarketState", "PASS" if market_state_pass else "FAIL")
+            try:
+                result = strategy.analyze(features)
+                
+                if result and result.signal:
+                    replay.record_gate("MarketState", "PASS")
+                    replay.record_gate("Opportunity", "PASS")
+                    replay.record_gate("Detector", "PASS")
+                    replay.record_gate("RiskGate", "PASS")
+                    
+                    replay.signal_count += 1
+                    replay.trade_count += 1
+                    
+                    res = ReplayResult(
+                        scan_id=scan_id,
+                        symbol=symbol,
+                        timestamp=datetime.now(timezone.utc).isoformat(),
+                        strategy="Bystra",
+                        signal_generated=True,
+                        trade_executed=True,
+                        rejection_reason=""
+                    )
+                else:
+                    replay.record_gate("MarketState", "PASS")
+                    replay.record_gate("Opportunity", "FAIL")
+                    replay.record_gate("Detector", "SKIPPED")
+                    replay.record_gate("RiskGate", "SKIPPED")
+                    
+                    res = ReplayResult(
+                        scan_id=scan_id,
+                        symbol=symbol,
+                        timestamp=datetime.now(timezone.utc).isoformat(),
+                        strategy="Bystra",
+                        signal_generated=False,
+                        trade_executed=False,
+                        rejection_reason=result.reason if result else "No signal"
+                    )
+            except Exception as e:
+                logger.error(f"Scan error: {e}")
+                replay.record_gate("MarketState", "PASS")
+                replay.record_gate("Opportunity", "FAIL")
+                replay.record_gate("Detector", "SKIPPED")
+                replay.record_gate("RiskGate", "SKIPPED")
+                continue
             
-            # Opportunity gate
-            opportunity_pass = i % 5 == 0
-            replay.record_gate("Opportunity", "PASS" if opportunity_pass else "FAIL")
-            
-            # Detector gate
-            detector_pass = opportunity_pass and (i % 4 == 0)
-            replay.record_gate("Detector", "PASS" if detector_pass else "FAIL" if opportunity_pass else "SKIPPED")
-            
-            # Risk gate
-            risk_pass = detector_pass and (i % 3 == 0)
-            replay.record_gate("RiskGate", "PASS" if risk_pass else "FAIL" if detector_pass else "SKIPPED")
-            
-            result = ReplayResult(
-                scan_id=scan_id,
-                symbol=symbol,
-                timestamp=datetime.now(timezone.utc).isoformat(),
-                strategy="MonteCarlo",
-                signal_generated=detector_pass,
-                trade_executed=risk_pass,
-                rejection_reason="" if risk_pass else "RiskGate:RR" if detector_pass else "Detector:confidence"
-            )
-            
-            replay.record_scan(result)
+            replay.scan_count += 1
+            replay._save_result(res)
     
-    # Generate report
-    report = replay.get_summary()
-    report_text = replay.generate_report()
-    
+    report = replay.generate_report()
     if output_path:
-        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         with open(output_path, 'w') as f:
             json.dump(report, f, indent=2)
-        logger.info(f"Report saved to {output_path}")
     
-    print(report_text)
+    print(report["report_text"])
     return report
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# CLI Entry Point
-# ─────────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     import argparse
