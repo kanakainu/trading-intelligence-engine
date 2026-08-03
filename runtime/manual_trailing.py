@@ -52,18 +52,20 @@ def compute_new_sl(pos: dict, peak_profit: float) -> float | None:
 
     pts_per_usd = abs(current - entry) / abs(profit)
 
-    # Phase 1: BE lock — move SL to entry if not already there
-    be_sl = entry
-    if is_buy and (sl == 0.0 or sl < be_sl):
-        return round(be_sl, 2)
-    if not is_buy and (sl == 0.0 or sl > be_sl):
+    # Phase 1: Profit lock — move SL to Entry + $1.5 if profit >= $5
+    # Move SL to Entry + $1.5 (or Entry - $1.5 for SELL)
+    be_lock_offset = 1.5
+    be_sl = entry + (be_lock_offset if is_buy else -be_lock_offset)
+    
+    if sl == 0.0 or (is_buy and sl < be_sl) or (not is_buy and sl > be_sl):
         return round(be_sl, 2)
 
-    # Phase 2: trail SL based on peak profit pullback
+    # Phase 2: Dynamic trail based on peak profit pullback
     if profit >= peak_profit:
-        return None  # still rising, no trail yet
+        return None  # still rising, no trail move yet
 
     lock_floor = peak_profit - DIST_USD
+    # ... (rest of trail logic)
     if lock_floor <= 0:
         return None
 
