@@ -19,7 +19,7 @@ class OpportunityWindow:
             reasons.append(f"session_closed({session.session})")
         if liquidity.state != LiquidityState.LIKELY_LIQUID:
             reasons.append(f"low_liquidity({liquidity.state.value})")
-        if pulse.pulse < 55:
+        if pulse.pulse < 40:
             reasons.append(f"low_pulse({pulse.pulse})")
         if spread > self.max_spread:
             reasons.append(f"high_spread({spread})")
