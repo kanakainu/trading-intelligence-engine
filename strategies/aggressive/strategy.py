@@ -95,11 +95,6 @@ class RiriMicroScalpEngine(BaseStrategy):
             vwap_score=vwap_sc,
             trend_score=trend,
         )
-            liquidity_score=liq,
-            vwap_score=vwap_s,
-            trend_score=trend,
-            direction=direction,
-        )
 
         if not es.entry_ok:
             return StrategyResult(signal=None, confidence=0.0, reason=f"rme:{es.reason}",
@@ -133,7 +128,7 @@ class RiriMicroScalpEngine(BaseStrategy):
                 "velocity": vel,
                 "micro": micro,
                 "liquidity": liq,
-                "vwap": vwap_score,
+                "vwap": vwap_sc,
                 "trend": trend,
             }
         )
