@@ -1,19 +1,26 @@
 """manual_trailing.py — Trailing manager for manual positions (non-TIE orders).
 Polls gateway every 5s, applies money-based trailing to all positions without TIE_ comment.
 Torto V4 logic: start_usd=$5, dist_usd=$2.5, step_usd=$1.
+Auto SL/TP: uses Bystra swing pivot logic (H1 candles) for positions with sl==0.
 """
-import time, logging, os, requests
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+
+import time, logging, requests
+from detectors.common import find_nearest_support, find_nearest_resistance
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 log = logging.getLogger("ManualTrailing")
 
-POLL_SEC = 5
-URL   = os.getenv("MT5_GATEWAY_URL", "https://chips-extension-extensions-wearing.trycloudflare.com")
-TOKEN = os.getenv("MT5_GATEWAY_TOKEN", "Jojo_56790@_000tUi_OO9")
+POLL_SEC   = 5
+URL        = os.getenv("MT5_GATEWAY_URL",   "https://chips-extension-extensions-wearing.trycloudflare.com")
+TOKEN      = os.getenv("MT5_GATEWAY_TOKEN", "Jojo_56790@_000tUi_OO9")
+HEADERS    = {"Authorization": f"Bearer {TOKEN}"}
 
-START_USD = 5.0
-DIST_USD  = 2.5
-STEP_USD  = 1.0
+START_USD  = 5.0
+DIST_USD   = 2.5
+STEP_USD   = 1.0
+RR_RATIO   = 1.5   # TP = SL_dist * 1.5
 
 _peak: dict = {}
 
@@ -83,6 +90,71 @@ def compute_new_sl(pos: dict, peak_profit: float) -> float | None:
         return round(new_sl, 2)
 
 
+def get_candles(symbol: str, tf: str = "H1", count: int = 100):
+    """Fetch H1 candles from gateway for Bystra swing pivot analysis."""
+    try:
+        r = requests.get(
+            f"{URL}/trade/candles/{symbol}",
+            params={"tf": tf, "count": count},
+            headers=HEADERS,
+            timeout=10
+        )
+        r.raise_for_status()
+        return r.json() or []
+    except Exception as e:
+        log.error(f"candles fetch fail: {e}")
+        return []
+
+
+def auto_sltp(pos: dict):
+    """
+    Auto-set SL/TP for manual positions with sl==0.
+    Uses Bystra swing pivot logic (H1 candles):
+    - SELL → SL = nearest swing high above entry
+    - BUY → SL = nearest swing low below entry
+    - TP = entry ± (SL_dist × RR_RATIO)
+    """
+    sl = pos.get("sl") or 0.0
+    if sl != 0.0:
+        return  # already has SL
+
+    symbol    = pos.get("symbol", "")
+    entry     = pos.get("open_price", 0.0)
+    direction = str(pos.get("direction", "")).lower()
+    is_buy    = direction == "buy"
+    ticket    = str(pos.get("ticket"))
+
+    # Fetch H1 candles
+    candles = get_candles(symbol, tf="H1", count=100)
+    if not candles:
+        log.warning(f"[{ticket}] No H1 candles for {symbol}, skip auto SL/TP")
+        return
+
+    # Find swing pivot SL
+    if is_buy:
+        sl_price = find_nearest_support(candles, entry)
+    else:
+        sl_price = find_nearest_resistance(candles, entry)
+
+    if sl_price == 0.0 or sl_price == entry:
+        log.warning(f"[{ticket}] No valid swing pivot found, skip auto SL/TP")
+        return
+
+    # Calculate TP (RR_RATIO = 1.5)
+    sl_dist = abs(entry - sl_price)
+    if is_buy:
+        tp_price = entry + (sl_dist * RR_RATIO)
+    else:
+        tp_price = entry - (sl_dist * RR_RATIO)
+
+    # Apply via gateway
+    try:
+        modify_order(ticket, sl_price, tp_price)
+        log.info(f"[{ticket}] Auto SL/TP set: SL={sl_price:.2f}, TP={tp_price:.2f} (RR={RR_RATIO})")
+    except Exception as e:
+        log.error(f"[{ticket}] auto SL/TP fail: {e}")
+
+
 def modify_order(ticket: str, stop_loss: float, take_profit: float = 0.0):
     """Modify SL via gateway REST API."""
     try:
@@ -104,10 +176,13 @@ def run():
 
     while True:
         positions = get_manual_positions()
-
+        positions = get_manual_positions()
         for pos in positions:
             ticket = str(pos.get("ticket"))
             profit = pos.get("profit", 0.0)
+
+            # Auto SL/TP for positions without SL
+            auto_sltp(pos)
 
             if ticket not in _peak:
                 _peak[ticket] = profit
