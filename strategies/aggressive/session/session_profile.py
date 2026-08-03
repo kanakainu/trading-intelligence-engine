@@ -19,7 +19,7 @@ SESSION_SCORES = {
     "OVERLAP":   98,   # London + NY overlap = most liquid
     "LONDON":    95,
     "NEW_YORK":  88,
-    "ASIAN":     25,
+    "ASIAN":     55,   # XAUUSD tetap liquid pagi WIB
     "OFF":       10,   # dead hours 00-02 UTC
 }
 
