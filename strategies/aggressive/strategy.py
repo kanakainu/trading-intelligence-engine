@@ -117,7 +117,20 @@ class RiriMicroScalpEngine(BaseStrategy):
             }
         )
         logger.info(f"RME {direction} score={es.score:.1f} sym={features.symbol}")
-        return StrategyResult(signal=sig, confidence=es.score, reason=f"rme_score:{es.score:.1f}")
+        return StrategyResult(
+            signal=sig,
+            confidence=es.score,
+            reason=f"rme_score:{es.score:.1f}",
+            metadata={
+                "score": es.score,
+                "momentum": mom,
+                "velocity": vel,
+                "micro": micro,
+                "liquidity": liq,
+                "vwap": vwap_score,
+                "trend": trend,
+            }
+        )
 
     def manage_position(self, position: PositionSnapshot, context: StrategyContext) -> Optional[StrategyResult]:
         features = context.scan.features

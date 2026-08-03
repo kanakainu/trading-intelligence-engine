@@ -130,8 +130,20 @@ class SemiHFTStrategyV4(BaseStrategy):
         )
         logger.info(f"C8V4 {direction} entry={price} sl={rp.sl} tp={rp.tp} "
                     f"lot={rp.lot} pattern={micro.pattern} score={es.score:.1f}")
-        return StrategyResult(signal=sig, confidence=conf,
-                              reason=f"c8v4_{micro.pattern}")
+        return StrategyResult(
+            signal=sig,
+            confidence=conf,
+            reason=f"c8v4_{micro.pattern}",
+            metadata={
+                "score": es.score,
+                "momentum": self._snap.momentum_score,
+                "velocity": self._vel,
+                "liquidity": self._liq,
+                "volatility": self._vol,
+                "pulse": self._pulse,
+                "micro": micro.score,
+            }
+        )
 
     def learn(self, reflection: TradeReflection) -> None:
         pnl = getattr(reflection, "realized_pl", 0.0) or 0.0
