@@ -42,7 +42,7 @@ from core.strategy_manager.manager import StrategyManager
 from core.strategy.exit_orchestrator import ExitOrchestrator, ExitProfile
 from strategies.bystra.strategy import BystraStrategy
 from strategies.aggressive.strategy import AggressiveStrategy
-from strategies.semi_hft.strategy import SemiHFTStrategy
+from strategies.semi_hft.strategy import SemiHFTStrategyV4 as SemiHFTStrategy
 from strategies.aggressive.regime.regime_engine import AggressiveRegimeEngine
 from runtime.multi_strategy_runtime import MultiStrategyRuntime
 from runtime.adapters.tradeplan_adapter import plan_to_decision, aggressive_regime_to_core_regime
