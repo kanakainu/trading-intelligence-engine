@@ -98,7 +98,9 @@ class RiriMicroScalpEngine(BaseStrategy):
         )
 
         if not es.entry_ok:
-            return StrategyResult(signal=None, confidence=0.0, reason=f"rme:{es.reason}")
+            return StrategyResult(signal=None, confidence=0.0, reason=f"rme:{es.reason}",
+                                  metadata={"score": es.score, "momentum": mom, "velocity": vel,
+                                            "micro": micro, "liquidity": liq, "vwap": vwap_score, "trend": trend})
 
         # 7. Signal
         sig = Signal(

@@ -89,7 +89,10 @@ class SemiHFTStrategyV4(BaseStrategy):
         )
         if not es.entry_ok:
             return StrategyResult(signal=None, confidence=0.0,
-                                  reason=f"entry_low:{es.score:.0f}")
+                                  reason=f"entry_low:{es.score:.0f}",
+                                  metadata={"score": es.score, "momentum": self._snap.momentum_score,
+                                            "velocity": self._vel, "liquidity": self._liq,
+                                            "volatility": self._vol, "pulse": self._pulse, "micro": micro.score})
 
         # 3. Risk plan (sole hard-reject: entry/equity == 0)
         f = context.scan.features
