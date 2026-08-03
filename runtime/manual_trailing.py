@@ -34,8 +34,8 @@ def get_manual_positions():
 def compute_new_sl(pos: dict, peak_profit: float) -> float | None:
     """
     Torto V4 money-based trailing logic.
-    Returns new_sl price if SL should move, else None.
-    profit = pos['profit'] in account currency (MT5 auto-converts).
+    Phase 1: profit >= START_USD → lock SL to break-even (entry price).
+    Phase 2: profit pulled back DIST_USD from peak → trail SL to lock floor.
     """
     profit    = pos.get("profit", 0.0)
     entry     = pos.get("open_price", 0.0)
@@ -47,16 +47,26 @@ def compute_new_sl(pos: dict, peak_profit: float) -> float | None:
     if profit < START_USD:
         return None
 
-    if profit > peak_profit:
+    if current == entry or profit == 0:
         return None
+
+    pts_per_usd = abs(current - entry) / abs(profit)
+
+    # Phase 1: BE lock — move SL to entry if not already there
+    be_sl = entry
+    if is_buy and (sl == 0.0 or sl < be_sl):
+        return round(be_sl, 2)
+    if not is_buy and (sl == 0.0 or sl > be_sl):
+        return round(be_sl, 2)
+
+    # Phase 2: trail SL based on peak profit pullback
+    if profit >= peak_profit:
+        return None  # still rising, no trail yet
 
     lock_floor = peak_profit - DIST_USD
     if lock_floor <= 0:
         return None
 
-    if profit == 0:
-        return None
-    pts_per_usd = abs(current - entry) / abs(profit)
     sl_price_offset = lock_floor * pts_per_usd
 
     if is_buy:
@@ -71,13 +81,13 @@ def compute_new_sl(pos: dict, peak_profit: float) -> float | None:
         return round(new_sl, 2)
 
 
-def modify_order(ticket: str, stop_loss: float):
+def modify_order(ticket: str, stop_loss: float, take_profit: float = 0.0):
     """Modify SL via gateway REST API."""
     try:
         headers = {"Authorization": f"Bearer {TOKEN}"}
         r = requests.post(
-            f"{URL}/order/modify",
-            json={"ticket": ticket, "sl": stop_loss},
+            f"{URL}/trade/modify",
+            json={"ticket": int(ticket), "sl": stop_loss, "tp": take_profit},
             headers=headers,
             timeout=5
         )
