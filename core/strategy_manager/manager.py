@@ -26,6 +26,7 @@ class StrategyManager:
         self._registry: Dict[str, BaseStrategy] = {}
         self._metrics: Dict[str, StrategyMetrics] = {}
         self._enabled: Dict[str, bool] = {}
+        self._last_scores: Dict[str, Any] = {}  # {sid: {symbol, score, breakdown, ts}}
 
     @classmethod
     def instance(cls) -> "StrategyManager":
@@ -135,6 +136,15 @@ class StrategyManager:
                 if result:
                     self._metrics[sid].record(result)
                     results.append(result)
+                    # Populate score breakdown from metadata
+                    if result.metadata and sym:
+                        self._last_scores[f"{sid}_{sym}"] = {
+                            "strategy_id": sid,
+                            "symbol": sym,
+                            "score": result.metadata.get("score", 0.0),
+                            "breakdown": {k: v for k, v in result.metadata.items() if k != "score"},
+                            "timestamp": context.scan.timestamp.isoformat() if context.scan and context.scan.timestamp else "",
+                        }
                     if result.signal is None:
                         logger.info("Strategy %s returned WAIT: %s", sid, result.reason)
             except Exception as e:
@@ -156,3 +166,7 @@ class StrategyManager:
         if strategy_id:
             return self._metrics.get(strategy_id, {})
         return {sid: m.summary() for sid, m in self._metrics.items()}
+
+    def get_last_scores(self) -> Dict[str, Any]:
+        """Return last score breakdown for all strategies."""
+        return self._last_scores
