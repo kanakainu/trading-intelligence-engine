@@ -36,6 +36,7 @@ from runtime.portfolio_intelligence import PortfolioCoordinator
 from core.context.context_model import MarketContext
 from core.context.scan_context import ScanContext
 from core.features.feature_models import FeatureSnapshot
+from core.features import compute_features, FeatureInputs
 from core.regime.regime_models import RegimeSnapshot, Regime, TrendDirection
 from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
 from core.strategy_manager.manager import StrategyManager
@@ -262,9 +263,20 @@ while True:
             # Build ScanContext for MultiStrategyRuntime
             _sid = str(uuid.uuid4())
             _now = datetime.now(timezone.utc)
-            _features = FeatureSnapshot(symbol=sym, timestamp=_now, scan_id=_sid,
+            # Feature Engine Central — full indicator computation (EMA, ATR, VWAP, momentum, volume)
+            _feat_inputs = FeatureInputs(
                 candles=candles,
-                atr={tf: ctx.metadata.get("atr", 0.0) for tf in candles},
+                spread=spread,
+                symbol=sym,
+                timestamp=_now,
+                scan_id=_sid,
+                current_tick={"bid": price, "ask": price + spread},
+            )
+            _features = compute_features(_feat_inputs)
+            # Inject S/R via dataclasses.replace (frozen-safe)
+            import dataclasses
+            _features = dataclasses.replace(
+                _features,
                 nearest_support={"H1": sr["h1_support"]},
                 nearest_resistance={"H1": sr["h1_resistance"]},
             )
