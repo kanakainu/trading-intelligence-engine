@@ -105,12 +105,26 @@ class StrategyManager:
         except Exception as e:
             logger.warning("Failed to reload status: %s", e)
 
+        # Load per-symbol toggle config
+        _sym_status = {}
+        try:
+            with open("/home/ubuntu/trading-intelligence-engine/config/symbol_status.json") as f:
+                _sym_status = json.load(f)
+        except Exception:
+            pass
+
         results = []
         sym = context.scan.market.symbol.upper() if context.scan and context.scan.market else ""
         for sid, strategy in sorted(self._registry.items(), key=lambda x: -x[1].priority):
             if not self._enabled.get(sid, True):
                 continue
-            
+
+            # Per-symbol toggle check
+            if sym and sid in _sym_status:
+                if not _sym_status[sid].get(sym, True):
+                    logger.info("Strategy %s skipped for symbol %s (disabled)", sid, sym)
+                    continue
+
             meta = getattr(strategy, "metadata", None)
             supported = getattr(meta, "supported_symbols", None)
             if supported and sym and sym not in [s.upper() for s in supported]:
