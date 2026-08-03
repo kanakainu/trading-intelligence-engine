@@ -73,11 +73,11 @@ class RiriMicroScalpEngine(BaseStrategy):
         # 4. Score all engines (parallel, no gates)
         snap    = get_snapshot(candles_m5)
         sess    = get_session_score(utc_h)
-        mom     = momentum_score(candles_m5)
-        vel     = velocity_score(candles_m5, atr)
-        micro   = micro_score(candles_m5, atr)
-        liq     = liquidity_score(vol_ratio)
-        vwap_s  = vwap_score(price, vwap)
+        mom     = calc_momentum_score(candles_m5)
+        vel     = calc_velocity_score(candles_m5, atr)
+        micro   = calc_micro_score(candles_m5, atr)
+        liq     = calc_liquidity_score(vol_ratio)
+        vwap_sc = calc_vwap_score(price, vwap)
         trend   = (sess * 0.5 + snap.momentum_score * 0.5)  # composite trend score
 
         # 5. Determine direction from snapshot
@@ -91,6 +91,10 @@ class RiriMicroScalpEngine(BaseStrategy):
             momentum_score=mom,
             velocity_score=vel,
             micro_score=micro,
+            liquidity_score=liq,
+            vwap_score=vwap_sc,
+            trend_score=trend,
+        )
             liquidity_score=liq,
             vwap_score=vwap_s,
             trend_score=trend,
