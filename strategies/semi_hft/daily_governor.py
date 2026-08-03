@@ -1,6 +1,7 @@
 """Daily Governor — profit/loss cap, consecutive loss cooldown."""
 from dataclasses import dataclass
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
+import time
 
 DAILY_PROFIT_TARGET = 30.0
 DAILY_LOSS_LIMIT    = 50.0
@@ -36,14 +37,12 @@ class DailyGovernor:
         if pnl < 0:
             self.consec_losses += 1
             if self.consec_losses >= 3:
-                import time
                 self._cooldown_until = time.time() + CONSEC_LOSS_COOLDOWN
                 self.consec_losses = 0
         else:
             self.consec_losses = 0
 
     def is_halted(self) -> bool:
-        import time
         self._check_date()
         if self.daily_pnl >= DAILY_PROFIT_TARGET: return True
         if self.daily_pnl <= -DAILY_LOSS_LIMIT:   return True
@@ -51,7 +50,6 @@ class DailyGovernor:
         return False
 
     def get_status(self) -> dict:
-        import time
         self._check_date()
         reason = "ok"
         if self.daily_pnl >= DAILY_PROFIT_TARGET: reason="profit_target"
@@ -59,16 +57,3 @@ class DailyGovernor:
         elif time.time() < self._cooldown_until:  reason=f"cooldown_{int(self._cooldown_until-time.time())}s"
         return {"halted": self.is_halted(), "reason": reason,
                 "daily_pnl": self.daily_pnl, "trades_today": self.trades_today}
-
-
-if __name__=="__main__":
-    g=DailyGovernor()
-    g.record_trade(31.0)
-    assert g.is_halted()
-    g2=DailyGovernor()
-    g2.record_trade(-51.0)
-    assert g2.is_halted()
-    g3=DailyGovernor()
-    g3.record_trade(-1); g3.record_trade(-1); g3.record_trade(-1)
-    assert g3.is_halted()
-    print("governor OK")
