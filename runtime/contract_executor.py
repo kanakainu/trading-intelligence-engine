@@ -72,11 +72,11 @@ class ContractExecutor:
         # 4. Trailing stop trigger — using TrailingManager (Money-based Torto Logic)
         from runtime.trailing_manager import TrailingManager, TrailingProfile
         
-        # Define profiles based on Torto V4 design
+        # Define profiles based on Torto V4 design (V3 = $3 start, manual = $5 start)
         profiles = {
-            "bystra": TrailingProfile("bystra", 5.0, 2.5, 1.0, 1.0, 360),
+            "bystra": TrailingProfile("bystra", 3.0, 2.5, 1.0, 1.0, 360),
             "aggressive": TrailingProfile("aggressive", 3.0, 1.5, 0.5, 0.5, 30),
-            "semi_hft": TrailingProfile("semi_hft", 1.0, 0.5, 0.2, 0.3, 5),
+            "semi_hft": TrailingProfile("semi_hft", 3.0, 0.5, 0.2, 0.3, 5),
         }
         trailing_mgr = TrailingManager(profiles)
         
