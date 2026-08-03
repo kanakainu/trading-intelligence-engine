@@ -88057,3 +88057,2005 @@ KeyError: 'low'
 2026-08-03 10:08:53,955 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
 2026-08-03 10:08:53,955 TIE_Production No setup for GBPJPY (WAIT)
 2026-08-03 10:08:53,960 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+ERROR: tie_production.py already running (PID 340521)
+ERROR: tie_production.py already running (PID 340896)
+ERROR: tie_production.py already running (PID 342455)
+ERROR: tie_production.py already running (PID 342455)
+2026-08-03 14:31:25,678 MT5BrokerAdapter MT5BrokerAdapter initialized OK
+2026-08-03 14:31:25,680 BystraStrategy BystraStrategy initialized — 14 detectors
+2026-08-03 14:31:25,681 StrategyManager Registered strategy Bystra v1.0.0
+2026-08-03 14:31:25,681 strategies.aggressive.strategy AggressiveStrategy initialized — C7 Pipeline
+2026-08-03 14:31:25,681 StrategyManager Registered strategy Aggressive v0.1.0
+2026-08-03 14:31:25,681 strategies.semi_hft.strategy SemiHFTStrategy initialized — C8 Pipeline
+2026-08-03 14:31:25,681 StrategyManager Registered strategy SemiHFT v1.0
+2026-08-03 14:31:25,682 TIE_Production TIE Production Multi-Symbol started: ['XAUUSD', 'BTCUSD', 'GBPJPY']. Risk Gate active. Observatory enabled. Governor enabled.
+2026-08-03 14:31:25,773 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:31:26,520 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:31:26,520 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:31:26,521 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:31:26,521 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:31:26,525 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:31:26,526 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:31:27,361 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:31:27,361 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:31:27,362 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:31:27,362 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:31:27,367 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:31:27,367 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:31:28,154 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:31:28,159 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:31:28,159 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:31:28,159 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:31:28,203 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:31:28,204 TIE_Production Risk Gate: ✅ PASS — GBPJPY
+2026-08-03 14:31:28,209 GateObservatory [GBPJPY/TIE_V3] Gate RiskGate: PASS | all rules approve
+2026-08-03 14:31:28,324 TIE_Production ✅ ORDER EXECUTED: GBPJPY SELL 0.01 lot | SL=211.342 TP=210.039 ticket=3567773996
+2026-08-03 14:31:28,331 GateObservatory [GBPJPY/TIE_V3] Gate Execution: PASS | order placed ticket=3567773996
+2026-08-03 14:31:28,331 EntryMonitor Added B_SELL SELL to watchlist. Waiting for pullback...
+2026-08-03 14:31:28,596 EntryMonitor Setup B_SELL INVALID: Price hit Danger Zone 209.565
+2026-08-03 14:31:38,700 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:31:39,453 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:31:39,453 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:31:39,453 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:31:39,453 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:31:39,460 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:31:39,460 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:31:40,411 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:31:40,411 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:31:40,411 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:31:40,411 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:31:40,417 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:31:40,418 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:31:41,290 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:31:41,297 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:31:41,297 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:31:41,297 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:31:41,344 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:31:41,345 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 13s ago)
+2026-08-03 14:31:41,350 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 13s ago
+2026-08-03 14:31:42,114 PositionMonitor Close 3567773996 -> FILLED
+2026-08-03 14:31:52,372 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:31:53,722 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:31:53,722 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:31:53,723 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:31:53,723 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:31:53,730 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:31:53,730 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:31:54,486 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:31:54,486 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:31:54,487 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:31:54,487 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:31:54,496 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:31:54,496 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:31:55,390 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:31:55,394 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:31:55,394 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:31:55,394 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:31:55,440 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:31:55,441 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 27s ago)
+2026-08-03 14:31:55,445 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 27s ago
+2026-08-03 14:32:05,758 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:32:06,749 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:32:06,749 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:32:06,750 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:32:06,750 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:32:06,760 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:32:06,760 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:32:07,612 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:32:07,612 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:32:07,613 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:32:07,613 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:32:07,617 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:32:07,617 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:32:08,325 MultiStrategyRuntime Scan 1.3ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:32:08,331 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:32:08,331 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:32:08,331 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:32:08,374 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:32:08,374 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 40s ago)
+2026-08-03 14:32:08,379 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 40s ago
+2026-08-03 14:32:18,660 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:32:19,469 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:32:19,469 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:32:19,470 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:32:19,470 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:32:19,482 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:32:19,482 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:32:20,269 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:32:20,269 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:32:20,269 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:32:20,270 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:32:20,276 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:32:20,276 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:32:21,034 MultiStrategyRuntime Scan 1.2ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:32:21,039 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:32:21,039 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:32:21,039 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:32:21,084 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:32:21,084 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 53s ago)
+2026-08-03 14:32:21,090 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 53s ago
+2026-08-03 14:32:31,368 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:32:32,105 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:32:32,105 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:32:32,106 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:32:32,106 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:32:32,110 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:32:32,110 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:32:32,833 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:32:32,833 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:32:32,834 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:32:32,834 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:32:32,841 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:32:32,841 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:32:33,625 MultiStrategyRuntime Scan 1.1ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:32:33,629 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:32:33,629 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:32:33,629 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:32:33,676 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:32:33,677 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 65s ago)
+2026-08-03 14:32:33,681 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 65s ago
+2026-08-03 14:32:44,013 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:32:44,770 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:32:44,770 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:32:44,770 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:32:44,770 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:32:44,775 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:32:44,775 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:32:45,487 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:32:45,487 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:32:45,488 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:32:45,488 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:32:45,492 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:32:45,493 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:32:46,250 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:32:46,254 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:32:46,254 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:32:46,254 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:32:46,296 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:32:46,297 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 78s ago)
+2026-08-03 14:32:46,300 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 78s ago
+2026-08-03 14:32:56,769 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:32:57,539 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:32:57,539 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:32:57,539 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:32:57,539 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:32:57,544 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:32:57,544 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:32:58,475 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:32:58,475 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:32:58,476 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:32:58,476 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:32:58,479 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:32:58,479 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:33:00,405 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:33:00,410 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:33:00,410 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:33:00,411 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:33:00,460 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:33:00,461 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 92s ago)
+2026-08-03 14:33:00,465 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 92s ago
+2026-08-03 14:33:10,838 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:33:11,978 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:33:11,978 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:33:11,978 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:33:11,979 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:33:11,984 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:33:11,984 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:33:12,772 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:33:12,772 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:33:12,772 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:33:12,773 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:33:12,780 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:33:12,780 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:33:13,501 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:33:13,505 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:33:13,505 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:33:13,505 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:33:13,551 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:33:13,552 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 105s ago)
+2026-08-03 14:33:13,556 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 105s ago
+2026-08-03 14:33:23,861 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:33:24,705 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:33:24,706 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:33:24,706 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:33:24,706 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:33:24,712 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:33:24,712 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:33:25,807 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:33:25,807 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:33:25,808 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:33:25,808 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:33:25,815 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:33:25,816 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:33:26,576 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:33:26,580 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:33:26,580 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:33:26,580 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:33:26,619 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:33:26,620 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 118s ago)
+2026-08-03 14:33:26,625 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 118s ago
+2026-08-03 14:33:36,998 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:33:37,718 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:33:37,718 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:33:37,719 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:33:37,719 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:33:37,725 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:33:37,726 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:33:38,434 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:33:38,434 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:33:38,435 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:33:38,435 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:33:38,439 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:33:38,439 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:33:39,168 MultiStrategyRuntime Scan 1.3ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:33:39,176 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:33:39,177 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:33:39,177 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:33:39,242 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:33:39,243 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 131s ago)
+2026-08-03 14:33:39,247 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 131s ago
+2026-08-03 14:33:49,531 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:33:50,273 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:33:50,273 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:33:50,274 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:33:50,274 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:33:50,278 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:33:50,278 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:33:51,029 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:33:51,029 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:33:51,030 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:33:51,030 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:33:51,034 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:33:51,034 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:33:51,880 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:33:51,885 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:33:51,885 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:33:51,885 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:33:51,933 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:33:51,933 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 144s ago)
+2026-08-03 14:33:51,937 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 144s ago
+2026-08-03 14:34:02,235 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:34:03,008 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:34:03,008 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:34:03,009 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:34:03,009 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:34:03,015 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:34:03,015 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:34:03,781 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:34:03,781 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:34:03,782 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:34:03,782 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:34:03,786 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:34:03,786 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:34:04,491 MultiStrategyRuntime Scan 1.1ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:34:04,496 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:34:04,496 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:34:04,496 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:34:04,546 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:34:04,547 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 156s ago)
+2026-08-03 14:34:04,552 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 156s ago
+2026-08-03 14:34:14,885 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:34:15,600 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:34:15,600 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:34:15,601 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:34:15,601 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:34:15,606 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:34:15,606 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:34:16,319 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:34:16,319 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:34:16,320 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:34:16,320 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:34:16,326 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:34:16,326 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:34:17,002 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:34:17,008 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:34:17,008 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:34:17,008 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:34:17,048 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:34:17,049 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 169s ago)
+2026-08-03 14:34:17,054 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 169s ago
+2026-08-03 14:34:27,284 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:34:28,759 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:34:28,759 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:34:28,760 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:34:28,760 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:34:28,766 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:34:28,766 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:34:30,308 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:34:30,308 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:34:30,309 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:34:30,309 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:34:30,314 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:34:30,314 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:34:31,511 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:34:31,515 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:34:31,515 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:34:31,515 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:34:31,556 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:34:31,557 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 183s ago)
+2026-08-03 14:34:31,561 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 183s ago
+2026-08-03 14:34:41,850 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:34:42,589 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:34:42,589 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:34:42,590 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:34:42,590 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:34:42,596 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:34:42,596 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:34:43,334 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:34:43,335 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:34:43,335 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:34:43,335 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:34:43,340 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:34:43,341 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:34:44,105 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:34:44,109 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:34:44,109 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:34:44,109 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:34:44,152 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:34:44,153 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 196s ago)
+2026-08-03 14:34:44,159 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 196s ago
+2026-08-03 14:34:54,451 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:34:55,212 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:34:55,212 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:34:55,213 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:34:55,213 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:34:55,218 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:34:55,218 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:34:56,041 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:34:56,041 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:34:56,041 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:34:56,041 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:34:56,045 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:34:56,046 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:34:56,864 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:34:56,868 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:34:56,868 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:34:56,868 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:34:56,917 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:34:56,918 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 209s ago)
+2026-08-03 14:34:56,922 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 209s ago
+2026-08-03 14:35:07,201 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:35:08,072 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:35:08,072 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:35:08,073 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:35:08,073 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:35:08,077 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:35:08,077 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:35:09,339 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:35:09,339 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:35:09,342 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:35:09,342 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:35:10,014 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:35:10,019 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:35:10,019 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:35:10,019 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:35:10,064 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:35:10,064 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 222s ago)
+2026-08-03 14:35:10,070 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 222s ago
+2026-08-03 14:35:20,323 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:35:21,035 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:35:21,035 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:35:21,035 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:35:21,035 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:35:21,040 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:35:21,040 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:35:21,868 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:35:21,868 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:35:21,869 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:35:21,869 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:35:22,596 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:35:22,603 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:35:22,603 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:35:22,603 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:35:22,651 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:35:22,652 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 234s ago)
+2026-08-03 14:35:22,657 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 234s ago
+2026-08-03 14:35:33,044 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:35:33,769 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:35:33,769 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:35:33,770 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:35:33,770 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:35:33,776 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:35:33,776 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:35:34,491 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:35:34,491 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:35:34,493 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:35:34,493 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:35:35,259 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:35:35,263 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:35:35,263 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:35:35,263 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:35:35,316 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:35:35,316 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 247s ago)
+2026-08-03 14:35:35,321 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 247s ago
+2026-08-03 14:35:45,592 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:35:46,325 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:35:46,325 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:35:46,326 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:35:46,326 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:35:46,330 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:35:46,330 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:35:47,088 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:35:47,088 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:35:47,090 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:35:47,090 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:35:48,274 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:35:48,279 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:35:48,279 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:35:48,279 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:35:48,320 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:35:48,321 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 260s ago)
+2026-08-03 14:35:48,327 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 260s ago
+2026-08-03 14:35:58,582 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:35:59,287 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:35:59,287 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:35:59,288 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:35:59,288 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:35:59,292 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:35:59,292 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:36:00,037 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:36:00,037 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:36:00,038 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:36:00,038 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:36:00,813 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:36:00,817 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:36:00,817 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:36:00,817 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:36:00,861 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:36:00,862 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 273s ago)
+2026-08-03 14:36:00,866 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 273s ago
+2026-08-03 14:36:11,252 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:36:12,014 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:36:12,014 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:36:12,015 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:36:12,015 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:36:12,020 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:36:12,020 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:36:12,764 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:36:12,765 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:36:12,766 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:36:12,768 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:36:13,680 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:36:13,684 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:36:13,684 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:36:13,684 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:36:13,724 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:36:13,725 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 286s ago)
+2026-08-03 14:36:13,731 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 286s ago
+2026-08-03 14:36:24,001 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:36:25,910 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:36:25,910 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:36:25,911 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:36:25,911 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:36:25,915 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:36:25,915 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:36:27,589 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:36:27,589 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:36:27,590 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:36:27,590 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:36:28,667 MultiStrategyRuntime Scan 1.3ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:36:28,675 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:36:28,675 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:36:28,676 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:36:28,774 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:36:28,775 TIE_Production Risk Gate: ✅ PASS — GBPJPY
+2026-08-03 14:36:28,783 GateObservatory [GBPJPY/TIE_V3] Gate RiskGate: PASS | all rules approve
+2026-08-03 14:36:28,898 TIE_Production ✅ ORDER EXECUTED: GBPJPY SELL 0.01 lot | SL=211.342 TP=210.039 ticket=3567816084
+2026-08-03 14:36:28,902 GateObservatory [GBPJPY/TIE_V3] Gate Execution: PASS | order placed ticket=3567816084
+2026-08-03 14:36:28,903 EntryMonitor Added B_SELL SELL to watchlist. Waiting for pullback...
+2026-08-03 14:36:29,214 EntryMonitor Setup B_SELL INVALID: Price hit Danger Zone 209.565
+2026-08-03 14:36:39,451 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:36:40,360 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:36:40,360 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:36:40,361 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:36:40,361 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:36:40,367 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:36:40,368 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:36:41,138 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:36:41,138 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:36:41,140 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:36:41,140 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:36:41,884 MultiStrategyRuntime Scan 1.2ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:36:41,890 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:36:41,890 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:36:41,890 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:36:41,944 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:36:41,945 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 13s ago)
+2026-08-03 14:36:41,949 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 13s ago
+2026-08-03 14:36:41,951 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:36:52,204 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:36:52,960 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:36:52,960 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:36:52,961 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:36:52,961 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:36:52,967 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:36:52,967 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:36:53,667 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:36:53,667 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:36:53,669 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:36:53,669 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:36:54,364 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:36:54,369 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:36:54,369 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:36:54,369 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:36:54,409 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:36:54,409 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 26s ago)
+2026-08-03 14:36:54,414 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 26s ago
+2026-08-03 14:36:54,414 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:37:04,710 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:37:05,806 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:37:05,806 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:37:05,807 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:37:05,807 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:37:05,812 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:37:05,812 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:37:06,545 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:37:06,545 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:37:06,546 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:37:06,546 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:37:07,390 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:37:07,394 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:37:07,394 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:37:07,394 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:37:07,437 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:37:07,438 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 39s ago)
+2026-08-03 14:37:07,444 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 39s ago
+2026-08-03 14:37:07,444 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:37:17,690 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:37:18,465 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:37:18,465 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:37:18,466 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:37:18,466 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:37:18,472 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:37:18,472 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:37:19,695 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:37:19,695 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:37:19,697 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:37:19,697 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:37:20,504 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:37:20,510 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:37:20,510 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:37:20,510 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:37:20,560 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:37:20,561 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 52s ago)
+2026-08-03 14:37:20,565 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 52s ago
+2026-08-03 14:37:20,565 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:37:30,842 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:37:31,637 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:37:31,637 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:37:31,638 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:37:31,638 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:37:31,644 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:37:31,644 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:37:32,483 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:37:32,483 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:37:32,484 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:37:32,484 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:37:33,315 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:37:33,319 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:37:33,319 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:37:33,319 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:37:33,359 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:37:33,360 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 65s ago)
+2026-08-03 14:37:33,364 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 65s ago
+2026-08-03 14:37:33,364 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:37:43,623 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:37:44,400 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:37:44,400 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:37:44,401 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:37:44,401 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:37:44,406 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:37:44,407 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:37:45,118 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:37:45,118 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:37:45,120 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:37:45,120 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:37:45,866 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:37:45,871 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:37:45,871 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:37:45,871 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:37:45,915 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:37:45,916 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 77s ago)
+2026-08-03 14:37:45,920 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 77s ago
+2026-08-03 14:37:45,921 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:37:56,189 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:37:57,136 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:37:57,136 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:37:57,136 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:37:57,137 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:37:57,141 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:37:57,141 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:37:57,904 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:37:57,904 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:37:57,905 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:37:57,905 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:37:58,616 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:37:58,622 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:37:58,622 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:37:58,622 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:37:58,668 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:37:58,669 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 90s ago)
+2026-08-03 14:37:58,673 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 90s ago
+2026-08-03 14:37:58,674 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:38:08,971 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:38:09,680 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:38:09,680 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:38:09,681 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:38:09,681 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:38:09,686 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:38:09,686 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:38:10,468 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:38:10,469 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:38:10,470 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:38:10,470 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:38:11,196 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:38:11,204 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:38:11,204 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:38:11,204 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:38:11,248 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:38:11,249 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 102s ago)
+2026-08-03 14:38:11,253 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 102s ago
+2026-08-03 14:38:11,253 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:38:21,514 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:38:22,248 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:38:22,248 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:38:22,248 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:38:22,249 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:38:22,254 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:38:22,255 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:38:22,977 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:38:22,977 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:38:22,979 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:38:22,979 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:38:24,538 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:38:24,542 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:38:24,542 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:38:24,542 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:38:24,587 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:38:24,588 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 116s ago)
+2026-08-03 14:38:24,592 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 116s ago
+2026-08-03 14:38:24,592 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:38:34,873 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:38:35,780 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:38:35,780 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:38:35,781 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:38:35,781 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:38:35,785 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:38:35,786 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:38:36,460 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:38:36,460 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:38:36,461 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:38:36,461 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:38:37,422 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:38:37,426 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:38:37,427 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:38:37,427 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:38:37,472 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:38:37,473 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 129s ago)
+2026-08-03 14:38:37,476 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 129s ago
+2026-08-03 14:38:37,476 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:38:47,746 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:38:48,424 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:38:48,424 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:38:48,425 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:38:48,425 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:38:48,429 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:38:48,430 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:38:49,478 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:38:49,478 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:38:49,479 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:38:49,479 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:38:50,247 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:38:50,252 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:38:50,252 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:38:50,252 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:38:50,300 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:38:50,301 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 142s ago)
+2026-08-03 14:38:50,306 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 142s ago
+2026-08-03 14:38:50,306 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:39:00,628 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:39:01,421 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:39:01,421 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:39:01,422 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:39:01,422 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:39:01,426 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:39:01,426 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:39:02,215 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:39:02,215 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:39:02,217 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:39:02,217 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:39:03,069 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:39:03,073 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:39:03,073 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:39:03,073 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:39:03,115 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:39:03,115 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 154s ago)
+2026-08-03 14:39:03,120 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 154s ago
+2026-08-03 14:39:03,120 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:39:13,437 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:39:14,154 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:39:14,154 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:39:14,155 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:39:14,155 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:39:14,160 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:39:14,160 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:39:14,899 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:39:14,899 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:39:14,900 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:39:14,900 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:39:15,651 MultiStrategyRuntime Scan 1.2ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:39:15,655 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:39:15,655 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:39:15,655 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:39:15,696 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:39:15,697 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 167s ago)
+2026-08-03 14:39:15,702 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 167s ago
+2026-08-03 14:39:15,702 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:39:25,985 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:39:26,650 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:39:26,651 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:39:26,651 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:39:26,651 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:39:26,656 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:39:26,656 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:39:27,480 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:39:27,480 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:39:27,481 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:39:27,481 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:39:28,467 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:39:28,472 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:39:28,472 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:39:28,472 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:39:28,520 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:39:28,521 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 180s ago)
+2026-08-03 14:39:28,525 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 180s ago
+2026-08-03 14:39:28,525 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:39:38,803 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:39:39,522 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:39:39,522 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:39:39,523 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:39:39,523 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:39:39,527 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:39:39,527 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:39:40,258 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:39:40,258 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:39:40,260 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:39:40,260 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:39:41,157 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:39:41,162 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:39:41,162 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:39:41,162 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:39:41,206 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:39:41,207 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 192s ago)
+2026-08-03 14:39:41,212 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 192s ago
+2026-08-03 14:39:41,213 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:39:51,454 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:39:52,168 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:39:52,168 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:39:52,169 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:39:52,169 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:39:52,175 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:39:52,176 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:39:52,874 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:39:52,875 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:39:52,876 TIE_Production Error scanning BTCUSD: 'low'
+Traceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 281, in <module>
+    trade_plan = rt.scan(_scan_ctx)
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/runtime/multi_strategy_runtime.py", line 92, in scan
+    plan = self._planner.plan(planner_inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/trading-intelligence-engine/core/planner/trade_planner.py", line 29, in plan
+    entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+                 ~~~~~~~~~~^^^^^^^
+KeyError: 'low'
+
+2026-08-03 14:39:52,876 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:39:53,647 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:39:53,654 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:39:53,654 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:39:53,654 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:39:53,744 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:39:53,745 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 205s ago)
+2026-08-03 14:39:53,749 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 205s ago
+2026-08-03 14:39:53,749 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:40:04,025 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:40:05,648 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:40:05,648 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:40:05,649 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:40:05,649 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:40:05,654 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:40:05,654 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:40:07,296 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:40:07,297 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:40:07,297 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:40:07,297 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:40:07,303 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:40:07,303 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:40:08,045 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:40:08,050 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:40:08,050 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:40:08,050 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:40:08,104 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:40:08,105 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 219s ago)
+2026-08-03 14:40:08,109 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 219s ago
+2026-08-03 14:40:08,109 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:40:18,460 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:40:19,218 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:40:19,218 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:40:19,219 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:40:19,219 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:40:19,223 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:40:19,223 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:40:19,977 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:40:19,978 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:40:19,978 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:40:19,979 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:40:19,985 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:40:19,985 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:40:20,891 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:40:20,895 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:40:20,895 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:40:20,895 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:40:20,938 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:40:20,939 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 232s ago)
+2026-08-03 14:40:20,944 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 232s ago
+2026-08-03 14:40:20,944 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:40:31,321 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:40:32,244 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:40:32,244 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:40:32,245 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:40:32,245 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:40:32,249 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:40:32,249 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:40:33,322 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:40:33,322 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:40:33,323 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:40:33,323 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:40:33,328 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:40:33,328 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:40:34,155 MultiStrategyRuntime Scan 1.3ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:40:34,162 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:40:34,162 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:40:34,162 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:40:34,230 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:40:34,231 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 245s ago)
+2026-08-03 14:40:34,235 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 245s ago
+2026-08-03 14:40:34,235 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:40:44,606 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:40:45,451 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:40:45,452 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:40:45,452 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:40:45,452 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:40:45,460 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:40:45,461 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:40:46,195 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:40:46,195 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:40:46,196 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:40:46,196 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:40:46,201 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:40:46,201 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:40:47,107 MultiStrategyRuntime Scan 1.2ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:40:47,112 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:40:47,112 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:40:47,112 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:40:47,171 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:40:47,171 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 258s ago)
+2026-08-03 14:40:47,181 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 258s ago
+2026-08-03 14:40:47,181 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:40:57,440 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:40:58,186 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:40:58,186 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:40:58,186 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:40:58,186 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:40:58,190 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:40:58,190 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:40:58,894 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:40:58,894 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:40:58,895 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:40:58,896 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:40:58,901 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:40:58,901 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:40:59,838 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:40:59,842 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:40:59,842 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:40:59,842 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:40:59,891 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:40:59,892 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 271s ago)
+2026-08-03 14:40:59,895 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 271s ago
+2026-08-03 14:40:59,895 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:41:10,139 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:41:10,876 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:41:10,876 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:41:10,877 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:41:10,877 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:41:10,882 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:41:10,882 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:41:11,599 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:41:11,599 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:41:11,600 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:41:11,600 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:41:11,605 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:41:11,605 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:41:12,366 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:41:12,370 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:41:12,370 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:41:12,370 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:41:12,410 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:41:12,410 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 284s ago)
+2026-08-03 14:41:12,415 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 284s ago
+2026-08-03 14:41:12,415 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:41:22,676 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:41:23,522 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:41:23,522 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:41:23,523 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:41:23,523 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:41:23,527 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:41:23,527 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:41:24,242 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:41:24,243 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:41:24,243 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:41:24,243 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:41:24,249 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:41:24,249 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:41:24,984 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:41:24,988 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:41:24,988 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:41:24,988 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:41:25,038 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:41:25,038 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 296s ago)
+2026-08-03 14:41:25,043 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 296s ago
+2026-08-03 14:41:25,043 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:41:35,494 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:41:36,231 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:41:36,231 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:41:36,232 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:41:36,232 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:41:36,236 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:41:36,236 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:41:37,043 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:41:37,043 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:41:37,044 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:41:37,044 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:41:37,052 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:41:37,052 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:41:37,885 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:41:37,890 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:41:37,890 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:41:37,890 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:41:37,929 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:41:37,930 TIE_Production Risk Gate: ✅ PASS — GBPJPY
+2026-08-03 14:41:37,936 GateObservatory [GBPJPY/TIE_V3] Gate RiskGate: PASS | all rules approve
+2026-08-03 14:41:38,033 TIE_Production ✅ ORDER EXECUTED: GBPJPY SELL 0.01 lot | SL=211.342 TP=210.039 ticket=3567840857
+2026-08-03 14:41:38,037 GateObservatory [GBPJPY/TIE_V3] Gate Execution: PASS | order placed ticket=3567840857
+2026-08-03 14:41:38,037 EntryMonitor Added B_SELL SELL to watchlist. Waiting for pullback...
+2026-08-03 14:41:38,037 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:41:38,258 EntryMonitor Setup B_SELL INVALID: Price hit Danger Zone 209.565
+2026-08-03 14:41:48,341 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:41:49,056 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:41:49,056 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:41:49,057 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:41:49,057 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:41:49,061 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:41:49,061 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:41:49,816 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:41:49,816 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:41:49,817 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:41:49,817 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:41:49,822 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:41:49,822 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:41:50,529 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:41:50,534 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:41:50,534 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:41:50,534 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:41:50,580 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:41:50,581 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 13s ago)
+2026-08-03 14:41:50,584 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 13s ago
+2026-08-03 14:41:50,584 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:41:50,585 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:42:00,828 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:42:02,317 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:42:02,317 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:42:02,318 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:42:02,318 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:42:02,322 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:42:02,322 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:42:03,936 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:42:03,937 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:42:03,937 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:42:03,937 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:42:03,942 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:42:03,942 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:42:05,413 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:42:05,417 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:42:05,417 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:42:05,417 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:42:05,464 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:42:05,465 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 28s ago)
+2026-08-03 14:42:05,470 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 28s ago
+2026-08-03 14:42:05,470 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:42:05,470 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:42:15,852 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:42:16,982 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:42:16,982 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:42:16,982 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:42:16,983 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:42:16,986 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:42:16,987 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:42:17,824 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:42:17,824 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:42:17,825 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:42:17,825 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:42:17,828 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:42:17,828 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:42:18,519 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:42:18,523 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:42:18,523 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:42:18,523 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:42:18,571 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:42:18,572 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 41s ago)
+2026-08-03 14:42:18,576 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 41s ago
+2026-08-03 14:42:18,576 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:42:18,576 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:42:28,843 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:42:29,641 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:42:29,641 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:42:29,642 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:42:29,642 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:42:29,648 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:42:29,648 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:42:30,403 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:42:30,403 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:42:30,403 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:42:30,404 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:42:30,414 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:42:30,414 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:42:31,206 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:42:31,215 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:42:31,215 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:42:31,215 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:42:31,260 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:42:31,261 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 53s ago)
+2026-08-03 14:42:31,265 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 53s ago
+2026-08-03 14:42:31,265 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:42:31,265 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:42:41,552 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:42:42,289 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:42:42,289 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:42:42,290 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:42:42,290 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:42:42,295 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:42:42,295 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:42:43,046 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:42:43,046 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:42:43,046 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:42:43,047 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:42:43,053 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:42:43,053 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:42:43,848 MultiStrategyRuntime Scan 1.3ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:42:43,855 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:42:43,855 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:42:43,855 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:42:43,907 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:42:43,907 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 66s ago)
+2026-08-03 14:42:43,912 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 66s ago
+2026-08-03 14:42:43,912 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:42:43,912 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:42:54,149 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:42:54,870 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:42:54,870 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:42:54,871 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:42:54,871 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:42:54,875 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:42:54,875 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:42:55,729 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:42:55,729 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:42:55,730 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:42:55,730 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:42:55,735 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:42:55,735 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:42:56,531 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:42:56,537 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:42:56,537 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:42:56,537 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:42:56,593 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:42:56,594 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 79s ago)
+2026-08-03 14:42:56,598 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 79s ago
+2026-08-03 14:42:56,598 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:42:56,598 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:43:06,970 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:43:07,750 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:43:07,750 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:43:07,750 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:43:07,751 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:43:07,755 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:43:07,755 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:43:08,547 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:43:08,547 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:43:08,548 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:43:08,548 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:43:08,554 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:43:08,554 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:43:09,279 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:43:09,283 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:43:09,283 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:43:09,283 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:43:09,330 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:43:09,331 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 91s ago)
+2026-08-03 14:43:09,335 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 91s ago
+2026-08-03 14:43:09,335 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:43:09,335 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:43:19,629 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:43:20,536 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:43:20,536 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:43:20,537 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:43:20,537 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:43:20,543 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:43:20,543 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:43:21,338 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:43:21,338 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:43:21,339 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:43:21,339 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:43:21,345 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:43:21,345 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:43:21,998 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:43:22,003 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:43:22,003 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:43:22,003 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:43:22,049 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:43:22,050 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 104s ago)
+2026-08-03 14:43:22,053 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 104s ago
+2026-08-03 14:43:22,053 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:43:22,053 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:43:32,314 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:43:33,135 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:43:33,135 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:43:33,136 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:43:33,136 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:43:33,141 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:43:33,141 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:43:33,920 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:43:33,920 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:43:33,921 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:43:33,921 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:43:33,930 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:43:33,930 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:43:34,911 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:43:34,915 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:43:34,915 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:43:34,915 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:43:34,965 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:43:34,965 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 117s ago)
+2026-08-03 14:43:34,969 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 117s ago
+2026-08-03 14:43:34,969 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:43:34,969 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:43:45,276 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:43:46,052 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:43:46,053 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:43:46,053 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:43:46,053 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:43:46,059 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:43:46,059 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:43:46,813 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:43:46,813 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:43:46,814 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:43:46,814 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:43:46,819 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:43:46,819 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:43:47,693 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:43:47,697 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:43:47,697 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:43:47,697 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:43:47,744 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:43:47,744 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 130s ago)
+2026-08-03 14:43:47,749 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 130s ago
+2026-08-03 14:43:47,749 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:43:47,749 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:43:57,992 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:43:58,740 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:43:58,740 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:43:58,740 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:43:58,740 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:43:58,744 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:43:58,744 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:43:59,866 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:43:59,866 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:43:59,867 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:43:59,867 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:43:59,871 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:43:59,871 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:44:01,196 MultiStrategyRuntime Scan 0.9ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:44:01,201 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:44:01,201 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:44:01,201 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:44:01,241 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:44:01,242 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 143s ago)
+2026-08-03 14:44:01,249 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 143s ago
+2026-08-03 14:44:01,249 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:44:01,249 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:44:11,543 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:44:12,301 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:44:12,302 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:44:12,302 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:44:12,302 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:44:12,307 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:44:12,307 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:44:15,165 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:44:15,165 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:44:15,166 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:44:15,166 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:44:15,171 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:44:15,171 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:44:15,920 MultiStrategyRuntime Scan 1.3ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:44:15,924 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:44:15,924 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:44:15,924 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:44:15,975 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:44:15,975 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 158s ago)
+2026-08-03 14:44:15,979 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 158s ago
+2026-08-03 14:44:15,979 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:44:15,979 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:44:16,409 HealthMonitor Health: tick_freeze_secs=770.7235808372498s [CRITICAL]
+2026-08-03 14:44:16,413 TIE_Production Health: {'status': 'CRITICAL', 'criticals': ['tick_freeze'], 'warnings': [], 'metrics': {'gateway_latency': {'value': 264.6338939666748, 'unit': 'ms', 'status': 'OK'}, 'memory': {'value': 77.54691622478495, 'unit': '%', 'status': 'OK'}, 'cpu': {'value': 21.072475564583293, 'unit': '%', 'status': 'OK'}, 'tick_freeze': {'value': 770.7235808372498, 'unit': 's', 'status': 'CRITICAL'}, 'reconnect_count': {'value': 0, 'unit': 'count', 'status': 'OK'}}, 'timestamp': '2026-08-03T06:44:16.413080+00:00'}
+2026-08-03 14:44:26,530 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:44:27,303 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:44:27,303 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:44:27,304 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:44:27,304 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:44:27,307 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:44:27,307 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:44:28,067 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:44:28,067 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:44:28,068 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:44:28,068 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:44:28,073 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:44:28,074 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:44:28,812 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:44:28,816 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:44:28,816 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:44:28,816 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:44:28,860 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:44:28,861 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 171s ago)
+2026-08-03 14:44:28,864 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 171s ago
+2026-08-03 14:44:28,864 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:44:28,864 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:44:39,151 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:44:39,941 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:44:39,941 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:44:39,942 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:44:39,942 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:44:39,948 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:44:39,948 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:44:40,768 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:44:40,768 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:44:40,769 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:44:40,769 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:44:40,774 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:44:40,774 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:44:41,561 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:44:41,565 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:44:41,565 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:44:41,565 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:44:41,608 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:44:41,608 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 184s ago)
+2026-08-03 14:44:41,613 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 184s ago
+2026-08-03 14:44:41,613 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:44:41,613 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:44:51,888 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:44:52,630 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:44:52,630 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:44:52,631 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:44:52,631 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:44:52,635 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:44:52,635 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:44:53,319 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:44:53,319 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:44:53,320 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:44:53,320 TIE_Production No setup for BTCUSD (WAIT)
+2026-08-03 14:44:53,323 GateObservatory [BTCUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:44:53,323 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:44:54,021 MultiStrategyRuntime Scan 0.8ms — strategies=1 signals=1 dir=sell source=bystra_v1
+2026-08-03 14:44:54,025 GateObservatory [GBPJPY/TIE_V3] Gate Detector: PASS | setup=B_SELL
+2026-08-03 14:44:54,025 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=211.34 TP=210.04 RR=1.59 (adj=False)
+2026-08-03 14:44:54,025 TIE_Production Setup detected: B_SELL SELL conf=85%
+2026-08-03 14:44:54,072 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:44:54,073 TIE_Production Dedup: skip B_SELL SELL GBPJPY (seen 196s ago)
+2026-08-03 14:44:54,077 GateObservatory [GBPJPY/TIE_V3] Gate Dedup: FAIL | seen 196s ago
+2026-08-03 14:44:54,077 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:44:54,077 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:45:04,430 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:45:05,205 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:45:05,205 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:45:05,206 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:45:05,206 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:45:05,211 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:45:05,211 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:45:06,010 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:45:06,010 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:45:06,011 MultiStrategyRuntime Scan 1.2ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:45:06,016 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:45:06,016 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:45:06,016 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:45:06,016 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:45:06,060 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:45:06,061 TIE_Production Risk Gate: ✅ PASS — BTCUSD
+2026-08-03 14:45:06,065 GateObservatory [BTCUSD/TIE_V3] Gate RiskGate: PASS | all rules approve
+2026-08-03 14:45:06,148 hermes.trading.gateway_client Order rejected: Order rejected or execution failed | detail: 
+2026-08-03 14:45:06,148 TIE_Production ❌ ORDER FAILED: Order not accepted
+2026-08-03 14:45:06,153 GateObservatory [BTCUSD/TIE_V3] Gate Execution: FAIL | Order not accepted
+2026-08-03 14:45:06,153 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:45:06,993 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:45:06,994 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:45:07,000 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:45:07,000 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:45:07,000 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:45:17,312 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:45:18,180 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:45:18,180 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:45:18,181 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:45:18,181 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:45:18,189 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:45:18,189 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:45:18,923 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:45:18,923 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:45:18,924 MultiStrategyRuntime Scan 1.7ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:45:18,931 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:45:18,931 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:45:18,931 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:45:18,931 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:45:18,976 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:45:18,977 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 13s ago)
+2026-08-03 14:45:18,981 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 13s ago
+2026-08-03 14:45:18,981 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:45:19,791 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:45:19,791 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:45:19,797 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:45:19,797 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:45:19,797 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:45:30,048 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:45:30,855 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:45:30,856 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:45:30,856 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:45:30,856 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:45:30,862 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:45:30,862 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:45:31,625 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:45:31,625 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:45:31,626 MultiStrategyRuntime Scan 1.2ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:45:31,631 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:45:31,631 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:45:31,631 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:45:31,631 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:45:31,676 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:45:31,676 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 26s ago)
+2026-08-03 14:45:31,681 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 26s ago
+2026-08-03 14:45:31,681 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:45:32,711 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:45:32,711 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:45:32,717 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:45:32,717 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:45:32,717 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:45:42,983 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:45:44,432 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:45:44,432 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:45:44,433 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:45:44,433 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:45:44,437 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:45:44,437 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:45:45,678 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:45:45,678 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:45:45,679 MultiStrategyRuntime Scan 1.1ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:45:45,683 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:45:45,683 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:45:45,683 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:45:45,683 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:45:45,732 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:45:45,733 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 40s ago)
+2026-08-03 14:45:45,738 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 40s ago
+2026-08-03 14:45:45,738 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:45:46,491 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:45:46,491 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:45:46,496 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:45:46,496 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:45:46,496 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:45:56,768 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:45:57,618 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:45:57,618 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:45:57,619 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:45:57,619 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:45:57,623 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:45:57,623 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:45:58,332 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:45:58,332 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:45:58,333 MultiStrategyRuntime Scan 1.1ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:45:58,337 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:45:58,337 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:45:58,337 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:45:58,337 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:45:58,384 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:45:58,385 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 52s ago)
+2026-08-03 14:45:58,392 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 52s ago
+2026-08-03 14:45:58,392 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:45:59,157 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:45:59,157 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:45:59,161 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:45:59,161 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:45:59,161 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:46:09,471 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:46:10,356 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:46:10,356 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:46:10,357 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:46:10,357 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:46:10,361 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:46:10,362 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:46:11,226 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:46:11,226 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:46:11,227 MultiStrategyRuntime Scan 1.5ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:46:11,232 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:46:11,232 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:46:11,232 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:46:11,232 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:46:11,276 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:46:11,277 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 65s ago)
+2026-08-03 14:46:11,281 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 65s ago
+2026-08-03 14:46:11,281 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:46:12,453 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:46:12,453 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:46:12,457 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:46:12,458 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:46:12,458 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:46:22,753 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:46:23,598 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:46:23,598 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:46:23,598 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:46:23,599 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:46:23,604 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:46:23,604 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:46:24,390 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:46:24,390 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:46:24,391 MultiStrategyRuntime Scan 1.1ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:46:24,396 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:46:24,396 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:46:24,396 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:46:24,396 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:46:24,438 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:46:24,439 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 78s ago)
+2026-08-03 14:46:24,443 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 78s ago
+2026-08-03 14:46:24,443 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:46:25,141 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:46:25,141 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:46:25,146 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:46:25,146 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:46:25,146 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:46:35,402 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:46:36,111 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:46:36,111 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:46:36,112 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:46:36,112 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:46:36,116 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:46:36,116 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:46:37,043 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:46:37,043 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:46:37,044 MultiStrategyRuntime Scan 1.2ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:46:37,050 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:46:37,050 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:46:37,050 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:46:37,050 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:46:37,091 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:46:37,092 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 91s ago)
+2026-08-03 14:46:37,096 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 91s ago
+2026-08-03 14:46:37,096 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:46:37,955 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:46:37,955 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:46:37,960 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:46:37,960 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:46:37,960 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:46:48,244 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:46:48,933 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:46:48,933 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:46:48,933 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:46:48,933 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:46:48,939 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:46:48,939 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:46:49,682 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:46:49,682 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:46:49,683 MultiStrategyRuntime Scan 1.1ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:46:49,688 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:46:49,688 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:46:49,688 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:46:49,688 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:46:49,733 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:46:49,734 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 104s ago)
+2026-08-03 14:46:49,738 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 104s ago
+2026-08-03 14:46:49,738 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:46:50,534 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:46:50,535 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:46:50,538 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:46:50,538 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:46:50,538 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:47:00,815 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:47:01,575 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:47:01,575 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:47:01,576 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:47:01,576 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:47:01,582 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:47:01,582 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:47:02,378 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:47:02,378 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:47:02,379 MultiStrategyRuntime Scan 1.2ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:47:02,384 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:47:02,384 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:47:02,384 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:47:02,384 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:47:02,435 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:47:02,436 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 116s ago)
+2026-08-03 14:47:02,440 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 116s ago
+2026-08-03 14:47:02,441 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:47:03,347 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:47:03,347 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:47:03,352 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:47:03,353 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:47:03,353 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:47:13,672 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:47:14,416 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:47:14,417 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:47:14,418 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:47:14,418 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:47:14,424 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:47:14,424 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:47:15,471 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:47:15,471 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:47:15,472 MultiStrategyRuntime Scan 1.6ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:47:15,476 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:47:15,476 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:47:15,476 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:47:15,476 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:47:15,553 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:47:15,555 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 129s ago)
+2026-08-03 14:47:15,559 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 129s ago
+2026-08-03 14:47:15,559 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:47:16,513 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:47:16,513 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:47:16,520 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:47:16,520 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:47:16,520 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:47:26,824 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:47:29,027 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:47:29,027 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:47:29,028 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:47:29,029 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:47:29,035 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:47:29,035 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:47:29,827 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:47:29,827 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:47:29,828 MultiStrategyRuntime Scan 1.2ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:47:29,833 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:47:29,833 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:47:29,833 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:47:29,833 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:47:29,880 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:47:29,881 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 144s ago)
+2026-08-03 14:47:29,886 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 144s ago
+2026-08-03 14:47:29,886 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:47:30,779 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:47:30,779 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:47:30,784 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:47:30,784 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:47:30,784 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:47:41,058 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:47:41,843 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:47:41,843 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:47:41,844 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:47:41,844 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:47:41,848 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:47:41,848 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:47:42,638 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:47:42,638 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:47:42,639 MultiStrategyRuntime Scan 1.2ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:47:42,642 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:47:42,642 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:47:42,642 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:47:42,643 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:47:42,699 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:47:42,700 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 157s ago)
+2026-08-03 14:47:42,704 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 157s ago
+2026-08-03 14:47:42,704 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:47:43,392 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:47:43,392 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:47:43,398 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:47:43,398 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:47:43,398 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:47:53,647 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:47:54,533 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:47:54,533 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:47:54,533 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:47:54,533 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:47:54,539 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:47:54,539 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:47:55,396 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:47:55,396 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:47:55,397 MultiStrategyRuntime Scan 1.2ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:47:55,401 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:47:55,401 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:47:55,402 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:47:55,402 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:47:55,460 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:47:55,460 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 169s ago)
+2026-08-03 14:47:55,464 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 169s ago
+2026-08-03 14:47:55,464 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:47:56,255 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:47:56,255 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:47:56,260 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:47:56,260 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:47:56,260 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:48:06,485 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:48:07,214 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:48:07,214 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:48:07,215 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:48:07,215 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:48:07,223 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:48:07,223 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:48:08,055 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:48:08,055 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:48:08,056 MultiStrategyRuntime Scan 1.1ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:48:08,065 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:48:08,066 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:48:08,066 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:48:08,066 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:48:08,115 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:48:08,116 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 182s ago)
+2026-08-03 14:48:08,120 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 182s ago
+2026-08-03 14:48:08,120 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:48:08,906 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:48:08,906 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:48:08,911 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:48:08,911 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:48:08,911 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:48:19,191 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:48:19,998 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:48:19,998 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:48:19,999 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:48:19,999 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:48:20,004 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:48:20,004 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:48:20,736 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:48:20,737 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:48:20,738 MultiStrategyRuntime Scan 1.2ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:48:20,743 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:48:20,743 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:48:20,743 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:48:20,744 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:48:20,786 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:48:20,786 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 195s ago)
+2026-08-03 14:48:20,791 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 195s ago
+2026-08-03 14:48:20,791 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:48:21,568 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:48:21,569 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:48:21,573 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:48:21,573 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:48:21,573 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:48:31,819 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:48:32,737 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:48:32,737 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:48:32,738 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:48:32,738 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:48:32,745 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:48:32,745 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:48:34,294 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:48:34,294 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:48:34,295 MultiStrategyRuntime Scan 1.2ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:48:34,300 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:48:34,300 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:48:34,300 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:48:34,300 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:48:34,350 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:48:34,351 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 208s ago)
+2026-08-03 14:48:34,355 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 208s ago
+2026-08-03 14:48:34,356 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:48:35,594 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:48:35,594 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:48:35,599 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:48:35,599 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:48:35,599 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:48:45,885 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:48:46,952 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:48:46,952 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:48:46,952 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:48:46,952 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:48:46,959 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:48:46,959 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:48:47,736 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:48:47,737 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:48:47,738 MultiStrategyRuntime Scan 1.2ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:48:47,742 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:48:47,742 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:48:47,742 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:48:47,742 TIE_Production Setup detected: B_BUY BUY conf=85%
+2026-08-03 14:48:47,784 adapters.calendar.investing InvestingCalendar fetch failed (fail-open): 403 Client Error: Forbidden for url: https://api.investing.com/api/financialdata/economiccalendar?fromDate=2026-08-03&toDate=2026-08-10&countries=5&importance=3&timeZone=UTC
+2026-08-03 14:48:47,785 TIE_Production Dedup: skip B_BUY BUY BTCUSD (seen 222s ago)
+2026-08-03 14:48:47,789 GateObservatory [BTCUSD/TIE_V3] Gate Dedup: FAIL | seen 222s ago
+2026-08-03 14:48:47,789 TIE_Production --- Scanning GBPJPY ---
+2026-08-03 14:48:48,536 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:48:48,536 TIE_Production No setup for GBPJPY (WAIT)
+2026-08-03 14:48:48,540 GateObservatory [GBPJPY/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:48:48,540 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:48:48,540 TrailingManager TrailingManager initialized with 3 profiles.
+2026-08-03 14:48:58,827 TIE_Production --- Scanning XAUUSD ---
+2026-08-03 14:48:59,611 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:48:59,611 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:48:59,612 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-03 14:48:59,612 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-03 14:48:59,617 GateObservatory [XAUUSD/TIE_V3] Outcome: NO_TRADE | no_signal
+2026-08-03 14:48:59,617 TIE_Production --- Scanning BTCUSD ---
+2026-08-03 14:49:00,398 StrategyManager Strategy semi_hft_c8 returned WAIT: no_micro_signal
+2026-08-03 14:49:00,398 StrategyManager Strategy aggressive_v1 returned WAIT: session_reject=ASIAN
+2026-08-03 14:49:00,400 MultiStrategyRuntime Scan 1.6ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-03 14:49:00,407 GateObservatory [BTCUSD/TIE_V3] Gate Detector: PASS | setup=B_BUY
+2026-08-03 14:49:00,407 core.strategy.exit_orchestrator [B_BUY] RR optimized: 1.11 -> 1.50 (Widened TP for Gate)
+2026-08-03 14:49:00,407 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=62724.97 TP=63045.87 RR=1.50 (adj=True)
+2026-08-03 14:49:00,407 TIE_Production Setup detected: B_BUY BUY conf=85%

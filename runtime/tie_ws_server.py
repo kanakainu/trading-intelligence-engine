@@ -45,6 +45,28 @@ def api_status():
     return JSONResponse(read_status())
 
 
+@app.get("/api/strategy/status")
+def get_strategy_status():
+    path = "/home/ubuntu/trading-intelligence-engine/config/strategy_status.json"
+    with open(path) as f:
+        return json.load(f)
+
+
+@app.post("/api/strategy/toggle")
+def toggle_strategy(payload: dict):
+    sid = payload.get("strategy_id")
+    enabled = payload.get("enabled")
+    path = "/home/ubuntu/trading-intelligence-engine/config/strategy_status.json"
+    with open(path) as f:
+        data = json.load(f)
+    if sid in data:
+        data[sid] = enabled
+        with open(path, "w") as f:
+            json.dump(data, f, indent=4)
+        return {"status": "ok"}
+    return {"error": "Not found"}
+
+
 @app.get("/", response_class=HTMLResponse)
 def dashboard():
     return HTMLResponse(content=HTML)
@@ -197,6 +219,11 @@ td { padding: 10px 8px; border-bottom: 1px solid #21262d; }
     </div>
   </div>
   
+  <nav class="nav-section">
+    <div class="nav-title">Strategies</div>
+    <div id="strategy-toggles" style="padding:0 20px"></div>
+  </nav>
+
   <nav class="nav-section">
     <div class="nav-title">Markets</div>
     <div id="nav-markets"></div>
@@ -358,7 +385,25 @@ function updateUI() {
 
 setInterval(updateUI, 2000);
 setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString(); }, 1000);
-updateUI();
+const statusBadge = document.getElementById('status-badge');
+      
+// Inject strategies from status file
+fetch('/api/strategy/status').then(r => r.json()).then(d => {
+  const cont = document.getElementById('strategy-toggles');
+  const labels = {bystra_v1: 'Bystra', aggressive_v1: 'Aggressive', semi_hft_c8: 'SemiHFT'};
+  Object.entries(d).forEach(([sid, enabled]) => {
+    cont.innerHTML += `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:4px 0;border-bottom:1px solid #30363d">
+      <span style="font-size:12px;color:${enabled?'#00ff88':'#8b949e'}">${labels[sid]||sid}</span>
+      <label style="position:relative;display:inline-block;width:32px;height:18px">
+        <input type="checkbox" ${enabled?'checked':''} style="opacity:0;width:0;height:0" 
+          onchange="fetch('/api/strategy/toggle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({strategy_id:'${sid}',enabled:this.checked})}).then(()=>location.reload())">
+        <span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:${enabled?'#00ff88':'#30363d'};border-radius:18px;transition:.3s"></span>
+      </label>
+    </div>`;
+  });
+}).catch(() => {
+  document.getElementById('strategy-toggles').innerHTML = '<span style="font-size:11px;color:#8b949e">Status unavailable</span>';
+});
 </script>
 </body>
 </html>
