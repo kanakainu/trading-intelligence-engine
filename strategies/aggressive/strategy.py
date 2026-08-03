@@ -67,7 +67,7 @@ class RiriMicroScalpEngine(BaseStrategy):
         atr       = features.get_atr("M5") or 0.0
         vol_ratio = features.volume_ratio.get("M5", 1.0)
         price     = getattr(features, "current_price", None) or 0.0
-        vwap      = getattr(features, "vwap", None)
+        vwap      = features.vwap.get("M5") if hasattr(features.vwap, "get") else None
         utc_h     = getattr(features.timestamp, "hour", datetime.utcnow().hour)
 
         # 4. Score all engines (parallel, no gates)
