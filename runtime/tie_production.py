@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""TIE Production Runtime — Multi-Symbol Support (XAUUSD, BTCUSD, GBPUSD)."""
-import sys, time, logging, os
+"""TIE Production Runtime — XAUUSD Only (user-tuned 2026-08-05)."""
+import sys, time, logging, os, json
 from datetime import datetime, timezone
 
 # === SINGLETON LOCK ===
@@ -12,7 +12,7 @@ def acquire_singleton():
             with open(PID_FILE) as f:
                 old_pid = int(f.read().strip())
             os.kill(old_pid, 0)  # Check if process exists
-            print(f"ERROR: tie_production.py already running (PID {old_pid})")
+            print(f"ERROR: tie_production.py already running (PID {old_pid})", file=sys.stderr)
             sys.exit(1)
         except (ValueError, ProcessLookupError):
             pass  # Stale PID file, continue
@@ -47,7 +47,8 @@ from strategies.semi_hft.strategy import SemiHFTStrategyV4 as SemiHFTStrategy
 from strategies.aggressive.regime.regime_engine import AggressiveRegimeEngine
 from runtime.multi_strategy_runtime import MultiStrategyRuntime
 from runtime.adapters.tradeplan_adapter import plan_to_decision, aggressive_regime_to_core_regime
-from runtime.entry_monitor import EntryMonitor
+# DISABLED: entry_monitor submits Riri_ orders — duplicate engine, replaced by TIE_ path
+# from runtime.entry_monitor import EntryMonitor
 from runtime.position_monitor import PositionMonitor
 from runtime.position_state import PositionState
 from adapters.broker.mt5_broker import MT5BrokerAdapter
@@ -64,10 +65,10 @@ log = logging.getLogger("TIE_Production")
 
 URL = 'https://chips-extension-extensions-wearing.trycloudflare.com'
 TOKEN = 'Jojo_56790@_000tUi_OO9'
-SYMBOLS = ['XAUUSD', 'BTCUSD', 'GBPJPY']
+SYMBOLS = ['XAUUSD']  # user-tuned 2026-08-05: XAUUSD only, save bandwidth
 
 _seen_setups = {}  # {(sym, setup_name, direction): timestamp} — dedup 5 min
-DEDUP_WINDOW = 300  # seconds
+DEDUP_WINDOW = 120  # seconds — 2026-08-06: raised from 60, too many fallback entries
 
 client = MT5GatewayClient(URL, TOKEN)
 broker = MT5BrokerAdapter(base_url=URL, token=TOKEN)
@@ -80,12 +81,29 @@ mgr.load(AggressiveStrategy)
 mgr.load(SemiHFTStrategy)
 
 rt = MultiStrategyRuntime(mgr)
-monitor = EntryMonitor(broker=broker, gateway=client)
-pos_monitor = PositionMonitor(broker=broker)
+# DISABLED: EntryMonitor submits Riri_ orders — duplicate engine, replaced by TIE_ path
+# monitor = EntryMonitor(broker=broker, gateway=client)
+# Wire PositionMonitor to broker via callback
+def handle_pos_result(pos, result):
+    """Wire PositionMonitor result to broker modify/close."""
+    if result.action == "modify" and (result.new_sl or result.new_tp):
+        # Gateway /trade/modify REQUIRES both sl AND tp — use pos.take_profit if new_tp is None
+        _sl = result.new_sl or pos.stop_loss
+        _tp = result.new_tp or pos.take_profit
+        if not _sl or not _tp:
+            log.warning(f"Modify {pos.position_id} skipped: SL={_sl} TP={_tp} — missing value")
+            return
+        resp = broker.modify_order(str(pos.position_id), stop_loss=_sl, take_profit=_tp)
+        log.info(f"Modify {pos.position_id}: SL={_sl} TP={_tp} -> {getattr(resp, 'status', '?')}")
+    elif result.action == "close":
+        resp = broker.close_position(str(pos.position_id))
+        log.info(f"Close {pos.position_id}: {result.reason} -> {getattr(resp, 'status', '?')}")
+
+pos_monitor = PositionMonitor(on_result=handle_pos_result, broker=broker)
 risk_gate = build_risk_registry()
 context_engine = ContextEngine()
 observatory = GateObservatory()
-governor = DailyProfitGovernorV2(daily_target=30.0, daily_loss_limit=50.0)
+governor = DailyProfitGovernorV2(daily_target=30.0, daily_loss_limit=80.0)
 budget_mgr = TradeBudgetManager()
 opp_lifecycle = OpportunityLifecycle()
 adaptive_mgr = AdaptiveThresholdManager()
@@ -113,15 +131,15 @@ def _compute_real_sr(candles_h1: list, price: float = 0.0) -> dict:
 def _get_spread(client, symbol: str) -> float:
     try:
         price_data = client.price(symbol)
-        return float(price_data.get("spread", 0))
+        return float(price_data.get("spread", 0)) / 1000.0
     except Exception: return 10.0
 
 HALT_FLAG = "/tmp/tie_halt"  # touch /tmp/tie_halt to stop all trading; rm to resume
 
 # Market session hours UTC — Vibe triggers.py pattern
 # ponytail: add Asian/London/NY session awareness when SessionProfile lands
-_CFD_24_5 = {"XAUUSD", "GBPJPY"}  # closed Fri 21:00–Sun 22:00 UTC
-_CRYPTO_247 = {"BTCUSD"}
+_CFD_24_5 = {"XAUUSD"}  # closed Fri 21:00–Sun 22:00 UTC
+_CRYPTO_247 = set()  # crypto removed — XAUUSD only
 
 def _market_open(sym: str, now_utc: datetime) -> bool:
     """Return False if CFD market is closed (weekend gap)."""
@@ -135,13 +153,62 @@ def _market_open(sym: str, now_utc: datetime) -> bool:
     if wd == 6 and h < 22: return False    # Sunday before open
     return True
 
+# Heartbeat for manual_trailing_v2.py watchdog
+HEARTBEAT_PATH = "/tmp/tie_production_heartbeat.txt"
+def write_heartbeat():
+    try:
+        with open(HEARTBEAT_PATH, "w") as f:
+            f.write(str(time.time()))
+    except Exception:
+        pass
 
 while True:
+    write_heartbeat()  # Write heartbeat every loop iteration
     # Kill Switch — sentinel file pattern (Vibe halt.py)
     if os.path.exists(HALT_FLAG):
         log.warning("HALT FLAG active — skipping scan. rm /tmp/tie_halt to resume.")
         time.sleep(10)
         continue
+
+    # Daily Target Hibernate — MUST run before DD Guard to skip client.account() API call
+    try:
+        _ds_file = "/tmp/tie_day_start.json"
+        _ds_persist = "/home/ubuntu/trading-intelligence-engine/data/tie_day_start.json"
+        _hibernate_s = int(os.environ.get("TIE_HIBERNATE_INTERVAL_S", "1200"))  # 20min default
+        if not os.path.exists(_ds_file) and os.path.exists(_ds_persist):
+            # Restore from persistent store after VPS reboot
+            import shutil; shutil.copy2(_ds_persist, _ds_file)
+        if os.path.exists(_ds_file):
+            with open(_ds_file) as _f:
+                _day_start_val = float(json.load(_f).get("balance", 0))
+            if _day_start_val > 0:
+                _status_path = "/home/ubuntu/tie-dashboard/data/tie_status.json"
+                _last_equity = 0.0
+                if os.path.exists(_status_path):
+                    try:
+                        with open(_status_path) as _sf:
+                            _last_equity = float(json.load(_sf).get("equity", 0))
+                    except Exception:
+                        pass
+                if _last_equity > 0:
+                    _daily_pnl = _last_equity - _day_start_val
+                    if _daily_pnl >= 30.0:  # MUST MATCH daily_target in governor (30.0)
+                        _now_utc = datetime.now(timezone.utc)
+                        _day_start_mtime = datetime.fromtimestamp(os.path.getmtime(_ds_file), tz=timezone.utc)
+                        if _now_utc.date() > _day_start_mtime.date():
+                            # NEW UTC DAY: reset day_start to current equity
+                            _reset_payload = json.dumps({"balance": _last_equity})
+                            with open(_ds_file, "w") as _f:
+                                _f.write(_reset_payload)
+                            with open(_ds_persist, "w") as _f:
+                                _f.write(_reset_payload)
+                            log.info("DAY RESET: new UTC day, day_start=%.2f", _last_equity)
+                        else:
+                            log.info("HIBERNATE: daily target hit (PnL=$%.2f >= $30). Sleep %ds. Zero API calls.", _daily_pnl, _hibernate_s)
+                            time.sleep(_hibernate_s)
+                            continue
+    except Exception as _e:
+        log.warning("Hibernate check failed: %s", _e)
 
     # Drawdown Guard — block all new signals if DD ≥ 35% from peak equity
     try:
@@ -159,6 +226,7 @@ while True:
         log.warning("DD Guard check failed: %s", _e)
 
 
+
     all_pairs_data = {}  # Accumulate ALL pairs per loop
     status_path = "/home/ubuntu/tie-dashboard/data/tie_status.json"
 
@@ -170,8 +238,8 @@ while True:
                 continue
             log.info(f"--- Scanning {sym} ---")
             candles = {}
-            for tf in ["M5", "M15", "M30", "H1"]:
-                count = 40 if tf == "M5" else 20
+            for tf in ["M1", "M5", "M15", "M30", "H1"]:
+                count = 100 if tf == "M1" else 40 if tf == "M5" else 20
                 candles[tf] = client.candles(sym, tf, count)
             
             price_data = client.price(sym)
@@ -189,6 +257,30 @@ while True:
             raw_positions = client.positions() or []
             balance = float(account_info.get("balance", 0))
             equity = float(account_info.get("equity", balance))
+
+            # Daily PnL tracker — day-start balance persisted across restarts
+            _dp_file = "/tmp/tie_day_start.json"
+            _dp_persist = "/home/ubuntu/trading-intelligence-engine/data/tie_day_start.json"
+            try:
+                if os.path.exists(_dp_file):
+                    with open(_dp_file) as _f:
+                        _day_start = float(json.load(_f).get("balance", balance))
+                elif os.path.exists(_dp_persist):
+                    # Restore from persistent store after VPS reboot
+                    with open(_dp_persist) as _f:
+                        _day_start = float(json.load(_f).get("balance", balance))
+                    with open(_dp_file, "w") as _f:
+                        json.dump({"balance": _day_start}, _f)
+                else:
+                    _day_start = balance
+                    _payload = json.dumps({"balance": _day_start})
+                    with open(_dp_file, "w") as _f:
+                        _f.write(_payload)
+                    with open(_dp_persist, "w") as _f:
+                        _f.write(_payload)
+            except Exception:
+                _day_start = balance
+            daily_pnl = equity - _day_start
             
             # SL/TP Hit Notification
             from runtime.telegram_notifier import TelegramNotifier
@@ -197,8 +289,8 @@ while True:
             pos_states = [PositionState(
                 position_id=str(p.get("ticket")),
                 symbol=p.get("symbol"),
-                direction=p.get("type", "").upper(),
-                entry_price=p.get("price_open", 0),
+                direction=p.get("direction", p.get("type", "")).upper(),
+                entry_price=float(p.get("open_price") or p.get("price_open") or 0),
                 current_price=price if p.get("symbol") == sym else p.get("price_current", 0),
                 stop_loss=p.get("sl"),
                 take_profit=p.get("tp"),
@@ -214,21 +306,24 @@ while True:
             ) for p in raw_positions]
             
             for ps in pos_states:
-                if ps.symbol != sym: continue
-                
-                # Extract strategy_id from comment (e.g., "TIE_B_SELL" -> "bystra")
+                # Extract strategy_id from comment — always, regardless of symbol
                 if ps.comment and ps.comment.startswith("TIE_"):
                     parts = ps.comment.split("_")
                     if len(parts) >= 2:
                         strategy_code = parts[1]  # B, BA, BAS, A, S
                         strategy_map = {
                             "B": "bystra",
-                            "BA": "bystra_aggressive",
-                            "BAS": "bystra_aggressive_semi_hft",
+                            "BA": "bystra",
+                            "BAS": "bystra",
                             "A": "aggressive",
                             "S": "semi_hft"
                         }
-                        ps.strategy_id = strategy_map.get(strategy_code, "unknown")
+                        ps.strategy_id = strategy_map.get(strategy_code, "aggressive")
+                else:
+                    ps.strategy_id = "aggressive"  # Default fallback for TIE orders
+
+                if ps.symbol != sym: continue
+
                 
                 # Calculate rr, sl_dist_pts if SL/TP available
                 if ps.stop_loss and ps.take_profit and ps.entry_price:
@@ -246,7 +341,7 @@ while True:
                     # NOTIF OFF: if hit: notifier.notify_tp_hit(...)
             
             sr = _compute_real_sr(candles.get("H1", []), price)
-            log.debug(f"GBPJPY H1 candles after _compute_real_sr: {candles.get('H1', [])}")
+            log.debug(f"H1 candles after _compute_real_sr: {candles.get('H1', [])}")
             ctx = MarketContext(symbol=sym, timestamp=datetime.now(timezone.utc))
             spread_buf_val = sl_buffer(ctx)
             ctx.metadata.update({
@@ -280,7 +375,7 @@ while True:
                 nearest_support={"H1": sr["h1_support"]},
                 nearest_resistance={"H1": sr["h1_resistance"]},
             )
-            log.debug(f"GBPJPY FeatureSnapshot candles: {candles}")
+            log.debug(f"FeatureSnapshot candles: {candles}")
             _regime_engine = AggressiveRegimeEngine()
             agg_regime_snapshot = _regime_engine.classify(_features)
             _regime = aggressive_regime_to_core_regime(agg_regime_snapshot)
@@ -294,15 +389,26 @@ while True:
             decision = plan_to_decision(trade_plan)
 
             # === DECISION TRACE V2 ===
-            trace = create_trace(scan_id=_sid, symbol=sym, strategy="TIE_V3")
+            trace = create_trace(scan_id=_sid, symbol=sym, strategy="TIE_V4")
 
             if decision.action != "WAIT":
-                observatory.log_gate(trace, "Detector", "PASS", current_value=decision.confidence * 100, reason=f"setup={decision.setup_name}")
+                # Override planner lot with aggressive dynamic lot
+                from strategies.semi_hft.fast_risk import _lot
+                decision.metadata["volume"] = _lot(equity)
+                observatory.log_gate(trace, "Detector", "PASS", current_value=decision.confidence * 100, reason=f"setup={decision.setup_name} lot={decision.metadata['volume']}")
                 # --- ADAPTIVE EXIT ORCHESTRATOR ---
-                _entry = (decision.metadata.get("entry_zone") or {}).get("high") or price
+                # FIX: entry_zone["high"] for BUY, entry_zone["low"] for SELL
+                entry_zone = decision.metadata.get("entry_zone") or {}
+                _entry = entry_zone.get("high") if decision.action == "BUY" else entry_zone.get("low") or price
                 _sl = decision.metadata.get("sl") or 0.0
                 _tp = decision.metadata.get("take_profit") or 0.0
-
+                
+                # FIX #46: TradePlanner SELL TP direction guard (H1 support bug)
+                if decision.action == "SELL" and _tp >= _entry:
+                    _tp = _entry - abs(_sl - _entry) * 1.5
+                elif decision.action == "BUY" and _tp <= _entry:
+                    _tp = _entry + abs(_sl - _entry) * 1.5
+                
                 if _sl and _tp:
                     opt = orch.optimize(
                         strategy_id=decision.setup_name,
@@ -310,6 +416,7 @@ while True:
                         entry=_entry,
                         sl=_sl,
                         tp=_tp,
+                        direction=decision.action,
                     )
                     decision.metadata["sl"] = opt.sl
                     decision.metadata["take_profit"] = opt.tp
@@ -320,17 +427,22 @@ while True:
                              decision.setup_name, opt.sl, opt.tp, opt.rr, opt.adjusted)
 
                 log.info(f"Setup detected: {decision.setup_name} {decision.action} conf={decision.confidence:.0%}")
+                
+                # FIX: entry_zone["high"] for BUY, entry_zone["low"] for SELL
+                entry_zone = decision.metadata.get("entry_zone") or {}
+                risk_entry = entry_zone.get("high") if decision.action == "BUY" else entry_zone.get("low")
+                
                 risk_ctx = {
-                    "symbol": sym, "entry": (decision.metadata.get("entry_zone") or {}).get("high"),
+                    "symbol": sym, "entry": risk_entry,
                     "sl": decision.metadata.get("sl"), "tp": decision.metadata.get("take_profit"),
                     "direction": decision.action, "confidence": decision.confidence,
                     "spread": spread, "balance": balance, "equity": equity,
-                    "open_positions": len(raw_positions), "lot": 0.01, "sl_pips": 0, "time": time.time(),
+                    "daily_pnl": daily_pnl,  # equity - day_start_balance (realized + floating)
+                    "open_positions": len(raw_positions), "lot": decision.metadata.get("volume", 0.01), "sl_pips": 0, "time": time.time(),
                 }
                 if risk_ctx["sl"] and risk_ctx["entry"]:
                     risk_ctx["sl_pips"] = abs(risk_ctx["entry"] - risk_ctx["sl"]) * 10
-                if sym in ("BTCUSD", "ETHUSD"):
-                    risk_ctx["sl_pips"] = 0
+                # XAUUSD only — no crypto pip override needed
 
                 risk_results = {}
                 for rule_name in risk_gate.list_enabled():
@@ -397,27 +509,31 @@ while True:
                             observatory.log_gate(trace, "RiskGate", "PASS", reason="all rules approve")
                             
                             # === EXECUTE ORDER TO MT5 ===
-                            from adapters.broker.models import OrderRequest
-                            try:
-                                req = OrderRequest(
-                                    symbol=sym,
-                                    side=decision.action,  # BUY/SELL
-                                    volume=decision.metadata.get("lot", 0.01),
-                                    stop_loss=decision.metadata.get("sl"),
-                                    take_profit=decision.metadata.get("take_profit"),
-                                    comment=f"TIE_{decision.setup_name}"
-                                )
-                                resp = broker.submit_order(req)
-                                if resp.status == "FILLED":
-                                    log.info(f"✅ ORDER EXECUTED: {sym} {decision.action} {req.volume} lot | SL={req.stop_loss} TP={req.take_profit} ticket={resp.order_id}")
-                                    observatory.log_gate(trace, "Execution", "PASS", reason=f"order placed ticket={resp.order_id}")
-                                    monitor.add_setup(decision)
-                                else:
-                                    log.error(f"❌ ORDER FAILED: {resp.error}")
-                                    observatory.log_gate(trace, "Execution", "FAIL", reason=resp.error or "rejected")
-                            except Exception as ex:
-                                log.error(f"Order exception: {ex}")
-                                observatory.log_gate(trace, "Execution", "FAIL", reason=str(ex))
+                            if not price or price <= 0:
+                                log.warning(f"⚠️ SKIP order {sym} — price fetch returned 0")
+                                observatory.log_gate(trace, "Execution", "FAIL", reason="price=0 skip")
+                            else:
+                                from adapters.broker.models import OrderRequest
+                                try:
+                                    req = OrderRequest(
+                                        symbol=sym,
+                                        side=decision.action,  # BUY/SELL
+                                        volume=decision.metadata.get("volume", 0.01),
+                                        stop_loss=decision.metadata.get("sl"),
+                                        take_profit=decision.metadata.get("take_profit"),
+                                        comment=f"TIE_{decision.setup_name}"
+                                    )
+                                    resp = broker.submit_order(req)
+                                    if resp.status == "FILLED":
+                                        log.info(f"✅ ORDER EXECUTED: {sym} {decision.action} {req.volume} lot | SL={req.stop_loss} TP={req.take_profit} ticket={resp.order_id}")
+                                        observatory.log_gate(trace, "Execution", "PASS", reason=f"order placed ticket={resp.order_id}")
+                                        # monitor.add_setup(decision)  # EntryMonitor disabled — TIE_ path handles tracking
+                                    else:
+                                        log.error(f"❌ ORDER FAILED: {resp.error}")
+                                        observatory.log_gate(trace, "Execution", "FAIL", reason=resp.error or "rejected")
+                                except Exception as ex:
+                                    log.error(f"Order exception: {ex}")
+                                    observatory.log_gate(trace, "Execution", "FAIL", reason=str(ex))
                 else:
                     reasons = "; ".join(f"{n}={r.status}:{r.reason}" for n, r in risk_results.items() if r.status != "APPROVE")
                     log.info(f"Risk Gate: ❌ BLOCKED {sym}. {reasons}")
@@ -466,12 +582,13 @@ while True:
                             'trail_trigger_atr': cfg["trail_trigger_atr"],
                             'trail_offset_atr': cfg["trail_offset_atr"],
                             'partial_tp_pct': cfg["partial_tp_pct"],
-                            'early_exit_reversal': True,
+                            'early_exit_reversal': False,  # broker SL handles it
                         }
                     })()
             
             if contracts:
-                pos_monitor.tick(pos_states, contracts, market_update)
+                # DISABLED 2026-08-07: manual_trailing_v2 handles all SL/TP trailing
+                pass  # pos_monitor.tick(pos_states, contracts, market_update)
             
             # Build pair_data for dashboard
             pair_data = {
@@ -512,43 +629,42 @@ while True:
         }
         
         import os, json
+        import traceback
         os.makedirs(os.path.dirname(status_path), exist_ok=True)
         with open(status_path, "w") as f:
             json.dump(status_data, f)
     except Exception as e:
         log.error(f"Dashboard write failed: {e}")
     
-    # Update EntryMonitor for all active setups
-    monitor.update()
+    # DISABLED: EntryMonitor submits Riri_ orders — duplicate engine, replaced by TIE_ path
+    # monitor.update()
 
     # === 5 INTELLIGENCE ENGINES ACTIVE ===
-    # P3: Health check every 60 scans (~10 min)
-    if not hasattr(monitor, '_health_counter'): monitor._health_counter = 0
-    monitor._health_counter += 1
-    if monitor._health_counter >= 60:
-        health_status = health_monitor.get_status()
-        if health_status['status'] != 'OK':
-            log.warning(f"Health: {health_status}")
-        monitor._health_counter = 0
+    # DISABLED: EntryMonitor removed, counter logic skipped
+    # Health check, adaptive learning, optimizer — disabled until reimplemented without monitor dependency
 
-    # P1: Adaptive learning — apply recommendations every 6 hours
-    if not hasattr(monitor, '_adapt_counter'): monitor._adapt_counter = 0
-    monitor._adapt_counter += 1
-    if monitor._adapt_counter >= 2160:  # 6 hours * 360 scans
-        recs = pma.recommend_adjustments()
-        if recs:
-            adaptive_mgr.apply_recommendations(recs)
-            log.info(f"Adaptive: applied {len(recs)} adjustments")
-        monitor._adapt_counter = 0
-
-    # P4: Auto optimization — run daily
-    if not hasattr(monitor, '_opt_counter'): monitor._opt_counter = 0
-    monitor._opt_counter += 1
-    if monitor._opt_counter >= 8640:  # 24 hours * 360 scans
-        opt_results = optimizer.optimize_all()
-        if opt_results:
-            optimizer.apply_to_adaptive_manager(opt_results, adaptive_mgr)
-            log.info(f"Optimizer: {len(opt_results)} detectors optimized")
-        monitor._opt_counter = 0
-
-    time.sleep(10)
+    # Fast pos monitor — tick every 2s x5 instead of sleeping 10s flat
+    # Catches BE/trail trigger faster (scalping needs <3s reaction, not 12s)
+    _fast_market = {sym: all_pairs_data.get(sym, {}) for sym in SYMBOLS} if 'all_pairs_data' in locals() else {}
+    _fast_contracts = contracts if 'contracts' in locals() else {}
+    for _ in range(5):
+        time.sleep(2)
+        try:
+            _fast_ps = broker.get_positions()
+            if _fast_ps and _fast_contracts:
+                _fast_states = [p if isinstance(p, PositionState) else PositionState(
+                    position_id=str(getattr(p, 'ticket', getattr(p, 'id', id(p)))),
+                    symbol=getattr(p, 'symbol', ''),
+                    direction=getattr(p, 'type', getattr(p, 'direction', 'BUY')),
+                    entry_price=float(getattr(p, 'price_open', getattr(p, 'entry_price', 0))),
+                    current_price=float(getattr(p, 'price_current', getattr(p, 'current_price', 0))),
+                    stop_loss=float(getattr(p, 'sl', getattr(p, 'stop_loss', 0)) or 0) or None,
+                    take_profit=float(getattr(p, 'tp', getattr(p, 'take_profit', 0)) or 0) or None,
+                    volume=float(getattr(p, 'volume', 0)),
+                    strategy_id=str(getattr(p, 'comment', 'unknown')).split('_')[0].lower(),
+                    unrealized_profit=float(getattr(p, 'profit', getattr(p, 'unrealized_profit', 0))),
+                ) for p in _fast_ps]
+                # DISABLED 2026-08-07: manual_trailing_v2 handles all SL/TP trailing
+                pass  # pos_monitor.tick(_fast_states, _fast_contracts, _fast_market)
+        except Exception:
+            pass

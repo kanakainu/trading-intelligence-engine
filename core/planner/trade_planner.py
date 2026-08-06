@@ -141,7 +141,12 @@ class TradePlanner:
                 if swing_lows:
                     return swing_lows[0] - buf
         
-        return None
+        # FALLBACK: ATR buffer — never return None (order with no SL = naked risk)
+        atr = float(getattr(inputs, "atr", 0.0) or 5.0)
+        atr_buf = atr * 1.5 + buf
+        if direction == "sell":
+            return float(entry_zone["high"]) + atr_buf
+        return float(entry_zone["low"]) - atr_buf
     
     def _calc_take_profit(self, inputs: PlannerInputs, sl: Optional[float], entry_mid: float) -> Optional[float]:
         """

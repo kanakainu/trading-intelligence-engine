@@ -29,7 +29,8 @@ class ExitOrchestrator:
             ExitProfile.DEFAULT: {"target_rr": 1.5, "trail": "fixed",        "partial_exit": 0.0}
         }
 
-    def optimize(self, strategy_id: str, symbol: str, entry: float, sl: float, tp: float) -> OptimizedExit:
+    def optimize(self, strategy_id: str, symbol: str, entry: float, sl: float, tp: float,
+                 direction: Optional[str] = None) -> OptimizedExit:
         # 1. Identify Profile
         profile = self._get_profile_by_strategy(strategy_id)
         config = self.profiles[profile]
@@ -49,11 +50,22 @@ class ExitOrchestrator:
         # Tapi ditandai sebagai 'adjusted' supaya ExitEngine tahu harus trail ketat
         if final_rr < self.min_gate_rr:
             needed_tp_dist = sl_dist * self.min_gate_rr
-            direction = 1 if tp > entry else -1
-            final_tp = entry + (needed_tp_dist * direction)
+            # Use explicit direction if provided; fallback to SL-based inference
+            # Handle both string and Enum (TradeAction)
+            dir_str = direction.value if hasattr(direction, 'value') else str(direction)
+            if dir_str and dir_str.upper() == "SELL":
+                dir_sign = -1
+            elif dir_str and dir_str.upper() == "BUY":
+                dir_sign = 1
+            else:
+                # Fallback: SL position relative to entry determines direction
+                # SL > entry = SELL (TP below entry), SL < entry = BUY (TP above entry)
+                dir_sign = -1 if sl > entry else 1
+            
+            final_tp = entry + (needed_tp_dist * dir_sign)
             final_rr = self.min_gate_rr
             adjusted = True
-            logger.info(f"[{strategy_id}] RR optimized: {raw_rr:.2f} -> {final_rr:.2f} (Widened TP for Gate)")
+            logger.info(f"[{strategy_id}] RR optimized: {raw_rr:.2f} -> {final_rr:.2f} (Widened TP for Gate, dir={direction}, dir_sign={dir_sign})")
 
         return OptimizedExit(
             sl=round(final_sl, 5),
