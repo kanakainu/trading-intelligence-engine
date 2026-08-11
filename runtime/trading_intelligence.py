@@ -78,7 +78,7 @@ class StrategyBudget:
 class TradeBudgetManager:
     """Per-strategy daily trade budget. Reset at day rollover."""
 
-    DEFAULTS = {"bystra": 100, "aggressive": 100, "semi_hft": 100}
+    DEFAULTS = {"bystra": 500, "aggressive": 500, "semi_hft": 500}
 
     def __init__(self):
         self._budgets: Dict[str, StrategyBudget] = {}

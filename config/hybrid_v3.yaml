@@ -12,7 +12,7 @@ HYBRID_V3:
       news_guard: true
       correlation_check: true
       funding_filter: true
-    symbols: ["XAUUSD", "BTCUSD", "GBPJPY"]
+    symbols: ["XAUUSD"]
     strategies: ["bystra", "aggressive"]
     cost_cap_usd_day: 5.00
   
@@ -21,7 +21,7 @@ HYBRID_V3:
     mode: "advisory"
     timeout_ms: 3000
     min_methodologies_agree: 2
-    symbols: ["XAUUSD", "BTCUSD", "GBPJPY"]
+    symbols: ["XAUUSD"]
     strategies: ["bystra"]
     cost_cap_usd_day: 10.00
   

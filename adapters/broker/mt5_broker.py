@@ -173,7 +173,36 @@ class MT5BrokerAdapter(BrokerAdapterBase):
         return []  # MT5: no pending orders in scalping mode, return empty list to fulfill abstract contract
 
     def get_closed_trades(self, days: int = 1) -> List[Position]:
-        # Fallback for gateways that don't expose trade history directly.
-        # This will need to be improved if a history endpoint becomes available.
-        log.warning("MT5 gateway does not expose a direct 'history/deals' or 'account/history' endpoint. Returning empty list for closed trades.")
-        return []
+        """Fetch closed trades (DEAL_ENTRY_OUT) from gateway /account/history."""
+        if not self._client:
+            return []
+        try:
+            deals = self._client.history(days=days) or []
+        except Exception as e:
+            log.warning(f"Gateway history call failed: {e}")
+            return []
+        result = []
+        for d in deals:
+            try:
+                ts = d.get("time") or d.get("close_time")
+                ts = (
+                    datetime.fromtimestamp(ts, tz=timezone.utc)
+                    if isinstance(ts, (int, float))
+                    else datetime.now(tz=timezone.utc)
+                )
+                result.append(Position(
+                    position_id=str(d.get("ticket", "")),
+                    symbol=d.get("symbol", ""),
+                    side=(d.get("direction") or "").upper(),
+                    volume=float(d.get("volume", 0) or 0),
+                    entry_price=float(d.get("price", 0) or 0),
+                    stop_loss=None,
+                    take_profit=None,
+                    unrealized_profit=0.0,
+                    open_time=ts,
+                    pnl=float(d.get("profit", 0) or 0),
+                    comment=d.get("comment", ""),
+                ))
+            except Exception as e:
+                log.warning(f"Skipping malformed deal {d.get('ticket')}: {e}")
+        return result

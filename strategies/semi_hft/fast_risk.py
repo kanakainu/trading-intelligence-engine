@@ -12,7 +12,8 @@ class RiskPlan:
     valid:   bool
     reason:  str
 
-SL_BUFFER = 1.5
+from detectors.common import sl_buffer
+
 MIN_TP    = 1.5
 
 def _h(c, k): return float(c.get(k) or c.get(k.capitalize()) or 0)
@@ -26,11 +27,10 @@ def _swing_pivot(candles_m1: List[Dict], direction: str) -> float:
     return max(_h(c, "high") for c in cs)
 
 def _lot(equity: float) -> float:
-    if equity <= 400:  return 0.03
-    if equity <= 1000: return 0.05
-    if equity <= 2000: return 0.10
-    if equity <= 5000: return 0.30
-    return 0.50
+    # Match DynamicLotPlugin tiers — single source of truth
+    if equity < 2000: return 0.01
+    if equity < 5000: return 0.02
+    return 0.05
 
 def plan(direction: str, entry: float,
          candles_m1: List[Dict], equity: float,
@@ -40,11 +40,15 @@ def plan(direction: str, entry: float,
         return RiskPlan(0, 0, 0, "invalid", 0, False, "entry/equity=0")
 
     pivot = _swing_pivot(candles_m1, direction)
+    if pivot <= 0:
+        return RiskPlan(0, 0, 0, "invalid", 0, False, "no swing pivot")
+
+    _sl_buffer = sl_buffer(context=None) # ponytail: context from strategy
     if direction == "BUY":
-        sl = pivot - SL_BUFFER
+        sl = pivot - _sl_buffer
         sl_dist = max(entry - sl, 0.5)
     else:
-        sl = pivot + SL_BUFFER
+        sl = pivot + _sl_buffer
         sl_dist = max(sl - entry, 0.5)
 
     tp_dist = max(sl_dist * 1.5, MIN_TP)

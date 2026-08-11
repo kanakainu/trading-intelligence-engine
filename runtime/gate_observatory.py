@@ -147,7 +147,7 @@ class GateObservatory:
         # Update rolling stats
         key = (trace.symbol, trace.strategy, gate_name)
         if key not in self.stats:
-            self.stats[key] = {"PASS": 0, "FAIL": 0, "SKIPPED": 0}
+            self.stats[key] = {"PASS": 0, "FAIL": 0, "SKIPPED": 0, "WARN": 0}
         self.stats[key][status] += 1
         
         # Track rejections

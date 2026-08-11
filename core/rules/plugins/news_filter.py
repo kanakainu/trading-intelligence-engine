@@ -1,46 +1,59 @@
-"""NewsFilterPlugin — REJECT if active news blackout window (real ForexFactory data)."""
+"""NewsFilterPlugin — REJECT if active news blackout window (ForexFactory data)."""
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict
 from core.rules.plugins.plugin_interface import RulePluginInterface, RuleResult
 
 BLACKOUT_WINDOW = 30  # minutes
+FF_URL = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
+HIGH_IMPACT = {"High"}  # only block on High impact USD/XAU news
 
 
 class NewsFilterPlugin(RulePluginInterface):
     def initialize(self, config: Dict[str, Any]) -> None:
         self._window = config.get("window_minutes", BLACKOUT_WINDOW)
         self._enabled = config.get("enabled", True)
-        self._fetched = False
+        self._events = []
+        self._last_fetch = 0.0
+
+    def _fetch_events(self):
+        """Fetch FF calendar (cached 1h)."""
+        import time, urllib.request, json
+        if time.time() - self._last_fetch < 3600:
+            return
+        try:
+            with urllib.request.urlopen(FF_URL, timeout=5) as r:
+                self._events = json.loads(r.read())
+            self._last_fetch = time.time()
+        except Exception:
+            pass  # keep stale cache on error
 
     def evaluate(self, context: Dict[str, Any], facts: Dict[str, Any],
                  setup_result: Any = None, decision: Any = None) -> RuleResult:
         if not self._enabled:
             return RuleResult("APPROVE", "News filter disabled", priority=self.priority())
 
-        # Fetch real events from Investing (ForexFactory backup)
-        try:
-            from adapters.calendar.investing import InvestingCalendar
-            calendar = InvestingCalendar()
-            if calendar.is_news_blackout(symbol="USD"):
-                return RuleResult("REJECT", "News blackout (30 min window, Investing)", priority=self.priority())
-        except Exception as e:
-            # Fallback: check events in context
-            events = context.get("news_events") or []
-            now = datetime.now(timezone.utc)
-            window = timedelta(minutes=self._window)
-            for ev in events:
-                ev_time = ev.get("time") if isinstance(ev, dict) else None
-                if ev_time:
-                    if isinstance(ev_time, (int, float)):
-                        ev_time = datetime.fromtimestamp(ev_time, tz=timezone.utc)
-                    if abs((ev_time - now).total_seconds()) < window.total_seconds():
-                        title = ev.get("title", "news") if isinstance(ev, dict) else "news"
-                        return RuleResult("REJECT", f"News blackout: {title}", priority=self.priority())
+        self._fetch_events()
+        now = datetime.now(timezone.utc)
+        window = timedelta(minutes=self._window)
+
+        for ev in self._events:
+            if ev.get("impact") not in HIGH_IMPACT:
+                continue
+            if ev.get("country") not in ("USD", "XAU", "All"):
+                continue
+            try:
+                ev_time = datetime.fromisoformat(ev["date"])
+                if ev_time.tzinfo is None:
+                    ev_time = ev_time.replace(tzinfo=timezone.utc)
+            except Exception:
+                continue
+            if abs((ev_time - now).total_seconds()) < window.total_seconds():
+                return RuleResult("REJECT", f"News blackout: {ev.get('title','news')}", priority=self.priority())
 
         return RuleResult("APPROVE", "No news blackout", priority=self.priority())
 
     def metadata(self) -> Dict[str, Any]:
-        return {"name": "news_filter", "type": "risk", "version": "1.0"}
+        return {"name": "news_filter", "type": "risk", "version": "2.0"}
 
     def priority(self) -> int: return 10
     def enabled(self) -> bool: return getattr(self, "_enabled", True)

@@ -114,19 +114,17 @@ class BystraStrategy(BaseStrategy):
         from detectors.clab_detector import ClabDetector
         from detectors.mother_candle_detector import MotherCandleDetector
 
+        from detectors.three_candle_detector import ThreeCandleDetector
+
         return {
             "SNRC1": Snrc1Detector(),
             "SNRC2": Snrc2Detector(),
             "SNRC3": Snrc3Detector(),
             "HYBRID1": Hybrid1Detector(),
             "HYBRID2": Hybrid2Detector(),
-            "MANIPULATION": ManipulationDetector(),
             "QMR": QmrDetector(),
             "QMC": QmcDetector(),
             "QMM": QmmDetector(),
             "QM2P": Qm2pDetector(),
-            "BLINDSPOT": BlindspotDetector(),
-            "BLINDSPOT2": Blindspot2Detector(),
-            "CLAB": ClabDetector(),
-            "MOTHER_CANDLE": MotherCandleDetector(),
+            "THREE_CANDLE": ThreeCandleDetector(),
         }

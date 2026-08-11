@@ -40,6 +40,7 @@ class FeatureSnapshot:
     distance_to_vwap: Dict[str, float] = field(default_factory=dict)
 
     # Market Microstructure
+    current_price: float = 0.0
     spread: float = 0.0
     tick_speed: float = 0.0
     price_velocity: float = 0.0

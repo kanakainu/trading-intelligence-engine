@@ -4,7 +4,10 @@ Moves ALL risk calculation logic OUT of Strategy Orchestrator.
 Orchestrator becomes pure coordinator.
 """
 from typing import Optional, Dict, List
+import logging
 from core.planner.planner_models import TradePlan, PlannerInputs
+
+logger = logging.getLogger(__name__)
 
 
 class TradePlanner:
@@ -26,8 +29,18 @@ class TradePlanner:
         symbol = inputs.symbol
         direction = inputs.direction
         entry_zone = inputs.entry_zone
-        entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
         
+        # Handle single-point entry_zone (if only 'low' or 'high' is provided)
+        if "low" in entry_zone and "high" in entry_zone:
+            entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+        elif "low" in entry_zone:
+            entry_mid = entry_zone["low"]
+        elif "high" in entry_zone:
+            entry_mid = entry_zone["high"]
+        else:
+            # Fallback for safety, though should not happen if signal is valid
+            entry_mid = inputs.current_price
+
         # 1. Danger Zone
         danger_zone = self._calc_danger_zone(inputs)
         
@@ -39,7 +52,7 @@ class TradePlanner:
         
         # 4. Risk/Reward
         risk_points, reward_points, rr = self._calc_risk_reward(
-            direction=direction,
+            direction_str=direction,
             entry_zone=entry_zone,
             sl=sl,
             tp=tp
@@ -96,9 +109,9 @@ class TradePlanner:
         if inputs.detector_danger_zone is not None:
             return float(inputs.detector_danger_zone)
         
-        if inputs.direction == "sell" and inputs.h1_resistance:
+        if str(inputs.direction).lower() == "sell" and inputs.h1_resistance:
             return float(inputs.h1_resistance)
-        elif inputs.direction == "buy" and inputs.h1_support:
+        elif str(inputs.direction).lower() == "buy" and inputs.h1_support:
             return float(inputs.h1_support)
         
         return None
@@ -110,13 +123,18 @@ class TradePlanner:
         SELL: SL = lowest swing HIGH above entry_zone['high']
         BUY: SL = highest swing LOW below entry_zone['low']
         """
-        direction = inputs.direction
+        direction = str(inputs.direction).lower()  # normalize case
         entry_zone = inputs.entry_zone
         entry_tf = inputs.timeframe
         
-        # Detector override
-        if inputs.detector_sl is not None:
-            return float(inputs.detector_sl)
+        # Detector override (with direction guard)
+        if inputs.detector_sl is not None and entry_zone:
+            sl = float(inputs.detector_sl)
+            ez_ref = float(entry_zone.get("high") if direction == "sell" else entry_zone.get("low"))
+            # SELL: SL must be ABOVE entry; BUY: SL must be BELOW entry
+            if (direction == "sell" and sl > ez_ref) or (direction == "buy" and sl < ez_ref):
+                return sl
+            logger.warning("detector_sl %.2f wrong direction for %s (entry ref %.2f) — ignoring", sl, direction, ez_ref)
         
         buf = max(inputs.spread_buffer / 10, 0.25)
         
@@ -153,56 +171,55 @@ class TradePlanner:
         TP from nearest H1 S/R with min 1.5 RR.
         Fallback: entry ± risk × 1.5
         """
-        direction = inputs.direction
+        direction = str(inputs.direction).lower() # normalize case
         entry_zone = inputs.entry_zone
         h1_support = inputs.h1_support
         h1_resistance = inputs.h1_resistance
         atr = inputs.atr
-        
+
         if not sl:
             # No SL → ATR-based TP
             return entry_mid + atr * 1.5 if direction == "buy" else entry_mid - atr * 1.5
-        
+
         # Calculate risk
         if direction == "sell":
             risk = float(sl) - float(entry_zone["low"])
-            if h1_support:
-                tp_val = float(h1_support)
-                reward = float(entry_zone["low"]) - tp_val
-                if reward >= risk * 1.5:
-                    return tp_val
+            # Use H1 support if valid and provides good RR
+            if h1_support and h1_support > 0.0 and (entry_zone["low"] - h1_support) >= risk * 1.5:
+                return h1_support
             # Fallback
             return entry_mid - risk * 1.5
-        else:
+        else: # direction == "buy"
             risk = float(entry_zone["high"]) - float(sl)
-            if h1_resistance:
-                tp_val = float(h1_resistance)
-                reward = tp_val - float(entry_zone["high"])
-                if reward >= risk * 1.5:
-                    return tp_val
+            # Use H1 resistance if valid and provides good RR
+            if h1_resistance and h1_resistance < 999999.0 and (h1_resistance - entry_zone["high"]) >= risk * 1.5:
+                return h1_resistance
             # Fallback
             return entry_mid + risk * 1.5
-    
+
     def _calc_risk_reward(
         self,
-        direction: str,
+        direction_str: str, # Use a different var name to avoid collision
         entry_zone: Dict[str, float],
         sl: Optional[float],
         tp: Optional[float]
     ) -> tuple:
-        """Calculate risk_points, reward_points, RR ratio."""
+        """
+        Calculate risk_points, reward_points, RR ratio.
+        Direction_str is normalized to lowercase.
+        """
+        direction = direction_str.lower() # normalize case
         if not sl or not tp:
             return 0.0, 0.0, 0.0
         
         if direction == "sell":
             risk_points = abs(float(sl) - float(entry_zone["low"]))
             reward_points = abs(float(entry_zone["low"]) - float(tp))
-        else:
+        else: # direction == "buy"
             risk_points = abs(float(entry_zone["high"]) - float(sl))
             reward_points = abs(float(tp) - float(entry_zone["high"]))
-        
+
         rr = reward_points / risk_points if risk_points > 0 else 0.0
-        
         return risk_points, reward_points, rr
     
     def _calc_position_size(

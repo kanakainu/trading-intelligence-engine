@@ -67,6 +67,42 @@ def toggle_strategy(payload: dict):
     return {"error": "Not found"}
 
 
+@app.post("/api/engine/start")
+def engine_start():
+    """Start TIE production engine via systemctl."""
+    import subprocess
+    try:
+        subprocess.run(["sudo", "systemctl", "start", "tie-production.service"], check=True, timeout=5)
+        return {"status": "ok", "message": "Engine started"}
+    except Exception as e:
+        log.error(f"engine/start failed: {e}")
+        return {"status": "error", "message": str(e)}
+
+
+@app.post("/api/engine/stop")
+def engine_stop():
+    """Stop TIE production engine via systemctl."""
+    import subprocess
+    try:
+        subprocess.run(["sudo", "systemctl", "stop", "tie-production.service"], check=True, timeout=5)
+        return {"status": "ok", "message": "Engine stopped"}
+    except Exception as e:
+        log.error(f"engine/stop failed: {e}")
+        return {"status": "error", "message": str(e)}
+
+
+@app.post("/api/engine/restart")
+def engine_restart():
+    """Restart TIE production engine via systemctl."""
+    import subprocess
+    try:
+        subprocess.run(["sudo", "systemctl", "restart", "tie-production.service"], check=True, timeout=10)
+        return {"status": "ok", "message": "Engine restarted"}
+    except Exception as e:
+        log.error(f"engine/restart failed: {e}")
+        return {"status": "error", "message": str(e)}
+
+
 @app.get("/", response_class=HTMLResponse)
 def dashboard():
     return HTMLResponse(content=HTML)

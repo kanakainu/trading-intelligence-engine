@@ -1,5 +1,11 @@
 {
-    "semi_hft_c8":   {"XAUUSD": true, "BTCUSD": true, "GBPJPY": true},
-    "aggressive_v1": {"XAUUSD": true, "BTCUSD": true, "GBPJPY": true},
-    "bystra_v1":     {"XAUUSD": true, "BTCUSD": true, "GBPJPY": true}
+    "semi_hft_c8": {
+        "XAUUSD": true
+    },
+    "aggressive_v1": {
+        "XAUUSD": true
+    },
+    "bystra_v1": {
+        "XAUUSD": true
+    }
 }

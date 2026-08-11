@@ -12,7 +12,7 @@ class SLValidationRule(RulePluginInterface):
         sl = context.get("sl")
         direction = context.get("direction", "BUY").upper()
 
-        if entry is None or sl is None:
+        if entry is None or sl is None or sl == 0:
             return RuleResult("APPROVE", "No entry/sl — skip", priority=self.priority())
 
         if direction == "BUY" and sl >= entry:
@@ -38,7 +38,7 @@ class TPValidationRule(RulePluginInterface):
         tp = context.get("tp")
         direction = context.get("direction", "BUY").upper()
 
-        if entry is None or tp is None:
+        if entry is None or tp is None or tp == 0 or entry <= 0:
             return RuleResult("APPROVE", "No entry/tp — skip", priority=self.priority())
 
         if direction == "BUY" and tp <= entry:

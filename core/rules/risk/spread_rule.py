@@ -4,7 +4,7 @@ from core.rules.plugins.plugin_interface import RulePluginInterface, RuleResult
 
 class SpreadRule(RulePluginInterface):
     def initialize(self, config: Dict[str, Any]) -> None:
-        self._max_spread = config.get("max_spread", 300)
+        self._max_spread = config.get("max_spread", 300) # Default to London/NY spread (tighter)
         self._enabled = config.get("enabled", True)
 
     def evaluate(self, context, facts, setup_result=None, decision=None) -> RuleResult:

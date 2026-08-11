@@ -41,7 +41,7 @@ from core.regime.regime_models import RegimeSnapshot, Regime, TrendDirection
 from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
 from core.strategy_manager.manager import StrategyManager
 from core.strategy.exit_orchestrator import ExitOrchestrator, ExitProfile
-from strategies.bystra.strategy import BystraStrategy
+# from strategies.bystra.strategy import BystraStrategy
 from strategies.aggressive.strategy import AggressiveStrategy
 from strategies.semi_hft.strategy import SemiHFTStrategyV4 as SemiHFTStrategy
 from strategies.aggressive.regime.regime_engine import AggressiveRegimeEngine
@@ -53,6 +53,10 @@ from runtime.position_monitor import PositionMonitor
 from runtime.position_state import PositionState
 from adapters.broker.mt5_broker import MT5BrokerAdapter
 from runtime.hck_wire import push_decision
+from shared.news_sentinel import check_news_blackout
+from shared.regime_detector import RegimeDetector, MarketRegime
+from shared.regime_allocator import RegimeAllocator
+from shared.exhaustion_guard import ExhaustionGuard
 from core.rules.risk.risk_registry import build_risk_registry
 from core.rules.plugins.plugin_interface import RuleResult
 from detectors.common import find_swing_pivots, find_nearest_support, find_nearest_resistance, sl_buffer
@@ -67,8 +71,8 @@ URL = 'https://chips-extension-extensions-wearing.trycloudflare.com'
 TOKEN = 'Jojo_56790@_000tUi_OO9'
 SYMBOLS = ['XAUUSD']  # user-tuned 2026-08-05: XAUUSD only, save bandwidth
 
-_seen_setups = {}  # {(sym, setup_name, direction): timestamp} — dedup 5 min
-DEDUP_WINDOW = 120  # seconds — 2026-08-06: raised from 60, too many fallback entries
+_seen_setups = {}  # {(sym, setup_name, direction): timestamp} — dedup 1 min
+DEDUP_WINDOW = 60  # seconds — 2026-08-06: back to 60 per user request
 
 client = MT5GatewayClient(URL, TOKEN)
 broker = MT5BrokerAdapter(base_url=URL, token=TOKEN)
@@ -76,9 +80,14 @@ broker.initialize()
 
 mgr = StrategyManager()
 orch = ExitOrchestrator(min_gate_rr=1.5)
-mgr.load(BystraStrategy)
+# mgr.load(BystraStrategy)
 mgr.load(AggressiveStrategy)
 mgr.load(SemiHFTStrategy)
+
+# Global Regime Detector (Nexus A12 style)
+regime_detector = RegimeDetector()
+regime_allocator = RegimeAllocator(regime_detector)
+exhaustion_guard = ExhaustionGuard()
 
 rt = MultiStrategyRuntime(mgr)
 # DISABLED: EntryMonitor submits Riri_ orders — duplicate engine, replaced by TIE_ path
@@ -103,7 +112,7 @@ pos_monitor = PositionMonitor(on_result=handle_pos_result, broker=broker)
 risk_gate = build_risk_registry()
 context_engine = ContextEngine()
 observatory = GateObservatory()
-governor = DailyProfitGovernorV2(daily_target=30.0, daily_loss_limit=80.0)
+governor = DailyProfitGovernorV2(daily_target=30.0, daily_loss_limit=200.0)
 budget_mgr = TradeBudgetManager()
 opp_lifecycle = OpportunityLifecycle()
 adaptive_mgr = AdaptiveThresholdManager()
@@ -169,6 +178,19 @@ while True:
         log.warning("HALT FLAG active — skipping scan. rm /tmp/tie_halt to resume.")
         time.sleep(10)
         continue
+
+    # News Sentinel auto-refresh every 15 minutes
+    _blackout_file = "/tmp/tie_news_blackout.json"
+    _now_ts = time.time()
+    _blackout_age = _now_ts - os.path.getmtime(_blackout_file) if os.path.exists(_blackout_file) else 9999
+    if _blackout_age > 900:  # 15 min stale → refresh
+        try:
+            import asyncio as _aio
+            from shared.news_sentinel import NewsSentinel as _NS
+            _aio.get_event_loop().run_until_complete(_NS().check_blackout())
+            log.debug("News sentinel refreshed")
+        except Exception as _ne:
+            log.warning("News sentinel refresh failed: %s", _ne)
 
     # Daily Target Hibernate — MUST run before DD Guard to skip client.account() API call
     try:
@@ -358,6 +380,7 @@ while True:
             # Build ScanContext for MultiStrategyRuntime
             _sid = str(uuid.uuid4())
             _now = datetime.now(timezone.utc)
+
             # Feature Engine Central — full indicator computation (EMA, ATR, VWAP, momentum, volume)
             _feat_inputs = FeatureInputs(
                 candles=candles,
@@ -368,6 +391,14 @@ while True:
                 current_tick={"bid": price, "ask": price + spread},
             )
             _features = compute_features(_feat_inputs)
+
+            # 🧠 NEXUS A12: Regime Detection + Automatic Allocation (Transmission)
+            _regime_snap = regime_allocator.allocate(_features, time.time())
+            log.info(f"MARKET REGIME: {_regime_snap.regime.value} (strength={_regime_snap.strength:.0f}) | SUGGESTED ENGINE: {_regime_snap.suggested_engine}")
+            if _regime_snap.regime in (MarketRegime.CHOPPY, MarketRegime.CHAOS):
+                log.warning(f"REGIME GATE: {_regime_snap.regime.value} — skip scan (unsafe market)")
+                continue
+
             # Inject S/R via dataclasses.replace (frozen-safe)
             import dataclasses
             _features = dataclasses.replace(
@@ -379,6 +410,9 @@ while True:
             _regime_engine = AggressiveRegimeEngine()
             agg_regime_snapshot = _regime_engine.classify(_features)
             _regime = aggressive_regime_to_core_regime(agg_regime_snapshot)
+            # Carry regime_snap.strength via confidence so pullback_filter trending_override fires
+            from dataclasses import replace as _dc_replace
+            _regime = _dc_replace(_regime, confidence=min(_regime_snap.strength / 100.0, 1.0))
 
             _opp = OpportunitySnapshot(market_allowed=True, reason=BlockReason.NONE,
                 priority=7, confidence=0.8, symbol=sym, timestamp=_now, scan_id=_sid)
@@ -399,17 +433,25 @@ while True:
                 # --- ADAPTIVE EXIT ORCHESTRATOR ---
                 # FIX: entry_zone["high"] for BUY, entry_zone["low"] for SELL
                 entry_zone = decision.metadata.get("entry_zone") or {}
-                _entry = entry_zone.get("high") if decision.action == "BUY" else entry_zone.get("low") or price
+                # FIX #54: Use LIVE price as entry anchor (not stale candle entry_zone)
+                # Stale entry → SL/TP mismatch → Risk Gate false rejects
+                _live_price = price if isinstance(price, (int, float)) and price > 0 else 0.0
+                _entry = _live_price or (entry_zone.get("high") if decision.action == "BUY" else entry_zone.get("low")) or 0.0
                 _sl = decision.metadata.get("sl") or 0.0
                 _tp = decision.metadata.get("take_profit") or 0.0
                 
-                # FIX #46: TradePlanner SELL TP direction guard (H1 support bug)
-                if decision.action == "SELL" and _tp >= _entry:
-                    _tp = _entry - abs(_sl - _entry) * 1.5
-                elif decision.action == "BUY" and _tp <= _entry:
-                    _tp = _entry + abs(_sl - _entry) * 1.5
-                
                 if _sl and _tp:
+                    # FIX #54b: normalize SL/TP side vs LIVE entry (replaces FIX #46)
+                    if decision.action == "SELL":
+                        if _sl <= _entry:
+                            _sl = _entry + 5.0
+                        if _tp >= _entry:
+                            _tp = _entry - abs(_sl - _entry) * 1.5
+                    elif decision.action == "BUY":
+                        if _sl >= _entry:
+                            _sl = _entry - 5.0
+                        if _tp <= _entry:
+                            _tp = _entry + abs(_sl - _entry) * 1.5
                     opt = orch.optimize(
                         strategy_id=decision.setup_name,
                         symbol=sym,
@@ -479,17 +521,34 @@ while True:
                         _seen_setups[dedup_key] = now
                         
                         # === TRADING INTELLIGENCE GATES ===
+                        _blocked = False
                         can_trade, gov_reason = governor.can_trade()
                         if not can_trade:
                             log.info(f"Governor STOP: {gov_reason}")
                             setup_detail["status"] = "GOVERNOR_HALT"
                             setup_detail["gate_reason"] = gov_reason
                             observatory.log_gate(trace, "Governor", "FAIL", reason=gov_reason)
+                            _blocked = True
+
+                        # === EXHAUSTION GUARD (Multi-TF conflict) ===
+                        exh = exhaustion_guard.check(_features, candles, decision.action)
+                        if not exh.allowed:
+                            log.info(f"Exhaustion Guard: ❌ BLOCK {decision.action} — {exh.reason} (vwap_dist={exh.vwap_dist_atr:.1f}x ATR, M15={exh.m15_trend})")
+                            setup_detail["status"] = "EXHAUSTION_BLOCK"
+                            setup_detail["gate_reason"] = exh.reason
+                            observatory.log_gate(trace, "Exhaustion", "FAIL", reason=exh.reason)
+                            _blocked = True
+                        elif "warn" in exh.reason:
+                            log.info(f"Exhaustion Guard: ⚠️ WARN {decision.action} — {exh.reason}")
+                            observatory.log_gate(trace, "Exhaustion", "WARN", reason=exh.reason)
+
                         # Extract strategy key from setup_name (B_BUY -> bystra, A_SELL -> aggressive, S_BUY -> semi_hft)
                         strat_key = decision.setup_name.split("_")[0].lower()
                         strat_map = {"b": "bystra", "a": "aggressive", "s": "semi_hft"}
                         strategy_name = strat_map.get(strat_key, strat_key)
-                        if not budget_mgr.can_consume(strategy_name):
+                        if _blocked:
+                            log.debug(f"Trade blocked by gate, skipping budget consume")
+                        elif not budget_mgr.can_consume(strategy_name):
                             log.info(f"Budget exhausted for {decision.setup_name}")
                             setup_detail["status"] = "BUDGET_EXHAUSTED"
                             setup_detail["gate_reason"] = f"Trade budget consumed"
@@ -515,13 +574,19 @@ while True:
                             else:
                                 from adapters.broker.models import OrderRequest
                                 try:
+                                    _entry_mode = decision.metadata.get("entry_mode", "immediate")
+                                    _order_type = "limit" if _entry_mode == "retest_c2" else "market"
+                                    _ez = decision.metadata.get("entry_zone") or {}
+                                    _limit_price = (_ez.get("high") if decision.action == "BUY" else _ez.get("low")) if _order_type == "limit" else None
                                     req = OrderRequest(
                                         symbol=sym,
-                                        side=decision.action,  # BUY/SELL
+                                        side=decision.action,
                                         volume=decision.metadata.get("volume", 0.01),
+                                        order_type=_order_type,
                                         stop_loss=decision.metadata.get("sl"),
                                         take_profit=decision.metadata.get("take_profit"),
-                                        comment=f"TIE_{decision.setup_name}"
+                                        comment=f"TIE_{decision.setup_name}",
+                                        metadata={"limit_price": _limit_price, "entry_mode": _entry_mode},
                                     )
                                     resp = broker.submit_order(req)
                                     if resp.status == "FILLED":

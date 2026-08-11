@@ -1,15 +1,14 @@
-"""EntryScoreEngine — weighted aggregator. Score >= 72 = entry."""
+"""EntryScoreEngine — weighted aggregator. Score >= THRESHOLD = entry."""
 from dataclasses import dataclass
 
-THRESHOLD = 72.0
+THRESHOLD = 60.0  # 2026-08-06: raised from 50, filter out weak pattern=fallback entries
 
 WEIGHTS = {
-    "momentum":   0.30,
-    "velocity":   0.20,
-    "micro":      0.15,
-    "liquidity":  0.15,
-    "vwap":       0.10,
-    "trend":      0.10,
+    "momentum":  0.40,  # primary — trend strength
+    "velocity":  0.30,  # conviction — speed matters
+    "micro":     0.20,  # M1 structure
+    "trend":     0.10,  # M5/H1 regime bias
+    # liquidity + vwap dropped — unreliable proxies, drag score ~10%
 }
 
 @dataclass
@@ -27,18 +26,29 @@ def calculate(
     vwap_score: float,
     trend_score: float,
     direction: str,
+    # Nexus Tweak: Argument conflict detection
+    counter_bias_score: float = 50.0,
 ) -> EntryScore:
-    score = (
+    base_score = (
         momentum_score  * WEIGHTS["momentum"]  +
         velocity_score  * WEIGHTS["velocity"]  +
         micro_score     * WEIGHTS["micro"]     +
-        liquidity_score * WEIGHTS["liquidity"] +
-        vwap_score      * WEIGHTS["vwap"]      +
         trend_score     * WEIGHTS["trend"]
     )
+    
+    # 🧠 DEBATE LOGIC
+    penalty = 0.0
+    if counter_bias_score > 70.0:
+        penalty = (counter_bias_score - 70.0) * 1.8 # Even harsher for aggressive strategy
+        
+    score = max(0, base_score - penalty)
     score = round(score, 2)
+    
     ok = score >= THRESHOLD and direction in ("BUY", "SELL")
     reason = "ok" if ok else f"score_low:{score:.1f}" if score < THRESHOLD else "no_direction"
+    if penalty > 0 and not ok:
+        reason = f"debate_block:penalty_{penalty:.1f}"
+        
     return EntryScore(score=score, entry_ok=ok, direction=direction, reason=reason)
 
 

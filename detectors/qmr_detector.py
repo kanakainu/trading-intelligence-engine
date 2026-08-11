@@ -33,7 +33,8 @@ class QmrDetector(BystraBaseDetector):
 
             if not direction: continue
             
-            base_zone = {"high": entry_level + 0.2, "low": entry_level - 0.2}
+            buf = sl_buffer(context)
+            base_zone = {"high": entry_level + buf, "low": entry_level - buf}
             
             htf_tf = "M15" if tf == "M5" else "H1"
             htf_candles = self._get_candles(context, htf_tf, 10)

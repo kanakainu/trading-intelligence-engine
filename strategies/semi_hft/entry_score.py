@@ -2,15 +2,15 @@
 from dataclasses import dataclass
 from typing import Optional
 
-# Blueprint weights
-W_MOMENTUM   = 0.35
-W_VELOCITY   = 0.20
-W_LIQUIDITY  = 0.15
-W_VOLATILITY = 0.10
-W_PULSE      = 0.10
-W_MICRO      = 0.10
+# Blueprint weights — rebalanced for live market conditions
+W_MOMENTUM   = 0.15  # was 0.20 — drag terbesar
+W_VELOCITY   = 0.20  # was 0.15
+W_LIQUIDITY  = 0.30  # was 0.25 — paling reliable
+W_VOLATILITY = 0.15  # was 0.15
+W_PULSE      = 0.05  # was 0.10 — selalu rendah jam segini
+W_MICRO      = 0.15  # was 0.15
 
-MIN_ENTRY_SCORE = 75.0  # Blueprint threshold
+MIN_ENTRY_SCORE = 60.0  # 2026-08-06: raised from 50, filter out weak pattern=fallback entries
 
 @dataclass
 class EntryScore:
@@ -29,8 +29,10 @@ def calculate(
     micro_score: float,       # from micro_momentum_engine.score (0-100)
     direction: str,           # "BUY" | "SELL" | "NONE"
     pattern: str = "",
+    # Nexus Tweak: Counter-argument scores to detect conflict
+    counter_bias_score: float = 50.0, # 0-100. If 100 for BUY, it means "Extreme BEARISH case"
 ) -> EntryScore:
-    score = (
+    base_score = (
         momentum_score   * W_MOMENTUM +
         velocity_score   * W_VELOCITY +
         liquidity_score  * W_LIQUIDITY +
@@ -38,6 +40,15 @@ def calculate(
         pulse_score      * W_PULSE +
         micro_score      * W_MICRO
     )
+    
+    # 🧠 DEBATE LOGIC (A5 vs A6 style)
+    # If counter_bias is high (> 70), penalty base score
+    penalty = 0.0
+    if counter_bias_score > 70.0:
+        penalty = (counter_bias_score - 70.0) * 1.5 # Harsh penalty for strong counter arguments
+    
+    score = max(0, base_score - penalty)
+    
     entry_ok = score >= MIN_ENTRY_SCORE and direction != "NONE"
     return EntryScore(
         score=round(score, 2),
@@ -47,6 +58,7 @@ def calculate(
             "momentum": momentum_score, "velocity": velocity_score,
             "liquidity": liquidity_score, "volatility": volatility_score,
             "pulse": pulse_score, "micro": micro_score,
+            "debate_penalty": round(penalty, 2)
         },
         entry_ok=entry_ok,
     )

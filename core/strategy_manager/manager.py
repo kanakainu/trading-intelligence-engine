@@ -132,29 +132,30 @@ class StrategyManager:
                 continue
             
             try:
+                # observe() must run before analyze() to populate _snap/_vel etc
+                strategy.observe(context)
                 result = strategy.analyze(context)
                 if result:
                     self._metrics[sid].record(result)
                     results.append(result)
-                    # Populate score breakdown from metadata
-                    if result.metadata and sym:
-                        self._last_scores[f"{sid}_{sym}"] = {
-                            "strategy_id": sid,
-                            "symbol": sym,
-                            "score": result.metadata.get("score", 0.0),
-                            "breakdown": {k: v for k, v in result.metadata.items() if k != "score"},
-                            "timestamp": context.scan.timestamp.isoformat() if context.scan and context.scan.timestamp else "",
-                        }
-                        # Persist to file for cross-process dashboard access
-                        try:
-                            import json as _json
-                            _scores_path = "/home/ubuntu/trading-intelligence-engine/data/last_scores.json"
-                            with open(_scores_path, "w") as _f:
-                                _json.dump(self._last_scores, _f)
-                        except Exception:
-                            pass
                     if result.signal is None:
                         logger.info("Strategy %s returned WAIT: %s", sid, result.reason)
+                # Save score from metadata regardless of signal (always track live score)
+                if result and result.metadata and sym:
+                    self._last_scores[f"{sid}_{sym}"] = {
+                        "strategy_id": sid,
+                        "symbol": sym,
+                        "score": result.metadata.get("score", 0.0),
+                        "breakdown": {k: v for k, v in result.metadata.items() if k != "score"},
+                        "timestamp": context.scan.timestamp.isoformat() if context.scan and context.scan.timestamp else "",
+                    }
+                    try:
+                        import json as _json
+                        _scores_path = "/home/ubuntu/trading-intelligence-engine/data/last_scores.json"
+                        with open(_scores_path, "w") as _f:
+                            _json.dump(self._last_scores, _f)
+                    except Exception:
+                        pass
             except Exception as e:
                 logger.error("Strategy %s failed: %s", sid, e)
         return results

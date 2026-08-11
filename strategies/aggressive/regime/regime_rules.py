@@ -3,7 +3,7 @@
 # Trend classification
 STRONG_TREND_ADX = 25
 WEAK_TREND_ADX = 20
-RANGING_ADX = 15
+RANGING_ADX = 18  # was 15 — ADX 15-17 still choppy, skip entry
 
 # Volatility bands
 HIGH_VOLATILITY_ATR_PCT = 0.02

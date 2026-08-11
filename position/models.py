@@ -31,6 +31,8 @@ class Position:
     take_profit: Optional[Decimal] = None
     unrealized_pnl: float = 0.0
     realized_pnl: float = 0.0
+    max_favorable_excursion: float = 0.0  # MFE (max profit in USD)
+    max_adverse_excursion: float = 0.0   # MAE (max loss in USD)
     status: PositionStatus = PositionStatus.CREATED
     opened_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None

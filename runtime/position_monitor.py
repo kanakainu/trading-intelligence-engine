@@ -60,8 +60,14 @@ class PositionMonitor:
                 new_sl = getattr(result, "new_sl", None)
                 new_tp = getattr(result, "new_tp", None)
                 if new_sl is not None or new_tp is not None:
-                    resp = self._broker.modify_order(str(pos.position_id), stop_loss=new_sl, take_profit=new_tp)
-                    log.info(f"Modify {pos.position_id}: SL={new_sl} TP={new_tp} -> {getattr(resp,'status','?')}")
+                    # Gateway /trade/modify REQUIRES both sl AND tp
+                    _sl = new_sl if new_sl is not None else pos.stop_loss
+                    _tp = new_tp if new_tp is not None else pos.take_profit
+                    if not _sl or not _tp:
+                        log.warning(f"Modify {pos.position_id} skipped: SL={_sl} TP={_tp} — missing value")
+                        return
+                    resp = self._broker.modify_order(str(pos.position_id), stop_loss=_sl, take_profit=_tp)
+                    log.info(f"Modify {pos.position_id}: SL={_sl} TP={_tp} -> {getattr(resp,'status','?')}")
             elif result.action == "close":
                 resp = self._broker.close_position(str(pos.position_id))
                 log.info(f"Close {pos.position_id} -> {getattr(resp,'status','?')}")

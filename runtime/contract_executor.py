@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 from runtime.position_state import PositionState
 from detectors.common import find_swing_pivots, find_nearest_support, find_nearest_resistance
+from runtime.trailing_manager import TrailingManager, TrailingProfile
 
 
 @dataclass
@@ -14,6 +15,15 @@ class ExecutionResult:
     new_sl: Optional[float] = None
     new_tp: Optional[float] = None
     partial_volume: Optional[float] = None  # for partial close
+
+
+# Profiles instantiated once at module load — not per tick
+_TRAILING_PROFILES = {
+    "bystra":     TrailingProfile("bystra",     3.0, 2.5, 1.0, 1.0, 360),
+    "aggressive": TrailingProfile("aggressive", 2.0, 0.5, 0.2, 0.2,  30),
+    "semi_hft":   TrailingProfile("semi_hft",   1.0, 0.5, 0.2, 0.1,   5),
+}
+_TRAILING_MGR = TrailingManager(_TRAILING_PROFILES)
 
 
 class ContractExecutor:
@@ -69,18 +79,8 @@ class ContractExecutor:
             if reversal:
                 return ExecutionResult("close", f"early_exit_reversal_{reversal}")
 
-        # 4. Trailing stop trigger — using TrailingManager (Money-based Torto Logic)
-        from runtime.trailing_manager import TrailingManager, TrailingProfile
-        
-        # Define profiles based on Torto V4 design (V3 = $3 start, manual = $5 start)
-        profiles = {
-            "bystra": TrailingProfile("bystra", 3.0, 2.5, 1.0, 1.0, 360),
-            "aggressive": TrailingProfile("aggressive", 3.0, 1.5, 0.5, 0.5, 30),
-            "semi_hft": TrailingProfile("semi_hft", 3.0, 0.5, 0.2, 0.3, 5),
-        }
-        trailing_mgr = TrailingManager(profiles)
-        
-        new_sl = trailing_mgr.evaluate(pos, pos.current_price, atr, [])
+        # 4. Trailing stop — module-level instance, not per-tick
+        new_sl = _TRAILING_MGR.evaluate(pos, pos.current_price, atr, [])
         if new_sl:
              return ExecutionResult("modify", "trailing_stop", new_sl=new_sl)
 
@@ -88,28 +88,42 @@ class ContractExecutor:
 
     def _check_m5_reversal(self, m5_candles: List[Dict], is_buy: bool) -> Optional[str]:
         """
-        Check for dangerous reversal pattern on M5 (closed candles only).
-        Returns pattern name if detected, else None.
-        Ignores M1 noise per Mas'ku requirement.
+        Check for dangerous reversal pattern on M5 — CLOSED candles only.
+        m5_candles[-1] = forming (ignored), m5_candles[-2] = last closed, m5_candles[-3] = prev closed.
+        Patterns: bearish/bullish engulfing, consecutive, pinbar (hammer/shooting star).
         """
         if len(m5_candles) < 3:
             return None
-        
-        # Use last 2 CLOSED candles + current forming
-        c1 = m5_candles[-3]  # 2 candles ago
-        c2 = m5_candles[-2]  # 1 candle ago (closed)
-        curr = m5_candles[-1]  # forming
-        
+
+        # Only use closed candles — skip m5_candles[-1] (still forming)
+        c1 = m5_candles[-3]  # 2 closed candles ago
+        c2 = m5_candles[-2]  # last CLOSED candle (confirmed)
+
         c1_o, c1_c = float(c1["open"]), float(c1["close"])
         c2_o, c2_c = float(c2["open"]), float(c2["close"])
-        
+        c2_h, c2_l = float(c2["high"]), float(c2["low"])
+
         c1_bull = c1_c > c1_o
         c2_bull = c2_c > c2_o
-        
+
         c1_body = abs(c1_c - c1_o)
         c2_body = abs(c2_c - c2_o)
-        
-        # Engulfing on M5 (closed candles only)
+        c2_range = max(c2_h - c2_l, 1e-9)
+
+        # --- Pinbar detection on last closed candle (c2) ---
+        c2_upper_wick = c2_h - max(c2_o, c2_c)
+        c2_lower_wick = min(c2_o, c2_c) - c2_l
+
+        if is_buy:
+            # Shooting star = danger for LONG (long upper wick, small body near low)
+            if c2_upper_wick > c2_range * 0.6 and c2_body < c2_range * 0.3:
+                return "shooting_star_pinbar"
+        else:
+            # Hammer = danger for SHORT (long lower wick, small body near high)
+            if c2_lower_wick > c2_range * 0.6 and c2_body < c2_range * 0.3:
+                return "hammer_pinbar"
+
+        # --- Engulfing on M5 (closed candles only) ---
         if is_buy:
             # Bearish engulfing = danger for LONG
             if c1_bull and not c2_bull:
@@ -126,5 +140,5 @@ class ContractExecutor:
             # Two consecutive strong bullish
             if c1_bull and c2_bull and c1_body > c2_body * 0.8:
                 return "consecutive_bullish"
-        
+
         return None

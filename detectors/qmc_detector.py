@@ -62,8 +62,9 @@ class QmcDetector(BystraBaseDetector):
             if direction == "SELL" and p1["price"] >= p3["price"]:
                 continue
 
-            # Base zone at left shoulder level
-            base_zone = {"high": entry_level + 0.2, "low": entry_level - 0.2}
+            # Base zone at left shoulder level — use sl_buffer, not hardcoded 0.2
+            _buf0 = sl_buffer(context)
+            base_zone = {"high": entry_level + _buf0, "low": entry_level - _buf0}
 
             # HTF confirmation mandatory (M15 or H1)
             htf_tf = "M15" if tf == "M5" else "H1"

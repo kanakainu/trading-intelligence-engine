@@ -47,6 +47,7 @@ class FeatureEngine:
         # Market microstructure
         spread = inputs.spread
         tick_speed, price_velocity = self._compute_microstructure(inputs.current_tick)
+        current_price = float((inputs.current_tick or {}).get("bid", 0) or 0)
 
         return FeatureSnapshot(
             symbol=inputs.symbol,
@@ -66,6 +67,7 @@ class FeatureEngine:
             volume_spike=volume_data["volume_spike"],
             vwap=vwap_data,
             distance_to_vwap=vwap_dist_data,
+            current_price=current_price,
             spread=spread,
             tick_speed=tick_speed,
             price_velocity=price_velocity,

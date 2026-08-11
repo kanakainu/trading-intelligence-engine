@@ -97,6 +97,12 @@ class PositionManager:
             if hasattr(pos, key):
                 setattr(pos, key, val)
                 applied[key] = val
+        
+        # Update MFE/MAE
+        pnl = float(pos.unrealized_pnl)
+        pos.max_favorable_excursion = max(pos.max_favorable_excursion, pnl)
+        pos.max_adverse_excursion = min(pos.max_adverse_excursion, pnl)
+
         pos.status = PositionStatus.MODIFIED if pos.status == PositionStatus.OPEN else pos.status
         pos.updated_at = datetime.now(timezone.utc)
         self._tracker.update(pos)

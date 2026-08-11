@@ -92,6 +92,7 @@ class PlannerInputs:
     atr: float = 5.0
     balance: float = 1000.0
     risk_per_trade_pct: float = 1.0  # 1% of balance
+    current_price: float = 0.0 # Added for safety fallback in entry_mid calculation
     
     # Metadata
     scan_id: str = ""

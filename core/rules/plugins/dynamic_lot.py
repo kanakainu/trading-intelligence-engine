@@ -4,11 +4,9 @@ from core.rules.plugins.plugin_interface import RulePluginInterface, RuleResult
 
 # ponytail: tiers hardcoded; add config support when user needs runtime override
 EQUITY_TIERS = [
-    (100,   400,   0.03),
-    (500,   1000,  0.05),
-    (1001,  2000,  0.10),
-    (2100,  5000,  0.30),
-    (5001,  10000, 1.00),
+    (100,   2000,  0.01),  # fixed 0.01 for small accounts (safe)
+    (2001,  5000,  0.02),
+    (5001,  10000, 0.05),
 ]
 
 def _max_lot_for_equity(equity: float) -> float:

@@ -1,6 +1,8 @@
 """RiriMicroScalpEngine (RME) — engine-centric, score-based. No detector chains."""
 import logging
 import uuid
+import json
+import os
 from datetime import datetime
 from typing import Optional
 
@@ -27,8 +29,26 @@ from strategies.aggressive.liquidity_engine import calculate_score as calc_liqui
 from strategies.aggressive.vwap_context_engine import calculate_score as calc_vwap_score
 from strategies.aggressive.entry_score_engine import calculate as entry_score, EntryScore
 
+# Riri's Nexus + XAU-60 Guards
+from strategies.aggressive.fvg_detector import get_active_fvgs
+from strategies.aggressive.trendline_detector import detect_trendline_break
+from strategies.aggressive.liquidity_vacuum import detect_liquidity_pools, vacuum_grade
+
 logger = logging.getLogger(__name__)
 
+def check_news_blackout() -> tuple[bool, str]:
+    """Check if a news blackout is active from the local sentinel file."""
+    path = "/tmp/tie_news_blackout.json"
+    if not os.path.exists(path):
+        return False, ""
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+            if data.get("active"):
+                return True, "; ".join(data.get("reasons", []))
+    except:
+        pass
+    return False, ""
 
 class RiriMicroScalpEngine(BaseStrategy):
     """RME — Riri MicroScalp Engine. Score-based, no gate stacking."""
@@ -51,26 +71,17 @@ class RiriMicroScalpEngine(BaseStrategy):
         if not features:
             return StrategyResult(signal=None, confidence=0.0, reason="no_features")
 
-        # 1. Governor (only hard gate)
-        gov = self._governor.get_status()
-        if gov["halted"]:
-            return StrategyResult(signal=None, confidence=0.0, reason=f"gov:{gov['reason']}")
-
-        # 2. Cooldown (soft guard)
-        if not self._cooldown.can_trade():
-            return StrategyResult(signal=None, confidence=0.0, reason=f"cooldown:{int(self._cooldown.remaining())}s")
-
-        # 3. Data prep
+        # --- Data prep ---
         candles_m5 = features.candles.get("M5", [])
         candles_m1 = features.candles.get("M1", [])
         spread    = features.spread if isinstance(features.spread, float) else 0.0
-        atr       = features.get_atr("M5") or 0.0
+        atr       = features.get_atr("M5") or 0.0 # Aggressive uses M5 ATR
         vol_ratio = features.volume_ratio.get("M5", 1.0)
-        price     = getattr(features, "current_price", None) or 0.0
+        price = getattr(features, "current_price", None) or context.scan.current_price or 0.0
         vwap      = features.vwap.get("M5") if hasattr(features.vwap, "get") else None
         utc_h     = getattr(features.timestamp, "hour", datetime.utcnow().hour)
 
-        # 4. Score all engines (parallel, no gates)
+        # --- Score all engines (parallel, no gates) ---
         snap    = get_snapshot(candles_m5)
         sess    = get_session_score(utc_h)
         mom     = calc_momentum_score(candles_m5)
@@ -80,29 +91,96 @@ class RiriMicroScalpEngine(BaseStrategy):
         vwap_sc = calc_vwap_score(price, vwap)
         trend   = (sess * 0.5 + snap.momentum_score * 0.5)  # composite trend score
 
-        # 5. Determine direction from snapshot
+        # --- Determine direction from snapshot ---
         direction = snap.state  # "BULL"→BUY, "BEAR"→SELL, "FLAT"→NONE
         if direction == "BULL":   direction = "BUY"
         elif direction == "BEAR": direction = "SELL"
         else:                     direction = "NONE"
 
-        # 6. EntryScore aggregator
+        # --- NEXUS TWEAK: Debate Logic (Conflict Detection) ---
+        # Use M5 trend as counter-bias indicator
+        counter_bias = 50.0
+        if snap:
+            m5_mom = snap.momentum_score # Composite trend from M5
+            if direction == "BUY" and m5_mom < 40: # Weak/Bearish M5 trend for BUY
+                counter_bias = (40 - m5_mom) * 2 + 50
+            elif direction == "SELL" and m5_mom > 60: # Weak/Bullish M5 trend for SELL
+                counter_bias = (m5_mom - 60) * 2 + 50
+
+        # --- EntryScore aggregator — liquidity/vwap dropped from weights ---
         es = entry_score(
             momentum_score=mom,
             velocity_score=vel,
             micro_score=micro,
-            liquidity_score=liq,
-            vwap_score=vwap_sc,
+            liquidity_score=0.0,
+            vwap_score=0.0,
             trend_score=trend,
             direction=direction,
+            counter_bias_score=counter_bias,
         )
 
+        # --- Riri's Nexus + XAU-60 Guards (Aggressive Mode) ---
+
+        # 1. Governor (only hard gate)
+        gov = self._governor.get_status()
+        if gov["halted"]:
+            return StrategyResult(signal=None, confidence=0.0, reason=f"gov:{gov['reason']}", metadata={"score": es.score})
+
+        # 1b. News Sentinel Gate (Nexus-style)
+        is_blackout, blackout_reason = check_news_blackout()
+        if is_blackout:
+            logger.warning(f"NEWS BLACKOUT ACTIVE: {blackout_reason}")
+            return StrategyResult(signal=None, confidence=0.0, reason=f"news_blackout:{blackout_reason[:20]}", metadata={"score": es.score})
+
+        # 2. Cooldown (soft guard) — quality-based: pass M5 candles for recovery check
+        if not self._cooldown.can_trade(m5_candles=features.candles.get("M5", [])):
+            return StrategyResult(signal=None, confidence=0.0, reason=f"cooldown:{int(self._cooldown.remaining())}s", metadata={"score": es.score})
+
+        # 3. FVG Magnet Awareness (Research Mode - M5 only)
+        if features and features.candles:
+            fvgs = get_active_fvgs(features.candles, tfs=["M5"])
+            for tf, fvg_list in fvgs.items():
+                for fvg in fvg_list[-1:]:  # Only log latest FVG per TF
+                    logger.info(f"[FVG_MAGNET] {tf} {fvg['type']} at {fvg['bottom']:.2f}-{fvg['top']:.2f} | Midpoint: {fvg['midpoint']:.2f}")
+
+        # 4. Trendline Guard (XAU-60 Logic - M5 only)
+        if features.candles:
+            m5_df = features.candles.get("M5", [])
+            if m5_df and atr > 0:
+                is_tl_break, tl_dir = detect_trendline_break(m5_df, atr=atr)  # Pass ATR for adaptive pivot
+                if not is_tl_break or tl_dir != direction:
+                    return StrategyResult(signal=None, confidence=0.0,
+                                          reason=f"tl_guard:NO_{direction}_BREAK",
+                                          metadata={"score": es.score})
+
+        # 5. Liquidity Vacuum Guard (Smart Money - M5 only)
+        liq_vac = {"grade": "GOOD", "reason": "no_pool_data", "tf": "-"}
+        if features and features.candles:
+            candles = features.candles.get("M5", [])
+            if candles and atr > 0:
+                pools = detect_liquidity_pools(candles, atr)
+                if pools["nearest_above"] or pools["nearest_below"]:
+                    grade, reason = vacuum_grade(
+                        pools["nearest_above"], pools["nearest_below"], direction, atr)
+                    liq_vac = {"grade": grade, "reason": reason, "tf": "M5"}
+                    if grade == "DANGER":
+                        # Hard stop for aggressive if danger found
+                        return StrategyResult(signal=None, confidence=0.0,
+                                              reason=f"liq_vacuum:{liq_vac['reason']}",
+                                              metadata={"score": es.score, "liq_vac": liq_vac["reason"]})
+        logger.info(f"[LIQ_VACUUM] {liq_vac['grade']} {liq_vac['reason']} dir={direction}")
+
+        # 7. Final Entry Score Check (after all guards)
         if not es.entry_ok:
             return StrategyResult(signal=None, confidence=0.0, reason=f"rme:{es.reason}",
                                   metadata={"score": es.score, "momentum": mom, "velocity": vel,
                                             "micro": micro, "liquidity": liq, "vwap": vwap_sc, "trend": trend})
 
-        # 7. Signal
+        if price <= 0:
+            return StrategyResult(signal=None, confidence=0.0, reason="price_zero",
+                                  metadata={"score": es.score})
+
+        # 8. Signal
         sig = Signal(
             signal_id=str(uuid.uuid4())[:8],
             strategy=self.id,
@@ -110,15 +188,16 @@ class RiriMicroScalpEngine(BaseStrategy):
             direction=Direction.BUY if direction == "BUY" else Direction.SELL,
             timeframe="M5",
             confidence=es.score,
-            entry_zone={"low": 0.0, "high": 0.0},
+            entry_zone={"low": price, "high": price},
             quality_score=es.score,
             metadata={
                 "score": es.score, "momentum": mom, "velocity": vel,
                 "micro": micro, "liquidity": liq, "vwap": vwap_sc,
                 "trend": trend, "session": sess, "state": snap.state,
+                "liq_vacuum_grade": liq_vac['grade'], "liq_vacuum_reason": liq_vac['reason'],
             }
         )
-        logger.info(f"RME {direction} score={es.score:.1f} sym={features.symbol}")
+        logger.info(f"RME {direction} score={es.score:.1f} sym={features.symbol} liq_vac={liq_vac['grade']}")
         return StrategyResult(
             signal=sig,
             confidence=es.score,
@@ -131,6 +210,7 @@ class RiriMicroScalpEngine(BaseStrategy):
                 "liquidity": liq,
                 "vwap": vwap_sc,
                 "trend": trend,
+                "liq_vac": liq_vac['reason'], # Add to top-level metadata
             }
         )
 
@@ -151,7 +231,8 @@ class RiriMicroScalpEngine(BaseStrategy):
         won = reflection.outcome == TradeOutcome.WIN
         pnl = getattr(reflection, "realized_pl", 0.0) or 0.0
         self._governor.record_trade(pnl)
-        self._cooldown.record_trade(won)
+        direction = getattr(reflection, "direction", None) or getattr(reflection, "signal_direction", None)
+        self._cooldown.record_trade(won, direction=str(direction).upper() if direction else None)
         self._metrics.record(
             entry_time=reflection.entry_time.timestamp() if reflection.entry_time else 0,
             exit_time=reflection.exit_time.timestamp() if reflection.exit_time else 0,
@@ -162,7 +243,6 @@ class RiriMicroScalpEngine(BaseStrategy):
 
     def shutdown(self) -> None:
         self._initialized = False
-
 
 # Backward compat alias
 AggressiveStrategy = RiriMicroScalpEngine

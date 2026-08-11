@@ -1,5 +1,6 @@
-"""Investing.com Economic Calendar Adapter — Fail-Open Scraper."""
+"""Investing.com Economic Calendar Adapter — Fail-Open Scraper with TTL cache."""
 import logging
+import time
 import requests
 from datetime import datetime, timedelta
 from typing import List, Dict
@@ -7,11 +8,16 @@ import re
 
 log = logging.getLogger(__name__)
 
+_CACHE_TTL = 3600  # 1 hour
+_cached_events: List[Dict] = []
+_cached_at: float = 0.0
+
 
 class InvestingCalendar:
     """Scrape economic calendar from Investing.com.
     
     Uses their public API endpoint. If it fails, returns empty (fail-open).
+    TTL cache: 1 hour to avoid 403 spam.
     """
     
     BASE_URL = "https://api.investing.com/api/financialdata/economiccalendar"
@@ -30,7 +36,10 @@ class InvestingCalendar:
         })
     
     def fetch_events(self, days_ahead: int = 7) -> List[Dict]:
-        """Fetch high-impact USD events from Investing calendar."""
+        """Fetch high-impact USD events from Investing calendar. TTL-cached 1h."""
+        global _cached_events, _cached_at
+        if time.time() - _cached_at < _CACHE_TTL:
+            return _cached_events
         try:
             # Calculate date range
             now = datetime.utcnow()
@@ -81,6 +90,8 @@ class InvestingCalendar:
                     continue
             
             log.info(f"InvestingCalendar: fetched {len(filtered)} high-impact USD events")
+            _cached_events = filtered
+            _cached_at = time.time()
             return filtered
             
         except Exception as e:

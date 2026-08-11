@@ -22,9 +22,10 @@ def sl_buffer(context, fallback: float = 0.25) -> float:
     when present, then per-pair default."""
     sym = str(getattr(context, "symbol", "") or "").upper()
     buf = PAIR_BUFFER.get(sym, fallback)
-    sb = context.metadata.get("spread_buffer")
-    if sb:
-        buf = max(buf, float(sb))
+    if context is not None:
+        sb = (getattr(context, "metadata", None) or {}).get("spread_buffer")
+        if sb:
+            buf = max(buf, float(sb))
     return buf
 
 def get_candles(context, timeframe: str, count: int = 30) -> List[Dict]:
@@ -102,23 +103,29 @@ def danger_zone_touched(htf_candle: Dict, dz_level: float, direction: str) -> bo
         return body_min <= dz_level  # Support is DZ for SELL
 
 def htf_confirm_solid(htf_candles: List[Dict], direction: str, dz_level: float) -> bool:
-    """Engulfing solid (body >= 1.5x prev body) + HTF body NOT touching DZ."""
+    """HTF confirm: any of last 3 candles is solid (body >= 1.2x prev) in direction + NOT touching DZ.
+    Loosened from 1.5x single-candle to catch more valid setups."""
     if len(htf_candles) < 2: return False
-    curr, prev = htf_candles[-1], htf_candles[-2]
-    
-    # Solid engulfing check
+
+    # Check last 3 candles (not just last 1)
+    check_range = min(3, len(htf_candles) - 1)
     is_solid = False
-    if direction == "BUY":
-        if is_bullish(curr) and body_size(curr) >= 1.5 * body_size(prev):
-            is_solid = True
-    else:
-        if is_bearish(curr) and body_size(curr) >= 1.5 * body_size(prev):
-            is_solid = True
-            
+    for k in range(1, check_range + 1):
+        curr, prev = htf_candles[-k], htf_candles[-k-1]
+        if direction == "BUY":
+            if is_bullish(curr) and body_size(curr) >= 1.2 * body_size(prev):
+                is_solid = True
+                break
+        else:
+            if is_bearish(curr) and body_size(curr) >= 1.2 * body_size(prev):
+                is_solid = True
+                break
+
     if not is_solid: return False
-    
-    # DZ check on candle body
-    if danger_zone_touched(curr, dz_level, direction):
+
+    # DZ check on last candle body
+    last_curr = htf_candles[-1]
+    if danger_zone_touched(last_curr, dz_level, direction):
         return False
         
     return True

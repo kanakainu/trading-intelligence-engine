@@ -14,6 +14,7 @@ class Snrc1Detector(BystraBaseDetector):
         # Get precomputed features (B3.5 migration)
         features = self._get_features(context)
 
+        facts = []
         # RBR (BUY) or DBD (SELL) + Base at S/R
         for i in range(1, len(candles) - 2):
             prev, base, brk = candles[i-1], candles[i], candles[i+1]
@@ -71,26 +72,27 @@ class Snrc1Detector(BystraBaseDetector):
                 continue
 
             # SL/TP — use precomputed S/R if available
+            buf = sl_buffer(context)
             if features:
                 if direction == "BUY":
-                    sl = base_zone["low"] - 0.5
+                    sl = base_zone["low"] - buf
                     tp = features.get_nearest_resistance("H1") or base_zone["high"] * 1.02
                 else:
-                    sl = base_zone["high"] + 0.5
+                    sl = base_zone["high"] + buf
                     tp = features.get_nearest_support("H1") or base_zone["low"] * 0.98
             else:
                 from detectors.common import find_swing_pivots, find_nearest_support, find_nearest_resistance
                 all_pivots = find_swing_pivots(candles)
                 if direction == "BUY":
                     sl_pivot = [p["price"] for p in all_pivots if p["type"] == "low" and p["price"] < base_zone["low"]]
-                    sl = (max(sl_pivot) if sl_pivot else base_zone["low"]) - 0.5
+                    sl = (max(sl_pivot) if sl_pivot else base_zone["low"]) - buf
                     tp = find_nearest_resistance(candles, base_zone["high"], h1_candles)
                 else:
                     sl_pivot = [p["price"] for p in all_pivots if p["type"] == "high" and p["price"] > base_zone["high"]]
-                    sl = (min(sl_pivot) if sl_pivot else base_zone["high"]) + 0.5
+                    sl = (min(sl_pivot) if sl_pivot else base_zone["high"]) + buf
                     tp = find_nearest_support(candles, base_zone["low"], h1_candles)
 
-            md = {
+            facts.append(self._create_pattern_fact("SNRC1", 0.9, {
                 "entry_zone": {"high": base_zone["high"], "low": base_zone["low"]},
                 "sl": float(sl),
                 "tp": float(tp),
@@ -98,6 +100,6 @@ class Snrc1Detector(BystraBaseDetector):
                 "direction": direction,
                 "entry_tf": tf,
                 "detector_name": "Snrc1Detector"
-            }
-            return [self._create_pattern_fact("SNRC1", 0.9, md)]
-        return []
+            }))
+
+        return facts

@@ -1,4 +1,6 @@
-"""TrailingManager — handles adaptive money-based trailing stops for live positions."""
+"""TrailingManager — handles adaptive money-based trailing stops for live positions.
+Contek dari manual_trailing.py yang terbukti jalan (Torto V4 logic).
+"""
 import logging
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
@@ -10,14 +12,19 @@ log = logging.getLogger("TrailingManager")
 @dataclass
 class TrailingProfile:
     strategy_id: str
-    min_profit_usd_start_trail: float  # e.g., $5 for single, $7.5 for group
-    trail_distance_usd: float          # e.g., $2.5 for single, $3.5 for group
-    trail_step_usd: float              # e.g., $1 for single, $1.5 for group
-    min_rr_breakeven_trigger: float    # e.g. 1.0 (1R) for Bystra, 0.5 (0.5R) for Aggressive
-    time_exit_minutes: Optional[int] = None # e.g. 30 for Scalper, 360 for Swing
+    min_profit_usd_start_trail: float  # e.g., $2 for aggressive, $1 for semi_hft
+    trail_distance_usd: float          # e.g., $0.5
+    trail_step_usd: float              # e.g., $0.2
+    min_rr_breakeven_trigger: float    # e.g. 0.2R for aggressive, 0.1R for semi_hft
+    time_exit_minutes: Optional[int] = None
+
+# Global peak tracker (ticket → peak_profit)
+_peak: Dict[str, float] = {}
 
 class TrailingManager:
-    """Manages dynamic trailing stops for a single position or group of positions."""
+    """Manages dynamic trailing stops for a single position or group of positions.
+    Logic contek dari manual_trailing.py (line 41-90) yang terbukti jalan.
+    """
 
     def __init__(self, profiles: Dict[str, TrailingProfile]):
         self._profiles = profiles
@@ -27,50 +34,78 @@ class TrailingManager:
         """
         Evaluates position for trailing stop adjustment.
         Returns new_sl if adjustment needed, else None.
+
+        Trail logic (contek manual_trailing.py):
+        Phase 1: profit >= START → lock SL to Entry + offset
+        Phase 2: profit pullback from peak → lock (peak - DIST)
         """
         profile = self._get_profile_for_position(pos)
         if not profile:
             log.warning(f"No trailing profile for strategy: {pos.strategy_id}")
             return None
-        
-        # Determine if single, group, or hedge
-        # For now, focus on single position trailing. Group/Hedge will be added later.
-        
-        profit_usd = pos.unrealized_profit # This is in USD from broker (or converted)
 
-        # 1. Breakeven Trigger (using RR from position initial setup)
-        if pos.profit_pts > 0 and pos.rr > 0 and (profit_usd / (pos.sl_dist_pts * pos.point_value)) >= profile.min_rr_breakeven_trigger:
-            if pos.stop_loss is None or (pos.is_buy and pos.entry_price > pos.stop_loss) or (not pos.is_buy and pos.entry_price < pos.stop_loss):
-                new_sl = pos.entry_price # Move SL to entry
-                log.info(f"[{pos.position_id}] Trailing: Breakeven triggered. SL set to {new_sl}")
-                return new_sl
+        profit_usd = pos.unrealized_profit
+        entry = pos.entry_price
+        current = pos.current_price
+        sl = pos.stop_loss or 0.0
+        direction_str = "buy" if pos.is_buy else "sell"
+        is_buy = pos.is_buy
+        ticket = pos.position_id
 
-        # 2. Money-based Trailing (after breakeven, or if no fixed SL)
-        if profit_usd >= profile.min_profit_usd_start_trail:
-            # Calculate new SL based on trail_distance_usd and trail_step_usd
-            # This is a simplified money-based trailing. More complex logic (step-by-step) can be added.
-            sl_move_amount_usd = profit_usd - profile.trail_distance_usd # Example: if profit is $10, trail_dist is $5, new SL should be at $5 profit
+        # Minimal validation
+        if profit_usd < profile.min_profit_usd_start_trail:
+            return None
 
-            if sl_move_amount_usd > 0: # Only trail if still in profit after offset
-                # Convert USD profit to price points
-                sl_move_pts = sl_move_amount_usd / pos.point_value # pos.point_value needed from broker/symbol info
-                
-                if pos.is_buy:
-                    new_sl = current_price - sl_move_pts
-                else:
-                    new_sl = current_price + sl_move_pts
-                
-                # Only update if new_sl is better (higher for buy, lower for sell)
-                if pos.stop_loss is None or \
-                   (pos.is_buy and new_sl > pos.stop_loss) or \
-                   (not pos.is_buy and new_sl < pos.stop_loss):
-                    log.info(f"[{pos.position_id}] Trailing: Profit {profit_usd:.2f} USD. SL set to {new_sl:.2f}")
-                    return round(new_sl, pos.digits) # Round to symbol digits
-        
-        return None
+        if current == entry or profit_usd == 0:
+            return None
+
+        # KEY FORMULA dari manual_trailing.py line 60
+        pts_per_usd = abs(current - entry) / abs(profit_usd)
+
+        # Phase 1: Profit lock — move SL to Entry + offset if profit >= START
+        be_lock_offset = 1.5  # manual_trailing.py line 64
+        be_sl = entry + (be_lock_offset if is_buy else -be_lock_offset)
+
+        if sl == 0.0 or (is_buy and sl < be_sl) or (not is_buy and sl > be_sl):
+            log.info(f"[{ticket}] BE lock: SL {sl} → {be_sl:.2f} | profit ${profit_usd:.2f}")
+            return round(be_sl, 2)
+
+        # Phase 2: Dynamic trail based on peak profit pullback
+        if ticket not in _peak:
+            _peak[ticket] = profit_usd
+        elif profit_usd > _peak[ticket]:
+            _peak[ticket] = profit_usd
+
+        peak_profit = _peak[ticket]
+
+        if profit_usd >= peak_profit:
+            return None  # still rising, no trail move yet
+
+        lock_floor = peak_profit - profile.trail_distance_usd
+
+        if lock_floor <= 0:
+            return None
+
+        # KEY FORMULA dari manual_trailing.py line 79-90
+        sl_price_offset = lock_floor * pts_per_usd
+
+        if is_buy:
+            new_sl = entry + sl_price_offset
+            if new_sl <= sl + profile.trail_step_usd * pts_per_usd:
+                return None
+            log.info(f"[{ticket}] Trail: profit ${profit_usd:.2f} peak ${peak_profit:.2f} locked ${lock_floor:.2f} → SL {new_sl:.2f}")
+            return round(new_sl, 2)
+        else:
+            new_sl = entry - sl_price_offset
+            if new_sl >= sl - profile.trail_step_usd * pts_per_usd:
+                return None
+            log.info(f"[{ticket}] Trail: profit ${profit_usd:.2f} peak ${peak_profit:.2f} locked ${lock_floor:.2f} → SL {new_sl:.2f}")
+            return round(new_sl, 2)
 
     def _get_profile_for_position(self, pos: PositionState) -> Optional[TrailingProfile]:
-        # Logic to map pos.strategy_id to a TrailingProfile
-        # For now, direct lookup. Later, can be more complex (e.g., from config)
         return self._profiles.get(pos.strategy_id)
 
+def cleanup_peak(ticket: str):
+    """Remove peak tracker when position closes."""
+    if ticket in _peak:
+        del _peak[ticket]
