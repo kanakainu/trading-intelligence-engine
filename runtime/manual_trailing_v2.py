@@ -258,11 +258,10 @@ def run():
                     time.sleep(POLL_SEC)
                     continue
 
-            # === SHADOW MODE — disabled, always run trailing ===
-            # if tie_alive:
-            #     log.debug(f"[SHADOW] TIE alive | {len(tie_positions)} positions monitored")
-            #     time.sleep(POLL_SEC)
-            #     continue
+            # === SHADOW MODE — skip trailing when TIE alive ===
+            if tie_alive:
+                time.sleep(POLL_SEC)
+                continue
 
             # === ACTIVE MODE — TIE mati ===
             if not tie_positions:

@@ -5,7 +5,7 @@
     "auto_allocation": true,
     "news_filter": true,
     "basket_tp": true,
-    "basket_tp_threshold": 3.0,
+    "basket_tp_threshold": 5.0,
     "basket_tp_min_pos": 3,
     "volatility_risk_pct": 0.01,
     "volatility_min_lot": 0.01,
