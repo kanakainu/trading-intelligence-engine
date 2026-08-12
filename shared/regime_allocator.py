@@ -40,8 +40,9 @@ class RegimeAllocator:
         regime_changed = snap.regime != self._current_regime
         cooldown_elapsed = (now_ts - self._last_switch_ts) > self._min_switch_interval
         
-        # Fast-path for critical regimes (Trending for profit, Chaos/Choppy for safety)
-        is_fast_path = snap.regime in (MarketRegime.TRENDING, MarketRegime.CHAOS, MarketRegime.CHOPPY)
+        # Fast-path for critical regimes
+        is_fast_path = snap.regime in (MarketRegime.TRENDING, MarketRegime.TRENDING_BULL,
+                                       MarketRegime.TRENDING_BEAR, MarketRegime.CHAOS, MarketRegime.CHOPPY)
 
         # Apply if:
         # 1. First run (initial state)
@@ -60,9 +61,10 @@ class RegimeAllocator:
         """Enable/disable strategies based on regime. Respects manual overrides."""
         regime = snap.regime
         
-        # Sasa matikan Bystra dari logic auto-allocation total sesuai request Boskuh
-        aggressive_on = regime == MarketRegime.TRENDING
-        semi_hft_on = regime in (MarketRegime.RANGING, MarketRegime.TRENDING)
+        # Selaras dengan MarketContext refactor: TRENDING_BULL/BEAR split direction
+        _trending = regime in (MarketRegime.TRENDING, MarketRegime.TRENDING_BULL, MarketRegime.TRENDING_BEAR)
+        aggressive_on = _trending
+        semi_hft_on   = _trending or regime == MarketRegime.RANGING
         
         # Load current status to respect manual overrides (if any)
         try:

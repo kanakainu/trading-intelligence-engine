@@ -1,7 +1,22 @@
 {
-  "3627429422": {
-    "direction": "buy",
-    "profit": -6.07,
+  "3627575410": {
+    "direction": "sell",
+    "profit": -0.3,
+    "entry": 0
+  },
+  "3627575520": {
+    "direction": "sell",
+    "profit": -0.41,
+    "entry": 0
+  },
+  "3627624766": {
+    "direction": "sell",
+    "profit": -0.7,
+    "entry": 0
+  },
+  "3627876708": {
+    "direction": "sell",
+    "profit": -1.51,
     "entry": 0
   }
 }

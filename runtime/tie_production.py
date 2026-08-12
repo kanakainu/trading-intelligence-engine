@@ -560,7 +560,7 @@ while True:
 
                 if all(r.status == "APPROVE" for r in risk_results.values()):
                     # Adaptive max positions per strategy: TRENDING=5, else=3
-                    _is_trending = getattr(_regime_snap, "regime", None) and _regime_snap.regime.value == "TRENDING"
+                    _is_trending = getattr(_regime_snap, "regime", None) and _regime_snap.regime.value in ("TRENDING", "TRENDING_BULL", "TRENDING_BEAR")
                     _max_pos = 5 if _is_trending else 3
                     _strat_pos_count = sum(1 for p in raw_positions
                                           if p.get("symbol", "") == sym

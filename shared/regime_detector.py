@@ -6,10 +6,12 @@ from typing import Any
 logger = logging.getLogger("regime_detector")
 
 class MarketRegime(Enum):
-    TRENDING = "TRENDING"   # Strong directional move
-    RANGING = "RANGING"     # No clear direction
-    CHOPPY = "CHOPPY"       # Squeeze / dead market
-    CHAOS = "CHAOS"         # Extreme volatility — unsafe
+    TRENDING      = "TRENDING"       # legacy compat
+    TRENDING_BULL = "TRENDING_BULL"  # strong bullish momentum
+    TRENDING_BEAR = "TRENDING_BEAR"  # strong bearish momentum
+    RANGING       = "RANGING"        # no clear direction
+    CHOPPY        = "CHOPPY"         # squeeze / dead market
+    CHAOS         = "CHAOS"          # extreme volatility — unsafe
 
 @dataclass
 class RegimeSnapshot:
@@ -65,7 +67,7 @@ class RegimeDetector:
             strength = min(100, 60 + (atr_pct - self.ATR_PCT_CHAOS) * 100)
             vol_pct = "EXTREME"
         elif abs_mom >= self.MOMENTUM_STRONG:
-            regime = MarketRegime.TRENDING
+            regime = MarketRegime.TRENDING_BULL if momentum > 0 else MarketRegime.TRENDING_BEAR
             engine = "Aggressive"
             strength = min(100, 50 + abs_mom * 50)
             vol_pct = "HIGH" if atr_pct >= 0.12 else "MEDIUM"
