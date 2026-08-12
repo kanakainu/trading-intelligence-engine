@@ -118,3 +118,10 @@ if __name__ == "__main__":
     sentinel = NewsSentinel()
     status = sentinel.check_blackout()
     print(json.dumps(status, indent=2))
+
+
+# Module-level alias for tie_production.py import
+_sentinel_instance = NewsSentinel()
+def check_news_blackout():
+    r = _sentinel_instance.check_blackout()
+    return r.get("blackout", False), r.get("reason", "")

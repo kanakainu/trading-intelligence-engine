@@ -320,6 +320,30 @@ class SemiHFTStrategyV4(BaseStrategy):
         )
         logger.info(f"C8V4 {direction} entry={price} sl={rp.sl} tp={rp.tp} "
                     f"lot={rp.lot} pattern={micro.pattern} score={es.score:.1f}")
+        # Telemetry
+        try:
+            from shared.entry_telemetry import log_candidate, CandidateRecord
+            _rr = round(abs(rp.tp - price) / abs(price - rp.sl), 2) if abs(price - rp.sl) > 0 else 0.0
+            log_candidate(CandidateRecord(
+                strategy="SemiHFT", symbol=str(f.symbol), direction=direction,
+                regime=str(_setup.direction.value if hasattr(_setup,"direction") else ""),
+                setup_type=str(_setup.type.value),
+                location_grade=str(_loc.grade.value), available_room_atr=_loc.available_room_atr,
+                vwap_dist_atr=_ctx.vwap_distance_atr,
+                dist_structure_atr=_loc.distance_to_structure_atr,
+                dist_obstacle_atr=_loc.distance_to_obstacle_atr,
+                location_reason=_loc.reason,
+                trigger_signal=str(_trig.signal.value) if '_trig' in dir() else "ARMED", trigger_score=_trig.strength if '_trig' in dir() else 0.0,
+                trigger_strength=_trig.strength if '_trig' in dir() else 0.0,
+                setup_score=float(_setup.quality), zone_price=float(_setup.zone_price),
+                m15_bias=str(_ctx.m15_bias.value), m5_structure=str(_ctx.m5_structure.value),
+                atr=float(atr_m5), spread=float(f.spread if isinstance(f.spread, float) else 0.0),
+                entry_price=float(price), sl=float(rp.sl), tp=float(rp.tp), rr=_rr,
+                structural_rr=round(_loc.available_room_atr / max(abs(price - rp.sl) / max(atr_m5,0.01), 0.01), 2),
+                decision="ENTRY", filter_trace=[],
+            ))
+        except Exception as _te:
+            logger.debug("telemetry error: %s", _te)
         return StrategyResult(
             signal=sig,
             confidence=conf,

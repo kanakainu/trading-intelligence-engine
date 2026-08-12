@@ -260,6 +260,30 @@ class RiriMicroScalpEngine(BaseStrategy):
             }
         )
         logger.info(f"RME {direction} score={es.score:.1f} sym={features.symbol} SL={_sl:.3f} TP={_tp:.3f} liq_vac={liq_vac['grade']}")
+        # Telemetry — log candidate before execution
+        try:
+            from shared.entry_telemetry import log_candidate, CandidateRecord
+            _rr = round(abs(_tp - price) / abs(price - _sl), 2) if abs(price - _sl) > 0 else 0.0
+            log_candidate(CandidateRecord(
+                strategy="RME", symbol=str(features.symbol), direction=direction,
+                regime=str(_ctx.regime.value), setup_type=str(_setup.type.value),
+                location_grade=str(_loc.grade.value), location_score=_loc.score if hasattr(_loc,"score") else 0.0,
+                vwap_dist_atr=_ctx.vwap_distance_atr, available_room_atr=_loc.available_room_atr,
+                dist_structure_atr=_loc.distance_to_structure_atr,
+                dist_obstacle_atr=_loc.distance_to_obstacle_atr,
+                location_reason=_loc.reason,
+                trigger_signal=str(_trig.signal.value), trigger_score=_trig.strength,
+                trigger_strength=_trig.strength,
+                setup_score=float(_setup.quality), setup_quality=float(_setup.quality),
+                zone_price=float(_setup.zone_price),
+                m15_bias=str(_ctx.m15_bias.value), m5_structure=str(_ctx.m5_structure.value),
+                atr=float(atr), spread=float(spread),
+                entry_price=float(price), sl=float(_sl), tp=float(_tp), rr=_rr,
+                structural_rr=round(_loc.available_room_atr / max(abs(price - _sl) / atr, 0.01), 2),
+                decision="ENTRY", filter_trace=[],
+            ))
+        except Exception as _te:
+            logger.debug("telemetry error: %s", _te)
         return StrategyResult(
             signal=sig,
             confidence=es.score,
