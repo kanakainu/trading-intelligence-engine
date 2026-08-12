@@ -3077,3 +3077,1053 @@ IndentationError: expected an indented block after 'if' statement on line 539
 2026-08-12 21:17:41,344 TIE_Production Setup detected: B_SELL SELL conf=82%
 2026-08-12 21:17:41,361 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 24.2s < 60s)
 2026-08-12 21:17:41,366 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_24s
+2026-08-12 21:17:47,183 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:17:48,181 TIE_Production MARKET REGIME: TRENDING (strength=64) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:17:48,182 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:17:48,182 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:17:48,184 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:17:48,185 MultiStrategyRuntime Scan 3.5ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:17:48,185 TIE_Production 🚀 [SPIKE_CONFIRM] SELL confirmed by Wick Rejection!
+2026-08-12 21:17:48,190 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:17:48,190 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=6.74 (adj=False)
+2026-08-12 21:17:48,190 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:17:48,852 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 24.5s < 60s)
+2026-08-12 21:17:48,858 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_24s
+2026-08-12 21:17:52,231 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:17:53,178 TIE_Production MARKET REGIME: TRENDING (strength=70) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:17:53,180 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:17:53,180 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.31
+2026-08-12 21:17:53,180 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4434.94 H=4441.46 L=4382.12
+2026-08-12 21:17:53,181 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:17:53,181 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.31
+2026-08-12 21:17:53,181 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:49.6
+2026-08-12 21:17:53,184 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:17:53,184 MultiStrategyRuntime Scan 4.9ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:17:53,185 TIE_Production 🚀 [SPIKE_CONFIRM] SELL confirmed by Wick Rejection!
+2026-08-12 21:17:53,189 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:17:53,189 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=7.81 (adj=False)
+2026-08-12 21:17:53,189 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:17:53,210 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 36.0s < 60s)
+2026-08-12 21:17:53,215 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_36s
+2026-08-12 21:17:59,722 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:18:02,483 TIE_Production MARKET REGIME: TRENDING (strength=71) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:18:02,485 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:18:02,485 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:18:02,487 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:18:02,487 MultiStrategyRuntime Scan 3.2ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:18:02,487 TIE_Production 🚀 [SPIKE_CONFIRM] SELL confirmed by Wick Rejection!
+2026-08-12 21:18:02,492 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:18:02,492 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=8.67 (adj=False)
+2026-08-12 21:18:02,492 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:18:02,578 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 38.2s < 60s)
+2026-08-12 21:18:02,582 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_38s
+2026-08-12 21:18:04,023 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:18:05,002 TIE_Production MARKET REGIME: TRENDING (strength=77) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:18:05,003 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:18:05,003 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.44
+2026-08-12 21:18:05,003 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-12 21:18:05,004 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:18:05,004 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.44
+2026-08-12 21:18:05,004 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:53.6
+2026-08-12 21:18:05,005 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:18:05,006 MultiStrategyRuntime Scan 3.1ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:18:05,012 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:18:05,012 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=9.06 (adj=False)
+2026-08-12 21:18:05,012 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:18:05,038 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 47.9s < 60s)
+2026-08-12 21:18:05,043 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_47s
+2026-08-12 21:18:13,402 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:18:14,524 TIE_Production MARKET REGIME: TRENDING (strength=73) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:18:14,526 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:18:14,526 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:18:14,528 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:18:14,529 MultiStrategyRuntime Scan 3.5ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:18:14,535 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:18:14,535 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=8.22 (adj=False)
+2026-08-12 21:18:14,535 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:18:14,561 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 50.2s < 60s)
+2026-08-12 21:18:14,566 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_50s
+2026-08-12 21:18:16,024 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:18:16,921 TIE_Production MARKET REGIME: TRENDING (strength=71) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:18:16,922 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:18:16,922 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.32
+2026-08-12 21:18:16,923 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-12 21:18:16,923 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:18:16,923 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.32
+2026-08-12 21:18:16,923 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:49.8
+2026-08-12 21:18:16,925 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:18:16,925 MultiStrategyRuntime Scan 3.0ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:18:16,925 TIE_Production 🚀 [SPIKE_CONFIRM] SELL confirmed by Wick Rejection!
+2026-08-12 21:18:16,931 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:18:16,931 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=7.77 (adj=False)
+2026-08-12 21:18:16,931 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:18:17,600 TIE_Production Momentum Gate: ❌ BLOCK SELL — momentum_weak body=2.15 < 3.31 (0.4x ATR)
+2026-08-12 21:18:17,606 GateObservatory [XAUUSD/TIE_V4] Gate Momentum: FAIL | momentum_weak body=2.15 < 3.31 (0.4x ATR)
+2026-08-12 21:18:25,441 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:18:26,395 TIE_Production MARKET REGIME: TRENDING (strength=72) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:18:26,396 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:18:26,396 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:18:26,398 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:18:26,398 MultiStrategyRuntime Scan 2.5ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:18:26,399 TIE_Production 🚀 [SPIKE_CONFIRM] SELL confirmed by Wick Rejection!
+2026-08-12 21:18:26,403 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:18:26,403 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=7.93 (adj=False)
+2026-08-12 21:18:26,403 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:18:26,429 TIE_Production Momentum Gate: ❌ BLOCK SELL — momentum_weak body=2.15 < 3.31 (0.4x ATR)
+2026-08-12 21:18:26,434 GateObservatory [XAUUSD/TIE_V4] Gate Momentum: FAIL | momentum_weak body=2.15 < 3.31 (0.4x ATR)
+2026-08-12 21:18:28,424 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:18:29,511 TIE_Production MARKET REGIME: TRENDING (strength=71) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:18:29,514 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:18:29,514 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.33
+2026-08-12 21:18:29,514 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-12 21:18:29,515 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:18:29,515 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.33
+2026-08-12 21:18:29,516 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:50.2
+2026-08-12 21:18:29,517 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:18:29,518 MultiStrategyRuntime Scan 5.7ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:18:29,519 TIE_Production 🚀 [SPIKE_CONFIRM] SELL confirmed by Wick Rejection!
+2026-08-12 21:18:29,524 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:18:29,524 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=7.92 (adj=False)
+2026-08-12 21:18:29,524 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:18:29,554 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 12.0s < 60s)
+2026-08-12 21:18:29,557 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_11s
+2026-08-12 21:18:37,665 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:18:38,555 TIE_Production MARKET REGIME: TRENDING (strength=73) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:18:38,556 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:18:38,557 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:18:38,558 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:18:38,558 MultiStrategyRuntime Scan 2.5ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:18:38,563 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:18:38,563 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=8.68 (adj=False)
+2026-08-12 21:18:38,563 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:18:38,591 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 12.2s < 60s)
+2026-08-12 21:18:38,598 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_12s
+2026-08-12 21:18:40,397 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:18:41,296 TIE_Production MARKET REGIME: TRENDING (strength=74) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:18:41,298 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:18:41,298 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.37
+2026-08-12 21:18:41,298 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-12 21:18:41,299 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:18:41,299 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.37
+2026-08-12 21:18:41,299 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:51.6
+2026-08-12 21:18:41,301 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:18:41,301 MultiStrategyRuntime Scan 3.8ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:18:41,306 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:18:41,306 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=8.10 (adj=False)
+2026-08-12 21:18:41,306 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:18:41,322 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 23.7s < 60s)
+2026-08-12 21:18:41,327 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_23s
+2026-08-12 21:18:49,478 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:18:50,526 TIE_Production MARKET REGIME: TRENDING (strength=83) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:18:50,527 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:18:50,528 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:18:50,530 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:18:50,530 MultiStrategyRuntime Scan 3.3ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:18:50,535 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:18:50,536 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=10.76 (adj=False)
+2026-08-12 21:18:50,536 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:18:51,204 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 24.8s < 60s)
+2026-08-12 21:18:51,209 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_24s
+2026-08-12 21:18:52,102 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:18:53,230 TIE_Production MARKET REGIME: TRENDING (strength=84) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:18:53,232 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:18:53,232 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.61
+2026-08-12 21:18:53,232 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-12 21:18:53,233 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:18:53,233 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.61
+2026-08-12 21:18:53,233 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:57.3
+2026-08-12 21:18:53,234 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:18:53,235 MultiStrategyRuntime Scan 3.2ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:18:53,239 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:18:53,239 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=14.06 (adj=False)
+2026-08-12 21:18:53,239 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:18:53,257 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 35.7s < 60s)
+2026-08-12 21:18:53,261 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_35s
+2026-08-12 21:19:02,011 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:19:03,051 TIE_Production MARKET REGIME: TRENDING (strength=84) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:19:03,053 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:19:03,053 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:19:03,055 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:19:03,055 MultiStrategyRuntime Scan 3.0ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:19:03,060 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:19:03,060 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=12.61 (adj=False)
+2026-08-12 21:19:03,060 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:19:03,083 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 36.7s < 60s)
+2026-08-12 21:19:03,087 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_36s
+2026-08-12 21:19:04,336 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:19:05,267 TIE_Production MARKET REGIME: TRENDING (strength=80) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:19:05,269 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:19:05,269 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.54
+2026-08-12 21:19:05,269 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4436.60 H=4441.46 L=4382.12
+2026-08-12 21:19:05,270 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:19:05,270 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.54
+2026-08-12 21:19:05,270 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:55.1
+2026-08-12 21:19:05,271 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:19:05,271 MultiStrategyRuntime Scan 3.1ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:19:05,276 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:19:05,276 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=10.66 (adj=False)
+2026-08-12 21:19:05,276 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:19:05,292 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 47.7s < 60s)
+2026-08-12 21:19:05,298 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_47s
+2026-08-12 21:19:13,925 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:19:14,812 TIE_Production MARKET REGIME: TRENDING (strength=80) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:19:14,813 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:19:14,814 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:19:14,815 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:19:14,816 MultiStrategyRuntime Scan 3.5ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:19:14,821 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:19:14,821 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=11.22 (adj=False)
+2026-08-12 21:19:14,821 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:19:14,835 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 48.4s < 60s)
+2026-08-12 21:19:14,839 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_48s
+2026-08-12 21:19:16,151 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:19:17,217 TIE_Production MARKET REGIME: TRENDING (strength=79) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:19:17,220 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:19:17,220 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.52
+2026-08-12 21:19:17,220 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4436.52 H=4441.46 L=4382.12
+2026-08-12 21:19:17,221 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:19:17,222 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.52
+2026-08-12 21:19:17,222 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:54.5
+2026-08-12 21:19:17,224 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:19:17,224 MultiStrategyRuntime Scan 5.4ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:19:17,232 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:19:17,232 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=10.49 (adj=False)
+2026-08-12 21:19:17,233 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:19:17,265 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 59.7s < 60s)
+2026-08-12 21:19:17,270 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_59s
+2026-08-12 21:19:25,715 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:19:26,613 TIE_Production MARKET REGIME: TRENDING (strength=77) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:19:26,614 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:19:26,614 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:19:26,616 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:19:26,617 MultiStrategyRuntime Scan 2.8ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:19:26,622 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:19:26,622 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=9.98 (adj=False)
+2026-08-12 21:19:26,622 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:19:26,642 TIE_Production Momentum Gate: ❌ BLOCK SELL — momentum_weak body=2.15 < 3.33 (0.4x ATR)
+2026-08-12 21:19:26,646 GateObservatory [XAUUSD/TIE_V4] Gate Momentum: FAIL | momentum_weak body=2.15 < 3.33 (0.4x ATR)
+2026-08-12 21:19:28,148 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:19:29,061 TIE_Production MARKET REGIME: TRENDING (strength=75) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:19:29,062 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:19:29,062 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.43
+2026-08-12 21:19:29,063 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-12 21:19:29,063 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:19:29,063 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.43
+2026-08-12 21:19:29,063 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:51.8
+2026-08-12 21:19:29,065 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:19:29,065 MultiStrategyRuntime Scan 3.5ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:19:29,070 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:19:29,070 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=10.06 (adj=False)
+2026-08-12 21:19:29,070 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:19:30,027 TIE_Production Momentum Gate: ❌ BLOCK SELL — momentum_weak body=2.15 < 3.33 (0.4x ATR)
+2026-08-12 21:19:30,035 GateObservatory [XAUUSD/TIE_V4] Gate Momentum: FAIL | momentum_weak body=2.15 < 3.33 (0.4x ATR)
+2026-08-12 21:19:37,429 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:19:38,314 TIE_Production MARKET REGIME: TRENDING (strength=75) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:19:38,315 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:19:38,315 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:19:38,317 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:19:38,317 MultiStrategyRuntime Scan 2.8ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:19:38,323 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:19:38,323 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=9.62 (adj=False)
+2026-08-12 21:19:38,323 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:19:38,807 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 12.2s < 60s)
+2026-08-12 21:19:38,811 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_12s
+2026-08-12 21:19:40,763 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:19:41,752 TIE_Production MARKET REGIME: TRENDING (strength=74) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:19:41,753 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:19:41,753 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.42
+2026-08-12 21:19:41,753 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-12 21:19:41,754 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:19:41,754 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.42
+2026-08-12 21:19:41,754 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:51.4
+2026-08-12 21:19:41,756 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:19:41,756 MultiStrategyRuntime Scan 3.5ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:19:41,760 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:19:41,761 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=8.91 (adj=False)
+2026-08-12 21:19:41,761 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:19:41,777 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 11.7s < 60s)
+2026-08-12 21:19:41,781 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_11s
+2026-08-12 21:19:49,707 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:19:50,679 TIE_Production MARKET REGIME: TRENDING (strength=78) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:19:50,681 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:19:50,681 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:19:50,683 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:19:50,684 MultiStrategyRuntime Scan 3.9ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:19:50,690 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:19:50,690 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=10.03 (adj=False)
+2026-08-12 21:19:50,690 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:19:50,714 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 24.1s < 60s)
+2026-08-12 21:19:50,718 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_24s
+2026-08-12 21:19:52,597 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:19:53,475 TIE_Production MARKET REGIME: TRENDING (strength=78) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:19:53,477 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:19:53,477 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.50
+2026-08-12 21:19:53,477 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4436.40 H=4441.46 L=4382.12
+2026-08-12 21:19:53,478 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:19:53,479 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.50
+2026-08-12 21:19:53,479 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:54.0
+2026-08-12 21:19:53,480 BystraStrategy Bystra best detector: THREE_CANDLE conf=82% dir=SELL
+2026-08-12 21:19:53,480 MultiStrategyRuntime Scan 3.5ms — strategies=3 signals=1 dir=sell source=bystra_v1
+2026-08-12 21:19:53,485 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_SELL lot=0.01
+2026-08-12 21:19:53,485 TIE_Production ExitOrchestrator adjusted SL/TP for B_SELL: new SL=4441.71 TP=4382.12 RR=10.21 (adj=False)
+2026-08-12 21:19:53,485 TIE_Production Setup detected: B_SELL SELL conf=82%
+2026-08-12 21:19:54,282 TIE_Production Dedup Time: skip B_SELL SELL XAUUSD (cooldown 24.3s < 60s)
+2026-08-12 21:19:54,288 GateObservatory [XAUUSD/TIE_V4] Gate Dedup: FAIL | cooldown_24s
+2026-08-12 21:20:01,490 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:20:02,529 TIE_Production MARKET REGIME: TRENDING (strength=74) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:20:02,531 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:20:02,531 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:20:02,533 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:20:02,534 MultiStrategyRuntime Scan 3.7ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-12 21:20:02,539 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_BUY lot=0.01
+2026-08-12 21:20:02,540 core.strategy.exit_orchestrator [B_BUY] RR optimized: 0.87 -> 1.50 (Widened TP for Gate, dir=BUY, dir_sign=1)
+2026-08-12 21:20:02,540 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=4381.87 TP=4518.48 RR=1.50 (adj=True)
+2026-08-12 21:20:02,540 TIE_Production Setup detected: B_BUY BUY conf=90%
+2026-08-12 21:20:02,599 TIE_Production Risk Gate: ✅ PASS — XAUUSD
+2026-08-12 21:20:02,605 GateObservatory [XAUUSD/TIE_V4] Gate RiskGate: PASS | all rules approve
+2026-08-12 21:20:02,749 TIE_Production ✅ ORDER EXECUTED: XAUUSD BUY 0.01 lot | SL=4381.867 TP=4518.477 ticket=3627418161
+2026-08-12 21:20:02,753 GateObservatory [XAUUSD/TIE_V4] Gate Execution: PASS | order placed ticket=3627418161
+2026-08-12 21:20:05,163 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:20:06,152 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:20:06,154 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:20:06,154 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.35
+2026-08-12 21:20:06,154 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4436.24 H=4441.46 L=4382.12
+2026-08-12 21:20:06,155 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:20:06,158 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:20:06,158 MultiStrategyRuntime Scan 4.9ms — strategies=3 signals=1 dir=buy source=bystra_v1
+2026-08-12 21:20:06,164 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=B_BUY lot=0.01
+2026-08-12 21:20:06,164 core.strategy.exit_orchestrator [B_BUY] RR optimized: 0.88 -> 1.50 (Widened TP for Gate, dir=BUY, dir_sign=1)
+2026-08-12 21:20:06,165 TIE_Production ExitOrchestrator adjusted SL/TP for B_BUY: new SL=4381.87 TP=4517.79 RR=1.50 (adj=True)
+2026-08-12 21:20:06,165 TIE_Production Setup detected: B_BUY BUY conf=90%
+2026-08-12 21:20:07,098 TIE_Production Risk Gate: ✅ PASS — XAUUSD
+2026-08-12 21:20:07,103 GateObservatory [XAUUSD/TIE_V4] Gate RiskGate: PASS | all rules approve
+2026-08-12 21:20:07,244 TIE_Production ✅ ORDER EXECUTED: XAUUSD BUY 0.01 lot | SL=4381.867 TP=4517.792 ticket=3627418538
+2026-08-12 21:20:07,249 GateObservatory [XAUUSD/TIE_V4] Gate Execution: PASS | order placed ticket=3627418538
+2026-08-12 21:20:13,748 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:20:14,619 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:20:14,621 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:20:14,621 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:20:14,623 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:20:14,623 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:20:14,623 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:20:14,623 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:20:14,629 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:20:18,086 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:20:19,045 TIE_Production MARKET REGIME: TRENDING (strength=67) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:20:19,046 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:20:19,046 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.33
+2026-08-12 21:20:19,047 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4436.02 H=4441.46 L=4382.12
+2026-08-12 21:20:19,047 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:20:19,048 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:20:19,049 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:20:19,049 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:20:19,049 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:20:19,054 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:20:25,469 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:20:26,384 TIE_Production MARKET REGIME: TRENDING (strength=81) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:20:26,386 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:20:26,387 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:20:26,389 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:20:26,389 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:20:26,389 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:20:26,389 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:20:26,395 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:20:29,833 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:20:30,826 TIE_Production MARKET REGIME: TRENDING (strength=86) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:20:30,828 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:20:30,828 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.20
+2026-08-12 21:20:30,829 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:regime_conflict TRENDING=86 blocks SELL
+2026-08-12 21:20:30,829 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:20:30,832 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:20:30,832 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:20:30,832 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:20:30,832 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:20:30,837 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:20:37,181 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:20:38,236 TIE_Production MARKET REGIME: TRENDING (strength=82) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:20:38,237 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:20:38,238 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:20:38,240 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:20:38,240 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:20:38,240 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:20:38,240 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:20:38,248 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:20:41,628 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:20:42,515 TIE_Production MARKET REGIME: TRENDING (strength=80) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:20:42,516 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:20:42,516 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.20
+2026-08-12 21:20:42,517 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4434.92 H=4441.46 L=4382.12
+2026-08-12 21:20:42,517 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:20:42,518 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:20:42,519 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:20:42,519 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:20:42,519 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:20:42,523 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:20:49,109 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:20:50,048 TIE_Production MARKET REGIME: TRENDING (strength=82) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:20:50,050 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:20:50,050 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:20:50,052 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:20:50,052 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:20:50,052 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:20:50,052 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:20:50,055 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:20:53,352 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:20:54,359 TIE_Production MARKET REGIME: TRENDING (strength=80) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:20:54,360 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:20:54,360 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.16
+2026-08-12 21:20:54,360 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:20:54,361 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.67 sig=3.30
+2026-08-12 21:20:54,361 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: m5_guard:BLOCK_RANGE
+2026-08-12 21:20:54,361 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:20:54,363 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:20:54,363 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:20:54,363 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:20:54,363 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:20:54,369 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:21:00,908 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:21:01,836 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:21:01,837 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:21:01,837 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:21:01,839 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:21:01,839 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:21:01,839 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:21:01,839 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:21:01,843 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:21:05,227 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:21:06,244 TIE_Production MARKET REGIME: TRENDING (strength=73) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:21:06,245 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:21:06,246 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.60
+2026-08-12 21:21:06,246 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:21:06,246 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.97 sig=3.57
+2026-08-12 21:21:06,247 strategies.semi_hft.strategy C8V4 BUY entry=4438.966 sl=4427.059 tp=4456.827 lot=0.01 pattern=swing_break score=75.9
+2026-08-12 21:21:06,247 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:21:06,247 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.60
+2026-08-12 21:21:06,247 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:52.5
+2026-08-12 21:21:06,249 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:21:06,249 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:21:06,249 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:21:06,249 MultiStrategyRuntime Scan 4.4ms — strategies=3 signals=1 dir=buy source=semi_hft_c8_v4
+2026-08-12 21:21:06,255 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=S_BUY lot=0.01
+2026-08-12 21:21:06,255 TIE_Production ExitOrchestrator adjusted SL/TP for S_BUY: new SL=4427.06 TP=4457.58 RR=1.56 (adj=False)
+2026-08-12 21:21:06,255 TIE_Production Setup detected: S_BUY BUY conf=100%
+2026-08-12 21:21:06,270 TIE_Production Risk Gate: ✅ PASS — XAUUSD
+2026-08-12 21:21:06,276 GateObservatory [XAUUSD/TIE_V4] Gate RiskGate: PASS | all rules approve
+2026-08-12 21:21:06,414 TIE_Production ✅ ORDER EXECUTED: XAUUSD BUY 0.01 lot | SL=4427.059 TP=4457.5765 ticket=3627429422
+2026-08-12 21:21:06,418 GateObservatory [XAUUSD/TIE_V4] Gate Execution: PASS | order placed ticket=3627429422
+2026-08-12 21:21:12,732 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:21:13,609 TIE_Production MARKET REGIME: TRENDING (strength=71) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:21:13,611 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:21:13,611 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:21:13,613 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:21:13,613 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:21:13,613 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:21:13,613 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:21:13,617 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:21:17,336 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:21:18,367 TIE_Production MARKET REGIME: TRENDING (strength=69) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:21:18,368 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:21:18,368 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.62
+2026-08-12 21:21:18,368 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:21:18,369 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.99 sig=3.59
+2026-08-12 21:21:18,369 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: m5_guard:BLOCK_RANGE
+2026-08-12 21:21:18,369 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:21:18,369 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.62
+2026-08-12 21:21:18,370 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:49.6
+2026-08-12 21:21:18,371 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:21:18,371 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:21:18,371 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:21:18,371 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:21:18,375 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:21:24,387 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:21:28,689 TIE_Production MARKET REGIME: TRENDING (strength=67) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:21:28,691 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:21:28,691 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:21:28,692 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:21:28,692 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:21:28,693 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:21:28,693 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:21:28,698 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:21:29,389 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:21:30,315 TIE_Production MARKET REGIME: TRENDING (strength=67) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:21:30,317 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:21:30,317 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.60
+2026-08-12 21:21:30,317 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:21:30,318 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.97 sig=3.57
+2026-08-12 21:21:30,318 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: m5_guard:BLOCK_RANGE
+2026-08-12 21:21:30,319 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:21:30,320 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.60
+2026-08-12 21:21:30,320 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:48.4
+2026-08-12 21:21:30,321 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:21:30,322 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:21:30,322 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:21:30,322 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:21:30,329 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:21:39,480 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:21:40,439 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:21:40,440 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:21:40,441 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:21:40,442 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:21:40,442 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:21:40,442 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:21:40,442 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:21:40,448 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:21:41,199 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:21:42,044 regime_allocator Strategy status updated by Regime Allocator: {'aggressive_v1': True, 'semi_hft_c8_v4': True, 'bystra_v1': True}
+2026-08-12 21:21:42,044 regime_allocator REGIME SWITCH: RANGING -> RANGING (engine=SemiHFT, fast_path=False)
+2026-08-12 21:21:42,044 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:21:42,046 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:21:42,046 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.42
+2026-08-12 21:21:42,046 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:21:42,046 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.84 sig=3.46
+2026-08-12 21:21:42,046 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: entry_low:57
+2026-08-12 21:21:42,047 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:21:42,047 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.42
+2026-08-12 21:21:42,047 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_80.1
+2026-08-12 21:21:42,048 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:21:42,048 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:21:42,048 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:21:42,049 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:21:42,054 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:21:51,227 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:21:52,151 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:21:52,152 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:21:52,152 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:21:52,154 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:21:52,154 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:21:52,154 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:21:52,154 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:21:52,159 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:21:52,869 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:21:53,868 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:21:53,869 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:21:53,869 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.44
+2026-08-12 21:21:53,869 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:21:53,869 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.86 sig=3.47
+2026-08-12 21:21:53,869 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: entry_low:57
+2026-08-12 21:21:53,870 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:21:53,870 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.44
+2026-08-12 21:21:53,870 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_67.3
+2026-08-12 21:21:53,871 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:21:53,871 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:21:53,872 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:21:53,872 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:21:53,876 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:22:02,919 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:22:03,946 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:22:03,948 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:22:03,949 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:22:03,950 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:22:03,951 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:22:03,951 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:22:03,951 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:22:03,956 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:22:04,701 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:22:05,578 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:22:05,579 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:22:05,579 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.49
+2026-08-12 21:22:05,579 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:22:05,579 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.89 sig=3.50
+2026-08-12 21:22:05,579 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: entry_low:59
+2026-08-12 21:22:05,580 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:22:05,580 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.49
+2026-08-12 21:22:05,580 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_44.1
+2026-08-12 21:22:05,582 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:22:05,582 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:22:05,582 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:22:05,582 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:22:05,587 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:22:14,791 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:22:15,712 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:22:15,713 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:22:15,714 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:22:15,715 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:22:15,715 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:22:15,715 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:22:15,716 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:22:15,720 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:22:16,374 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:22:17,469 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:22:17,471 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:22:17,471 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.49
+2026-08-12 21:22:17,471 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:22:17,471 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.89 sig=3.50
+2026-08-12 21:22:17,471 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: entry_low:57
+2026-08-12 21:22:17,472 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:22:17,472 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.49
+2026-08-12 21:22:17,472 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_43.3
+2026-08-12 21:22:17,473 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:22:17,473 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:22:17,473 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:22:17,473 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:22:17,479 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:22:26,477 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:22:27,495 TIE_Production MARKET REGIME: TRENDING (strength=65) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:22:27,496 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:22:27,496 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:22:27,498 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:22:27,498 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:22:27,498 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:22:27,498 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:22:27,504 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:22:28,292 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:22:29,245 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:22:29,247 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:22:29,247 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.48
+2026-08-12 21:22:29,247 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:22:29,248 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.88 sig=3.50
+2026-08-12 21:22:29,248 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: entry_low:53
+2026-08-12 21:22:29,249 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:22:29,249 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.48
+2026-08-12 21:22:29,249 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_50.4
+2026-08-12 21:22:29,251 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:22:29,251 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:22:29,252 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:22:29,252 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:22:29,262 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:22:38,398 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:22:39,260 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:22:39,261 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:22:39,262 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:22:39,263 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:22:39,263 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:22:39,263 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:22:39,263 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:22:39,268 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:22:45,082 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:22:46,065 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:22:46,066 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:22:46,066 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.34
+2026-08-12 21:22:46,067 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4436.15 H=4441.46 L=4382.12
+2026-08-12 21:22:46,067 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:22:46,069 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:22:46,069 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:22:46,069 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:22:46,069 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:22:46,074 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:22:50,043 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:22:51,009 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:22:51,011 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:22:51,011 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:22:51,013 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:22:51,013 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:22:51,013 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:22:51,013 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:22:51,019 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:22:56,852 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:22:57,761 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:22:57,762 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:22:57,762 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.37
+2026-08-12 21:22:57,762 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4436.40 H=4441.46 L=4382.12
+2026-08-12 21:22:57,763 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:22:57,763 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.37
+2026-08-12 21:22:57,763 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_104.1
+2026-08-12 21:22:57,764 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:22:57,764 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:22:57,764 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:22:57,765 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:22:57,769 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:23:01,852 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:23:02,826 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:23:02,828 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:23:02,828 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:23:02,830 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:23:02,830 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:23:02,830 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:23:02,830 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:23:02,835 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:23:08,616 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:23:09,712 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:23:09,713 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:23:09,713 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.33
+2026-08-12 21:23:09,713 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4435.60 H=4441.46 L=4382.12
+2026-08-12 21:23:09,714 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:23:09,715 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:23:09,715 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:23:09,715 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:23:09,715 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:23:09,720 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:23:13,660 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:23:14,957 regime_allocator Strategy status updated by Regime Allocator: {'aggressive_v1': True, 'semi_hft_c8_v4': True, 'bystra_v1': True}
+2026-08-12 21:23:14,958 regime_allocator REGIME SWITCH: RANGING -> RANGING (engine=SemiHFT, fast_path=False)
+2026-08-12 21:23:14,958 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:23:14,959 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:23:14,960 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:23:14,961 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:23:14,961 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:23:14,962 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:23:14,962 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:23:14,967 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:23:20,554 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:23:21,609 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:23:21,611 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:23:21,611 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.28
+2026-08-12 21:23:21,611 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4435.66 H=4441.46 L=4382.12
+2026-08-12 21:23:21,612 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:23:21,613 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:23:21,613 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:23:21,613 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:23:21,613 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:23:21,618 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:23:25,698 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:23:26,574 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:23:26,575 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:23:26,576 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:23:26,578 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:23:26,578 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:23:26,578 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:23:26,578 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:23:26,582 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:23:32,546 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:23:33,419 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:23:33,420 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:23:33,420 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.31
+2026-08-12 21:23:33,420 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4435.95 H=4441.46 L=4382.12
+2026-08-12 21:23:33,421 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:23:33,422 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:23:33,422 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:23:33,422 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:23:33,422 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:23:33,427 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:23:37,443 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:23:44,217 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:23:45,175 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:23:45,176 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:23:45,177 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.26
+2026-08-12 21:23:45,177 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4435.68 H=4441.46 L=4382.12
+2026-08-12 21:23:45,177 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:23:45,179 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:23:45,179 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:23:45,179 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:23:45,179 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:23:45,183 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:23:46,869 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:23:46,870 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:23:46,871 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:23:46,872 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:23:46,873 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:23:46,873 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:23:46,873 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:23:46,879 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:23:56,056 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:23:57,007 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:23:57,008 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:23:57,009 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.25
+2026-08-12 21:23:57,009 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4435.16 H=4441.46 L=4382.12
+2026-08-12 21:23:57,009 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:23:57,011 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:23:57,011 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:23:57,011 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:23:57,011 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:23:57,016 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:23:57,566 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:23:58,473 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:23:58,474 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:23:58,474 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:23:58,476 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:23:58,476 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:23:58,476 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:23:58,476 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:23:58,481 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:24:07,787 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:24:08,593 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:24:08,594 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:24:08,594 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.35
+2026-08-12 21:24:08,594 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:24:08,594 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.79 sig=3.42
+2026-08-12 21:24:08,594 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: m5_guard:BLOCK_RANGE
+2026-08-12 21:24:08,595 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:24:08,596 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:24:08,596 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:24:08,596 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:24:08,597 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:24:08,601 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:24:09,338 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:24:10,174 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:24:10,175 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:24:10,176 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:24:10,177 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:24:10,177 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:24:10,177 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:24:10,177 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:24:10,183 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:24:19,485 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:24:20,407 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:24:20,408 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:24:20,409 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.41
+2026-08-12 21:24:20,409 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:24:20,409 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.83 sig=3.45
+2026-08-12 21:24:20,409 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: m5_guard:BLOCK_RANGE
+2026-08-12 21:24:20,410 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:24:20,410 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.41
+2026-08-12 21:24:20,410 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_87.1
+2026-08-12 21:24:20,412 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:24:20,412 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:24:20,412 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:24:20,412 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:24:20,418 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:24:20,985 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:24:22,032 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:24:22,034 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:24:22,034 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:24:22,036 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:24:22,036 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:24:22,037 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:24:22,037 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:24:22,042 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:24:31,329 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:24:32,226 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:24:32,227 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:24:32,228 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.47
+2026-08-12 21:24:32,228 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:24:32,228 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.88 sig=3.49
+2026-08-12 21:24:32,228 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: m5_guard:BLOCK_RANGE
+2026-08-12 21:24:32,228 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:24:32,229 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.47
+2026-08-12 21:24:32,229 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_54.4
+2026-08-12 21:24:32,230 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:24:32,230 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:24:32,230 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:24:32,230 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:24:32,235 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:24:32,919 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:24:33,920 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:24:33,921 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:24:33,921 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:24:33,923 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:24:33,923 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:24:33,923 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:24:33,923 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:24:33,928 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:24:43,151 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:24:44,088 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:24:44,091 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:24:44,091 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.46
+2026-08-12 21:24:44,091 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:24:44,092 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.87 sig=3.48
+2026-08-12 21:24:44,092 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: m5_guard:BLOCK_RANGE
+2026-08-12 21:24:44,092 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:24:44,092 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.46
+2026-08-12 21:24:44,093 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_59.1
+2026-08-12 21:24:44,094 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:24:44,094 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:24:44,094 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:24:44,094 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:24:44,099 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:24:44,828 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:24:45,820 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:24:45,822 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:24:45,822 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:24:45,824 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:24:45,824 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:24:45,824 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:24:45,824 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:24:45,831 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:24:54,954 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:24:55,901 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:24:55,903 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:24:55,903 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.36
+2026-08-12 21:24:55,903 strategies.semi_hft.strategy [PULLBACK] trend_follow_UP_m5_gas_ok | M15=UP
+2026-08-12 21:24:55,903 strategies.semi_hft.strategy [MACD] macd_up_buy_ok macd=3.80 sig=3.42
+2026-08-12 21:24:55,903 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: entry_low:56
+2026-08-12 21:24:55,904 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:24:55,906 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:24:55,906 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:24:55,906 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:24:55,906 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:24:55,911 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:24:56,690 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:24:57,580 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:24:57,581 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:24:57,582 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:24:57,583 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:24:57,583 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:24:57,583 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:24:57,584 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:24:57,589 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:25:06,809 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:25:07,780 regime_allocator Strategy status updated by Regime Allocator: {'aggressive_v1': True, 'semi_hft_c8_v4': True, 'bystra_v1': True}
+2026-08-12 21:25:07,780 regime_allocator REGIME SWITCH: TRENDING -> TRENDING (engine=Aggressive, fast_path=True)
+2026-08-12 21:25:07,780 TIE_Production MARKET REGIME: TRENDING (strength=63) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:25:07,782 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:25:07,782 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.22
+2026-08-12 21:25:07,782 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4436.22 H=4441.46 L=4382.12
+2026-08-12 21:25:07,782 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:25:07,784 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:25:07,784 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:25:07,784 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:25:07,784 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:25:07,792 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:25:08,409 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:25:09,442 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:25:09,444 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:25:09,444 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:25:09,447 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:25:09,447 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:25:09,447 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:25:09,447 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:25:09,453 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:25:18,564 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:25:19,427 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:25:19,429 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-12 21:25:19,429 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.26
+2026-08-12 21:25:19,429 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-12 21:25:19,429 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-12 21:25:19,430 strategies.aggressive.strategy [ZSCORE] zscore_ok z=1.26
+2026-08-12 21:25:19,430 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_67.8
+2026-08-12 21:25:19,431 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:25:19,431 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:25:19,431 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:25:19,431 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:25:19,435 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:25:20,347 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:25:21,269 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:25:21,271 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:25:21,271 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:25:21,272 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:25:21,273 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:25:21,273 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:25:21,273 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:25:21,280 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:25:30,187 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:25:31,117 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-12 21:25:31,118 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:25:31,118 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.24
+2026-08-12 21:25:31,118 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4436.23 H=4441.46 L=4382.12
+2026-08-12 21:25:31,119 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:25:31,120 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:25:31,120 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:25:31,121 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:25:31,121 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:25:31,126 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:25:32,076 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:25:33,156 regime_allocator Strategy status updated by Regime Allocator: {'aggressive_v1': True, 'semi_hft_c8_v4': True, 'bystra_v1': True}
+2026-08-12 21:25:33,156 regime_allocator REGIME SWITCH: TRENDING -> TRENDING (engine=Aggressive, fast_path=True)
+2026-08-12 21:25:33,156 TIE_Production MARKET REGIME: TRENDING (strength=68) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:25:33,158 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:25:33,158 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:25:33,160 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:25:33,160 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:25:33,160 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:25:33,160 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:25:33,167 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:25:41,991 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:25:42,973 TIE_Production MARKET REGIME: TRENDING (strength=76) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:25:42,974 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:25:42,974 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=1.18
+2026-08-12 21:25:42,974 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4435.74 H=4441.46 L=4382.12
+2026-08-12 21:25:42,975 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:25:42,976 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:25:42,977 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:25:42,977 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:25:42,977 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:25:42,981 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:25:43,927 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:25:44,775 TIE_Production MARKET REGIME: TRENDING (strength=84) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:25:44,776 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:25:44,776 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:25:44,778 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:25:44,778 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:25:44,778 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:25:44,778 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:25:44,783 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:25:53,811 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:25:54,746 TIE_Production MARKET REGIME: TRENDING (strength=92) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:25:54,748 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:25:54,748 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=0.99
+2026-08-12 21:25:54,748 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:regime_conflict TRENDING=91 blocks SELL
+2026-08-12 21:25:54,749 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:25:54,750 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:25:54,750 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:25:54,750 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:25:54,750 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:25:54,755 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:25:55,574 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:25:56,484 TIE_Production MARKET REGIME: TRENDING (strength=92) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:25:56,486 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:25:56,486 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:25:56,487 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:25:56,487 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:25:56,488 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:25:56,488 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:25:56,495 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:26:05,540 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:26:06,506 TIE_Production MARKET REGIME: TRENDING (strength=86) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:26:06,507 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:26:06,508 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=0.96
+2026-08-12 21:26:06,508 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:regime_conflict TRENDING=85 blocks SELL
+2026-08-12 21:26:06,508 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:26:06,510 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:26:06,510 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:26:06,510 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:26:06,510 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:26:06,515 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:26:07,273 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:26:08,197 TIE_Production MARKET REGIME: TRENDING (strength=90) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:26:08,198 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:26:08,199 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:26:08,200 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:26:08,200 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:26:08,200 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:26:08,201 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:26:08,206 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:26:17,275 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:26:18,069 TIE_Production MARKET REGIME: TRENDING (strength=94) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:26:18,071 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:26:18,071 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=0.62
+2026-08-12 21:26:18,071 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:regime_conflict TRENDING=93 blocks SELL
+2026-08-12 21:26:18,072 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:26:18,074 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:26:18,074 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:26:18,074 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:26:18,074 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:26:18,079 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:26:19,022 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:26:19,973 TIE_Production MARKET REGIME: TRENDING (strength=91) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:26:19,975 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:26:19,975 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:26:19,980 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:26:19,980 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:26:19,980 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:26:19,980 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:26:19,986 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:26:28,916 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:26:29,829 TIE_Production MARKET REGIME: TRENDING (strength=82) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:26:29,831 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:26:29,831 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=0.80
+2026-08-12 21:26:29,831 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:regime_conflict TRENDING=81 blocks SELL
+2026-08-12 21:26:29,831 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:26:29,833 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:26:29,833 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:26:29,833 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:26:29,833 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:26:29,839 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:26:30,777 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:26:31,600 TIE_Production MARKET REGIME: TRENDING (strength=82) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:26:31,601 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:26:31,602 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:26:31,603 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:26:31,604 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:26:31,604 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:26:31,604 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:26:31,610 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:26:40,645 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:26:41,535 TIE_Production MARKET REGIME: TRENDING (strength=79) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:26:41,536 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-12 21:26:41,536 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=0.83
+2026-08-12 21:26:41,537 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:counter_trend_not_in_fibo dir=SELL m15=UP price=4433.05 H=4441.46 L=4382.12
+2026-08-12 21:26:41,537 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-12 21:26:41,539 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:26:41,539 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:26:41,539 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:26:41,539 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:26:41,543 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-12 21:26:42,466 TIE_Production --- Scanning XAUUSD ---
+2026-08-12 21:26:43,448 TIE_Production MARKET REGIME: TRENDING (strength=76) | SUGGESTED ENGINE: Aggressive
+2026-08-12 21:26:43,450 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:26:43,450 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-12 21:26:43,452 BystraStrategy Bystra best detector: SNRC1 conf=90% dir=BUY
+2026-08-12 21:26:43,452 BystraStrategy Bystra pattern blacklist: SNRC1 @ zone 0 already fired, skip
+2026-08-12 21:26:43,452 StrategyManager Strategy bystra_v1 returned WAIT: pattern_blacklist:SNRC1
+2026-08-12 21:26:43,452 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-12 21:26:43,457 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
