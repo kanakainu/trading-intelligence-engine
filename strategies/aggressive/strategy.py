@@ -242,15 +242,15 @@ class RiriMicroScalpEngine(BaseStrategy):
                 for fvg in fvg_list[-1:]:  # Only log latest FVG per TF
                     logger.info(f"[FVG_MAGNET] {tf} {fvg['type']} at {fvg['bottom']:.2f}-{fvg['top']:.2f} | Midpoint: {fvg['midpoint']:.2f}")
 
-        # 4. Trendline Guard (XAU-60 Logic - M5 only)
-        if features.candles:
-            m5_df = features.candles.get("M5", [])
-            if m5_df and atr > 0:
-                is_tl_break, tl_dir = detect_trendline_break(m5_df, atr=atr)  # Pass ATR for adaptive pivot
-                if not is_tl_break or tl_dir != direction:
-                    return StrategyResult(signal=None, confidence=0.0,
-                                          reason=f"tl_guard:NO_{direction}_BREAK",
-                                          metadata={"score": es.score})
+        # 4. Trendline Guard — DISABLED (redundant post-refactor, SetupDetector covers this)
+        # if features.candles:
+        #     m5_df = features.candles.get("M5", [])
+        #     if m5_df and atr > 0:
+        #         is_tl_break, tl_dir = detect_trendline_break(m5_df, atr=atr)
+        #         if not is_tl_break or tl_dir != direction:
+        #             return StrategyResult(signal=None, confidence=0.0,
+        #                                   reason=f"tl_guard:NO_{direction}_BREAK",
+        #                                   metadata={"score": es.score})
 
         # 5. Liquidity Vacuum Guard (Smart Money - M5 only)
         liq_vac = {"grade": "GOOD", "reason": "no_pool_data", "tf": "-"}
