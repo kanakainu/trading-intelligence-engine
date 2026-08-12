@@ -141,7 +141,9 @@ class SemiHFTStrategyV4(BaseStrategy):
                                   metadata=self._score_meta(extra={"location": "BAD",
                                                                     "room_atr": _loc.available_room_atr}))
 
-        logger.info(f"[SEMI] Setup={_setup.type} Dir={_struct_dir} Loc={_loc.grade} Regime={_ctx.regime}")
+        logger.info(f"[SEMI] Setup={_setup.type} Dir={_struct_dir} Loc={_loc.grade}({_loc.score:.0f}) "
+                    f"Regime={_ctx.regime} VwapDist={_ctx.vwap_distance_atr:.2f}ATR "
+                    f"Zone={_setup.zone_price:.3f} Room={_loc.available_room_atr:.2f}ATR")
 
         # 2. Micro direction (M1) = timing only — must align with structural direction
         micro = self._micro

@@ -117,8 +117,9 @@ class RiriMicroScalpEngine(BaseStrategy):
                                   metadata={"regime": _ctx.regime, "setup": _setup.type,
                                             "trigger": _trig.signal})
 
-        logger.info(f"[RME] Setup={_setup.type} Dir={_struct_dir} Loc={_loc.grade} "
-                    f"Trig={_trig.signal}({_trig.strength:.0f}) Regime={_ctx.regime}")
+        logger.info(f"[RME] Setup={_setup.type} Dir={_struct_dir} Loc={_loc.grade}({_loc.score:.0f}) "
+                    f"Trig={_trig.signal}({_trig.strength:.0f}) Regime={_ctx.regime} "
+                    f"VwapDist={_ctx.vwap_distance_atr:.2f}ATR Zone={_setup.zone_price:.3f} Room={_loc.available_room_atr:.2f}ATR")
 
         # --- Score all engines (parallel, no gates) ---
         snap    = get_snapshot(candles_m5)
