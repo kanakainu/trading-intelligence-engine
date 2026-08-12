@@ -35,7 +35,8 @@ def _lot(equity: float) -> float:
 def plan(direction: str, entry: float,
          candles_m5: List[Dict], equity: float,
          atr: float = 0.0, strategy_id: str = "semi_hft",
-         pattern: str = "C8") -> RiskPlan:
+         pattern: str = "C8",
+         zone_price: float = 0.0) -> RiskPlan:
     """Calculate SL/TP/lot. Returns valid=False only if equity=0 or entry=0."""
     if not entry or not equity:
         return RiskPlan(0, 0, 0, "invalid", 0, False, "entry/equity=0")
@@ -47,7 +48,8 @@ def plan(direction: str, entry: float,
     except:
         lot = _lot(equity)
 
-    pivot = _swing_pivot(candles_m5, direction)
+    # Phase 3: prefer structural zone_price over raw swing pivot
+    pivot = zone_price if zone_price > 0 else _swing_pivot(candles_m5, direction)
     if pivot <= 0:
         return RiskPlan(0, 0, 0, "invalid", 0, False, "no swing pivot")
 

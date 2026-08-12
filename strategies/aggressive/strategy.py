@@ -229,18 +229,14 @@ class RiriMicroScalpEngine(BaseStrategy):
             return StrategyResult(signal=None, confidence=0.0, reason="price_zero",
                                   metadata={"score": es.score})
 
-        # 8. Calc SL/TP from M5 swing pivot (more stable than M1)
-        _c5 = features.candles.get("M5", candles_m5)
-        _pivot_lows  = [float(c.get("low",  c.get("Low",  0))) for c in _c5[-10:] if c]
-        _pivot_highs = [float(c.get("high", c.get("High", 0))) for c in _c5[-10:] if c]
+        # 8. SL from structural zone (Phase 3: setup zone_price > raw M5 pivot)
         _atr_dist = atr * 1.5 if atr > 0 else 2.0
+        _zone = _setup.zone_price  # structural level that triggered the setup
         if direction == "BUY":
-            _pivot = min(_pivot_lows) if _pivot_lows else (price - _atr_dist)
-            _sl = max(_pivot - 0.5, price - _atr_dist)
+            _sl = max(_zone - 0.5, price - _atr_dist)   # below zone, not below ATR floor
             _sl_dist = max(price - _sl, 1.0)
         else:
-            _pivot = max(_pivot_highs) if _pivot_highs else (price + _atr_dist)
-            _sl = min(_pivot + 0.5, price + _atr_dist)
+            _sl = min(_zone + 0.5, price + _atr_dist)   # above zone, not above ATR ceiling
             _sl_dist = max(_sl - price, 1.0)
         _tp = (price + _sl_dist * 1.5) if direction == "BUY" else (price - _sl_dist * 1.5)
 

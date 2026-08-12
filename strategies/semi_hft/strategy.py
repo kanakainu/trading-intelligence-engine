@@ -276,7 +276,7 @@ class SemiHFTStrategyV4(BaseStrategy):
         rp = fast_risk(direction=direction, entry=price,
                        candles_m5=f.candles.get("M5", []),
                        equity=equity, atr=atr_m5, strategy_id="semi_hft",
-                       pattern=micro.pattern)
+                       pattern=micro.pattern, zone_price=_setup.zone_price)
         if not rp.valid:
             return StrategyResult(signal=None, confidence=0.0,
                                   reason=f"risk:{rp.reason}")
