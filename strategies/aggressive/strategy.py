@@ -121,6 +121,65 @@ class RiriMicroScalpEngine(BaseStrategy):
                     f"Trig={_trig.signal}({_trig.strength:.0f}) Regime={_ctx.regime} "
                     f"VwapDist={_ctx.vwap_distance_atr:.2f}ATR Zone={_setup.zone_price:.3f} Room={_loc.available_room_atr:.2f}ATR")
 
+        # === DIAGNOSTIC: late_entry + classifier (always runs, no new hard blocks) ===
+        try:
+            import json as _json
+            _feat_cfg = _json.load(open("config/features.json"))
+        except Exception:
+            _feat_cfg = {}
+        _candidate_mode = _feat_cfg.get("candidate_mode", False)
+
+        try:
+            from shared.late_entry import evaluate as _late_eval
+            from shared.diagnostic_classifier import classify as _diag_classify
+            _m1_body = (abs(candles_m1[-1].get("close", candles_m1[-1].get("Close", 0)) -
+                            candles_m1[-1].get("open",  candles_m1[-1].get("Open",  0))) / atr
+                        ) if candles_m1 and atr > 0 else 0.0
+            _late = _late_eval(price, _setup.zone_price, atr,
+                               _ctx.vwap_distance_atr, _loc.available_room_atr,
+                               _m1_body, _feat_cfg)
+            _diag = _diag_classify(_loc.grade.value, _trig.signal.value,
+                                   _trig.strength, _late.is_late, _late.reason)
+            if _late.is_late or _diag.label != "NORMAL":
+                logger.info(f"[RME] DIAG={_diag.label} late={_late.is_late} "
+                            f"late_reason={_late.reason} diag_reason={_diag.reason}")
+        except Exception as _de:
+            from shared.late_entry import LatenessResult as _LR
+            from shared.diagnostic_classifier import DiagnosticResult as _DR
+            _late = _LR(False, "", 0.0)
+            _diag = _DR("NORMAL", "")
+            logger.debug("diagnostic error: %s", _de)
+
+        # === CANDIDATE MODE: same pipeline, skip execution ===
+        if _candidate_mode:
+            try:
+                from shared.entry_telemetry import log_candidate, CandidateRecord
+                _rr_cand = 0.0  # SL/TP not yet calculated — use 0 as placeholder
+                log_candidate(CandidateRecord(
+                    strategy="RME", symbol=str(features.symbol), direction=_struct_dir,
+                    regime=str(_ctx.regime.value), setup_type=str(_setup.type.value),
+                    location_grade=str(_loc.grade.value), location_score=_loc.score,
+                    vwap_dist_atr=_ctx.vwap_distance_atr,
+                    available_room_atr=_loc.available_room_atr,
+                    dist_structure_atr=_loc.distance_to_structure_atr,
+                    dist_obstacle_atr=_loc.distance_to_obstacle_atr,
+                    location_reason=_loc.reason,
+                    trigger_signal=str(_trig.signal.value), trigger_score=_trig.strength,
+                    trigger_strength=_trig.strength,
+                    setup_score=float(_setup.quality), zone_price=float(_setup.zone_price),
+                    m15_bias=str(_ctx.m15_bias.value), m5_structure=str(_ctx.m5_structure.value),
+                    atr=float(atr), spread=float(spread),
+                    entry_price=float(price), decision="CANDIDATE",
+                    is_late=int(_late.is_late), lateness_reason=_late.reason,
+                    filter_trace=[_diag.label],
+                ))
+            except Exception as _ce:
+                logger.debug("candidate log error: %s", _ce)
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"candidate_mode:{_diag.label}",
+                                  metadata={"regime": _ctx.regime, "setup": _setup.type,
+                                            "diag": _diag.label})
+
         # --- Score all engines (parallel, no gates) ---
         snap    = get_snapshot(candles_m5)
         sess    = get_session_score(utc_h)

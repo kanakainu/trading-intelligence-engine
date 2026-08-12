@@ -300,6 +300,62 @@ class SemiHFTStrategyV4(BaseStrategy):
                                       metadata=self._score_meta(score=es.score))
 
         # 5. Signal
+        # === DIAGNOSTIC: late_entry + classifier ===
+        try:
+            import json as _json
+            _feat_cfg = _json.load(open("config/features.json"))
+        except Exception:
+            _feat_cfg = {}
+        _candidate_mode = _feat_cfg.get("candidate_mode", False)
+        try:
+            from shared.late_entry import evaluate as _late_eval, LatenessResult as _LR
+            from shared.diagnostic_classifier import classify as _diag_classify, DiagnosticResult as _DR
+            _m1c = f.candles.get("M1", []) if f and f.candles else []
+            _m1_body = (abs(_m1c[-1].get("close", _m1c[-1].get("Close", 0)) -
+                            _m1c[-1].get("open",  _m1c[-1].get("Open",  0))) / atr_m5
+                        ) if _m1c and atr_m5 > 0 else 0.0
+            _late = _late_eval(price, _setup.zone_price, atr_m5,
+                               _ctx.vwap_distance_atr, _loc.available_room_atr,
+                               _m1_body, _feat_cfg)
+            _diag = _diag_classify(_loc.grade.value, "ARMED", 0.0,
+                                   _late.is_late, _late.reason)
+            if _late.is_late or _diag.label != "NORMAL":
+                logger.info(f"[SEMI] DIAG={_diag.label} late={_late.is_late} "
+                            f"late_reason={_late.reason}")
+        except Exception as _de:
+            from shared.late_entry import LatenessResult as _LR
+            from shared.diagnostic_classifier import DiagnosticResult as _DR
+            _late = _LR(False, "", 0.0)
+            _diag = _DR("NORMAL", "")
+            logger.debug("diagnostic error: %s", _de)
+
+        # === CANDIDATE MODE: skip execution ===
+        if _candidate_mode:
+            try:
+                from shared.entry_telemetry import log_candidate, CandidateRecord
+                log_candidate(CandidateRecord(
+                    strategy="SemiHFT", symbol=str(f.symbol), direction=direction,
+                    regime=str(_ctx.regime.value), setup_type=str(_setup.type.value),
+                    location_grade=str(_loc.grade.value), available_room_atr=_loc.available_room_atr,
+                    vwap_dist_atr=_ctx.vwap_distance_atr,
+                    dist_structure_atr=_loc.distance_to_structure_atr,
+                    dist_obstacle_atr=_loc.distance_to_obstacle_atr,
+                    location_reason=_loc.reason,
+                    trigger_signal="ARMED", trigger_score=0.0,
+                    setup_score=float(_setup.quality), zone_price=float(_setup.zone_price),
+                    m15_bias=str(_ctx.m15_bias.value), m5_structure=str(_ctx.m5_structure.value),
+                    atr=float(atr_m5), entry_price=float(price),
+                    sl=float(rp.sl), tp=float(rp.tp),
+                    rr=round(abs(rp.tp - price) / max(abs(price - rp.sl), 0.001), 2),
+                    decision="CANDIDATE",
+                    is_late=int(_late.is_late), lateness_reason=_late.reason,
+                    filter_trace=[_diag.label],
+                ))
+            except Exception as _ce:
+                logger.debug("candidate log error: %s", _ce)
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"candidate_mode:{_diag.label}",
+                                  metadata={"regime": _ctx.regime, "setup": _setup.type})
         conf = min(100.0, es.score)
         sig = Signal(
             signal_id       = str(uuid.uuid4())[:8],

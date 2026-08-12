@@ -20595,3 +20595,962 @@ IndentationError: expected an indented block after 'if' statement on line 539
 2026-08-13 00:01:26,088 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
 2026-08-13 00:01:26,088 TIE_Production No setup for XAUUSD (WAIT)
 2026-08-13 00:01:26,094 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:01:30,585 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:01:31,356 TIE_Production MARKET REGIME: TRENDING (strength=79) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:01:31,357 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:01:31,358 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.58
+2026-08-13 00:01:31,358 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:01:31,358 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:01:31,359 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.58
+2026-08-13 00:01:31,359 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:55.4
+2026-08-13 00:01:31,360 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:01:31,360 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:01:31,364 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:01:36,760 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:01:37,600 TIE_Production MARKET REGIME: TRENDING_BULL (strength=76) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:01:37,602 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:01:37,602 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:01:37,604 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:01:37,604 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:01:37,608 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:01:42,094 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:01:42,871 TIE_Production MARKET REGIME: TRENDING (strength=77) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:01:42,872 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:01:42,872 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.60
+2026-08-13 00:01:42,872 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:01:42,873 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:01:42,873 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.60
+2026-08-13 00:01:42,873 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:54.1
+2026-08-13 00:01:42,874 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:01:42,874 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:01:42,879 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:01:48,345 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:01:49,278 TIE_Production MARKET REGIME: TRENDING_BULL (strength=75) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:01:49,279 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:01:49,279 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:01:49,281 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:01:49,281 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:01:49,286 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:01:53,589 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:01:54,397 TIE_Production MARKET REGIME: TRENDING (strength=79) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:01:54,399 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:01:54,399 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.58
+2026-08-13 00:01:54,400 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:01:54,400 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:01:54,400 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.58
+2026-08-13 00:01:54,401 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:55.2
+2026-08-13 00:01:54,402 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:01:54,403 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:01:54,408 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:01:59,950 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:00,769 TIE_Production MARKET REGIME: TRENDING_BULL (strength=84) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:00,770 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:00,770 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:00,772 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:00,772 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:00,778 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:02:05,172 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:05,942 TIE_Production MARKET REGIME: TRENDING (strength=85) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:05,944 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:02:05,944 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.49
+2026-08-13 00:02:05,944 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:02:05,945 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:02:05,945 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.49
+2026-08-13 00:02:05,945 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:58.5
+2026-08-13 00:02:05,946 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:05,946 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:05,951 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:02:11,572 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:12,395 TIE_Production MARKET REGIME: TRENDING_BULL (strength=77) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:12,396 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:12,396 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:12,398 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:12,398 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:12,403 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:02:16,667 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:17,433 TIE_Production MARKET REGIME: TRENDING (strength=73) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:17,435 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:02:17,435 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.63
+2026-08-13 00:02:17,435 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:02:17,436 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:02:17,436 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.63
+2026-08-13 00:02:17,436 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:51.4
+2026-08-13 00:02:17,437 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:17,437 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:17,443 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:02:23,063 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:23,819 TIE_Production MARKET REGIME: TRENDING_BULL (strength=72) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:23,821 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:23,821 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:23,823 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:23,823 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:23,828 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:02:28,085 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:28,871 TIE_Production MARKET REGIME: TRENDING (strength=78) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:28,873 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:02:28,873 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.56
+2026-08-13 00:02:28,874 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:02:28,874 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:02:28,875 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.56
+2026-08-13 00:02:28,875 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:54.8
+2026-08-13 00:02:28,876 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:28,876 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:28,880 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:02:34,479 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:35,181 TIE_Production MARKET REGIME: TRENDING_BULL (strength=73) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:35,182 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:35,182 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:35,184 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:35,184 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:35,188 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:02:39,643 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:40,393 TIE_Production MARKET REGIME: TRENDING (strength=75) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:40,394 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:02:40,395 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.60
+2026-08-13 00:02:40,395 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:02:40,395 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:02:40,396 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.60
+2026-08-13 00:02:40,396 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:52.7
+2026-08-13 00:02:40,397 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:40,397 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:40,403 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:02:45,841 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:46,733 TIE_Production MARKET REGIME: TRENDING_BULL (strength=77) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:46,735 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:46,736 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:46,738 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:46,738 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:46,743 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:02:51,012 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:51,797 TIE_Production MARKET REGIME: TRENDING (strength=78) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:51,799 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:02:51,800 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.57
+2026-08-13 00:02:51,800 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:02:51,801 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:02:51,801 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.57
+2026-08-13 00:02:51,801 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:54.5
+2026-08-13 00:02:51,803 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:51,803 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:51,808 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:02:57,472 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:02:58,415 TIE_Production MARKET REGIME: TRENDING_BULL (strength=81) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:02:58,417 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:58,417 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:02:58,419 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:02:58,420 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:02:58,428 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:03:02,490 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:03:03,192 TIE_Production MARKET REGIME: TRENDING (strength=82) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:03:03,194 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:03:03,194 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.52
+2026-08-13 00:03:03,194 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:03:03,195 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:03:03,195 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.52
+2026-08-13 00:03:03,195 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:56.6
+2026-08-13 00:03:03,196 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:03:03,196 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:03:03,201 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:03:09,089 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:03:09,805 TIE_Production MARKET REGIME: TRENDING_BULL (strength=78) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:03:09,807 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:03:09,807 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:03:09,808 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:03:09,809 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:03:09,813 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:03:13,884 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:03:15,138 TIE_Production MARKET REGIME: TRENDING (strength=79) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:03:15,141 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:03:15,141 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.55
+2026-08-13 00:03:15,141 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:03:15,142 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:03:15,142 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.55
+2026-08-13 00:03:15,142 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:55.0
+2026-08-13 00:03:15,144 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:03:15,145 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:03:15,151 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:03:20,531 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:03:21,275 TIE_Production MARKET REGIME: TRENDING_BULL (strength=75) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:03:21,276 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:03:21,277 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:03:21,278 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:03:21,278 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:03:21,283 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:03:25,758 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:03:26,530 TIE_Production MARKET REGIME: TRENDING (strength=70) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:03:26,531 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:03:26,531 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.66
+2026-08-13 00:03:26,531 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:03:26,532 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:03:26,532 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.66
+2026-08-13 00:03:26,532 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:50.1
+2026-08-13 00:03:26,534 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:03:26,534 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:03:26,539 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:03:32,014 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:03:32,769 TIE_Production MARKET REGIME: TRENDING_BULL (strength=74) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:03:32,770 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:03:32,771 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:03:32,772 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:03:32,772 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:03:32,778 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:03:37,206 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:03:38,070 TIE_Production MARKET REGIME: TRENDING (strength=66) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:03:38,072 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:03:38,072 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.72
+2026-08-13 00:03:38,073 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=65
+2026-08-13 00:03:38,074 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:03:38,074 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.72
+2026-08-13 00:03:38,074 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:47.4
+2026-08-13 00:03:38,076 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:03:38,076 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:03:38,082 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:03:43,474 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:03:44,242 TIE_Production MARKET REGIME: TRENDING_BULL (strength=67) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:03:44,243 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:03:44,243 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:03:44,245 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:03:44,245 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:03:44,252 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:03:48,811 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:03:49,490 TIE_Production MARKET REGIME: TRENDING (strength=73) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:03:49,491 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:03:49,491 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.63
+2026-08-13 00:03:49,491 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:03:49,492 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:03:49,492 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.63
+2026-08-13 00:03:49,492 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:51.7
+2026-08-13 00:03:49,493 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:03:49,494 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:03:49,499 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:03:54,883 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:03:55,793 TIE_Production MARKET REGIME: TRENDING_BULL (strength=70) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:03:55,795 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:03:55,795 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:03:55,797 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:03:55,797 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:03:55,801 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:00,198 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:00,938 TIE_Production MARKET REGIME: TRENDING (strength=72) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:04:00,939 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:04:00,940 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.64
+2026-08-13 00:04:00,940 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:04:00,940 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:04:00,940 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.64
+2026-08-13 00:04:00,941 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:51.0
+2026-08-13 00:04:00,942 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:00,942 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:00,950 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:06,578 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:07,307 TIE_Production MARKET REGIME: TRENDING_BULL (strength=67) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:04:07,308 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:04:07,309 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:04:07,310 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:07,310 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:07,315 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:11,545 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:12,376 TIE_Production MARKET REGIME: TRENDING (strength=64) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:04:12,378 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:04:12,378 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.74
+2026-08-13 00:04:12,379 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=64
+2026-08-13 00:04:12,380 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:04:12,380 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.74
+2026-08-13 00:04:12,380 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_5.9
+2026-08-13 00:04:12,382 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:12,382 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:12,388 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:18,030 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:18,798 TIE_Production MARKET REGIME: TRENDING_BULL (strength=69) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:04:18,800 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:04:18,801 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:04:18,802 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:18,802 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:18,806 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:23,094 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:23,876 TIE_Production MARKET REGIME: TRENDING (strength=67) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:04:23,877 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:04:23,877 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.70
+2026-08-13 00:04:23,878 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=67
+2026-08-13 00:04:23,878 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:04:23,878 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.70
+2026-08-13 00:04:23,878 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:48.1
+2026-08-13 00:04:23,879 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:23,880 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:23,883 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:29,568 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:30,363 TIE_Production MARKET REGIME: TRENDING_BULL (strength=67) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:04:30,364 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:04:30,365 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:04:30,366 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:30,366 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:30,372 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:34,542 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:35,246 TIE_Production MARKET REGIME: TRENDING (strength=65) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:04:35,247 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:04:35,247 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.73
+2026-08-13 00:04:35,247 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=64
+2026-08-13 00:04:35,248 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:04:35,248 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.73
+2026-08-13 00:04:35,248 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_2.5
+2026-08-13 00:04:35,249 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:35,250 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:35,257 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:41,188 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:42,123 TIE_Production MARKET REGIME: TRENDING_BULL (strength=66) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:04:42,125 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:04:42,125 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:04:42,126 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:42,127 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:42,131 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:45,927 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:46,705 TIE_Production MARKET REGIME: TRENDING (strength=71) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:04:46,706 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:04:46,706 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.66
+2026-08-13 00:04:46,706 strategies.semi_hft.strategy [PULLBACK] trend_follow_FLAT_m5_gas_ok | M15=FLAT
+2026-08-13 00:04:46,706 strategies.semi_hft.strategy [MACD] macd_down_sell_ok macd=-4.50 sig=-4.05
+2026-08-13 00:04:46,707 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: entry_low:52
+2026-08-13 00:04:46,707 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:04:46,707 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.66
+2026-08-13 00:04:46,708 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:50.3
+2026-08-13 00:04:46,709 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:46,709 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:46,714 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:52,806 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:53,619 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-13 00:04:53,621 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:04:53,621 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:04:53,623 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:53,623 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:53,629 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:04:57,315 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:04:58,060 TIE_Production MARKET REGIME: TRENDING (strength=63) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:04:58,061 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:04:58,061 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.76
+2026-08-13 00:04:58,061 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=62
+2026-08-13 00:04:58,062 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:04:58,062 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.76
+2026-08-13 00:04:58,062 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_17.0
+2026-08-13 00:04:58,063 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:04:58,064 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:04:58,069 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:05:04,339 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:05:05,081 TIE_Production MARKET REGIME: TRENDING_BULL (strength=65) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:05:05,082 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:05:05,083 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:05:05,084 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:05:05,084 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:05:05,089 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:05:08,772 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:05:09,730 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-13 00:05:09,732 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:05:09,732 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.56
+2026-08-13 00:05:09,732 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=60
+2026-08-13 00:05:09,732 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-13 00:05:09,734 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:05:09,734 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:05:09,740 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:05:15,794 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:05:16,609 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-13 00:05:16,610 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:05:16,610 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:05:16,612 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:05:16,612 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:05:16,617 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:05:20,400 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:05:21,140 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-13 00:05:21,142 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:05:21,142 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.56
+2026-08-13 00:05:21,142 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=60
+2026-08-13 00:05:21,142 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-13 00:05:21,144 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:05:21,144 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:05:21,148 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:05:27,362 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:05:28,096 regime_allocator Strategy status updated by Regime Allocator: {'aggressive_v1': True, 'semi_hft_c8_v4': True, 'bystra_v1': True}
+2026-08-13 00:05:28,097 regime_allocator REGIME SWITCH: TRENDING_BEAR -> TRENDING_BEAR (engine=Aggressive, fast_path=True)
+2026-08-13 00:05:28,097 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=63) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:05:28,098 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:05:28,099 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:05:28,100 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:05:28,100 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:05:28,103 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:05:31,790 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:05:32,482 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-13 00:05:32,483 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:05:32,483 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.51
+2026-08-13 00:05:32,483 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=60
+2026-08-13 00:05:32,484 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:05:32,484 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.51
+2026-08-13 00:05:32,484 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_25.8
+2026-08-13 00:05:32,486 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:05:32,486 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:05:32,490 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:05:38,769 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:05:39,593 regime_allocator Strategy status updated by Regime Allocator: {'aggressive_v1': True, 'semi_hft_c8_v4': True, 'bystra_v1': True}
+2026-08-13 00:05:39,593 regime_allocator REGIME SWITCH: TRENDING_BULL -> TRENDING_BULL (engine=Aggressive, fast_path=True)
+2026-08-13 00:05:39,593 TIE_Production MARKET REGIME: TRENDING_BULL (strength=78) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:05:39,595 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:05:39,596 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:05:39,597 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:05:39,597 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:05:39,602 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:05:43,215 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:05:43,921 TIE_Production MARKET REGIME: TRENDING (strength=72) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:05:43,923 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:05:43,923 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.45
+2026-08-13 00:05:43,923 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:05:43,924 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:05:43,924 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.45
+2026-08-13 00:05:43,924 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:45.5
+2026-08-13 00:05:43,925 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:05:43,926 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:05:43,930 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:05:50,350 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:05:51,055 TIE_Production MARKET REGIME: TRENDING_BULL (strength=80) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:05:51,057 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:05:51,057 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:05:51,059 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:05:51,059 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:05:51,064 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:05:54,590 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:05:55,303 TIE_Production MARKET REGIME: TRENDING (strength=76) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:05:55,304 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:05:55,304 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.42
+2026-08-13 00:05:55,304 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:05:55,305 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:05:55,305 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.42
+2026-08-13 00:05:55,306 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:47.4
+2026-08-13 00:05:55,307 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:05:55,307 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:05:55,311 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:01,735 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:02,457 TIE_Production MARKET REGIME: TRENDING_BULL (strength=78) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:02,459 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:02,459 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:02,463 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:02,463 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:02,467 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:05,939 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:06,721 TIE_Production MARKET REGIME: TRENDING (strength=75) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:06,723 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:06:06,723 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.39
+2026-08-13 00:06:06,723 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=SELL
+2026-08-13 00:06:06,724 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:06:06,724 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.39
+2026-08-13 00:06:06,724 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:47.2
+2026-08-13 00:06:06,725 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:06,726 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:06,732 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:13,242 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:13,936 TIE_Production MARKET REGIME: TRENDING_BULL (strength=74) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:13,937 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:13,938 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:13,939 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:13,939 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:13,947 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:17,396 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:18,382 TIE_Production MARKET REGIME: TRENDING (strength=64) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:18,383 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:06:18,383 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.46
+2026-08-13 00:06:18,383 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=64
+2026-08-13 00:06:18,384 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:06:18,384 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.46
+2026-08-13 00:06:18,384 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_3.8
+2026-08-13 00:06:18,385 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:18,386 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:18,390 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:24,572 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:25,241 TIE_Production MARKET REGIME: TRENDING_BULL (strength=77) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:25,242 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:25,242 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:25,244 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:25,244 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:25,250 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:28,965 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:29,858 TIE_Production MARKET REGIME: TRENDING (strength=88) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:29,860 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:06:29,860 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.21
+2026-08-13 00:06:29,860 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:06:29,861 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:06:29,861 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.21
+2026-08-13 00:06:29,861 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:54.2
+2026-08-13 00:06:29,862 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:29,862 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:29,866 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:35,912 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:36,668 TIE_Production MARKET REGIME: TRENDING_BULL (strength=90) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:36,669 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:36,669 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:36,671 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:36,671 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:36,678 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:40,506 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:41,255 TIE_Production MARKET REGIME: TRENDING (strength=90) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:41,257 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:06:41,257 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.16
+2026-08-13 00:06:41,257 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:06:41,258 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:06:41,258 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.16
+2026-08-13 00:06:41,258 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:55.4
+2026-08-13 00:06:41,259 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:41,259 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:41,265 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:47,366 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:48,233 TIE_Production MARKET REGIME: TRENDING_BULL (strength=88) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:48,234 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:48,234 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:48,236 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:48,236 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:48,241 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:51,917 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:52,655 TIE_Production MARKET REGIME: TRENDING (strength=90) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:52,656 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:06:52,656 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.13
+2026-08-13 00:06:52,656 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:06:52,657 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:06:52,657 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.13
+2026-08-13 00:06:52,657 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:55.6
+2026-08-13 00:06:52,658 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:52,659 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:52,663 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:06:58,902 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:06:59,699 TIE_Production MARKET REGIME: TRENDING_BULL (strength=85) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:06:59,701 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:59,701 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:06:59,702 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:06:59,703 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:06:59,707 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:07:03,250 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:07:04,008 TIE_Production MARKET REGIME: TRENDING (strength=88) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:07:04,009 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:07:04,009 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.14
+2026-08-13 00:07:04,009 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:07:04,010 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:07:04,010 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.14
+2026-08-13 00:07:04,010 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:54.9
+2026-08-13 00:07:04,011 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:07:04,011 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:07:04,017 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:07:10,362 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:07:11,229 TIE_Production MARKET REGIME: TRENDING_BULL (strength=86) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:07:11,230 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:07:11,230 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:07:11,232 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:07:11,232 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:07:11,237 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:07:14,682 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:07:15,517 TIE_Production MARKET REGIME: TRENDING (strength=90) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:07:15,518 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:07:15,518 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.12
+2026-08-13 00:07:15,518 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:07:15,519 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:07:15,519 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.12
+2026-08-13 00:07:15,519 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:56.0
+2026-08-13 00:07:15,520 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:07:15,520 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:07:15,527 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:07:22,031 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:07:22,958 TIE_Production MARKET REGIME: TRENDING_BULL (strength=86) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:07:22,960 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:07:22,960 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:07:22,962 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:07:22,962 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:07:22,966 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:07:26,334 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:07:27,083 TIE_Production MARKET REGIME: TRENDING (strength=83) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:07:27,084 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:07:27,085 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.18
+2026-08-13 00:07:27,085 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:07:27,085 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:07:27,085 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.18
+2026-08-13 00:07:27,085 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:52.0
+2026-08-13 00:07:27,087 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:07:27,087 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:07:27,093 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:07:33,681 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:07:34,533 TIE_Production MARKET REGIME: TRENDING_BULL (strength=86) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:07:34,534 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:07:34,535 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:07:34,536 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:07:34,537 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:07:34,543 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:07:37,770 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:07:38,516 TIE_Production MARKET REGIME: TRENDING (strength=88) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:07:38,517 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:07:38,517 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.13
+2026-08-13 00:07:38,517 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:07:38,518 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:07:38,518 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.13
+2026-08-13 00:07:38,518 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:54.5
+2026-08-13 00:07:38,520 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:07:38,520 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:07:38,525 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:07:45,234 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:07:45,931 TIE_Production MARKET REGIME: TRENDING_BULL (strength=93) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:07:45,933 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:07:45,933 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:07:45,934 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:07:45,935 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:07:45,939 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:07:49,150 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:07:49,897 TIE_Production MARKET REGIME: TRENDING (strength=89) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:07:49,898 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:07:49,899 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.08
+2026-08-13 00:07:49,899 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:07:49,899 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:07:49,900 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.08
+2026-08-13 00:07:49,900 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:55.3
+2026-08-13 00:07:49,901 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:07:49,901 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:07:49,906 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:07:56,551 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:07:57,329 TIE_Production MARKET REGIME: TRENDING_BULL (strength=86) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:07:57,330 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:07:57,330 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:07:57,332 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:07:57,332 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:07:57,337 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:00,523 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:01,451 TIE_Production MARKET REGIME: TRENDING (strength=85) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:01,459 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:08:01,460 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.13
+2026-08-13 00:08:01,460 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:08:01,461 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:08:01,461 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.13
+2026-08-13 00:08:01,461 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:53.0
+2026-08-13 00:08:01,465 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:01,465 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:01,479 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:08,110 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:08,831 TIE_Production MARKET REGIME: TRENDING_BULL (strength=85) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:08,832 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:08:08,832 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:08:08,834 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:08,834 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:08,841 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:12,338 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:13,177 TIE_Production MARKET REGIME: TRENDING (strength=84) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:13,178 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:08:13,178 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.14
+2026-08-13 00:08:13,178 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:08:13,179 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:08:13,179 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.14
+2026-08-13 00:08:13,179 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:52.6
+2026-08-13 00:08:13,180 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:13,180 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:13,184 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:19,536 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:20,207 TIE_Production MARKET REGIME: TRENDING_BULL (strength=81) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:20,209 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:08:20,209 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:08:20,211 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:20,211 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:20,217 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:23,872 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:24,550 TIE_Production MARKET REGIME: TRENDING (strength=77) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:24,551 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:08:24,551 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.23
+2026-08-13 00:08:24,552 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:08:24,552 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:08:24,552 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.23
+2026-08-13 00:08:24,552 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:48.6
+2026-08-13 00:08:24,553 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:24,554 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:24,558 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:30,929 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:31,776 TIE_Production MARKET REGIME: TRENDING_BULL (strength=80) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:31,777 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:08:31,777 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:08:31,779 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:31,779 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:31,784 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:35,202 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:35,914 TIE_Production MARKET REGIME: TRENDING (strength=77) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:35,915 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:08:35,915 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.23
+2026-08-13 00:08:35,915 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:08:35,916 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:08:35,916 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.23
+2026-08-13 00:08:35,916 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:48.6
+2026-08-13 00:08:35,917 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:35,918 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:35,924 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:42,567 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:43,506 TIE_Production MARKET REGIME: TRENDING_BULL (strength=77) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:43,510 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:08:43,510 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:08:43,513 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:43,513 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:43,521 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:46,655 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:47,538 TIE_Production MARKET REGIME: TRENDING (strength=74) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:47,542 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:08:47,544 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.27
+2026-08-13 00:08:47,544 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=SELL
+2026-08-13 00:08:47,545 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:08:47,545 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.27
+2026-08-13 00:08:47,545 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:46.7
+2026-08-13 00:08:47,550 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:47,557 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:47,567 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:54,296 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:55,017 TIE_Production MARKET REGIME: TRENDING_BULL (strength=79) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:55,018 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:08:55,018 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:08:55,020 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:55,020 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:55,026 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:08:58,418 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:08:59,157 TIE_Production MARKET REGIME: TRENDING (strength=82) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:08:59,158 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:08:59,158 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.17
+2026-08-13 00:08:59,158 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:08:59,159 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:08:59,159 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.17
+2026-08-13 00:08:59,159 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:51.3
+2026-08-13 00:08:59,160 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:08:59,161 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:08:59,166 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:09:05,706 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:09:06,591 TIE_Production MARKET REGIME: TRENDING_BULL (strength=85) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:09:06,596 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:09:06,596 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:09:06,599 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:09:06,601 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:09:06,606 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:09:10,236 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:09:11,341 TIE_Production MARKET REGIME: TRENDING (strength=84) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:09:11,343 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:09:11,343 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.14
+2026-08-13 00:09:11,343 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:09:11,344 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:09:11,344 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.14
+2026-08-13 00:09:11,344 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:52.7
+2026-08-13 00:09:11,345 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:09:11,345 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:09:11,350 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:09:17,360 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:09:18,124 TIE_Production MARKET REGIME: TRENDING_BULL (strength=88) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:09:18,126 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:09:18,127 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:09:18,129 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:09:18,129 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:09:18,139 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:09:22,020 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:09:22,870 TIE_Production MARKET REGIME: TRENDING (strength=88) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:09:22,872 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:09:22,873 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.09
+2026-08-13 00:09:22,873 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:09:22,874 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:09:22,874 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.09
+2026-08-13 00:09:22,874 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:55.1
+2026-08-13 00:09:22,876 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:09:22,876 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:09:22,884 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:09:28,862 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:09:29,677 TIE_Production MARKET REGIME: TRENDING_BULL (strength=92) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:09:29,679 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:09:29,679 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:09:29,680 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:09:29,681 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:09:29,686 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:09:33,577 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:09:34,535 TIE_Production MARKET REGIME: TRENDING (strength=90) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:09:34,537 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:09:34,538 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.06
+2026-08-13 00:09:34,538 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:09:34,539 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:09:34,539 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.06
+2026-08-13 00:09:34,539 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:56.1
+2026-08-13 00:09:34,541 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:09:34,541 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:09:34,546 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:09:40,471 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:09:41,289 TIE_Production MARKET REGIME: TRENDING_BULL (strength=88) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:09:41,291 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:09:41,291 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:09:41,292 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:09:41,293 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:09:41,299 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:09:45,410 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:09:46,098 TIE_Production MARKET REGIME: TRENDING (strength=88) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:09:46,099 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:09:46,099 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.09
+2026-08-13 00:09:46,099 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:09:46,100 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:09:46,100 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.09
+2026-08-13 00:09:46,100 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:54.7
+2026-08-13 00:09:46,101 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:09:46,101 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:09:46,107 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:09:51,954 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:09:52,688 TIE_Production MARKET REGIME: TRENDING_BULL (strength=89) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:09:52,689 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:09:52,689 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:09:52,691 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:09:52,691 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:09:52,695 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:09:56,793 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:09:57,565 TIE_Production MARKET REGIME: TRENDING (strength=84) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:09:57,566 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:09:57,566 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.14
+2026-08-13 00:09:57,566 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=BUY
+2026-08-13 00:09:57,567 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:09:57,567 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.14
+2026-08-13 00:09:57,567 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:52.6
+2026-08-13 00:09:57,568 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:09:57,569 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:09:57,576 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:10:03,374 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:10:04,122 TIE_Production MARKET REGIME: TRENDING_BULL (strength=88) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:10:04,123 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:10:04,123 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:10:04,125 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:10:04,125 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:10:04,129 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:10:08,384 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:10:09,190 TIE_Production MARKET REGIME: TRENDING (strength=77) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:10:09,191 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:10:09,191 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.03
+2026-08-13 00:10:09,191 strategies.semi_hft.strategy [PULLBACK] trend_follow_FLAT_m5_gas_ok | M15=FLAT
+2026-08-13 00:10:09,191 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: macd:macd_down_buy_blocked macd=-3.89 sig=-3.50
+2026-08-13 00:10:09,192 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:10:09,192 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.03
+2026-08-13 00:10:09,192 StrategyManager Strategy aggressive_v1 returned WAIT: rme:score_low:49.8
+2026-08-13 00:10:09,194 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:10:09,194 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:10:09,198 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:10:14,833 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:10:15,558 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-13 00:10:15,559 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:10:15,559 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:10:15,561 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:10:15,561 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:10:15,565 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:10:20,042 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:10:20,774 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-13 00:10:20,775 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_up dir=BUY
+2026-08-13 00:10:20,775 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.05
+2026-08-13 00:10:20,775 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=60
+2026-08-13 00:10:20,776 strategies.aggressive.strategy [LIQ_VACUUM] GOOD no_pool_data dir=BUY
+2026-08-13 00:10:20,776 strategies.aggressive.strategy [ZSCORE] zscore_ok z=-1.05
+2026-08-13 00:10:20,776 StrategyManager Strategy aggressive_v1 returned WAIT: rme:debate_block:penalty_61.1
+2026-08-13 00:10:20,777 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:10:20,778 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:10:20,783 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:10:26,291 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:10:27,095 TIE_Production MARKET REGIME: TRENDING_BULL (strength=70) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:10:27,096 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:10:27,097 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:10:27,099 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:10:27,099 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:10:27,106 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:10:31,789 httpx HTTP Request: GET https://nfs.faireconomy.media/ff_calendar_thisweek.json "HTTP/1.1 200 OK"
+2026-08-13 00:10:31,955 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:10:32,851 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-13 00:10:32,853 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:10:32,853 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.08
+2026-08-13 00:10:32,853 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=60
+2026-08-13 00:10:32,854 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-13 00:10:32,856 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:10:32,856 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:10:32,864 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:10:37,746 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:10:38,524 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: SemiHFT
+2026-08-13 00:10:38,525 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:10:38,525 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:10:38,527 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:10:38,527 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:10:38,531 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:10:43,609 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:10:44,392 TIE_Production MARKET REGIME: TRENDING (strength=65) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:10:44,393 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:10:44,394 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.10
+2026-08-13 00:10:44,394 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=64
+2026-08-13 00:10:44,394 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-13 00:10:44,396 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:10:44,396 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:10:44,401 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:10:49,150 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:10:49,923 regime_allocator Strategy status updated by Regime Allocator: {'aggressive_v1': True, 'semi_hft_c8_v4': True, 'bystra_v1': True}
+2026-08-13 00:10:49,923 regime_allocator REGIME SWITCH: TRENDING_BEAR -> TRENDING_BEAR (engine=Aggressive, fast_path=True)
+2026-08-13 00:10:49,923 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=75) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:10:49,925 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:10:49,926 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:10:49,927 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:10:49,928 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:10:49,934 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:10:55,077 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:10:55,777 TIE_Production MARKET REGIME: TRENDING (strength=70) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:10:55,779 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:10:55,779 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.14
+2026-08-13 00:10:55,780 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=69
+2026-08-13 00:10:55,780 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-13 00:10:55,783 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:10:55,784 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:10:55,788 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:11:00,578 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:11:01,300 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=63) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:11:01,301 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:11:01,301 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:11:01,303 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:11:01,303 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:11:01,308 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:11:06,507 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:11:08,313 TIE_Production MARKET REGIME: TRENDING (strength=83) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:11:08,319 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:11:08,319 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.19
+2026-08-13 00:11:08,319 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:regime_conflict TRENDING=83 blocks SELL
+2026-08-13 00:11:08,324 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-13 00:11:08,327 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:11:08,327 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:11:08,336 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:11:12,053 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:11:12,761 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=68) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:11:12,762 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:11:12,763 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:11:12,764 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:11:12,765 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:11:12,770 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:11:19,135 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:11:19,930 TIE_Production MARKET REGIME: TRENDING (strength=79) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:11:19,931 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:11:19,931 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.17
+2026-08-13 00:11:19,931 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m5_weak_trend dir=SELL
+2026-08-13 00:11:19,932 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-13 00:11:19,933 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:11:19,933 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:11:19,939 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:11:23,388 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:11:24,115 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=85) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:11:24,116 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:11:24,117 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:11:24,118 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:11:24,119 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:11:24,124 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:11:29,231 MT5BrokerAdapter MT5BrokerAdapter initialized OK
+2026-08-13 00:11:29,243 BystraStrategy BystraStrategy loaded 5 zone blacklist entries
+2026-08-13 00:11:29,243 BystraStrategy BystraStrategy initialized — 10 detectors
+2026-08-13 00:11:29,243 StrategyManager Registered strategy Bystra v1.0.0
+2026-08-13 00:11:29,243 strategies.aggressive.strategy RiriMicroScalpEngine (RME) initialized — score-based pipeline
+2026-08-13 00:11:29,243 StrategyManager Registered strategy Aggressive v0.1.0
+2026-08-13 00:11:29,244 strategies.semi_hft.strategy SemiHFTStrategyV4 init — C8 Score Pipeline + Pullback Filter
+2026-08-13 00:11:29,244 StrategyManager Registered strategy SemiHFT V4 v4.0
+2026-08-13 00:11:29,248 TIE_Production TIE Production Multi-Symbol started: ['XAUUSD']. Risk Gate active. Observatory enabled. Governor enabled.
+2026-08-13 00:11:29,332 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:11:30,150 regime_allocator Strategy status updated by Regime Allocator: {'aggressive_v1': True, 'semi_hft_c8_v4': True, 'bystra_v1': True}
+2026-08-13 00:11:30,150 regime_allocator REGIME SWITCH: TRENDING_BEAR -> TRENDING_BEAR (engine=Aggressive, fast_path=True)
+2026-08-13 00:11:30,150 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=72) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:11:30,151 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:11:30,152 StrategyManager Strategy aggressive_v1 returned WAIT: no_setup:no_structural_setup
+2026-08-13 00:11:30,153 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:11:30,153 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:11:30,159 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-08-13 00:11:30,608 TIE_Production --- Scanning XAUUSD ---
+2026-08-13 00:11:31,461 TIE_Production MARKET REGIME: TRENDING (strength=69) | SUGGESTED ENGINE: Aggressive
+2026-08-13 00:11:31,465 strategies.semi_hft.strategy [LIQ_VACUUM] GOOD clear_path_down dir=SELL
+2026-08-13 00:11:31,465 strategies.semi_hft.strategy [ZSCORE] zscore_ok z=-1.17
+2026-08-13 00:11:31,465 StrategyManager Strategy semi_hft_c8_v4 returned WAIT: pullback:m15_flat_no_trend regime=TRENDING str=68
+2026-08-13 00:11:31,466 StrategyManager Strategy aggressive_v1 returned WAIT: tl_guard:NO_SELL_BREAK
+2026-08-13 00:11:31,470 StrategyManager Strategy bystra_v1 returned WAIT: no_pattern
+2026-08-13 00:11:31,470 TIE_Production No setup for XAUUSD (WAIT)
+2026-08-13 00:11:31,478 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
