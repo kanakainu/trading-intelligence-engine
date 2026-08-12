@@ -145,6 +145,16 @@ class SemiHFTStrategyV4(BaseStrategy):
                     f"Regime={_ctx.regime} VwapDist={_ctx.vwap_distance_atr:.2f}ATR "
                     f"Zone={_setup.zone_price:.3f} Room={_loc.available_room_atr:.2f}ATR")
 
+        # Pattern confidence
+        try:
+            from shared.candle_pattern_confidence import analyze as _pattern_analyze
+            _pconf = _pattern_analyze(f.candles.get("M5", []) if f and f.candles else [], direction)
+            logger.info(f"[SEMI] PatternConf: Engulf={_pconf.engulfing_count} "
+                        f"WickSweep={_pconf.wick_sweep_count} "
+                        f"BreakH={_pconf.break_high_count} BreakL={_pconf.break_low_count} Score={_pconf.score:.0f}")
+        except Exception as _pe:
+            logger.debug("pattern confidence error: %s", _pe)
+
         # 2. Micro direction (M1) = timing only — must align with structural direction
         micro = self._micro
         if micro is None or micro.signal == MicroSignal.NONE:

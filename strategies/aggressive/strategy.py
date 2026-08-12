@@ -121,6 +121,16 @@ class RiriMicroScalpEngine(BaseStrategy):
                     f"Trig={_trig.signal}({_trig.strength:.0f}) Regime={_ctx.regime} "
                     f"VwapDist={_ctx.vwap_distance_atr:.2f}ATR Zone={_setup.zone_price:.3f} Room={_loc.available_room_atr:.2f}ATR")
 
+        # Pattern confidence (last 10 M5: engulfing, wick sweep, break high/low)
+        try:
+            from shared.candle_pattern_confidence import analyze as _pattern_analyze
+            _pconf = _pattern_analyze(candles_m5, _struct_dir)
+            logger.info(f"[RME] PatternConf: Engulf={_pconf.engulfing_count} "
+                        f"WickSweep={_pconf.wick_sweep_count} "
+                        f"BreakH={_pconf.break_high_count} BreakL={_pconf.break_low_count} Score={_pconf.score:.0f}")
+        except Exception as _pe:
+            logger.debug("pattern confidence error: %s", _pe)
+
         # === DIAGNOSTIC: late_entry + classifier (always runs, no new hard blocks) ===
         try:
             import json as _json
