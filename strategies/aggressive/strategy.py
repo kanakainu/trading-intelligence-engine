@@ -1,4 +1,4 @@
-"""RiriMicroScalpEngine (RME) — engine-centric, score-based. No detector chains."""
+"""RiriMicroScalpEngine (RME) — context-setup-location-trigger pipeline."""
 import logging
 import uuid
 import json
@@ -33,6 +33,12 @@ from strategies.aggressive.entry_score_engine import calculate as entry_score, E
 from strategies.aggressive.fvg_detector import get_active_fvgs
 from strategies.aggressive.trendline_detector import detect_trendline_break
 from strategies.aggressive.liquidity_vacuum import detect_liquidity_pools, vacuum_grade
+
+# Shared context-setup-location-trigger pipeline (Phase 2 refactor)
+from shared.market_context import build as build_market_context
+from shared.setup_detector import detect as detect_setup, SetupType
+from shared.location_engine import evaluate as eval_location, LocationGrade
+from shared.trigger_engine import evaluate as eval_trigger, TriggerSignal
 
 logger = logging.getLogger(__name__)
 
@@ -72,14 +78,47 @@ class RiriMicroScalpEngine(BaseStrategy):
             return StrategyResult(signal=None, confidence=0.0, reason="no_features")
 
         # --- Data prep ---
-        candles_m5 = features.candles.get("M5", [])
-        candles_m1 = features.candles.get("M1", [])
+        candles_m5  = features.candles.get("M5", [])
+        candles_m15 = features.candles.get("M15", [])
+        candles_m1  = features.candles.get("M1", [])
         spread    = features.spread if isinstance(features.spread, float) else 0.0
-        atr       = features.get_atr("M5") or 0.0 # Aggressive uses M5 ATR
+        atr       = features.get_atr("M5") or 0.0
         vol_ratio = features.volume_ratio.get("M5", 1.0)
         price = getattr(features, "current_price", None) or context.scan.current_price or 0.0
         vwap      = features.vwap.get("M5") if hasattr(features.vwap, "get") else None
         utc_h     = getattr(features.timestamp, "hour", datetime.utcnow().hour)
+
+        # === PHASE 2: CONTEXT → SETUP → LOCATION → TRIGGER ===
+        # No valid setup = NO TRADE (regardless of score)
+        _ctx   = build_market_context(candles_m15, candles_m5, candles_m1, price, atr)
+        _setup = detect_setup(_ctx, candles_m5, candles_m1, price)
+        if not _setup.is_valid:
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"no_setup:{_setup.reason}",
+                                  metadata={"regime": _ctx.regime, "setup": "NONE"})
+
+        # Override direction from structural setup (not just M5 snapshot)
+        _struct_dir = _setup.direction.value  # "BUY" | "SELL"
+
+        # Location check — BAD_LOCATION = NO TRADE
+        _loc = eval_location(_struct_dir, price, candles_m5, candles_m15, atr)
+        if _loc.grade == LocationGrade.BAD:
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"bad_location:{_loc.reason}",
+                                  metadata={"regime": _ctx.regime, "setup": _setup.type,
+                                            "location": "BAD", "room_atr": _loc.available_room_atr})
+
+        # Trigger check — RME allows NEUTRAL location but needs armed trigger
+        _atr_m1 = features.get_atr("M1") or atr
+        _trig = eval_trigger(_struct_dir, candles_m1, _atr_m1)
+        if _trig.signal != TriggerSignal.ARMED:
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"no_trigger:{_trig.reason}",
+                                  metadata={"regime": _ctx.regime, "setup": _setup.type,
+                                            "trigger": _trig.signal})
+
+        logger.info(f"[RME] Setup={_setup.type} Dir={_struct_dir} Loc={_loc.grade} "
+                    f"Trig={_trig.signal}({_trig.strength:.0f}) Regime={_ctx.regime}")
 
         # --- Score all engines (parallel, no gates) ---
         snap    = get_snapshot(candles_m5)

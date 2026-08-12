@@ -31,6 +31,12 @@ from .daily_governor import DailyGovernor
 from .learning import LearningLogger
 from shared.pullback_filter import PullbackFilter
 
+# Shared context-setup-location-trigger pipeline (Phase 2 refactor)
+from shared.market_context import build as build_market_context
+from shared.setup_detector import detect as detect_setup, SetupType
+from shared.location_engine import evaluate as eval_location, LocationGrade
+from shared.trigger_engine import evaluate as eval_trigger, TriggerSignal
+
 logger = logging.getLogger(__name__)
 
 def check_news_blackout() -> tuple[bool, str]:
@@ -110,13 +116,46 @@ class SemiHFTStrategyV4(BaseStrategy):
             logger.warning(f"NEWS BLACKOUT ACTIVE: {blackout_reason}")
             return StrategyResult(signal=None, confidence=0.0, reason=f"news_blackout:{blackout_reason[:20]}")
 
-        # 2. Micro direction + entry score
+        # === PHASE 2: CONTEXT → SETUP → LOCATION (M15/M5 first, M1 is trigger only) ===
+        _f = context.scan.features
+        _c15 = _f.candles.get("M15", []) if _f else []
+        _c5  = _f.candles.get("M5",  []) if _f else []
+        _c1  = _f.candles.get("M1",  []) if _f else []
+        _atr = (_f.get_atr("M5") or 0.0) if _f else 0.0
+        _price = (getattr(_f, "current_price", None) or getattr(_f, "bid", 0.0) or 0.0) if _f else 0.0
+
+        _ctx   = build_market_context(_c15, _c5, _c1, _price, _atr)
+        _setup = detect_setup(_ctx, _c5, _c1, _price)
+        if not _setup.is_valid:
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"no_setup:{_setup.reason}",
+                                  metadata=self._score_meta(extra={"regime": _ctx.regime, "setup": "NONE"}))
+
+        _struct_dir = _setup.direction.value  # M15/M5 decides direction
+
+        # Location check — BAD = no trade
+        _loc = eval_location(_struct_dir, _price, _c5, _c15, _atr)
+        if _loc.grade == LocationGrade.BAD:
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"bad_location:{_loc.reason}",
+                                  metadata=self._score_meta(extra={"location": "BAD",
+                                                                    "room_atr": _loc.available_room_atr}))
+
+        logger.info(f"[SEMI] Setup={_setup.type} Dir={_struct_dir} Loc={_loc.grade} Regime={_ctx.regime}")
+
+        # 2. Micro direction (M1) = timing only — must align with structural direction
         micro = self._micro
         if micro is None or micro.signal == MicroSignal.NONE:
             return StrategyResult(signal=None, confidence=0.0, reason="no_micro",
                                   metadata=self._score_meta(extra={"micro": getattr(micro, "score", 0.0) if micro else 0.0}))
 
         direction = micro.signal.value  # "BUY" | "SELL"
+
+        # M1 micro must align with M15/M5 structural direction
+        if direction != _struct_dir:
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"m1_contra_structure:{direction}_vs_{_struct_dir}",
+                                  metadata=self._score_meta(extra={"m1_dir": direction, "struct_dir": _struct_dir}))
 
         # 🧲 NEXUS TWEAK: Liquidity Vacuum Guard (Smart Money)
         liq_vac = {"grade": "GOOD", "reason": "no_pool_data", "tf": "-"}
