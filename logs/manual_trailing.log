@@ -2847,3 +2847,5 @@ ng over trailing...
 2026-08-12 22:30:15,653 [INFO] Heartbeat: /tmp/tie_production_heartbeat.txt | Hedge close: $3.0 | BE lock: $1.5
 2026-08-12 22:30:41,148 [INFO] Manual Trailing V2 (Shadow Mode) started.
 2026-08-12 22:30:41,148 [INFO] Heartbeat: /tmp/tie_production_heartbeat.txt | Hedge close: $3.0 | BE lock: $1.5
+2026-08-12 22:52:06,906 [INFO] Manual Trailing V2 (Shadow Mode) started.
+2026-08-12 22:52:06,907 [INFO] Heartbeat: /tmp/tie_production_heartbeat.txt | Hedge close: $3.0 | BE lock: $1.5
