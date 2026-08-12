@@ -67,6 +67,28 @@ def toggle_strategy(payload: dict):
     return {"error": "Not found"}
 
 
+@app.get("/api/features/status")
+def get_features():
+    path = "/home/ubuntu/trading-intelligence-engine/config/features.json"
+    with open(path) as f:
+        return json.load(f)
+
+
+@app.post("/api/features/toggle")
+def toggle_feature(payload: dict):
+    feat = payload.get("feature_id")
+    enabled = payload.get("enabled")
+    path = "/home/ubuntu/trading-intelligence-engine/config/features.json"
+    with open(path) as f:
+        data = json.load(f)
+    if feat in data:
+        data[feat] = enabled
+        with open(path, "w") as f:
+            json.dump(data, f, indent=4)
+        return {"status": "ok"}
+    return {"error": "Not found"}
+
+
 @app.post("/api/engine/start")
 def engine_start():
     """Start TIE production engine via systemctl."""
@@ -261,6 +283,11 @@ td { padding: 10px 8px; border-bottom: 1px solid #21262d; }
   </nav>
 
   <nav class="nav-section">
+    <div class="nav-title">Feature Toggles</div>
+    <div id="feature-toggles" style="padding:0 20px"></div>
+  </nav>
+
+  <nav class="nav-section">
     <div class="nav-title">Markets</div>
     <div id="nav-markets"></div>
   </nav>
@@ -440,6 +467,25 @@ fetch('/api/strategy/status').then(r => r.json()).then(d => {
 }).catch(() => {
   document.getElementById('strategy-toggles').innerHTML = '<span style="font-size:11px;color:#8b949e">Status unavailable</span>';
 });
+
+// Inject feature toggles
+fetch('/api/features/status').then(r => r.json()).then(d => {
+  const cont = document.getElementById('feature-toggles');
+  const labels = {volatility_sizing: 'Volatility Sizing', zscore_filter: 'Z-Score Filter', mean_reversion_filter: 'Mean Reversion', auto_allocation: 'Auto Allocation'};
+  Object.entries(d).forEach(([fid, enabled]) => {
+    if (typeof enabled !== 'boolean') return;
+    cont.innerHTML += `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:4px 0;border-bottom:1px solid #30363d">
+      <span style="font-size:12px;color:${enabled?'#00ff88':'#8b949e'}">${labels[fid]||fid}</span>
+      <label style="position:relative;display:inline-block;width:32px;height:18px">
+        <input type="checkbox" ${enabled?'checked':''} style="opacity:0;width:0;height:0" 
+          onchange="fetch('/api/features/toggle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({feature_id:'${fid}',enabled:this.checked})}).then(()=>location.reload())">
+        <span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:${enabled?'#00ff88':'#30363d'};border-radius:18px;transition:.3s"></span>
+      </label>
+    </div>`;
+  });
+}).catch(() => {
+  document.getElementById('feature-toggles').innerHTML = '<span style="font-size:11px;color:#8b949e">Status unavailable</span>';
+});
 </script>
 </body>
 </html>
@@ -447,4 +493,4 @@ fetch('/api/strategy/status').then(r => r.json()).then(d => {
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=3001)
+    uvicorn.run(app, host="0.0.0.0", port=3002)

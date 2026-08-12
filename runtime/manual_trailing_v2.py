@@ -15,7 +15,7 @@ Profiles:
 - aggressive: start $2.0, dist $0.5, be_lock $1.0
 - semi_hft:   start $2.0, dist $0.5, be_lock $1.0
 """
-import sys, os, time, logging, requests
+import sys, os, time, logging, requests, json
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -74,6 +74,32 @@ def get_positions():
     except Exception as e:
         log.error(f"Positions fetch fail: {e}")
         return []
+
+
+def process_baskets(positions):
+    """
+    Basket Take Profit logic:
+    - BUY positions >= 3 and Total Profit BUY >= $3.0 -> CLOSE ALL BUY
+    - SELL positions >= 3 and Total Profit SELL >= $3.0 -> CLOSE ALL SELL
+    """
+    buys = [p for p in positions if p.get("type", "").upper() == "BUY" or p.get("type") == 0]
+    sells = [p for p in positions if p.get("type", "").upper() == "SELL" or p.get("type") == 1]
+
+    # BUY Basket
+    if len(buys) >= 3:
+        total_buy_profit = sum(p.get("profit", 0.0) for p in buys)
+        if total_buy_profit >= 3.0:
+            log.info(f"BASKET TP: Closing {len(buys)} BUY positions (Total Profit: ${total_buy_profit:.2f})")
+            for p in buys:
+                close_position(p["ticket"], p)
+
+    # SELL Basket
+    if len(sells) >= 3:
+        total_sell_profit = sum(p.get("profit", 0.0) for p in sells)
+        if total_sell_profit >= 3.0:
+            log.info(f"BASKET TP: Closing {len(sells)} SELL positions (Total Profit: ${total_sell_profit:.2f})")
+            for p in sells:
+                close_position(p["ticket"], p)
 
 
 def extract_profile_key(comment):
@@ -214,6 +240,19 @@ def run():
                     ticket = str(pos.get("ticket"))
                     close_position(ticket, pos)
                     _peak.pop(ticket, None)
+                
+                # === BASKET TP (BUY/SELL >= 3 and Profit >= $3.0) ===
+                # Toggle: config/features.json → basket_tp: true/false
+                try:
+                    _feat_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config", "features.json")
+                    with open(_feat_path) as _ff:
+                        _feat = json.load(_ff)
+                    _basket_on = _feat.get("basket_tp", True)
+                except Exception:
+                    _basket_on = True
+                if _basket_on:
+                    process_baskets(tie_positions)
+
                 # Kalau ada yg di-close, skip trailing tick ini
                 if hedge_targets:
                     time.sleep(POLL_SEC)

@@ -78,9 +78,9 @@ class RegimeAllocator:
         # - Bystra: Sasa set False total (biar Boskuh/Riri handle manual via dashboard).
         
         status = {
-            self.STRATEGY_IDS["aggressive"]: aggressive_on,
-            self.STRATEGY_IDS["semi_hft"]: semi_hft_on,
-            self.STRATEGY_IDS["bystra"]: False, # Matikan paksa bystra dari auto-logic
+            self.STRATEGY_IDS["aggressive"]: current_status.get(self.STRATEGY_IDS["aggressive"], aggressive_on),
+            self.STRATEGY_IDS["semi_hft"]: current_status.get(self.STRATEGY_IDS["semi_hft"], semi_hft_on),
+            self.STRATEGY_IDS["bystra"]: current_status.get(self.STRATEGY_IDS["bystra"], True),
         }
         
         try:

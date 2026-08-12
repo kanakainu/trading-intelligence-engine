@@ -1,0 +1,228 @@
+INFO:     Started server process [3293985]
+INFO:     Waiting for application startup.
+2026-08-12 13:32:11,858 TIE_DASH TIE Dashboard v3 started — reading /home/ubuntu/tie-dashboard/data/tie_status.json
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:3002 (Press CTRL+C to quit)
+INFO:     103.157.48.90:21767 - "GET /api/scores HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21777 - "GET /api/dashboard HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21780 - "GET /api/market/overview HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21784 - "GET /api/pipeline/status HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21778 - "GET /api/scanner/status HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21783 - "GET /api/strategy/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:21767 - "GET /api/symbol/status HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21777 - "GET /api/performance/daily HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21780 - "GET /api/infrastructure/health HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21784 - "GET /api/gate/stats HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21778 - "GET /api/positions HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21783 - "GET /api/logs HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21767 - "GET /api/signals/fresh HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21777 - "GET /api/engine/health HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:21780 - "GET /api/scores HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61836 - "GET /api/scores HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61844 - "GET /api/dashboard HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61841 - "GET /api/pipeline/status HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61840 - "GET /api/market/overview HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61839 - "GET /api/scanner/status HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61836 - "GET /api/symbol/status HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61847 - "GET /api/strategy/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/performance/daily HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61840 - "GET /api/infrastructure/health HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61839 - "GET /api/gate/stats HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61836 - "GET /api/logs HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61847 - "GET /api/signals/fresh HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61841 - "GET /api/positions HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61844 - "GET /api/engine/health HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61840 - "GET /api/scores HTTP/1.1" 404 Not Found
+INFO:     103.157.48.90:61840 - "GET / HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61840 - "GET /api/strategy/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/features/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "POST /api/features/toggle HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET / HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/strategy/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:18542 - "GET /api/features/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "POST /api/features/toggle HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET / HTTP/1.1" 200 OK
+INFO:     103.157.48.90:61844 - "GET /api/strategy/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:18542 - "GET /api/features/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:18542 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:18542 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:18542 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:18542 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:18542 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:18542 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:18542 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:30569 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:16926 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:57314 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:34926 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:11282 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:52226 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET / HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1933 - "GET /api/features/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/strategy/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:1437 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:3275 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:8032 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:19473 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:57562 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:32308 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:7616 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:47881 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:26356 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:3388 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35374 - "GET /api/features/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35376 - "GET / HTTP/1.1" 200 OK
+INFO:     103.157.48.90:25700 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:25700 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:25700 - "GET / HTTP/1.1" 200 OK
+INFO:     103.157.48.90:25700 - "GET /api/strategy/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/features/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     103.157.48.90:27463 - "GET /api/status HTTP/1.1" 200 OK

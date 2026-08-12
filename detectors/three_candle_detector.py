@@ -22,6 +22,9 @@ class ThreeCandleDetector(BystraBaseDetector):
 
     def detect(self, context: Any) -> List[Any]:
         tf = getattr(context, "timeframe", None) or context.metadata.get("timeframe", "M5")
+        # THREE_CANDLE not valid on M1 — too noisy
+        if tf == "M1":
+            return []
         candles = self._get_candles(context, tf, 30)
         if len(candles) < 5:
             return []
@@ -89,7 +92,8 @@ class ThreeCandleDetector(BystraBaseDetector):
                     find_nearest_support(candles, c2_low, h1_candles)
 
             if not htf_confirm_solid(htf_candles, direction, dz_level):
-                continue
+                # THREE_CANDLE has built-in 3-candle confirmation — skip htf_solid gate
+                pass  # removed htf_confirm_solid block for THREE_CANDLE
 
             # SL beyond C3 extreme
             if direction == "BUY":

@@ -37,12 +37,28 @@ class NewsSentinel:
 
     async def fetch_calendar(self):
         """Fetch this week's economic calendar."""
+        cache_path = "/tmp/ff_calendar_cache.json"
         try:
             resp = await self.client.get(self.FF_CALENDAR_URL)
-            resp.raise_for_status()
-            return resp.json()
+            if resp.status_code == 200:
+                data = resp.json()
+                # The response has structure: {"ts": ..., "events": [...]}
+                events = data.get("events", data) if isinstance(data, dict) else data
+                with open(cache_path, "w") as f:
+                    json.dump(events, f)
+                return events
+            elif os.path.exists(cache_path):
+                logger.warning(f"Rate limited. Using cached calendar from {cache_path}")
+                with open(cache_path, "r") as f:
+                    return json.load(f)
+            else:
+                logger.error(f"Rate limited and no cache found.")
+                return []
         except Exception as e:
             logger.error(f"Failed to fetch calendar: {e}")
+            if os.path.exists(cache_path):
+                with open(cache_path, "r") as f:
+                    return json.load(f)
             return []
 
     def classify_impact(self, event):

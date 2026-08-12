@@ -140,16 +140,29 @@ class SemiHFTStrategyV4(BaseStrategy):
                                   metadata=self._score_meta(extra={"liq_vac": liq_vac["reason"]}))
         logger.info(f"[LIQ_VACUUM] {liq_vac['grade']} {liq_vac['reason']} dir={direction}")
         
+        # 5b. Z-Score Overextension Guard (Goldman Sachs inspired)
+        from shared.zscore_filter import check as _zscore_check
+        z_verdict = _zscore_check(f, f.candles if f else {}, direction)
+        if not z_verdict.allowed:
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"zscore:{z_verdict.reason}",
+                                  metadata=self._score_meta(extra={
+                                      "zscore_block": z_verdict.reason,
+                                      "z_score": z_verdict.z_score
+                                  }))
+        logger.info(f"[ZSCORE] {z_verdict.reason}")
+
         # 🧲 PULLBACK FILTER (M5/M15 aligned entries)
         f = context.scan.features
         _regime = context.scan.regime
-        _regime_name = str(getattr(_regime, "regime", None) and getattr(_regime, "regime").value or getattr(_regime, "name", "") or "").upper()
+        _regime_name = context.scan.get_regime_name() if hasattr(context.scan, "get_regime_name") else str(getattr(_regime, "regime", None) and getattr(_regime, "regime").name or "").upper()
         # confidence (0-1) → strength (0-100); regime_strength >= 70 triggers trending_override
         _regime_strength = int((getattr(_regime, "strength", 0) or getattr(_regime, "confidence", 0) or 0) * 100)
         if f and f.candles and hasattr(f, "current_price"):
             pullback = self._pullback.check(
                 f.candles, direction, f.current_price,
-                regime=_regime_name, regime_strength=_regime_strength
+                regime=_regime_name, regime_strength=_regime_strength,
+                features=f
             )
             if not pullback.allowed:
                 return StrategyResult(signal=None, confidence=0.0,
@@ -160,6 +173,19 @@ class SemiHFTStrategyV4(BaseStrategy):
                                           "pullback_pct": pullback.pullback_pct
                                       }))
             logger.info(f"[PULLBACK] {pullback.reason} | M15={pullback.m15_trend}")
+
+        # 🔥 MACD MOMENTUM GATE — Goldman Sachs inspired confirm filter
+        from shared.macd_gate import check as _macd_check
+        macd_verdict = _macd_check(f, f.candles if f else {}, direction)
+        if not macd_verdict.allowed:
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"macd:{macd_verdict.reason}",
+                                  metadata=self._score_meta(extra={
+                                      "macd_block": macd_verdict.reason,
+                                      "macd_value": macd_verdict.macd_value,
+                                      "signal_value": macd_verdict.signal_value
+                                  }))
+        logger.info(f"[MACD] {macd_verdict.reason}")
 
         # 🧠 NEXUS TWEAK: Calculate Counter-Bias (Conflict)
         # For BUY signal, look for SELL evidence in snapshot momentum
@@ -207,9 +233,11 @@ class SemiHFTStrategyV4(BaseStrategy):
         price  = getattr(f, "current_price", None) or getattr(f, "bid", 0.0) or \
                  (float(_m1[-1].get("close") or _m1[-1].get("Close") or 0) if _m1 else 0.0)
         equity = getattr(f, "equity", 500.0) or 500.0
+        atr_m5 = f.get_atr("M5") or 0.0
         rp = fast_risk(direction=direction, entry=price,
-                       candles_m1=f.candles.get("M1", []),
-                       equity=equity, pattern=micro.pattern)
+                       candles_m5=f.candles.get("M5", []),
+                       equity=equity, atr=atr_m5, strategy_id="semi_hft",
+                       pattern=micro.pattern)
         if not rp.valid:
             return StrategyResult(signal=None, confidence=0.0,
                                   reason=f"risk:{rp.reason}")

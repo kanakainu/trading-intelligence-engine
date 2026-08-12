@@ -6,18 +6,27 @@ from datetime import datetime, timezone
 # === SINGLETON LOCK ===
 PID_FILE = "/tmp/tie_production.pid"
 def acquire_singleton():
-    """Prevent duplicate instances."""
+    """Prevent duplicate instances. Auto-clears stale PID on restart."""
     if os.path.exists(PID_FILE):
         try:
             with open(PID_FILE) as f:
                 old_pid = int(f.read().strip())
+            if old_pid == os.getpid():
+                return  # Same process, skip
             os.kill(old_pid, 0)  # Check if process exists
-            print(f"ERROR: tie_production.py already running (PID {old_pid})", file=sys.stderr)
-            sys.exit(1)
-        except (ValueError, ProcessLookupError):
-            pass  # Stale PID file, continue
+            # Process alive — check if it's actually our script
+            try:
+                with open(f"/proc/{old_pid}/cmdline") as f:
+                    cmdline = f.read()
+                if "tie_production" not in cmdline:
+                    raise ProcessLookupError  # Different process reused PID
+            except (IOError, OSError):
+                raise ProcessLookupError  # Can't read cmdline — assume stale
+            sys.exit(0)  # Exit cleanly — duplicate prevention, no output needed
+        except (ValueError, ProcessLookupError, OSError):
+            os.remove(PID_FILE)  # Stale PID — clean up
     with open(PID_FILE, "w") as f:
-        f.write(str(os.getpid()))
+        f.write(str(os.getpid()) + "\n")
 
 acquire_singleton()
 # === END SINGLETON ===
@@ -41,7 +50,7 @@ from core.regime.regime_models import RegimeSnapshot, Regime, TrendDirection
 from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
 from core.strategy_manager.manager import StrategyManager
 from core.strategy.exit_orchestrator import ExitOrchestrator, ExitProfile
-# from strategies.bystra.strategy import BystraStrategy
+from strategies.bystra.strategy import BystraStrategy
 from strategies.aggressive.strategy import AggressiveStrategy
 from strategies.semi_hft.strategy import SemiHFTStrategyV4 as SemiHFTStrategy
 from strategies.aggressive.regime.regime_engine import AggressiveRegimeEngine
@@ -56,7 +65,6 @@ from runtime.hck_wire import push_decision
 from shared.news_sentinel import check_news_blackout
 from shared.regime_detector import RegimeDetector, MarketRegime
 from shared.regime_allocator import RegimeAllocator
-from shared.exhaustion_guard import ExhaustionGuard
 from core.rules.risk.risk_registry import build_risk_registry
 from core.rules.plugins.plugin_interface import RuleResult
 from detectors.common import find_swing_pivots, find_nearest_support, find_nearest_resistance, sl_buffer
@@ -66,6 +74,11 @@ import uuid
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)s %(message)s')
 log = logging.getLogger("TIE_Production")
+
+# Also write to file so dashboard can read fresh logs
+_fh = logging.FileHandler("/home/ubuntu/trading-intelligence-engine/logs/tie_production.log", mode="a")
+_fh.setFormatter(logging.Formatter('%(asctime)s %(name)s %(message)s'))
+logging.getLogger().addHandler(_fh)
 
 URL = 'https://chips-extension-extensions-wearing.trycloudflare.com'
 TOKEN = 'Jojo_56790@_000tUi_OO9'
@@ -80,14 +93,13 @@ broker.initialize()
 
 mgr = StrategyManager()
 orch = ExitOrchestrator(min_gate_rr=1.5)
-# mgr.load(BystraStrategy)
+mgr.load(BystraStrategy)
 mgr.load(AggressiveStrategy)
 mgr.load(SemiHFTStrategy)
 
 # Global Regime Detector (Nexus A12 style)
 regime_detector = RegimeDetector()
 regime_allocator = RegimeAllocator(regime_detector)
-exhaustion_guard = ExhaustionGuard()
 
 rt = MultiStrategyRuntime(mgr)
 # DISABLED: EntryMonitor submits Riri_ orders — duplicate engine, replaced by TIE_ path
@@ -425,10 +437,28 @@ while True:
             # === DECISION TRACE V2 ===
             trace = create_trace(scan_id=_sid, symbol=sym, strategy="TIE_V4")
 
+
             if decision.action != "WAIT":
-                # Override planner lot with aggressive dynamic lot
-                from strategies.semi_hft.fast_risk import _lot
-                decision.metadata["volume"] = _lot(equity)
+                # === VOLATILITY POSITION SIZING (GS Quant inspired) ===
+                from shared.volatility_sizing import calc_lot
+                atr_val = _features.atr.get("M5", 0) if hasattr(_features, "atr") else 0
+                
+                # Get strategy name for portfolio optimizer
+                _strat_key = decision.setup_name.split("_")[0].lower()
+                _strat_map = {"b": "bystra", "a": "aggressive", "s": "semi_hft"}
+                _strat_name = _strat_map.get(_strat_key, _strat_key)
+                
+                decision.metadata["volume"] = calc_lot(equity, atr_val, strategy_id=_strat_name)
+                
+                # === MEAN-REVERSION + WICK SPIKE (Boskuh Logic) ===
+                from shared.mean_reversion_filter import check as _mean_rev_check
+                mr_verdict = _mean_rev_check(_features, _features.candles, decision.action)
+                if not mr_verdict.allowed:
+                    observatory.log_gate(trace, "MeanRev", "FAIL", current_value=mr_verdict.z_score, reason=mr_verdict.reason)
+                    continue
+                if mr_verdict.is_spike:
+                    log.info(f"🚀 [SPIKE_CONFIRM] {decision.action} confirmed by Wick Rejection!")
+                
                 observatory.log_gate(trace, "Detector", "PASS", current_value=decision.confidence * 100, reason=f"setup={decision.setup_name} lot={decision.metadata['volume']}")
                 # --- ADAPTIVE EXIT ORCHESTRATOR ---
                 # FIX: entry_zone["high"] for BUY, entry_zone["low"] for SELL
@@ -441,17 +471,20 @@ while True:
                 _tp = decision.metadata.get("take_profit") or 0.0
                 
                 if _sl and _tp:
-                    # FIX #54b: normalize SL/TP side vs LIVE entry (replaces FIX #46)
+                    # FIX #54b: normalize SL/TP side vs LIVE entry using dynamic ATR buffer
+                    _atr = _features.get_atr("M5") or 2.0
+                    _buffer = max(_atr * 1.5, 3.0)  # Dynamic buffer based on volatility
+                    
                     if decision.action == "SELL":
                         if _sl <= _entry:
-                            _sl = _entry + 5.0
+                            _sl = _entry + _buffer
                         if _tp >= _entry:
-                            _tp = _entry - abs(_sl - _entry) * 1.5
+                            _tp = _entry - (_buffer * 1.5) # Default 1:1.5 RR for fallback
                     elif decision.action == "BUY":
                         if _sl >= _entry:
-                            _sl = _entry - 5.0
+                            _sl = _entry - _buffer
                         if _tp <= _entry:
-                            _tp = _entry + abs(_sl - _entry) * 1.5
+                            _tp = _entry + (_buffer * 1.5)
                     opt = orch.optimize(
                         strategy_id=decision.setup_name,
                         symbol=sym,
@@ -508,16 +541,67 @@ while True:
                     "timestamp": datetime.now(timezone.utc).isoformat(),
                 }
 
+                # === ⚔️ NEXUS CROSS-STRATEGY DEBATE (Global Direction Lock) ===
+                if decision.action != "WAIT":
+                    # Check for existing positions in the OPPOSITE direction
+                    _opp_pos_count = sum(1 for p in raw_positions 
+                                     if p.get("direction", p.get("type", "")).upper() != decision.action.upper()
+                                     and p.get("symbol", "") == sym)
+                    
+                    if _opp_pos_count > 0:
+                        # Exception: Bystra can trade reversal if confidence is very high (>85%)
+                        _is_bystra = "B_" in decision.setup_name
+                        if not (_is_bystra and decision.confidence > 0.85):
+                            log.warning(f"⚔️ CROSS-DEBATE BLOCK: {decision.setup_name} {decision.action} rejected! {_opp_pos_count} opposing positions open.")
+                            setup_detail["status"] = "DEBATE_CONFLICT"
+                            setup_detail["gate_reason"] = f"Conflict: {_opp_pos_count} opposing positions open"
+                            observatory.log_gate(trace, "Debate", "FAIL", reason="hedge_conflict")
+                            continue
+
                 if all(r.status == "APPROVE" for r in risk_results.values()):
-                    dedup_key = (sym, decision.setup_name, decision.action)
-                    now = time.time()
-                    last_seen = _seen_setups.get(dedup_key, 0.0)
-                    if now - last_seen < DEDUP_WINDOW:
-                        log.info(f"Dedup: skip {decision.setup_name} {decision.action} {sym} (seen {(now-last_seen):.0f}s ago)")
-                        setup_detail["status"] = "DEDUP"
-                        setup_detail["gate_reason"] = f"Dedup: seen {(now-last_seen):.0f}s ago"
-                        observatory.log_gate(trace, "Dedup", "FAIL", reason=f"seen {(now-last_seen):.0f}s ago")
+                    # Adaptive max positions per strategy: TRENDING=5, else=3
+                    _is_trending = getattr(_regime_snap, "regime", None) and _regime_snap.regime.value == "TRENDING"
+                    _max_pos = 5 if _is_trending else 3
+                    _strat_pos_count = sum(1 for p in raw_positions
+                                          if p.get("symbol", "") == sym
+                                          and p.get("comment", "").lower().startswith(_strat_name[:3]))
+                    _same_dir_count = sum(1 for p in raw_positions
+                                         if p.get("symbol", "") == sym
+                                         and p.get("direction", p.get("type", "")).upper() == decision.action.upper())
+                    if _strat_pos_count >= _max_pos or _same_dir_count >= _max_pos:
+                        log.info(f"MAX_POSITIONS: skip {decision.setup_name} {sym} (strat={_strat_pos_count} dir={_same_dir_count} max={_max_pos})")
+                        setup_detail["status"] = "BLOCKED"
+                        setup_detail["gate_reason"] = f"max_positions:{_same_dir_count}/{_max_pos}"
+                        observatory.log_gate(trace, "MaxPositions", "FAIL", reason=f"dir={_same_dir_count} strat={_strat_pos_count} max={_max_pos}")
                     else:
+                        dedup_key = (sym, decision.setup_name, decision.action)
+                        now = time.time()
+                        last_seen = _seen_setups.get(dedup_key, 0.0)
+
+                        # Bug fix: actually enforce DEDUP_WINDOW
+                        if now - last_seen < DEDUP_WINDOW:
+                            log.info(f"Dedup Time: skip {decision.setup_name} {decision.action} {sym} (cooldown {now - last_seen:.1f}s < {DEDUP_WINDOW}s)")
+                            setup_detail["status"] = "DEDUP"
+                            setup_detail["gate_reason"] = f"cooldown_{int(now - last_seen)}s"
+                            observatory.log_gate(trace, "Dedup", "FAIL", reason=f"cooldown_{int(now - last_seen)}s")
+                            continue
+
+                        # Radius dedup — block if entry within 3.0 points of ANY same-dir position
+                        # Bug fix: check _too_close independently (not gated on _any_same_dir)
+                        _too_close = any(
+                            abs(float(p.get("price", p.get("entry_price", 0))) - price) < 3.0
+                            for p in raw_positions
+                            if p.get("direction", p.get("type", "")).upper() == decision.action.upper()
+                            and p.get("symbol", "") == sym
+                        )
+                        if _too_close:
+                            log.info(f"Dedup Radius: skip {decision.setup_name} {decision.action} {sym} (too close to existing position)")
+                            setup_detail["status"] = "DEDUP"
+                            setup_detail["gate_reason"] = "price_zone_exists"
+                            observatory.log_gate(trace, "Dedup", "FAIL", reason="price_zone_exists")
+                            continue
+
+                        # Record AFTER passing dedup (not before gates)
                         _seen_setups[dedup_key] = now
                         
                         # === TRADING INTELLIGENCE GATES ===
@@ -530,17 +614,16 @@ while True:
                             observatory.log_gate(trace, "Governor", "FAIL", reason=gov_reason)
                             _blocked = True
 
-                        # === EXHAUSTION GUARD (Multi-TF conflict) ===
-                        exh = exhaustion_guard.check(_features, candles, decision.action)
-                        if not exh.allowed:
-                            log.info(f"Exhaustion Guard: ❌ BLOCK {decision.action} — {exh.reason} (vwap_dist={exh.vwap_dist_atr:.1f}x ATR, M15={exh.m15_trend})")
-                            setup_detail["status"] = "EXHAUSTION_BLOCK"
-                            setup_detail["gate_reason"] = exh.reason
-                            observatory.log_gate(trace, "Exhaustion", "FAIL", reason=exh.reason)
-                            _blocked = True
-                        elif "warn" in exh.reason:
-                            log.info(f"Exhaustion Guard: ⚠️ WARN {decision.action} — {exh.reason}")
-                            observatory.log_gate(trace, "Exhaustion", "WARN", reason=exh.reason)
+                        # === MOMENTUM GATE — candle must GAS before entry ===
+                        if not _blocked:
+                            from shared.momentum_gate import check as _mom_check
+                            _mom = _mom_check(_features, candles, decision.action, setup_name=decision.setup_name)
+                            if not _mom.allowed:
+                                log.info(f"Momentum Gate: ❌ BLOCK {decision.action} — {_mom.reason}")
+                                setup_detail["status"] = "MOMENTUM_BLOCK"
+                                setup_detail["gate_reason"] = _mom.reason
+                                observatory.log_gate(trace, "Momentum", "FAIL", reason=_mom.reason)
+                                _blocked = True
 
                         # Extract strategy key from setup_name (B_BUY -> bystra, A_SELL -> aggressive, S_BUY -> semi_hft)
                         strat_key = decision.setup_name.split("_")[0].lower()
@@ -654,6 +737,10 @@ while True:
             if contracts:
                 # DISABLED 2026-08-07: manual_trailing_v2 handles all SL/TP trailing
                 pass  # pos_monitor.tick(pos_states, contracts, market_update)
+
+            # === BASKET TP (Centralized in Engine) ===
+            from shared.basket_manager import process_baskets
+            process_baskets(client, pos_states)
             
             # Build pair_data for dashboard
             pair_data = {
@@ -673,9 +760,9 @@ while True:
         
         except Exception as e:
             import traceback
-            log.error(f"Error scanning {sym}: {e}\n{traceback.format_exc()}")
+            log.error(f"Error scanning {sym}: {e}\\n{traceback.format_exc()}")
     
-    # Write aggregated JSON AFTER all symbols scanned
+    # Write aggregated JSON AFTER all symbols scanned (INSIDE while True loop)
     try:
         account_data = broker.get_account_info()
         balance = account_data.balance

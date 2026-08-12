@@ -1,151 +1,168 @@
-"""Pullback Entry Filter — M5/M15 aligned pullback entries.
+"""Pullback Filter v2 — Fibo Retracement + M5 Momentum.
 
-Filters out:
-- BUY at M5/M15 local tops (no pullback)
-- SELL at M5/M15 local bottoms (no pullback)
-- Direction against M15 trend
-
-Only allows:
-- BUY on pullback in M15 UP trend (M5 price at/near support)
-- SELL on pullback in M15 DOWN trend (M5 price at/near resistance)
+Logic:
+- Trend-following (M15 UP + BUY, M15 DOWN + SELL): allow directly
+- Counter-trend (M15 DOWN + BUY, M15 UP + SELL):
+    → Calc Fibo retrace from M15 swing H/L (last 20 candles)
+    → Price in 50% / 61.8% / 78.6% zone (±tolerance)?
+    → M5 last closed candle GAS toward direction (body > 0.3x ATR)?
+    → Both YES → allow (counter-trend reversal confirmed)
+    → Any NO → block
+- M15 FLAT + regime TRENDING ≥70: allow trend-following direction
 """
 from dataclasses import dataclass
-from typing import Optional
 import logging
 
 logger = logging.getLogger("pullback_filter")
+
+FIBO_LEVELS = [0.5, 0.618, 0.786]
+FIBO_TOLERANCE = 0.015   # ±1.5% of swing range
+M5_BODY_ATR_RATIO = 0.3  # M5 candle body must be >= 30% of ATR
+M15_LOOKBACK = 20        # candles for swing H/L detection
+
 
 @dataclass
 class PullbackResult:
     allowed: bool
     reason: str
-    m15_trend: str        # "UP" | "DOWN" | "FLAT"
-    m5_pullback_ok: bool  # True if price pulled back enough
-    pullback_pct: float   # How far from extreme (0-1)
+    m15_trend: str
+    m5_pullback_ok: bool
+    pullback_pct: float
+
+
+def _swing(candles: list) -> tuple:
+    """Return (swing_high, swing_low) from candle list."""
+    highs = [float(c.get("high", 0)) for c in candles]
+    lows  = [float(c.get("low", 0)) for c in candles]
+    return max(highs), min(lows)
+
+
+def _m15_trend(m15: list, lookback: int = 3) -> str:
+    closes = [float(c["close"]) for c in m15[-lookback:]]
+    ups = sum(1 for i in range(1, len(closes)) if closes[i] > closes[i-1])
+    downs = lookback - 1 - ups
+    if ups >= lookback - 1:
+        return "UP"
+    if downs >= lookback - 1:
+        return "DOWN"
+    return "FLAT"
+
+
+def _in_fibo_zone(price: float, swing_high: float, swing_low: float, direction: str) -> tuple:
+    """Returns (in_zone: bool, level: float). BUY = retrace from high, SELL = retrace from low."""
+    rng = swing_high - swing_low
+    if rng <= 0:
+        return False, 0.0
+    for lvl in FIBO_LEVELS:
+        if direction == "BUY":
+            zone = swing_high - rng * lvl
+        else:
+            zone = swing_low + rng * lvl
+        if abs(price - zone) <= rng * FIBO_TOLERANCE:
+            return True, lvl
+    return False, 0.0
+
+
+def _m5_gas(m5: list, direction: str, atr: float) -> bool:
+    """Last closed M5 candle body > 0.3x ATR and confirms direction."""
+    if len(m5) < 2:
+        return True  # no data = pass
+    c = m5[-2]
+    o, cl = float(c.get("open", 0)), float(c.get("close", 0))
+    body = abs(cl - o)
+    if atr > 0 and body < atr * M5_BODY_ATR_RATIO:
+        return False
+    if direction == "BUY" and cl <= o:
+        return False
+    if direction == "SELL" and cl >= o:
+        return False
+    return True
+
 
 class PullbackFilter:
-    """
-    Pullback Entry Filter for M5/M15.
-    
-    Logic:
-    1. Detect M15 trend (last 5 candles)
-    2. Detect M5 pullback depth vs recent range
-    3. Allow entry only if:
-       - M15 trend aligns with direction
-       - M5 price pulled back at least 30% from extreme
-    """
-    
-    M15_LOOKBACK = 3      # candles for M15 trend (was 5, faster response)
-    M5_LOOKBACK = 20      # candles for M5 range
-    MIN_PULLBACK = 0.3    # 30% pullback from extreme
-    M15_MIN_AGREE = 2     # at least 2/3 candles same direction (was 3/5)
-    
     def check(self, candles: dict, direction: str, current_price: float,
-              regime: str = "", regime_strength: int = 0) -> PullbackResult:
-        """
-        candles: dict with M5, M15 candle lists [{"open", "high", "low", "close"}, ...]
-        direction: "BUY" | "SELL"
-        current_price: current bid/ask price
-        """
+              regime: str = "", regime_strength: int = 0,
+              features=None) -> PullbackResult:
+
         if direction not in ("BUY", "SELL"):
             return PullbackResult(False, "invalid_direction", "FLAT", False, 0.0)
-        
+
         m15 = candles.get("M15", [])
-        m5 = candles.get("M5", [])
-        
-        if len(m15) < self.M15_LOOKBACK or len(m5) < self.M5_LOOKBACK:
-            return PullbackResult(False, "insufficient_candles", "FLAT", False, 0.0)
-        
-        # 1. M15 Trend Detection
-        m15_closes = [float(c["close"]) for c in m15[-self.M15_LOOKBACK:]]
-        ups = sum(1 for i in range(1, len(m15_closes)) if m15_closes[i] > m15_closes[i-1])
-        downs = self.M15_LOOKBACK - 1 - ups
-        
-        if ups >= self.M15_MIN_AGREE:
-            m15_trend = "UP"
-        elif downs >= self.M15_MIN_AGREE:
-            m15_trend = "DOWN"
-        else:
-            m15_trend = "FLAT"
-        
-        # 2. Check alignment
-        # Opsi 2: bypass M15 FLAT if regime TRENDING strength >= 70, trend-following only
-        trending_override = (str(regime).upper() == "TRENDING" and regime_strength >= 70)
+        m5  = candles.get("M5", [])
 
-        if direction == "BUY" and m15_trend != "UP":
-            # Bypass only if TRENDING + M15 FLAT (not DOWN) — trend-following
-            if not (trending_override and m15_trend == "FLAT"):
-                return PullbackResult(False, f"BUY vs M15 {m15_trend}", m15_trend, False, 0.0)
-        if direction == "SELL" and m15_trend != "DOWN":
-            # SELL during TRENDING = counter-trend, NEVER bypass
-            return PullbackResult(False, f"SELL vs M15 {m15_trend}", m15_trend, False, 0.0)
-        
-        # 3. M5 Pullback Check
-        m5_highs = [float(c["high"]) for c in m5[-self.M5_LOOKBACK:]]
-        m5_lows = [float(c["low"]) for c in m5[-self.M5_LOOKBACK:]]
-        m5_range_high = max(m5_highs)
-        m5_range_low = min(m5_lows)
-        m5_range = m5_range_high - m5_range_low
-        
-        if m5_range == 0:
-            return PullbackResult(False, "m5_range_zero", m15_trend, False, 0.0)
-        
-        if direction == "BUY":
-            # Distance from M5 low (support) - want price near low
-            dist_from_low = current_price - m5_range_low
-            pullback_pct = dist_from_low / m5_range  # 0 = at low, 1 = at high
-            # Allow if price pulled back to lower 40% of range (near support)
-            m5_pullback_ok = pullback_pct <= 0.4
-            reason = f"BUY pullback pct={pullback_pct:.2f} (need <=0.4)"
-        else:  # SELL
-            # Distance from M5 high (resistance) - want price near high
-            dist_from_high = m5_range_high - current_price
-            pullback_pct = dist_from_high / m5_range  # 0 = at high, 1 = at low
-            # Allow if price pulled back to upper 40% of range (near resistance)
-            m5_pullback_ok = pullback_pct <= 0.4
-            reason = f"SELL pullback pct={pullback_pct:.2f} (need <=0.4)"
-        
-        if not m5_pullback_ok:
-            # TRENDING regime bypass: M15 already confirmed, skip zone check
+        if len(m15) < 3:
+            return PullbackResult(True, "no_m15_data_pass", "FLAT", True, 0.5)
+
+        # Regime conflict guard: block counter-regime entries
+        if regime and regime_strength:
+            if str(regime).upper() == "TRENDING" and regime_strength >= 80:
+                if direction == "SELL":
+                    return PullbackResult(False,
+                        f"regime_conflict TRENDING={regime_strength} blocks SELL",
+                        "UP", False, 0.5)
+                if direction == "BUY" and regime_strength >= 90:
+                    pass  # BUY in strong TRENDING = ok
+
+        # EMA20 phase filter: expansion/accumulation/distribution
+        ema20 = features.get_ema("M5", 20) if features and hasattr(features, "get_ema") else None
+        if ema20 and ema20 > 0:
+            dist_pct = (current_price - ema20) / ema20 * 100
+            # Expansion UP (>0.15%) → block SELL
+            if dist_pct > 0.15 and direction == "SELL":
+                return PullbackResult(False,
+                    f"ema20_expansion_up dist={dist_pct:.2f}% blocks SELL",
+                    "UP", False, 0.5)
+            # Expansion DOWN (<-0.15%) → block BUY
+            elif dist_pct < -0.15 and direction == "BUY":
+                return PullbackResult(False,
+                    f"ema20_expansion_down dist={dist_pct:.2f}% blocks BUY",
+                    "DOWN", False, 0.5)
+            # Accumulation/Distribution zone (±0.15%) → both ok
+
+        trend = _m15_trend(m15)
+
+        # ATR for M5 momentum check
+        atr = 0.0
+        if features and hasattr(features, "atr") and isinstance(features.atr, dict):
+            atr = float(features.atr.get("M5", 0.0))
+
+        # Trend-following
+        is_trend = (trend == "UP" and direction == "BUY") or \
+                   (trend == "DOWN" and direction == "SELL")
+        # FLAT regime override
+        if trend == "FLAT":
+            trending_override = str(regime).upper() == "TRENDING" and regime_strength >= 70
             if trending_override:
-                return PullbackResult(True, f"{direction} trending_override (skip zone)", m15_trend, True, pullback_pct)
-            return PullbackResult(False, reason, m15_trend, False, pullback_pct)
-        
-        return PullbackResult(True, reason, m15_trend, True, pullback_pct)
+                is_trend = True
+            else:
+                return PullbackResult(False, f"m15_flat_no_trend regime={regime} str={regime_strength}",
+                                      "FLAT", False, 0.5)
 
+        if is_trend:
+            # Trend-following: just check M5 gas
+            gas_ok = _m5_gas(m5, direction, atr)
+            if not gas_ok:
+                return PullbackResult(False, f"m5_weak_trend dir={direction}", trend, False, 0.5)
+            return PullbackResult(True, f"trend_follow_{trend}_m5_gas_ok", trend, True, 0.5)
 
-if __name__ == "__main__":
-    # Self-test
-    pf = PullbackFilter()
-    
-    # Create test candles: M15 UP trend, M5 in range
-    m15_candles = [
-        {"close": 4350}, {"close": 4352}, {"close": 4355}, 
-        {"close": 4357}, {"close": 4360}  # UP trend
-    ]
-    m5_candles = []
-    # M5 range: 4355 - 4365
-    for i in range(20):
-        m5_candles.append({"high": 4365, "low": 4355, "close": 4360})
-    
-    # Test BUY at 4358 (near low = 4355, pullback ~30%)
-    candles = {"M15": m15_candles, "M5": m5_candles}
-    r = pf.check(candles, "BUY", 4358.0)
-    assert r.allowed, f"Expected allow, got {r.reason}"
-    print(f"BUY at 4358: {r.allowed} - {r.reason}")
-    
-    # Test BUY at 4363 (near high = 4365, pullback ~80%) - should REJECT
-    r2 = pf.check(candles, "BUY", 4363.0)
-    assert not r2.allowed, f"Expected reject, got allow"
-    print(f"BUY at 4363: {r2.allowed} - {r2.reason}")
-    
-    # Test SELL with M15 DOWN
-    m15_down = [
-        {"close": 4360}, {"close": 4357}, {"close": 4355},
-        {"close": 4352}, {"close": 4350}
-    ]
-    r3 = pf.check({"M15": m15_down, "M5": m5_candles}, "SELL", 4362.0)
-    assert r3.allowed, f"Expected allow, got {r3.reason}"
-    print(f"SELL at 4362: {r3.allowed} - {r3.reason}")
-    
-    print("\nPullbackFilter self-check OK: 3/3 pass")
+        # Counter-trend: need Fibo zone + M5 gas
+        m15_slice = m15[-M15_LOOKBACK:] if len(m15) >= M15_LOOKBACK else m15
+        sw_high, sw_low = _swing(m15_slice)
+        in_zone, fibo_lvl = _in_fibo_zone(current_price, sw_high, sw_low, direction)
+
+        if not in_zone:
+            rng = sw_high - sw_low
+            pct = (current_price - sw_low) / rng if rng > 0 else 0.5
+            return PullbackResult(False,
+                f"counter_trend_not_in_fibo dir={direction} m15={trend} price={current_price:.2f} H={sw_high:.2f} L={sw_low:.2f}",
+                trend, False, pct)
+
+        gas_ok = _m5_gas(m5, direction, atr)
+        if not gas_ok:
+            return PullbackResult(False,
+                f"counter_trend_fibo{fibo_lvl:.3f}_m5_weak dir={direction}",
+                trend, False, fibo_lvl)
+
+        return PullbackResult(True,
+            f"counter_trend_fibo{fibo_lvl:.3f}_m5_gas_ok dir={direction} m15={trend}",
+            trend, True, fibo_lvl)

@@ -170,6 +170,16 @@ class RiriMicroScalpEngine(BaseStrategy):
                                               metadata={"score": es.score, "liq_vac": liq_vac["reason"]})
         logger.info(f"[LIQ_VACUUM] {liq_vac['grade']} {liq_vac['reason']} dir={direction}")
 
+        # 5b. Z-Score Overextension Guard (Goldman Sachs inspired)
+        if direction != "NONE":
+            from shared.zscore_filter import check as _zscore_check
+            z_verdict = _zscore_check(features, features.candles, direction)
+            if not z_verdict.allowed:
+                return StrategyResult(signal=None, confidence=0.0,
+                                      reason=f"zscore:{z_verdict.reason}",
+                                      metadata={"score": es.score, "z_score": z_verdict.z_score})
+            logger.info(f"[ZSCORE] {z_verdict.reason}")
+
         # 7. Final Entry Score Check (after all guards)
         if not es.entry_ok:
             return StrategyResult(signal=None, confidence=0.0, reason=f"rme:{es.reason}",
@@ -180,7 +190,22 @@ class RiriMicroScalpEngine(BaseStrategy):
             return StrategyResult(signal=None, confidence=0.0, reason="price_zero",
                                   metadata={"score": es.score})
 
-        # 8. Signal
+        # 8. Calc SL/TP from M5 swing pivot (more stable than M1)
+        _c5 = features.candles.get("M5", candles_m5)
+        _pivot_lows  = [float(c.get("low",  c.get("Low",  0))) for c in _c5[-10:] if c]
+        _pivot_highs = [float(c.get("high", c.get("High", 0))) for c in _c5[-10:] if c]
+        _atr_dist = atr * 1.5 if atr > 0 else 2.0
+        if direction == "BUY":
+            _pivot = min(_pivot_lows) if _pivot_lows else (price - _atr_dist)
+            _sl = max(_pivot - 0.5, price - _atr_dist)
+            _sl_dist = max(price - _sl, 1.0)
+        else:
+            _pivot = max(_pivot_highs) if _pivot_highs else (price + _atr_dist)
+            _sl = min(_pivot + 0.5, price + _atr_dist)
+            _sl_dist = max(_sl - price, 1.0)
+        _tp = (price + _sl_dist * 1.5) if direction == "BUY" else (price - _sl_dist * 1.5)
+
+        # 9. Signal
         sig = Signal(
             signal_id=str(uuid.uuid4())[:8],
             strategy=self.id,
@@ -195,9 +220,10 @@ class RiriMicroScalpEngine(BaseStrategy):
                 "micro": micro, "liquidity": liq, "vwap": vwap_sc,
                 "trend": trend, "session": sess, "state": snap.state,
                 "liq_vacuum_grade": liq_vac['grade'], "liq_vacuum_reason": liq_vac['reason'],
+                "sl": round(_sl, 3), "tp": round(_tp, 3),
             }
         )
-        logger.info(f"RME {direction} score={es.score:.1f} sym={features.symbol} liq_vac={liq_vac['grade']}")
+        logger.info(f"RME {direction} score={es.score:.1f} sym={features.symbol} SL={_sl:.3f} TP={_tp:.3f} liq_vac={liq_vac['grade']}")
         return StrategyResult(
             signal=sig,
             confidence=es.score,
@@ -210,7 +236,9 @@ class RiriMicroScalpEngine(BaseStrategy):
                 "liquidity": liq,
                 "vwap": vwap_sc,
                 "trend": trend,
-                "liq_vac": liq_vac['reason'], # Add to top-level metadata
+                "sl": round(_sl, 3),
+                "tp": round(_tp, 3),
+                "liq_vac": liq_vac['reason'],
             }
         )
 
