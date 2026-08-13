@@ -485,21 +485,25 @@ while True:
                             _sl = _entry - _buffer
                         if _tp <= _entry:
                             _tp = _entry + (_buffer * 1.5)
-                    opt = orch.optimize(
-                        strategy_id=decision.setup_name,
-                        symbol=sym,
-                        entry=_entry,
-                        sl=_sl,
-                        tp=_tp,
-                        direction=decision.action,
-                    )
-                    decision.metadata["sl"] = opt.sl
-                    decision.metadata["take_profit"] = opt.tp
-                    decision.metadata["risk_reward"] = opt.rr
-                    decision.metadata["trailing_type"] = opt.trailing_type
-                    decision.metadata["is_adjusted"] = opt.adjusted
-                    log.info("ExitOrchestrator adjusted SL/TP for %s: new SL=%.2f TP=%.2f RR=%.2f (adj=%s)",
-                             decision.setup_name, opt.sl, opt.tp, opt.rr, opt.adjusted)
+                    # ExitOrchestrator disabled — manual_trailing_v2 handle all SL/TP modify
+                    # opt = orch.optimize(
+                    #     strategy_id=decision.setup_name,
+                    #     symbol=sym,
+                    #     entry=_entry,
+                    #     sl=_sl,
+                    #     tp=_tp,
+                    #     direction=decision.action,
+                    # )
+                    # decision.metadata["sl"] = opt.sl
+                    # decision.metadata["take_profit"] = opt.tp
+                    # decision.metadata["risk_reward"] = opt.rr
+                    # decision.metadata["trailing_type"] = opt.trailing_type
+                    # decision.metadata["is_adjusted"] = opt.adjusted
+                    # log.info("ExitOrchestrator adjusted SL/TP for %s: new SL=%.2f TP=%.2f RR=%.2f (adj=%s)",
+                    #          decision.setup_name, opt.sl, opt.tp, opt.rr, opt.adjusted)
+                    decision.metadata["sl"] = _sl
+                    decision.metadata["take_profit"] = _tp
+                    decision.metadata["risk_reward"] = round(abs(_tp - _entry) / abs(_entry - _sl), 2) if abs(_entry - _sl) > 0 else 0.0
 
                 log.info(f"Setup detected: {decision.setup_name} {decision.action} conf={decision.confidence:.0%}")
                 
