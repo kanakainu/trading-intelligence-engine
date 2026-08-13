@@ -264,31 +264,32 @@ def run():
             #     time.sleep(POLL_SEC)
             #     continue
 
-            # === ACTIVE MODE — TIE mati ===
-            if not tie_positions:
-                time.sleep(POLL_SEC)
-                continue
+            # === ACTIVE MODE — TIE mati (only if tie_alive=False) ===
+            if not tie_alive:
+                if not tie_positions:
+                    time.sleep(POLL_SEC)
+                    continue
 
-            log.warning(f"[ACTIVE] TIE heartbeat lost > {HEARTBEAT_TIMEOUT_SEC}s. Taking over trailing...")
+                log.warning(f"[ACTIVE] TIE heartbeat lost > {HEARTBEAT_TIMEOUT_SEC}s. Taking over trailing...")
 
-            for pos in tie_positions:
-                ticket      = str(pos.get("ticket"))
-                profile_key = extract_profile_key(pos.get("comment", ""))
-                profile     = PROFILES.get(profile_key, PROFILES["aggressive"])
+                for pos in tie_positions:
+                    ticket      = str(pos.get("ticket"))
+                    profile_key = extract_profile_key(pos.get("comment", ""))
+                    profile     = PROFILES.get(profile_key, PROFILES["aggressive"])
 
-                new_sl = compute_new_sl(pos, profile)
-                if new_sl:
-                    try:
-                        modify_order(ticket, new_sl, tp=pos.get("tp"))
-                        log.info(f"[{ticket}] MODIFIED SL → {new_sl}")
-                    except Exception as e:
-                        log.error(f"[{ticket}] Modify failed: {e}")
+                    new_sl = compute_new_sl(pos, profile)
+                    if new_sl:
+                        try:
+                            modify_order(ticket, new_sl, tp=pos.get("tp"))
+                            log.info(f"[{ticket}] MODIFIED SL → {new_sl}")
+                        except Exception as e:
+                            log.error(f"[{ticket}] Modify failed: {e}")
 
-            # Cleanup peak untuk posisi yg udah close
-            active_tickets = {str(p.get("ticket")) for p in tie_positions}
-            for t in list(_peak):
-                if t not in active_tickets:
-                    del _peak[t]
+                # Cleanup peak untuk posisi yg udah close
+                active_tickets = {str(p.get("ticket")) for p in tie_positions}
+                for t in list(_peak):
+                    if t not in active_tickets:
+                        del _peak[t]
 
             time.sleep(POLL_SEC)
 
