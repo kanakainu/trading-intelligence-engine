@@ -1,5 +1,19 @@
 {
-    "basket_tp_threshold": 4.0,
-    "basket_tp_min_pos": 2,
-    "news_filter_enabled": true
+    "volatility_sizing": true,
+    "zscore_filter": true,
+    "mean_reversion_filter": true,
+    "auto_allocation": true,
+    "news_filter": true,
+    "basket_tp": true,
+    "basket_tp_threshold": 5.0,
+    "basket_tp_min_pos": 3,
+    "volatility_risk_pct": 0.01,
+    "volatility_min_lot": 0.01,
+    "volatility_max_lot": 0.15,
+    "candidate_mode": false,
+    "late_zone_dist_max": 2.0,
+    "late_vwap_dist_max": 2.5,
+    "late_extension_max": 1.8,
+    "late_room_min": 0.8,
+    "late_displacement_max": 1.5
 }

@@ -260,6 +260,11 @@ class SemiHFTStrategyV4(BaseStrategy):
             pattern          = micro.pattern,
             counter_bias_score = counter_bias,
         )
+        # DEBUG: log scoring components
+        logger.info(f"[SEMI] SCORE: mom={self._snap.momentum_score:.1f} vel={self._vel:.1f} "
+                    f"liq={self._liq:.1f} vol={self._vol:.1f} pulse={self._pulse:.1f} "
+                    f"micro={micro.score:.1f} counter_bias={counter_bias:.1f} "
+                    f"TOTAL={es.score:.1f} THRESH=60.0 dir={direction} entry_ok={es.entry_ok}")
         if not es.entry_ok:
             return StrategyResult(signal=None, confidence=0.0,
                                   reason=f"entry_low:{es.score:.0f}",

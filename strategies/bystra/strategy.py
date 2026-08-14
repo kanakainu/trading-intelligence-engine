@@ -106,6 +106,57 @@ class BystraStrategy(BaseStrategy):
             except Exception as e:
                 logger.warning("Zone blacklist save failed: %s", e)
         entry_zone = md.get("entry_zone", {})
+        _dir_str = "BUY" if direction == Direction.BUY else "SELL"
+
+        # === SHARED PIPELINE WIRING (NEW) ===
+        _c5 = getattr(market_ctx, "candles", {}).get("M5", [])
+        _c15 = getattr(market_ctx, "candles", {}).get("M15", [])
+        _c1 = getattr(market_ctx, "candles", {}).get("M1", [])
+        _atr = getattr(market_ctx, "atr", 2.0) or 2.0
+
+        # 1. Location Engine
+        try:
+            from shared.location_engine import evaluate as eval_location, LocationGrade
+            _loc = eval_location(_dir_str, current_price, _c5, _c15, _atr)
+            if _loc.grade == LocationGrade.BAD:
+                logger.info(f"Bystra BLOCK: BAD Location ({_loc.reason})")
+                return StrategyResult(signal=None, confidence=0.0, reason=f"bad_location:{_loc.reason}")
+        except Exception as e:
+            logger.warning(f"Bystra LocationEngine error: {e}")
+            _loc = None
+
+        # 2. Trigger Engine (M1)
+        try:
+            from shared.trigger_engine import evaluate as eval_trigger, TriggerSignal
+            _trig = eval_trigger(_dir_str, _c1, _atr) # Use M5 ATR for normalization
+            if _trig.signal != TriggerSignal.ARMED:
+                logger.info(f"Bystra WAIT: No M1 Trigger ({_trig.reason})")
+                return StrategyResult(signal=None, confidence=0.0, reason=f"no_trigger:{_trig.reason}")
+        except Exception as e:
+            logger.warning(f"Bystra TriggerEngine error: {e}")
+            _trig = None
+
+        # 3. Telemetry (candidates.db)
+        try:
+            from shared.entry_telemetry import log_candidate, CandidateRecord
+            log_candidate(CandidateRecord(
+                strategy="Bystra",
+                symbol="XAUUSD",
+                direction=_dir_str,
+                regime=str(getattr(market_ctx, "regime", "UNKNOWN")),
+                setup_type=best.value,
+                location_grade=str(_loc.grade.name) if _loc else "UNKNOWN",
+                location_score=_loc.score if _loc else 0.0,
+                vwap_dist_atr=getattr(market_ctx, "vwap_distance_atr", 0.0),
+                available_room_atr=_loc.available_room_atr if _loc else 0.0,
+                trigger_signal=str(_trig.signal.name) if _trig else "UNKNOWN",
+                trigger_strength=_trig.strength if _trig else 0.0,
+                setup_quality=best.confidence * 100,
+                entry_price=current_price,
+                decision="ENTRY"
+            ))
+        except Exception as e:
+            logger.warning(f"Bystra Telemetry error: {e}")
 
         signal = Signal(
             signal_id=str(uuid.uuid4()),

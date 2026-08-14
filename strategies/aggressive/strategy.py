@@ -227,6 +227,10 @@ class RiriMicroScalpEngine(BaseStrategy):
             direction=direction,
             counter_bias_score=counter_bias,
         )
+        # DEBUG: log scoring components
+        logger.info(f"[RME] SCORE: mom={mom:.1f} vel={vel:.1f} micro={micro:.1f} "
+                    f"trend={trend:.1f} counter_bias={counter_bias:.1f} "
+                    f"TOTAL={es.score:.1f} THRESH=60.0 dir={direction}")
 
         # --- Riri's Nexus + XAU-60 Guards (Aggressive Mode) ---
 
