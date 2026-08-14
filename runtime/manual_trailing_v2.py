@@ -8,39 +8,53 @@ MODE:
 
 Hedge Close Logic:
 - Deteksi BUY + SELL open bersamaan per symbol
-- Kalau total floating profit semua posisi > HEDGE_CLOSE_USD → close semua
+- Kalau total floating profit semua posisi > current_hedge_close → close semua
 
 Profiles:
 - bystra:     start $3.0, dist $2.5, be_lock $1.0
 - aggressive: start $2.0, dist $0.5, be_lock $1.0
 - semi_hft:   start $2.0, dist $0.5, be_lock $1.0
 """
-import sys, os, time, logging, requests, json
+import sys, os, time, logging, requests, json, yaml
+from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("ManualTrailingV2")
 
-# ========= CONFIG =========
+# ========= DYNAMIC CONFIG =========
+CONFIG_DIR = Path("/home/ubuntu/trading-intelligence-engine/config")
+TRAILING_CONFIG_PATH = CONFIG_DIR / "trailing_profiles.yaml"
+FEATURES_CONFIG_PATH = CONFIG_DIR / "features.json"
+
+def load_dynamic_config():
+    profiles = {"bystra": {"start": 3.0, "dist": 2.5}, "aggressive": {"start": 1.5, "dist": 0.8}, "semi_hft": {"start": 1.5, "dist": 1.0}}
+    be_lock_usd = 1.5
+    hedge_close_usd = 3.0
+    try:
+        if TRAILING_CONFIG_PATH.exists():
+            with open(TRAILING_CONFIG_PATH) as f: 
+                cfg = yaml.safe_load(f)
+                profiles = cfg.get("profiles", profiles)
+                first_strat = list(profiles.keys())[0]
+                be_lock_usd = profiles[first_strat].get("be_lock", be_lock_usd)
+        if FEATURES_CONFIG_PATH.exists():
+            with open(FEATURES_CONFIG_PATH) as f:
+                fcfg = json.load(f)
+                hedge_close_usd = fcfg.get("basket_tp_threshold", hedge_close_usd)
+    except: pass
+    return profiles, be_lock_usd, hedge_close_usd
 POLL_SEC             = 5
 URL                  = os.getenv("MT5_GATEWAY_URL",   "https://chips-extension-extensions-wearing.trycloudflare.com")
 TOKEN                = os.getenv("MT5_GATEWAY_TOKEN", "Jojo_56790@_000tUi_OO9")
-HEADERS              = {"Authorization": f"Bearer {TOKEN}"}
 TIE_HEARTBEAT_PATH   = "/tmp/tie_production_heartbeat.txt"
 HEARTBEAT_TIMEOUT_SEC = 30
 
 # Hedge close trigger — kalau BUY+SELL open bersamaan & total profit > ini → close semua
-HEDGE_CLOSE_USD = 3.0
 
 # BE lock offset in USD (dikunci $1.5 profit setelah phase 1 trigger)
-BE_LOCK_USD = 1.5
 
 # ========= PROFILES =========
-PROFILES = {
-    "bystra":     {"start": 3.0, "dist": 2.5},
-    "aggressive": {"start": 1.5, "dist": 0.8},
-    "semi_hft":   {"start": 1.5, "dist": 1.0},
-}
 
 STRATEGY_MAP = {
     "B":   "bystra",
@@ -48,10 +62,8 @@ STRATEGY_MAP = {
     "BAS": "bystra",
     "A":   "aggressive",
     "S":   "semi_hft",
-}
 
 # Peak profit tracker per ticket
-_peak: dict = {}
 
 # ========= HELPERS =========
 def check_tie_alive():
@@ -62,17 +74,14 @@ def check_tie_alive():
             age = time.time() - float(f.read().strip())
         return age < HEARTBEAT_TIMEOUT_SEC
     except Exception as e:
-        log.warning(f"Heartbeat read error: {e}")
         return False
 
 
 def get_positions():
     try:
-        r = requests.get(f"{URL}/account/positions", headers=HEADERS, timeout=5)
         r.raise_for_status()
         return r.json() or []
     except Exception as e:
-        log.error(f"Positions fetch fail: {e}")
         return []
 
 
@@ -89,7 +98,6 @@ def process_baskets(positions):
     if len(buys) >= 3:
         total_buy_profit = sum(p.get("profit", 0.0) for p in buys)
         if total_buy_profit >= 3.0:
-            log.info(f"BASKET TP: Closing {len(buys)} BUY positions (Total Profit: ${total_buy_profit:.2f})")
             for p in buys:
                 close_position(p["ticket"], p)
 
@@ -97,7 +105,6 @@ def process_baskets(positions):
     if len(sells) >= 3:
         total_sell_profit = sum(p.get("profit", 0.0) for p in sells)
         if total_sell_profit >= 3.0:
-            log.info(f"BASKET TP: Closing {len(sells)} SELL positions (Total Profit: ${total_sell_profit:.2f})")
             for p in sells:
                 close_position(p["ticket"], p)
 
@@ -119,7 +126,7 @@ def extract_profile_key(comment):
 def compute_new_sl(pos, profile):
     """
     Torto V4 logic (contek manual_trailing.py).
-    Phase 1: profit >= START → lock BE + $BE_LOCK_USD dari entry
+    Phase 1: profit >= START → lock BE + $current_be_lock dari entry
     Phase 2: profit pullback dari peak → lock (peak - dist)
     """
     profit  = pos.get("profit", 0.0)
@@ -134,12 +141,11 @@ def compute_new_sl(pos, profile):
 
     pts_per_usd = abs(current - entry) / abs(profit)
 
-    # Phase 1: BE lock — ngunci $BE_LOCK_USD dari entry
-    be_sl = entry + (BE_LOCK_USD * pts_per_usd if is_buy else -(BE_LOCK_USD * pts_per_usd))
+    # Phase 1: BE lock — ngunci $current_be_lock dari entry
+    be_sl = entry + (current_be_lock * pts_per_usd if is_buy else -(current_be_lock * pts_per_usd))
     be_sl = round(be_sl, 2)
 
     if sl == 0.0 or (is_buy and be_sl > sl) or (not is_buy and be_sl < sl):
-        log.info(f"[{ticket}] BE lock ${BE_LOCK_USD} → SL {be_sl:.2f} | profit ${profit:.2f}")
         return be_sl
 
     # Phase 2: Dynamic trail dari peak
@@ -154,7 +160,6 @@ def compute_new_sl(pos, profile):
     new_sl = round(entry + (sl_offset if is_buy else -sl_offset), 2)
 
     if (is_buy and new_sl > sl) or (not is_buy and new_sl < sl):
-        log.info(f"[{ticket}] Trail: profit ${profit:.2f} peak ${_peak[ticket]:.2f} locked ${lock_floor:.2f} → SL {new_sl:.2f}")
         return new_sl
 
     return None
@@ -172,32 +177,25 @@ def close_position(ticket, pos):
         "symbol": symbol,
         "volume": volume,
         "type":   side,
-    }
     try:
-        r = requests.post(f"{URL}/trade/close/{int(ticket)}", json=payload, headers=HEADERS, timeout=5)
         r.raise_for_status()
-        log.info(f"[{ticket}] CLOSED (hedge exit) | profit ${pos.get('profit', 0):.2f}")
         return True
     except Exception as e:
-        log.error(f"[{ticket}] Close fail: {e}")
         return False
 
 
 def modify_order(ticket, new_sl, tp=None):
-    payload = {"ticket": int(ticket), "sl": new_sl, "tp": tp or 0}
     try:
-        r = requests.post(f"{URL}/trade/modify", json=payload, headers=HEADERS, timeout=5)
         r.raise_for_status()
         return r.json()
     except Exception as e:
-        log.error(f"Modify fail: {e}")
         raise
 
 
 def check_hedge_close(positions):
     """
     Deteksi BUY + SELL open bersamaan per symbol.
-    Kalau total profit semua posisi itu > HEDGE_CLOSE_USD → close semua.
+    Kalau total profit semua posisi itu > current_hedge_close → close semua.
     Returns list of tickets to close.
     """
     from collections import defaultdict
@@ -207,15 +205,12 @@ def check_hedge_close(positions):
 
     to_close = []
     for symbol, pos_list in by_symbol.items():
-        directions = {str(p.get("direction", "")).lower() for p in pos_list}
         if "buy" not in directions or "sell" not in directions:
             continue  # bukan hedge, skip
 
         total_profit = sum(p.get("profit", 0.0) for p in pos_list)
-        if total_profit >= HEDGE_CLOSE_USD:
+        if total_profit >= current_hedge_close:
             log.warning(
-                f"[HEDGE] {symbol}: {len(pos_list)} pos (BUY+SELL) total profit ${total_profit:.2f} "
-                f">= ${HEDGE_CLOSE_USD} → close all"
             )
             to_close.extend(pos_list)
 
@@ -225,9 +220,9 @@ def check_hedge_close(positions):
 # ========= MAIN LOOP =========
 def run():
     log.info("Manual Trailing V2 (Shadow Mode) started.")
-    log.info(f"Heartbeat: {TIE_HEARTBEAT_PATH} | Hedge close: ${HEDGE_CLOSE_USD} | BE lock: ${BE_LOCK_USD}")
 
     while True:
+        current_profiles, current_be_lock, current_hedge_close = load_dynamic_config()
         try:
             tie_alive = check_tie_alive()
             positions = get_positions()
@@ -260,7 +255,6 @@ def run():
 
             # === SHADOW MODE — disabled, always run trailing ===
             # if tie_alive:
-            #     log.debug(f"[SHADOW] TIE alive | {len(tie_positions)} positions monitored")
             #     time.sleep(POLL_SEC)
             #     continue
 
@@ -270,23 +264,19 @@ def run():
                     time.sleep(POLL_SEC)
                     continue
 
-                log.warning(f"[ACTIVE] TIE heartbeat lost > {HEARTBEAT_TIMEOUT_SEC}s. Taking over trailing...")
 
                 for pos in tie_positions:
                     ticket      = str(pos.get("ticket"))
                     profile_key = extract_profile_key(pos.get("comment", ""))
-                    profile     = PROFILES.get(profile_key, PROFILES["aggressive"])
+                    profile     = current_profiles.get(profile_key, current_profiles["aggressive"])
 
                     new_sl = compute_new_sl(pos, profile)
                     if new_sl:
                         try:
                             modify_order(ticket, new_sl, tp=pos.get("tp"))
-                            log.info(f"[{ticket}] MODIFIED SL → {new_sl}")
                         except Exception as e:
-                            log.error(f"[{ticket}] Modify failed: {e}")
 
                 # Cleanup peak untuk posisi yg udah close
-                active_tickets = {str(p.get("ticket")) for p in tie_positions}
                 for t in list(_peak):
                     if t not in active_tickets:
                         del _peak[t]
@@ -297,7 +287,6 @@ def run():
             log.info("Manual Trailing V2 stopped.")
             break
         except Exception as e:
-            log.error(f"Loop error: {e}")
             time.sleep(POLL_SEC)
 
 

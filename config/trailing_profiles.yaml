@@ -1,13 +1,13 @@
 profiles:
-    aggressive_v1:
-        be_start_usd: 0.5
-        partial_tp_ratio: 0.3
-        trail_dist_usd: 1.0
-    bystra_v1:
-        be_start_usd: 1.0
-        partial_tp_ratio: 0.5
-        trail_dist_usd: 1.0
-    semi_hft_c8:
-        be_start_usd: 0.3
-        partial_tp_ratio: 0.2
-        trail_dist_usd: 0.6
+    aggressive:
+        be_lock: 1.2
+        dist: 0.6
+        start: 1.2
+    bystra:
+        be_lock: 1.5
+        dist: 0.8
+        start: 1.5
+    semi_hft:
+        be_lock: 1.0
+        dist: 0.5
+        start: 1.0

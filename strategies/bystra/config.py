@@ -7,14 +7,7 @@ from typing import List
 class BystraConfig:
     min_confidence: float = 0.75
     enabled_detectors: List[str] = field(default_factory=lambda: [
-        "SNRC1", "SNRC2", "SNRC3",
-        "HYBRID1", "HYBRID2",
-        # "MANIPULATION",  # rare — fake breakout
-        "QMR", "QMC", "QMM", "QM2P",
-        # "BLINDSPOT", "BLINDSPOT2",  # rare — hidden zone
-        # "CLAB",  # confirmation only
-        # "MOTHER_CANDLE",  # too selective
-        "THREE_CANDLE",  # CAPYBARS big-small-big compression
+        "THREE_CANDLE",  # CAPYBARS big-small-big compression — ONLY ONE
     ])
     max_signals_per_scan: int = 1
     require_htf_confirm: bool = True

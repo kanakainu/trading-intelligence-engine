@@ -86,13 +86,20 @@ class BystraStrategy(BaseStrategy):
             if _m5:
                 current_price = float(_m5[-1].get("close", 0.0))
 
-        # Pattern blacklist: once fired at a price zone, permanently blocked (except THREE_CANDLE)
+        # Pattern blacklist: check if same pattern + direction already fired within price radius
         if best.value not in self._cfg.zone_cooldown_exempt:
-            zone_key = (best.value, md.get("direction", ""), round(current_price / self._cfg.zone_radius_pts))
-            if zone_key in self._zone_seen:
-                logger.info("Bystra pattern blacklist: %s @ zone %.0f already fired, skip", best.value, zone_key[2])
-                return StrategyResult(signal=None, confidence=best.confidence, reason=f"pattern_blacklist:{best.value}")
-            self._zone_seen[zone_key] = current_price  # mark fired — permanent
+            _is_blacklisted = False
+            for (p_name, p_dir, p_zone), p_price in self._zone_seen.items():
+                if p_name == best.value and p_dir == md.get("direction", ""):
+                    if abs(current_price - p_price) <= self._cfg.zone_radius_pts:
+                        logger.info("Bystra pattern blacklist: %s %s near %.3f already fired, skip", 
+                                    best.value, p_dir, p_price)
+                        return StrategyResult(signal=None, confidence=best.confidence, 
+                                              reason=f"pattern_blacklist:{best.value}")
+            
+            # Mark this price point as fired for this pattern + direction
+            zone_key = (best.value, md.get("direction", ""), 0) # key dummy, price stored in value
+            self._zone_seen[zone_key] = current_price  # Store actual price
             try:
                 with open(ZONE_BLACKLIST_FILE, "w") as f:
                     json.dump({"|".join(str(x) for x in k): v for k, v in self._zone_seen.items()}, f)
