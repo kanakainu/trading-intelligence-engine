@@ -200,8 +200,18 @@ class SignalFusion:
         if len(signals) <= 1:
             return 1.0
         
-        # Get all zones
-        zones = [(s.entry_zone["low"], s.entry_zone["high"]) for s in signals]
+        # Get all zones - handle single-point entry_zone
+        zones = []
+        for s in signals:
+            ez = s.entry_zone
+            if "low" in ez and "high" in ez:
+                zones.append((ez["low"], ez["high"]))
+            elif "low" in ez:
+                zones.append((ez["low"], ez["low"]))
+            elif "high" in ez:
+                zones.append((ez["high"], ez["high"]))
+            elif "price" in ez:
+                zones.append((ez["price"], ez["price"]))
         
         # Find intersection
         max_low = max(z[0] for z in zones)
@@ -233,9 +243,25 @@ class SignalFusion:
         if len(signals) == 1:
             return signals[0].entry_zone
         
+        # Extract zones safely
+        zones = []
+        for s in signals:
+            ez = s.entry_zone
+            if "low" in ez and "high" in ez:
+                zones.append((ez["low"], ez["high"]))
+            elif "low" in ez:
+                zones.append((ez["low"], ez["low"]))
+            elif "high" in ez:
+                zones.append((ez["high"], ez["high"]))
+            elif "price" in ez:
+                zones.append((ez["price"], ez["price"]))
+        
+        if not zones:
+            return signals[0].entry_zone
+        
         # Try intersection first
-        max_low = max(s.entry_zone["low"] for s in signals)
-        min_high = min(s.entry_zone["high"] for s in signals)
+        max_low = max(z[0] for z in zones)
+        min_high = min(z[1] for z in zones)
         
         if max_low < min_high:
             # Valid intersection

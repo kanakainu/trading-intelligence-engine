@@ -58,39 +58,13 @@ class RegimeAllocator:
         return snap
 
     def _apply(self, snap: RegimeSnapshot) -> None:
-        """Enable/disable strategies based on regime. Respects manual overrides."""
+        """SOPAN MODE: Only logs suggestions, does NOT overwrite manual dashboard settings."""
         regime = snap.regime
+        logger.info("REGIME SUGGESTION: %s -> Use %s", regime.value, snap.suggested_engine)
         
-        # Selaras dengan MarketContext refactor: TRENDING_BULL/BEAR split direction
-        _trending = regime in (MarketRegime.TRENDING, MarketRegime.TRENDING_BULL, MarketRegime.TRENDING_BEAR)
-        aggressive_on = _trending
-        semi_hft_on   = _trending or regime == MarketRegime.RANGING
-        
-        # Load current status to respect manual overrides (if any)
-        try:
-            with open(self.STRATEGY_STATUS_PATH, "r") as f:
-                current_status = json.load(f)
-        except:
-            current_status = {}
-
-        # Logic: 
-        # - If regime is TRENDING -> Aggressive ON, SemiHFT ON.
-        # - If regime is RANGING -> Aggressive OFF, SemiHFT ON.
-        # - If regime is CHOPPY/CHAOS -> ALL OFF.
-        # - Bystra: Sasa set False total (biar Boskuh/Riri handle manual via dashboard).
-        
-        status = {
-            self.STRATEGY_IDS["aggressive"]: current_status.get(self.STRATEGY_IDS["aggressive"], aggressive_on),
-            self.STRATEGY_IDS["semi_hft"]: current_status.get(self.STRATEGY_IDS["semi_hft"], semi_hft_on),
-            self.STRATEGY_IDS["bystra"]: current_status.get(self.STRATEGY_IDS["bystra"], True),
-        }
-        
-        try:
-            with open(self.STRATEGY_STATUS_PATH, "w") as f:
-                json.dump(status, f, indent=2)
-            logger.info("Strategy status updated by Regime Allocator: %s", status)
-        except Exception as e:
-            logger.error("Failed to write strategy status: %s", e)
+        # We skip writing to STRATEGY_STATUS_PATH to prevent fighting with the Dashboard.
+        # Mas Wisnu has full control now.
+        return
 
     def current(self) -> MarketRegime | None:
         return self._current_regime

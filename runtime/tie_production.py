@@ -52,7 +52,7 @@ from core.strategy_manager.manager import StrategyManager
 from core.strategy.exit_orchestrator import ExitOrchestrator, ExitProfile
 from strategies.bystra.strategy import BystraStrategy
 from strategies.aggressive.strategy import AggressiveStrategy
-from strategies.semi_hft.strategy import SemiHFTStrategyV4 as SemiHFTStrategy
+from strategies.semi_hft.strategy import SemiHFTStrategy
 from strategies.aggressive.regime.regime_engine import AggressiveRegimeEngine
 from runtime.multi_strategy_runtime import MultiStrategyRuntime
 from runtime.adapters.tradeplan_adapter import plan_to_decision, aggressive_regime_to_core_regime
@@ -376,19 +376,20 @@ while True:
             
             sr = _compute_real_sr(candles.get("H1", []), price)
             log.debug(f"H1 candles after _compute_real_sr: {candles.get('H1', [])}")
-            ctx = MarketContext(symbol=sym, timestamp=datetime.now(timezone.utc))
-            spread_buf_val = sl_buffer(ctx)
-            ctx.metadata.update({
-                "candles": candles, "current_price": price,
-                "atr": context_engine._calc_atr(candles.get("H1", [])),
-                "h1_support": sr["h1_support"], "h1_resistance": sr["h1_resistance"],
-                "h1_trend": "bearish" if candles["H1"] and candles["H1"][-1]['close'] < candles["H1"][-5]['close'] else "bullish",
-                "nearest_support": sr["h1_support"], "nearest_resistance": sr["h1_resistance"],
-                "spread": spread, "spread_buffer": spread_buf_val,
-                "balance": balance, "equity": equity,
-                "open_positions": len(raw_positions),
-            })
-            
+
+            # === CONTEXT ENGINE CENTRAL ===
+            # This builds the complete MarketContext including Z-Score, ATR, etc.
+            market_data_for_context = {
+                "symbol": sym,
+                "timestamp": now_utc,
+                "price": price, # Pass current live price
+                "spread": spread,
+                "market_open": _market_open(sym, now_utc),
+                "candles": candles.get("M1", []) # ContextEngine needs raw candles for Z-Score/ATR
+            }
+            ctx = context_engine.build(market_data_for_context)
+            log.debug(f"MarketContext built: price={ctx.price:.2f} z_score={ctx.vwap_z_score:.2f} atr={ctx.atr:.2f}")
+
             # Build ScanContext for MultiStrategyRuntime
             _sid = str(uuid.uuid4())
             _now = datetime.now(timezone.utc)
@@ -401,6 +402,11 @@ while True:
                 timestamp=_now,
                 scan_id=_sid,
                 current_tick={"bid": price, "ask": price + spread},
+                balance=balance, # Inject account data
+                equity=equity,
+                open_positions=len(raw_positions),
+                raw_positions=raw_positions,
+                current_price=price # Pass current live price to features
             )
             _features = compute_features(_feat_inputs)
 
@@ -582,9 +588,16 @@ while True:
                         now = time.time()
                         last_seen = _seen_setups.get(dedup_key, 0.0)
 
+                        # Adaptive dedup window based on strategy type
+                        # s = SemiHFT (fast layering) -> 10s
+                        # a = Aggressive -> 30s
+                        # b = Bystra -> 60s (default)
+                        _strat_type = decision.setup_name.split("_")[0].lower() if "_" in decision.setup_name else ""
+                        _dedup_window = 10 if _strat_type == "s" else 30 if _strat_type == "a" else DEDUP_WINDOW
+
                         # Bug fix: actually enforce DEDUP_WINDOW
-                        if now - last_seen < DEDUP_WINDOW:
-                            log.info(f"Dedup Time: skip {decision.setup_name} {decision.action} {sym} (cooldown {now - last_seen:.1f}s < {DEDUP_WINDOW}s)")
+                        if now - last_seen < _dedup_window:
+                            log.info(f"Dedup Time: skip {decision.setup_name} {decision.action} {sym} (cooldown {now - last_seen:.1f}s < {_dedup_window}s)")
                             setup_detail["status"] = "DEDUP"
                             setup_detail["gate_reason"] = f"cooldown_{int(now - last_seen)}s"
                             observatory.log_gate(trace, "Dedup", "FAIL", reason=f"cooldown_{int(now - last_seen)}s")
@@ -621,7 +634,13 @@ while True:
                         # === MOMENTUM GATE — candle must GAS before entry ===
                         if not _blocked:
                             from shared.momentum_gate import check as _mom_check
-                            _mom = _mom_check(_features, candles, decision.action, setup_name=decision.setup_name)
+                            # Exempt mean reversion strategies (SemiHFT, Bystra THREE_CANDLE)
+                            setup_key = decision.setup_name.split("_")[0].lower() if "_" in decision.setup_name else decision.setup_name.lower()
+                            mean_reversion_setups = {"s", "b"}  # semi_hft, bystra
+                            if setup_key in mean_reversion_setups:
+                                _mom = type("_M", (), {"allowed": True, "reason": "mean_reversion_exempt"})()
+                            else:
+                                _mom = _mom_check(_features, candles, decision.action, setup_name=decision.setup_name)
                             if not _mom.allowed:
                                 log.info(f"Momentum Gate: ❌ BLOCK {decision.action} — {_mom.reason}")
                                 setup_detail["status"] = "MOMENTUM_BLOCK"

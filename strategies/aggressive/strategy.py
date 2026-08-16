@@ -1,409 +1,201 @@
-"""RiriMicroScalpEngine (RME) — context-setup-location-trigger pipeline."""
+"""
+AggressiveStrategy (The Street Fighter v2.1)
+Fokus: Momentum Spike M1 via SetupDetector (MOMENTUM_BREAK).
+Gate: Z-Score Anti-Pucuk (fallback only).
+"""
+from typing import Any, Dict, List, Optional
 import logging
 import uuid
-import json
-import os
 from datetime import datetime
-from typing import Optional
 
 from core.strategy.base_strategy import BaseStrategy
 from core.strategy.strategy_context import StrategyContext
 from core.strategy.strategy_result import StrategyResult
+from core.strategy.strategy_metadata import StrategyMetadata
 from core.signals.signal import Signal, Direction
-from core.lifecycle.lifecycle_models import PositionSnapshot
-from core.learning.learning_models import TradeReflection, TradeOutcome
+from shared.setup_detector import detect, SetupType, SetupDirection
+from shared.market_context import build as build_market_ctx
 
-from strategies.aggressive.metadata import AGGRESSIVE_METADATA
-from strategies.aggressive.governor.daily_governor import DailyProfitGovernor
-from strategies.aggressive.exits import evaluate_exit, ExitDecision
-from strategies.aggressive.metrics.metrics_logger import MetricsLogger
-from strategies.aggressive.cooldown.cooldown_engine import AdaptiveCooldown
+logger = logging.getLogger("AggressiveStrategy")
 
-# RME Score Engines (R1-R3)
-from strategies.aggressive.market_snapshot import snapshot as get_snapshot
-from strategies.aggressive.opportunity_window import get_session_score
-from strategies.aggressive.momentum_engine import calculate_score as calc_momentum_score
-from strategies.aggressive.velocity_engine import calculate_score as calc_velocity_score
-from strategies.aggressive.microstructure_engine import calculate_score as calc_micro_score
-from strategies.aggressive.liquidity_engine import calculate_score as calc_liquidity_score
-from strategies.aggressive.vwap_context_engine import calculate_score as calc_vwap_score
-from strategies.aggressive.entry_score_engine import calculate as entry_score, EntryScore
-
-# Riri's Nexus + XAU-60 Guards
-from strategies.aggressive.fvg_detector import get_active_fvgs
-from strategies.aggressive.trendline_detector import detect_trendline_break
-from strategies.aggressive.liquidity_vacuum import detect_liquidity_pools, vacuum_grade
-
-# Shared context-setup-location-trigger pipeline (Phase 2 refactor)
-from shared.market_context import build as build_market_context
-from shared.setup_detector import detect as detect_setup, SetupType
-from shared.location_engine import evaluate as eval_location, LocationGrade
-from shared.trigger_engine import evaluate as eval_trigger, TriggerSignal
-
-logger = logging.getLogger(__name__)
-
-def check_news_blackout() -> tuple[bool, str]:
-    """Check if a news blackout is active from the local sentinel file."""
-    path = "/tmp/tie_news_blackout.json"
-    if not os.path.exists(path):
-        return False, ""
-    try:
-        with open(path, "r") as f:
-            data = json.load(f)
-            if data.get("active"):
-                return True, "; ".join(data.get("reasons", []))
-    except:
-        pass
-    return False, ""
-
-class RiriMicroScalpEngine(BaseStrategy):
-    """RME — Riri MicroScalp Engine. Score-based, no gate stacking."""
-
+class AggressiveStrategy(BaseStrategy):
     def __init__(self):
-        super().__init__(AGGRESSIVE_METADATA)
-        self._governor = DailyProfitGovernor()
-        self._cooldown = AdaptiveCooldown()
-        self._metrics = MetricsLogger()
+        meta = StrategyMetadata(
+            id="aggressive_v1",
+            name="Aggressive Momentum",
+            version="2.1.0",
+            priority=80,
+            author="Sasa",
+            description="Momentum Breakout via SetupDetector + Z-Score fallback."
+        )
+        super().__init__(meta)
 
     def initialize(self) -> None:
         self._initialized = True
-        logger.info("RiriMicroScalpEngine (RME) initialized — score-based pipeline")
 
     def observe(self, context: StrategyContext) -> None:
         pass
 
     def analyze(self, context: StrategyContext) -> StrategyResult:
-        features = context.scan.features
-        if not features:
-            return StrategyResult(signal=None, confidence=0.0, reason="no_features")
+        market_ctx = context.scan.market
+        candles_m1 = context.scan.features.candles.get("M1", [])
+        candles_m5 = context.scan.features.candles.get("M5", [])
+        candles_m15 = context.scan.features.candles.get("M15", [])
+        
+        if not candles_m1 or len(candles_m1) < 5:
+            return StrategyResult(signal=None, confidence=0.0, reason="insufficient_m1_data")
 
-        # --- Data prep ---
-        candles_m5  = features.candles.get("M5", [])
-        candles_m15 = features.candles.get("M15", [])
-        candles_m1  = features.candles.get("M1", [])
-        spread    = features.spread if isinstance(features.spread, float) else 0.0
-        atr       = features.get_atr("M5") or 0.0
-        vol_ratio = features.volume_ratio.get("M5", 1.0)
-        price = getattr(features, "current_price", None) or context.scan.current_price or 0.0
-        vwap      = features.vwap.get("M5") if hasattr(features.vwap, "get") else None
-        utc_h     = getattr(features.timestamp, "hour", datetime.utcnow().hour)
+        price = market_ctx.price
+        z_score = market_ctx.vwap_z_score
+        atr = market_ctx.atr
 
-        # === PHASE 2: CONTEXT → SETUP → LOCATION → TRIGGER ===
-        # No valid setup = NO TRADE (regardless of score)
-        _ctx   = build_market_context(candles_m15, candles_m5, candles_m1, price, atr)
-        _setup = detect_setup(_ctx, candles_m5, candles_m1, price)
-        if not _setup.is_valid:
-            return StrategyResult(signal=None, confidence=0.0,
-                                  reason=f"no_setup:{_setup.reason}",
-                                  metadata={"regime": _ctx.regime, "setup": "NONE"})
+        # Initialize fallback vars
+        vol_spike = False
+        bypass_z_gate = False
 
-        # Override direction from structural setup (not just M5 snapshot)
-        _struct_dir = _setup.direction.value  # "BUY" | "SELL"
+        # Build shared MarketContext for SetupDetector
+        _shared_ctx = build_market_ctx(
+            candles_m15=candles_m15,
+            candles_m5=candles_m5,
+            candles_m1=candles_m1,
+            current_price=price,
+            atr_m5=atr,
+        )
 
-        # Location check — BAD_LOCATION = NO TRADE
-        _loc = eval_location(_struct_dir, price, candles_m5, candles_m15, atr)
-        if _loc.grade == LocationGrade.BAD:
-            return StrategyResult(signal=None, confidence=0.0,
-                                  reason=f"bad_location:{_loc.reason}",
-                                  metadata={"regime": _ctx.regime, "setup": _setup.type,
-                                            "location": "BAD", "room_atr": _loc.available_room_atr})
+        # 1. TRY STRUCTURAL SETUP via SetupDetector (M5 context for structure)
+        _setup = detect(
+            ctx=_shared_ctx,
+            candles_m5=candles_m5,
+            candles_m1=candles_m1,
+            current_price=price,
+        )
 
-        # Trigger check — RME allows NEUTRAL location but needs armed trigger
-        _atr_m1 = features.get_atr("M1") or atr
-        _trig = eval_trigger(_struct_dir, candles_m1, _atr_m1)
-        if _trig.signal != TriggerSignal.ARMED:
-            return StrategyResult(signal=None, confidence=0.0,
-                                  reason=f"no_trigger:{_trig.reason}",
-                                  metadata={"regime": _ctx.regime, "setup": _setup.type,
-                                            "trigger": _trig.signal})
+        signal_dir = None
+        reason = "no_setup"
+        confidence = 0.0
+        bypass_z_gate = False
 
-        logger.info(f"[RME] Setup={_setup.type} Dir={_struct_dir} Loc={_loc.grade}({_loc.score:.0f}) "
-                    f"Trig={_trig.signal}({_trig.strength:.0f}) Regime={_ctx.regime} "
-                    f"VwapDist={_ctx.vwap_distance_atr:.2f}ATR Zone={_setup.zone_price:.3f} Room={_loc.available_room_atr:.2f}ATR")
+        # Priority 1: MOMENTUM_BREAK (high confidence, bypass Z-gate)
+        if _setup and _setup.type == SetupType.MOMENTUM_BREAK:
+            if _setup.direction == SetupDirection.BUY:
+                signal_dir = Direction.BUY
+                reason = f"momentum_break_up_quality={_setup.quality:.2f}"
+            elif _setup.direction == SetupDirection.SELL:
+                signal_dir = Direction.SELL
+                reason = f"momentum_break_down_quality={_setup.quality:.2f}"
+            confidence = 0.85
+            bypass_z_gate = True
+            logger.info(f"[AGGR] MOMENTUM_BREAK: dir={_setup.direction} quality={_setup.quality:.2f} BYPASS Z-GATE")
 
-        # Pattern confidence (last 10 M5: engulfing, wick sweep, break high/low)
-        try:
-            from shared.candle_pattern_confidence import analyze as _pattern_analyze
-            _pconf = _pattern_analyze(candles_m5, _struct_dir)
-            logger.info(f"[RME] PatternConf: Engulf={_pconf.engulfing_count} "
-                        f"WickSweep={_pconf.wick_sweep_count} "
-                        f"BreakH={_pconf.break_high_count} BreakL={_pconf.break_low_count} Score={_pconf.score:.0f}")
-        except Exception as _pe:
-            logger.debug("pattern confidence error: %s", _pe)
+        # Priority 2: Structural setups (TREND_PULLBACK, BREAKOUT_RETEST, LIQUIDITY_SWEEP, RANGE_EDGE)
+        elif _setup and _setup.type != SetupType.NONE:
+            _dir_str = "BUY" if _setup.direction == SetupDirection.BUY else "SELL"
+            
+            # === LOCATION ENGINE ===
+            try:
+                from shared.location_engine import evaluate as eval_location, LocationGrade
+                _loc = eval_location(_dir_str, price, candles_m5, candles_m15, atr)
+                if _loc.grade == LocationGrade.BAD:
+                    logger.info(f"[AGGR] BLOCK: BAD Location ({_loc.reason})")
+                    return StrategyResult(signal=None, confidence=0.0, reason=f"bad_location:{_loc.reason}")
+            except Exception as e:
+                logger.warning(f"[AGGR] LocationEngine error: {e}")
+                _loc = None
 
-        # === DIAGNOSTIC: late_entry + classifier (always runs, no new hard blocks) ===
-        try:
-            import json as _json
-            _feat_cfg = _json.load(open("config/features.json"))
-        except Exception:
-            _feat_cfg = {}
-        _candidate_mode = _feat_cfg.get("candidate_mode", False)
+            # === TRIGGER ENGINE (M1) ===
+            try:
+                from shared.trigger_engine import evaluate as eval_trigger, TriggerSignal
+                _trig = eval_trigger(_dir_str, candles_m1, atr)
+                if _trig.signal != TriggerSignal.ARMED:
+                    logger.info(f"[AGGR] WAIT: No M1 Trigger ({_trig.reason})")
+                    return StrategyResult(signal=None, confidence=0.0, reason=f"no_trigger:{_trig.reason}")
+            except Exception as e:
+                logger.warning(f"[AGGR] TriggerEngine error: {e}")
+                _trig = None
 
-        try:
-            from shared.late_entry import evaluate as _late_eval
-            from shared.diagnostic_classifier import classify as _diag_classify
-            _m1_body = (abs(candles_m1[-1].get("close", candles_m1[-1].get("Close", 0)) -
-                            candles_m1[-1].get("open",  candles_m1[-1].get("Open",  0))) / atr
-                        ) if candles_m1 and atr > 0 else 0.0
-            _late = _late_eval(price, _setup.zone_price, atr,
-                               _ctx.vwap_distance_atr, _loc.available_room_atr,
-                               _m1_body, _feat_cfg)
-            _diag = _diag_classify(_loc.grade.value, _trig.signal.value,
-                                   _trig.strength, _late.is_late, _late.reason)
-            if _late.is_late or _diag.label != "NORMAL":
-                logger.info(f"[RME] DIAG={_diag.label} late={_late.is_late} "
-                            f"late_reason={_late.reason} diag_reason={_diag.reason}")
-        except Exception as _de:
-            from shared.late_entry import LatenessResult as _LR
-            from shared.diagnostic_classifier import DiagnosticResult as _DR
-            _late = _LR(False, "", 0.0)
-            _diag = _DR("NORMAL", "")
-            logger.debug("diagnostic error: %s", _de)
-
-        # === CANDIDATE MODE: same pipeline, skip execution ===
-        if _candidate_mode:
+            # === TELEMETRY ===
             try:
                 from shared.entry_telemetry import log_candidate, CandidateRecord
-                _rr_cand = 0.0  # SL/TP not yet calculated — use 0 as placeholder
                 log_candidate(CandidateRecord(
-                    strategy="RME", symbol=str(features.symbol), direction=_struct_dir,
-                    regime=str(_ctx.regime.value), setup_type=str(_setup.type.value),
-                    location_grade=str(_loc.grade.value), location_score=_loc.score,
-                    vwap_dist_atr=_ctx.vwap_distance_atr,
-                    available_room_atr=_loc.available_room_atr,
-                    dist_structure_atr=_loc.distance_to_structure_atr,
-                    dist_obstacle_atr=_loc.distance_to_obstacle_atr,
-                    location_reason=_loc.reason,
-                    trigger_signal=str(_trig.signal.value), trigger_score=_trig.strength,
-                    trigger_strength=_trig.strength,
-                    setup_score=float(_setup.quality), zone_price=float(_setup.zone_price),
-                    m15_bias=str(_ctx.m15_bias.value), m5_structure=str(_ctx.m5_structure.value),
-                    atr=float(atr), spread=float(spread),
-                    entry_price=float(price), decision="CANDIDATE",
-                    is_late=int(_late.is_late), lateness_reason=_late.reason,
-                    filter_trace=[_diag.label],
+                    strategy="Aggressive",
+                    symbol="XAUUSD",
+                    direction=_dir_str,
+                    regime=str(getattr(_shared_ctx, "regime", "UNKNOWN")),
+                    setup_type=_setup.type.value,
+                    location_grade=str(_loc.grade.name) if _loc else "UNKNOWN",
+                    location_score=_loc.score if _loc else 0.0,
+                    vwap_dist_atr=getattr(_shared_ctx, "vwap_distance_atr", 0.0),
+                    available_room_atr=_loc.available_room_atr if _loc else 0.0,
+                    trigger_signal=str(_trig.signal.name) if _trig else "UNKNOWN",
+                    trigger_strength=_trig.strength if _trig else 0.0,
+                    setup_quality=_setup.quality,
+                    entry_price=price,
+                    decision="ENTRY"
                 ))
-            except Exception as _ce:
-                logger.debug("candidate log error: %s", _ce)
-            return StrategyResult(signal=None, confidence=0.0,
-                                  reason=f"candidate_mode:{_diag.label}",
-                                  metadata={"regime": _ctx.regime, "setup": _setup.type,
-                                            "diag": _diag.label})
+            except Exception as e:
+                logger.warning(f"[AGGR] Telemetry error: {e}")
 
-        # --- Score all engines (parallel, no gates) ---
-        snap    = get_snapshot(candles_m5)
-        sess    = get_session_score(utc_h)
-        mom     = calc_momentum_score(candles_m5)
-        vel     = calc_velocity_score(candles_m5, atr)
-        micro   = calc_micro_score(candles_m5, atr)
-        liq     = calc_liquidity_score(vol_ratio)
-        vwap_sc = calc_vwap_score(price, vwap)
-        trend   = (sess * 0.5 + snap.momentum_score * 0.5)  # composite trend score
+            signal_dir = Direction.BUY if _setup.direction == SetupDirection.BUY else Direction.SELL
+            reason = f"{_setup.type.value}_{_dir_str.lower()}_quality={_setup.quality:.2f}"
+            confidence = min(0.8, _setup.quality / 100.0)
+            logger.info(f"[AGGR] STRUCTURAL: {_setup.type.value} dir={_dir_str} quality={_setup.quality:.2f}")
+            
+            # Use zone_price for entry_zone for proper SL/TP
+            entry_zone = {"price": price, "high": price + 0.5, "low": price - 0.5}
+            if _setup.zone_price:
+                entry_zone = {"price": _setup.zone_price, "high": _setup.zone_price + 0.5, "low": _setup.zone_price - 0.5}
 
-        # --- Determine direction from snapshot ---
-        direction = snap.state  # "BULL"→BUY, "BEAR"→SELL, "FLAT"→NONE
-        if direction == "BULL":   direction = "BUY"
-        elif direction == "BEAR": direction = "SELL"
-        else:                     direction = "NONE"
-
-        # --- NEXUS TWEAK: Debate Logic (Conflict Detection) ---
-        # Use M5 trend as counter-bias indicator
-        counter_bias = 50.0
-        if snap:
-            m5_mom = snap.momentum_score # Composite trend from M5
-            if direction == "BUY" and m5_mom < 40: # Weak/Bearish M5 trend for BUY
-                counter_bias = (40 - m5_mom) * 2 + 50
-            elif direction == "SELL" and m5_mom > 60: # Weak/Bullish M5 trend for SELL
-                counter_bias = (m5_mom - 60) * 2 + 50
-
-        # --- EntryScore aggregator — liquidity/vwap dropped from weights ---
-        es = entry_score(
-            momentum_score=mom,
-            velocity_score=vel,
-            micro_score=micro,
-            liquidity_score=0.0,
-            vwap_score=0.0,
-            trend_score=trend,
-            direction=direction,
-            counter_bias_score=counter_bias,
-        )
-        # DEBUG: log scoring components
-        logger.info(f"[RME] SCORE: mom={mom:.1f} vel={vel:.1f} micro={micro:.1f} "
-                    f"trend={trend:.1f} counter_bias={counter_bias:.1f} "
-                    f"TOTAL={es.score:.1f} THRESH=60.0 dir={direction}")
-
-        # --- Riri's Nexus + XAU-60 Guards (Aggressive Mode) ---
-
-        # 1. Governor (only hard gate)
-        gov = self._governor.get_status()
-        if gov["halted"]:
-            return StrategyResult(signal=None, confidence=0.0, reason=f"gov:{gov['reason']}", metadata={"score": es.score})
-
-        # 1b. News Sentinel Gate (Nexus-style)
-        is_blackout, blackout_reason = check_news_blackout()
-        if is_blackout:
-            logger.warning(f"NEWS BLACKOUT ACTIVE: {blackout_reason}")
-            return StrategyResult(signal=None, confidence=0.0, reason=f"news_blackout:{blackout_reason[:20]}", metadata={"score": es.score})
-
-        # 2. Cooldown (soft guard) — quality-based: pass M5 candles for recovery check
-        if not self._cooldown.can_trade(m5_candles=features.candles.get("M5", [])):
-            return StrategyResult(signal=None, confidence=0.0, reason=f"cooldown:{int(self._cooldown.remaining())}s", metadata={"score": es.score})
-
-        # 3. FVG Magnet Awareness (Research Mode - M5 only)
-        if features and features.candles:
-            fvgs = get_active_fvgs(features.candles, tfs=["M5"])
-            for tf, fvg_list in fvgs.items():
-                for fvg in fvg_list[-1:]:  # Only log latest FVG per TF
-                    logger.info(f"[FVG_MAGNET] {tf} {fvg['type']} at {fvg['bottom']:.2f}-{fvg['top']:.2f} | Midpoint: {fvg['midpoint']:.2f}")
-
-        # 4. Trendline Guard — DISABLED (redundant post-refactor, SetupDetector covers this)
-        # if features.candles:
-        #     m5_df = features.candles.get("M5", [])
-        #     if m5_df and atr > 0:
-        #         is_tl_break, tl_dir = detect_trendline_break(m5_df, atr=atr)
-        #         if not is_tl_break or tl_dir != direction:
-        #             return StrategyResult(signal=None, confidence=0.0,
-        #                                   reason=f"tl_guard:NO_{direction}_BREAK",
-        #                                   metadata={"score": es.score})
-
-        # 5. Liquidity Vacuum Guard (Smart Money - M5 only)
-        liq_vac = {"grade": "GOOD", "reason": "no_pool_data", "tf": "-"}
-        if features and features.candles:
-            candles = features.candles.get("M5", [])
-            if candles and atr > 0:
-                pools = detect_liquidity_pools(candles, atr)
-                if pools["nearest_above"] or pools["nearest_below"]:
-                    grade, reason = vacuum_grade(
-                        pools["nearest_above"], pools["nearest_below"], direction, atr)
-                    liq_vac = {"grade": grade, "reason": reason, "tf": "M5"}
-                    if grade == "DANGER":
-                        # Hard stop for aggressive if danger found
-                        return StrategyResult(signal=None, confidence=0.0,
-                                              reason=f"liq_vacuum:{liq_vac['reason']}",
-                                              metadata={"score": es.score, "liq_vac": liq_vac["reason"]})
-        logger.info(f"[LIQ_VACUUM] {liq_vac['grade']} {liq_vac['reason']} dir={direction}")
-
-        # 5b. Z-Score Overextension Guard (Goldman Sachs inspired)
-        if direction != "NONE":
-            from shared.zscore_filter import check as _zscore_check
-            z_verdict = _zscore_check(features, features.candles, direction)
-            if not z_verdict.allowed:
-                return StrategyResult(signal=None, confidence=0.0,
-                                      reason=f"zscore:{z_verdict.reason}",
-                                      metadata={"score": es.score, "z_score": z_verdict.z_score})
-            logger.info(f"[ZSCORE] {z_verdict.reason}")
-
-        # 7. Final Entry Score Check (after all guards)
-        if not es.entry_ok:
-            return StrategyResult(signal=None, confidence=0.0, reason=f"rme:{es.reason}",
-                                  metadata={"score": es.score, "momentum": mom, "velocity": vel,
-                                            "micro": micro, "liquidity": liq, "vwap": vwap_sc, "trend": trend})
-
-        if price <= 0:
-            return StrategyResult(signal=None, confidence=0.0, reason="price_zero",
-                                  metadata={"score": es.score})
-
-        # 8. SL from structural zone (Phase 3: setup zone_price > raw M5 pivot)
-        _atr_dist = atr * 1.5 if atr > 0 else 2.0
-        _zone = _setup.zone_price  # structural level that triggered the setup
-        if direction == "BUY":
-            _sl = max(_zone - 0.5, price - _atr_dist)   # below zone, not below ATR floor
-            _sl_dist = max(price - _sl, 1.0)
+        # Priority 3: Fallback M1 spike (original street fighter logic)
         else:
-            _sl = min(_zone + 0.5, price + _atr_dist)   # above zone, not above ATR ceiling
-            _sl_dist = max(_sl - price, 1.0)
-        _tp = (price + _sl_dist * 1.5) if direction == "BUY" else (price - _sl_dist * 1.5)
+            last_candle = candles_m1[-1]
+            is_bullish = last_candle['close'] > last_candle['open']
+            is_bearish = last_candle['close'] < last_candle['open']
+            
+            last_body = abs(candles_m1[-1]['close'] - candles_m1[-1]['open'])
+            vol_spike = last_body > 0.2 * atr if atr > 0 else False
 
-        # 9. Signal
-        sig = Signal(
-            signal_id=str(uuid.uuid4())[:8],
+            logger.info(f"[AGGR] FALLBACK M1 Price={price:.2f} Z={z_score:.2f} ATR={atr:.2f} Body={last_body:.2f} Bullish={is_bullish} Bearish={is_bearish} VolSpike={vol_spike}")
+
+            if is_bullish and vol_spike:
+                if z_score < 1.5:
+                    signal_dir = Direction.BUY
+                    reason = f"momentum_spike_up_z={z_score:.2f}"
+                    confidence = 0.75
+                else:
+                    reason = f"pucuk_buy_blocked_z={z_score:.2f}"
+            
+            elif is_bearish and vol_spike:
+                if z_score > -1.5:
+                    signal_dir = Direction.SELL
+                    reason = f"momentum_spike_down_z={z_score:.2f}"
+                    confidence = 0.75
+                else:
+                    reason = f"lembah_sell_blocked_z={z_score:.2f}"
+
+        if not signal_dir:
+            return StrategyResult(signal=None, confidence=0.0, reason=reason)
+
+        signal = Signal(
+            signal_id=str(uuid.uuid4()),
             strategy=self.id,
-            symbol=features.symbol,
-            direction=Direction.BUY if direction == "BUY" else Direction.SELL,
-            timeframe="M5",
-            confidence=es.score,
-            entry_zone={"low": price, "high": price},
-            quality_score=es.score,
-            metadata={
-                "score": es.score, "momentum": mom, "velocity": vel,
-                "micro": micro, "liquidity": liq, "vwap": vwap_sc,
-                "trend": trend, "session": sess, "state": snap.state,
-                "liq_vacuum_grade": liq_vac['grade'], "liq_vacuum_reason": liq_vac['reason'],
-                "sl": round(_sl, 3), "tp": round(_tp, 3),
-            }
+            symbol="XAUUSD",
+            direction=signal_dir,
+            entry_zone={"price": price, "high": price + 0.5, "low": price - 0.5},
+            confidence=confidence,
+            timeframe="M1"
         )
-        logger.info(f"RME {direction} score={es.score:.1f} sym={features.symbol} SL={_sl:.3f} TP={_tp:.3f} liq_vac={liq_vac['grade']}")
-        # Telemetry — log candidate before execution
-        try:
-            from shared.entry_telemetry import log_candidate, CandidateRecord
-            _rr = round(abs(_tp - price) / abs(price - _sl), 2) if abs(price - _sl) > 0 else 0.0
-            log_candidate(CandidateRecord(
-                strategy="RME", symbol=str(features.symbol), direction=direction,
-                regime=str(_ctx.regime.value), setup_type=str(_setup.type.value),
-                location_grade=str(_loc.grade.value), location_score=_loc.score if hasattr(_loc,"score") else 0.0,
-                vwap_dist_atr=_ctx.vwap_distance_atr, available_room_atr=_loc.available_room_atr,
-                dist_structure_atr=_loc.distance_to_structure_atr,
-                dist_obstacle_atr=_loc.distance_to_obstacle_atr,
-                location_reason=_loc.reason,
-                trigger_signal=str(_trig.signal.value), trigger_score=_trig.strength,
-                trigger_strength=_trig.strength,
-                setup_score=float(_setup.quality), setup_quality=float(_setup.quality),
-                zone_price=float(_setup.zone_price),
-                m15_bias=str(_ctx.m15_bias.value), m5_structure=str(_ctx.m5_structure.value),
-                atr=float(atr), spread=float(spread),
-                entry_price=float(price), sl=float(_sl), tp=float(_tp), rr=_rr,
-                structural_rr=round(_loc.available_room_atr / max(abs(price - _sl) / atr, 0.01), 2),
-                decision="ENTRY", filter_trace=[],
-            ))
-        except Exception as _te:
-            logger.debug("telemetry error: %s", _te)
+
         return StrategyResult(
-            signal=sig,
-            confidence=es.score,
-            reason=f"rme_score:{es.score:.1f}",
+            signal=signal,
+            confidence=confidence,
+            reason=reason,
             metadata={
-                "score": es.score,
-                "momentum": mom,
-                "velocity": vel,
-                "micro": micro,
-                "liquidity": liq,
-                "vwap": vwap_sc,
-                "trend": trend,
-                "sl": round(_sl, 3),
-                "tp": round(_tp, 3),
-                "liq_vac": liq_vac['reason'],
+                "z_score": z_score, 
+                "vol_spike": vol_spike,
+                "bypass_z_gate": bypass_z_gate,
+                "setup_type": _setup.type.value if _setup and _setup.type != SetupType.NONE else "M1_SPIKE"
             }
-        )
-
-    def manage_position(self, position: PositionSnapshot, context: StrategyContext) -> Optional[StrategyResult]:
-        features = context.scan.features
-        if not features: return None
-        pos_dict = {
-            "entry_price":   position.entry_price,
-            "current_price": position.current_price,
-            "direction":     str(position.direction.value if hasattr(position.direction, "value") else position.direction),
-            "entry_time":    position.opened_at.timestamp() if position.opened_at else 0,
-        }
-        exit_eval = evaluate_exit(features, pos_dict)
-        if exit_eval.decision == ExitDecision.HOLD: return None
-        return StrategyResult(signal=None, confidence=exit_eval.urgency, reason=f"exit:{exit_eval.reason}")
-
-    def learn(self, reflection: TradeReflection) -> None:
-        won = reflection.outcome == TradeOutcome.WIN
-        pnl = getattr(reflection, "realized_pl", 0.0) or 0.0
-        self._governor.record_trade(pnl)
-        direction = getattr(reflection, "direction", None) or getattr(reflection, "signal_direction", None)
-        self._cooldown.record_trade(won, direction=str(direction).upper() if direction else None)
-        self._metrics.record(
-            entry_time=reflection.entry_time.timestamp() if reflection.entry_time else 0,
-            exit_time=reflection.exit_time.timestamp() if reflection.exit_time else 0,
-            pnl=pnl,
-            exit_reason=str(reflection.exit_reason.value if hasattr(reflection.exit_reason, "value") else reflection.exit_reason),
-            symbol=reflection.symbol
         )
 
     def shutdown(self) -> None:
         self._initialized = False
-
-# Backward compat alias
-AggressiveStrategy = RiriMicroScalpEngine

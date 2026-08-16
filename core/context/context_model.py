@@ -35,6 +35,8 @@ class MarketStatus(str, Enum):
 class MarketContext:
     symbol:        str
     timestamp:     datetime
+    price:         float         = 0.0
+    vwap_z_score:  float         = 0.0
     trend:         Trend         = Trend.UNKNOWN
     session:       Session       = Session.CLOSED
     atr:           float         = 0.0
@@ -47,6 +49,8 @@ class MarketContext:
         return {
             "symbol":        self.symbol,
             "timestamp":     self.timestamp.isoformat(),
+            "price":         self.price,
+            "vwap_z_score":  self.vwap_z_score,
             "trend":         self.trend,
             "session":       self.session,
             "atr":           self.atr,

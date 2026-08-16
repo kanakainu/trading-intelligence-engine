@@ -45,9 +45,9 @@ class FeatureEngine:
         sr_data = self._compute_nearest_sr(candles, tf_list)
 
         # Market microstructure
+        current_price = inputs.current_price
         spread = inputs.spread
         tick_speed, price_velocity = self._compute_microstructure(inputs.current_tick)
-        current_price = float((inputs.current_tick or {}).get("bid", 0) or 0)
 
         return FeatureSnapshot(
             symbol=inputs.symbol,
@@ -69,13 +69,17 @@ class FeatureEngine:
             distance_to_vwap=vwap_dist_data,
             current_price=current_price,
             spread=spread,
-            tick_speed=tick_speed,
-            price_velocity=price_velocity,
+            # tick_speed=tick_speed, # Removed
+            # price_velocity=price_velocity, # Removed
             last_swing_high=swing_data["high"],
             last_swing_low=swing_data["low"],
             nearest_support=sr_data["support"],
             nearest_resistance=sr_data["resistance"],
             candles=candles,  # pass-through for raw access
+            balance=inputs.balance, # New
+            equity=inputs.equity,   # New
+            open_positions=inputs.open_positions, # New
+            raw_positions=inputs.raw_positions,   # New
         )
 
     def _compute_ema_all_tfs(self, candles: Dict[str, List[Dict]], tf_list: List[str]) -> Dict[str, Dict[str, float]]:

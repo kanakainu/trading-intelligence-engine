@@ -12,6 +12,7 @@ class SetupType(str, Enum):
     LIQUIDITY_SWEEP_REVERSAL  = "LIQUIDITY_SWEEP_REVERSAL"
     BREAKOUT_RETEST           = "BREAKOUT_RETEST"
     RANGE_EDGE                = "RANGE_EDGE"
+    MOMENTUM_BREAK            = "MOMENTUM_BREAK"
     NONE                      = "NONE"
 
 
@@ -65,10 +66,10 @@ def detect(
     lows   = [_get(c, "low",   "Low")   for c in cs5]
     closes = [_get(c, "close", "Close") for c in cs5]
 
-    recent_high = max(highs[-10:])
-    recent_low  = min(lows[-10:])
-    prev_high   = max(highs[-20:-10]) if len(highs) >= 20 else recent_high
-    prev_low    = min(lows[-20:-10])  if len(lows)  >= 20 else recent_low
+    recent_high = max(highs[-6:])
+    recent_low  = min(lows[-6:])
+    prev_high   = max(highs[-12:-6]) if len(highs) >= 12 else recent_high
+    prev_low    = min(lows[-12:-6])  if len(lows)  >= 12 else recent_low
 
     # 1. TREND_PULLBACK
     if ctx.regime in (Regime.TRENDING_BULL, Regime.TRENDING_BEAR):
@@ -115,5 +116,14 @@ def detect(
         if (recent_high - current_price) <= 0.5 * atr:
             return Setup(SetupType.RANGE_EDGE, SetupDirection.SELL,
                          20.0, f"range_edge_sell={recent_high:.2f}", recent_high)
+
+    # 5. MOMENTUM_BREAK (Fallback — Faster Entry)
+    # If price breaks 10-bar high/low and regime is trending, allow immediate entry
+    if current_price > recent_high:
+        return Setup(SetupType.MOMENTUM_BREAK, SetupDirection.BUY,
+                     15.0, f"momentum_break_high={recent_high:.2f}", recent_high)
+    if current_price < recent_low:
+        return Setup(SetupType.MOMENTUM_BREAK, SetupDirection.SELL,
+                     15.0, f"momentum_break_low={recent_low:.2f}", recent_low)
 
     return _no_setup("no_structural_setup")

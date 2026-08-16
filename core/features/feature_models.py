@@ -1,8 +1,6 @@
-"""Feature Models — Immutable FeatureSnapshot shared across all detectors."""
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Any
 from datetime import datetime
-
+from typing import Dict, List, Any, Optional
 
 @dataclass(frozen=True, slots=True)
 class FeatureSnapshot:
@@ -15,69 +13,72 @@ class FeatureSnapshot:
     timestamp: datetime
     scan_id: str
 
-    # Trend (multi-TF EMA stack)
+    # Current Market State
+    current_price: float = 0.0
+    spread: float = 0.0
+    
+    # Account Info
+    balance: float = 0.0
+    equity: float = 0.0
+    open_positions: int = 0
+    raw_positions: list = field(default_factory=list)
+
+    # Indicator Data (multi-TF)
     ema: Dict[str, Dict[str, float]] = field(default_factory=dict)
     ema_slope: Dict[str, Dict[str, float]] = field(default_factory=dict)
-
-    # Volatility
     atr: Dict[str, float] = field(default_factory=dict)
     atr_percent: Dict[str, float] = field(default_factory=dict)
     true_range: Dict[str, float] = field(default_factory=dict)
-
-    # Momentum
     body_ratio: Dict[str, float] = field(default_factory=dict)
     wick_ratio: Dict[str, float] = field(default_factory=dict)
     impulse_size: Dict[str, float] = field(default_factory=dict)
     momentum_score: Dict[str, float] = field(default_factory=dict)
-
-    # Volume
     volume_ma: Dict[str, float] = field(default_factory=dict)
     volume_ratio: Dict[str, float] = field(default_factory=dict)
     volume_spike: Dict[str, float] = field(default_factory=dict)
-
-    # VWAP
     vwap: Dict[str, float] = field(default_factory=dict)
     distance_to_vwap: Dict[str, float] = field(default_factory=dict)
 
-    # Market Microstructure
-    current_price: float = 0.0
-    spread: float = 0.0
-    tick_speed: float = 0.0
-    price_velocity: float = 0.0
-
-    # Structure — swing pivots (Sprint B3.1)
+    # Structure — swing pivots & S/R
     last_swing_high: Dict[str, float] = field(default_factory=dict)
     last_swing_low: Dict[str, float] = field(default_factory=dict)
-    nearest_support: Dict[str, float] = field(default_factory=dict)     # new B3.1
-    nearest_resistance: Dict[str, float] = field(default_factory=dict)  # new B3.1
+    nearest_support: Dict[str, float] = field(default_factory=dict)
+    nearest_resistance: Dict[str, float] = field(default_factory=dict)
 
     # Raw candles reference
-    candles: Dict[str, List[Dict[str, Any]]] = field(default_factory=dict)
+    candles: Dict[str, list] = field(default_factory=dict)
 
     # ── Accessors ──────────────────────────────────────────────────────────
+    def get_atr(self, tf: str) -> float:
+        return self.atr.get(tf, 0.0)
 
-    def get_ema(self, timeframe: str, period: int) -> Optional[float]:
-        return self.ema.get(timeframe, {}).get(f"ema{period}")
+    def get_ema(self, tf: str, period: int) -> float:
+        return self.ema.get(tf, {}).get(f"ema{period}", 0.0)
 
-    def get_ema_slope(self, timeframe: str, period: int) -> Optional[float]:
-        return self.ema_slope.get(timeframe, {}).get(f"ema{period}_slope")
+    def get_ema_slope(self, tf: str, period: int) -> float:
+        return self.ema_slope.get(tf, {}).get(f"ema{period}_slope", 0.0)
 
-    def get_atr(self, timeframe: str) -> Optional[float]:
-        return self.atr.get(timeframe)
+    def get_momentum_score(self, tf: str) -> float:
+        return self.momentum_score.get(tf, 0.0)
 
-    def get_vwap(self, timeframe: str) -> Optional[float]:
-        return self.vwap.get(timeframe)
+    def get_volume_ratio(self, tf: str) -> float:
+        return self.volume_ratio.get(tf, 0.0)
 
-    def get_swing(self, timeframe: str, side: str) -> Optional[float]:
-        if side == "high":
-            return self.last_swing_high.get(timeframe)
-        return self.last_swing_low.get(timeframe)
+    def get_vwap(self, tf: str) -> float:
+        return self.vwap.get(tf, 0.0)
 
-    def get_nearest_support(self, timeframe: str) -> Optional[float]:
-        return self.nearest_support.get(timeframe)
+    def get_vwap_distance(self, tf: str) -> float:
+        return self.distance_to_vwap.get(tf, 0.0)
 
-    def get_nearest_resistance(self, timeframe: str) -> Optional[float]:
-        return self.nearest_resistance.get(timeframe)
+    def get_swing(self, tf: str, type: str) -> Optional[float]:
+        if type == "high": return self.last_swing_high.get(tf)
+        if type == "low":  return self.last_swing_low.get(tf)
+        return None
+
+    def get_sr(self, tf: str, type: str) -> Optional[float]:
+        if type == "support":    return self.nearest_support.get(tf)
+        if type == "resistance": return self.nearest_resistance.get(tf)
+        return None
 
 
 @dataclass(frozen=True, slots=True)
@@ -89,3 +90,8 @@ class FeatureInputs:
     symbol: str = ""
     timestamp: Optional[datetime] = None
     scan_id: str = ""
+    balance: float = 0.0  # New
+    equity: float = 0.0    # New
+    open_positions: int = 0 # New
+    raw_positions: list = field(default_factory=list) # New
+    current_price: float = 0.0 # New (Pass actual price from broker)

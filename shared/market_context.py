@@ -21,6 +21,7 @@ class MarketContext:
     m15_bias: StructureBias
     m5_structure: StructureBias
     vwap_distance_atr: float
+    vwap_z_score: float
     atr: float
     price: float
     timestamp: datetime
@@ -71,11 +72,21 @@ def build(candles_m15: List[dict], candles_m5: List[dict], candles_m1: List[dict
     vwap = sum(m5_closes) / len(m5_closes) if m5_closes else current_price
     vwap_distance_atr = abs(current_price - vwap) / atr_m5 if atr_m5 > 0 else 0.0
 
+    # vwap_z_score: (price - mean) / std_dev
+    if len(m5_closes) > 1:
+        mean = sum(m5_closes) / len(m5_closes)
+        variance = sum((x - mean) ** 2 for x in m5_closes) / len(m5_closes)
+        std_dev = variance ** 0.5
+        vwap_z_score = (current_price - mean) / std_dev if std_dev > 0 else 0.0
+    else:
+        vwap_z_score = 0.0
+
     return MarketContext(
         regime=regime,
         m15_bias=m15_bias,
         m5_structure=m5_structure,
         vwap_distance_atr=vwap_distance_atr,
+        vwap_z_score=vwap_z_score,
         atr=atr_m5,
         price=current_price,
         timestamp=datetime.now()

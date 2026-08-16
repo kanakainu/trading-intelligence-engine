@@ -45,10 +45,19 @@ class TradePlanner:
         danger_zone = self._calc_danger_zone(inputs)
         
         # 2. Stop Loss
-        sl = self._calc_stop_loss(inputs)
+        sl = self._calc_stop_loss(inputs, entry_mid)
         
         # 3. Take Profit
         tp = self._calc_take_profit(inputs, sl, entry_mid)
+
+        # FINAL SANITY CHECK: Protect against negative/insane SL/TP (XAUUSD focus)
+        # If SL/TP is suspiciously low or negative, block the plan
+        if sl is not None and sl < 1000.0:
+            logger.error(f"PLAN REJECTED: Insane SL detected ({sl}). EntryMid={entry_mid}")
+            return None
+        if tp is not None and tp < 1000.0:
+            logger.error(f"PLAN REJECTED: Insane TP detected ({tp}). EntryMid={entry_mid}")
+            return None
         
         # 4. Risk/Reward
         risk_points, reward_points, rr = self._calc_risk_reward(
@@ -116,7 +125,7 @@ class TradePlanner:
         
         return None
     
-    def _calc_stop_loss(self, inputs: PlannerInputs) -> Optional[float]:
+    def _calc_stop_loss(self, inputs: PlannerInputs, entry_mid: float) -> float:
         """
         SL from entry_tf swing pivots OUTSIDE entry_zone.
         
@@ -147,24 +156,24 @@ class TradePlanner:
             pivots = self._find_swing_pivots(tf_candles)
             
             if direction == "sell":
-                # SL above entry_zone high
+                        # SL above entry_zone high
                 ez_ref = float(entry_zone["high"])
                 swing_highs = sorted([p["price"] for p in pivots if p["type"] == "high" and p["price"] > ez_ref])
                 if swing_highs:
-                    return swing_highs[0] + buf
+                    return swing_highs[0] + 0.0 # buf replaced with 0.0
             else:
                 # SL below entry_zone low
                 ez_ref = float(entry_zone["low"])
                 swing_lows = sorted([p["price"] for p in pivots if p["type"] == "low" and p["price"] < ez_ref], reverse=True)
                 if swing_lows:
-                    return swing_lows[0] - buf
+                    return swing_lows[0] - 0.0 # buf replaced with 0.0
         
         # FALLBACK: ATR buffer — never return None (order with no SL = naked risk)
         atr = float(getattr(inputs, "atr", 0.0) or 5.0)
-        atr_buf = atr * 1.5 + buf
+        atr_buf = atr * 1.5 + 0.0 # buf replaced with 0.0
         if direction == "sell":
-            return float(entry_zone["high"]) + atr_buf
-        return float(entry_zone["low"]) - atr_buf
+            return float(entry_mid) + atr_buf
+        return float(entry_mid) - atr_buf
     
     def _calc_take_profit(self, inputs: PlannerInputs, sl: Optional[float], entry_mid: float) -> Optional[float]:
         """
@@ -181,18 +190,18 @@ class TradePlanner:
             # No SL → ATR-based TP
             return entry_mid + atr * 1.5 if direction == "buy" else entry_mid - atr * 1.5
 
-        # Calculate risk
+        # Calculate risk using entry_mid (fallback safe)
         if direction == "sell":
-            risk = float(sl) - float(entry_zone["low"])
+            risk = float(sl) - float(entry_mid)
             # Use H1 support if valid and provides good RR
-            if h1_support and h1_support > 0.0 and (entry_zone["low"] - h1_support) >= risk * 1.5:
+            if h1_support and h1_support > 0.0 and (entry_mid - h1_support) >= risk * 1.5:
                 return h1_support
             # Fallback
             return entry_mid - risk * 1.5
         else: # direction == "buy"
-            risk = float(entry_zone["high"]) - float(sl)
+            risk = float(entry_mid) - float(sl)
             # Use H1 resistance if valid and provides good RR
-            if h1_resistance and h1_resistance < 999999.0 and (h1_resistance - entry_zone["high"]) >= risk * 1.5:
+            if h1_resistance and h1_resistance < 999999.0 and (h1_resistance - entry_mid) >= risk * 1.5:
                 return h1_resistance
             # Fallback
             return entry_mid + risk * 1.5
@@ -212,12 +221,21 @@ class TradePlanner:
         if not sl or not tp:
             return 0.0, 0.0, 0.0
         
+        # Use entry_mid for safe calculation
+        entry_mid = 0.0
+        if "low" in entry_zone and "high" in entry_zone:
+            entry_mid = (entry_zone["low"] + entry_zone["high"]) / 2
+        elif "low" in entry_zone:
+            entry_mid = entry_zone["low"]
+        elif "high" in entry_zone:
+            entry_mid = entry_zone["high"]
+        
         if direction == "sell":
-            risk_points = abs(float(sl) - float(entry_zone["low"]))
-            reward_points = abs(float(entry_zone["low"]) - float(tp))
+            risk_points = abs(float(sl) - float(entry_mid))
+            reward_points = abs(float(entry_mid) - float(tp))
         else: # direction == "buy"
-            risk_points = abs(float(entry_zone["high"]) - float(sl))
-            reward_points = abs(float(tp) - float(entry_zone["high"]))
+            risk_points = abs(float(entry_mid) - float(sl))
+            reward_points = abs(float(tp) - float(entry_mid))
 
         rr = reward_points / risk_points if risk_points > 0 else 0.0
         return risk_points, reward_points, rr

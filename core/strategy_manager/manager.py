@@ -104,7 +104,7 @@ class StrategyManager:
             with open("/home/ubuntu/trading-intelligence-engine/config/strategy_status.json") as f:
                 self._enabled = json.load(f)
         except Exception as e:
-            logger.warning("Failed to reload status: %s", e)
+            logger.warning("Failed to reload status: %s — Using last known/default", e)
 
         # Load per-symbol toggle config
         _sym_status = {}
@@ -112,18 +112,21 @@ class StrategyManager:
             with open("/home/ubuntu/trading-intelligence-engine/config/symbol_status.json") as f:
                 _sym_status = json.load(f)
         except Exception:
+            # Default empty if file missing
             pass
 
         results = []
         sym = context.scan.market.symbol.upper() if context.scan and context.scan.market else ""
         for sid, strategy in sorted(self._registry.items(), key=lambda x: -x[1].priority):
+            # Check Global Enable
             if not self._enabled.get(sid, True):
+                logger.debug("Strategy %s is globally DISABLED", sid)
                 continue
 
             # Per-symbol toggle check
             if sym and sid in _sym_status:
                 if not _sym_status[sid].get(sym, True):
-                    logger.info("Strategy %s skipped for symbol %s (disabled)", sid, sym)
+                    logger.warning("Strategy %s skipped for symbol %s (EXPLICITLY DISABLED in symbol_status.json)", sid, sym)
                     continue
 
             meta = getattr(strategy, "metadata", None)

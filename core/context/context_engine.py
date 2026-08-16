@@ -29,6 +29,22 @@ class ContextEngine:
         candles: List[Dict] = market_data.get("candles", [])
         spread    = float(market_data.get("spread", 0.0))
         is_open   = bool(market_data.get("market_open", True))
+        
+        # Current price from last candle or market_data
+        price = market_data.get("current_price", 0.0)
+        if price == 0.0 and candles:
+            price = candles[-1].get("close", 0.0)
+
+        # VWAP Z-Score calculation
+        vwap_z_score = 0.0
+        if candles and len(candles) > 1:
+            closes = [c.get("close", 0.0) for c in candles if c.get("close") is not None]
+            if len(closes) > 1:
+                mean = sum(closes) / len(closes)
+                variance = sum((x - mean) ** 2 for x in closes) / len(closes)
+                std_dev = variance ** 0.5
+                if std_dev > 0:
+                    vwap_z_score = (price - mean) / std_dev
 
         trend      = self._calc_trend(candles)
         atr        = self._calc_atr(candles)
@@ -39,6 +55,8 @@ class ContextEngine:
         ctx = MarketContext(
             symbol=symbol,
             timestamp=timestamp,
+            price=price,
+            vwap_z_score=vwap_z_score,
             trend=trend,
             session=session,
             atr=atr,
@@ -47,7 +65,8 @@ class ContextEngine:
             market_status=status,
         )
         log.info(f"Context built: {symbol} trend={trend} session={session} "
-                 f"atr={atr:.4f} spread={spread:.1f} vol={volatility}")
+                 f"atr={atr:.4f} spread={spread:.1f} vol={volatility} "
+                 f"price={price:.2f} z={vwap_z_score:.2f}")
         return ctx
 
     # ── internal helpers (generic math, no trading rules) ─────────────────
