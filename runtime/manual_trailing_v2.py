@@ -1,5 +1,5 @@
 """
-manual_trailing_v2.py — Failsafe Trailing Manager (Shadow Mode)
+manual_trailing_v2.py — Failsafe Trailing Manager (Primary SL Manager)
 Contek dari manual_trailing.py Torto V4 logic. Jadi cadangan kalau TIE Production mati.
 
 MODE:
@@ -29,9 +29,8 @@ FEATURES_CONFIG_PATH = CONFIG_DIR / "features.json"
 
 def load_dynamic_config():
     profiles = {
+        "riri_scalps_v1": {"start": 1.5, "dist": 0.8},
         "bystra":     {"start": 3.0, "dist": 2.5},
-        "aggressive": {"start": 1.5, "dist": 0.8},
-        "semi_hft":   {"start": 1.5, "dist": 1.0},
     }
     be_lock_usd = 1.5
     hedge_close_usd = 3.0
@@ -60,8 +59,8 @@ STRATEGY_MAP = {
     "B":   "bystra",
     "BA":  "bystra",
     "BAS": "bystra",
-    "A":   "aggressive",
-    "S":   "semi_hft",
+    "R":   "riri_scalps_v1",
+    "B":   "bystra",
 }
 
 # Peak profit tracker per ticket
@@ -119,9 +118,9 @@ def process_baskets(positions):
 
 def extract_profile_key(comment: str) -> str:
     if not comment or not comment.startswith("TIE_"):
-        return "aggressive"
+        return "riri_scalps_v1"
     parts = comment.split("_")
-    return STRATEGY_MAP.get(parts[1].upper(), "aggressive") if len(parts) >= 2 else "aggressive"
+    return STRATEGY_MAP.get(parts[1].upper(), "riri_scalps_v1") if len(parts) >= 2 else "riri_scalps_v1"
 
 
 def compute_new_sl(pos, profile):
@@ -131,7 +130,7 @@ def compute_new_sl(pos, profile):
     current_sl  = float(pos.get("sl", 0) or 0)
     current_tp  = float(pos.get("tp", 0) or 0)
     profit      = float(pos.get("profit", 0) or 0)
-    current_px  = float(pos.get("price_current", 0) or 0)
+    current_px  = float(pos.get("current_price", 0) or pos.get("price_current", 0) or 0)
 
     if profit < 0:
         return None  # Belum profit, gak trailing
@@ -167,14 +166,14 @@ def modify_order(ticket, new_sl, tp=None):
     payload = {"ticket": ticket, "sl": new_sl}
     if tp:
         payload["tp"] = tp
-    r = requests.post(f"{URL}/account/position/modify", headers=HEADERS, json=payload, timeout=5)
+    r = requests.post(f"{URL}/trade/modify", headers=HEADERS, json=payload, timeout=5)
     r.raise_for_status()
     return r.json()
 
 
 # ========= MAIN LOOP =========
 def run():
-    log.info("Manual Trailing V2 (Shadow Mode) started.")
+    log.info("Manual Trailing V2 (Primary SL Manager) started.")
     
     while True:
         try:
@@ -186,7 +185,22 @@ def run():
             positions = get_positions()
             tie_positions = [p for p in positions if str(p.get("comment", "")).startswith("TIE_")]
 
-            # === HEDGE CLOSE (selalu aktif, SHADOW atau ACTIVE) ===
+            # === ALWAYS EXECUTE TRAILING (Manual Trailing = Primary SL Manager) ===
+            if tie_positions:
+                for pos in tie_positions:
+                    ticket      = str(pos.get("ticket"))
+                    profile_key = extract_profile_key(pos.get("comment", ""))
+                    profile     = current_profiles.get(profile_key, current_profiles["riri_scalps_v1"])
+
+                    new_sl = compute_new_sl(pos, profile)
+                    if new_sl:
+                        try:
+                            modify_order(ticket, new_sl, tp=pos.get("tp"))
+                            log.info(f"[{ticket}] MODIFIED SL → {new_sl} (profit=${pos.get('profit',0):.2f})")
+                        except Exception as e:
+                            log.error(f"[{ticket}] MODIFY FAIL: {e}")
+
+            # === HEDGE CLOSE (selalu aktif) ===
             if tie_positions:
                 hedge_targets = process_baskets(tie_positions)
                 for pos in hedge_targets:
@@ -198,38 +212,6 @@ def run():
                         log.info(f"[HEDGE CLOSE] {ticket} closed.")
                     except Exception as e:
                         log.error(f"[HEDGE CLOSE FAIL] {ticket}: {e}")
-
-            # === SHADOW MODE — TIE hidup, cuma monitor ===
-            if tie_alive:
-                for pos in tie_positions:
-                    ticket      = str(pos.get("ticket"))
-                    profile_key = extract_profile_key(pos.get("comment", ""))
-                    profile     = current_profiles.get(profile_key, current_profiles["aggressive"])
-
-                    new_sl = compute_new_sl(pos, profile)
-                    if new_sl:
-                        log.info(f"[SHADOW] {ticket}: suggest SL={new_sl} (profit=${pos.get('profit',0):.2f})")
-
-            # === ACTIVE MODE — TIE mati ===
-            else:
-                if not tie_positions:
-                    time.sleep(POLL_SEC)
-                    continue
-
-                log.warning(f"[ACTIVE] TIE heartbeat lost > {HEARTBEAT_TIMEOUT_SEC}s. Taking over trailing...")
-
-                for pos in tie_positions:
-                    ticket      = str(pos.get("ticket"))
-                    profile_key = extract_profile_key(pos.get("comment", ""))
-                    profile     = current_profiles.get(profile_key, current_profiles["aggressive"])
-
-                    new_sl = compute_new_sl(pos, profile)
-                    if new_sl:
-                        try:
-                            modify_order(ticket, new_sl, tp=pos.get("tp"))
-                            log.info(f"[{ticket}] MODIFIED SL → {new_sl}")
-                        except Exception as e:
-                            log.error(f"[{ticket}] Modify failed: {e}")
 
                 # Cleanup peak untuk posisi yg udah close
                 active_tickets = {str(p.get("ticket")) for p in tie_positions}

@@ -575,7 +575,7 @@ while True:
                     "direction": decision.action, "confidence": decision.confidence,
                     "spread": spread, "balance": balance, "equity": equity,
                     "daily_pnl": daily_pnl,  # equity - day_start_balance (realized + floating)
-                    "open_positions": len(raw_positions), "lot": decision.metadata.get("volume", 0.01), "sl_pips": 0, "time": time.time(),
+                    "open_positions": len(raw_positions), "lot": decision.metadata.get("volume", 0.05), "sl_pips": 0, "time": time.time(),
                 }
                 if risk_ctx["sl"] and risk_ctx["entry"]:
                     risk_ctx["sl_pips"] = abs(risk_ctx["entry"] - risk_ctx["sl"]) * 10
