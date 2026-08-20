@@ -121,8 +121,9 @@ class RiriScalpsStrategy(BaseStrategy):
             valid_body = c1_body > 0.10 and c2_body > 0.10
 
             if z < -z_threshold:
-                # Oversold → BUY: need 2 consecutive bullish M5 + progressive
-                if (c1["close"] > c1["open"] and c2["close"] > c2["open"]
+                # Oversold → BUY: skip if strong downtrend (regime likely continues)
+                if (regime not in (Regime.TRENDING_BEAR,) or strength < 85) and (
+                        c1["close"] > c1["open"] and c2["close"] > c2["open"]
                         and c2["close"] > c1["close"] and valid_body):
                     sig_dir = Direction.BUY
                     reason  = f"A_2bar_vwap_rev_buy z={z:.2f}"
@@ -132,8 +133,9 @@ class RiriScalpsStrategy(BaseStrategy):
                     return self._emit(sym, sig_dir, price, conf, reason, sl, tp, z, str(regime))
 
             elif z > z_threshold:
-                # Overbought → SELL: need 2 consecutive bearish M5 + progressive
-                if (c1["close"] < c1["open"] and c2["close"] < c2["open"]
+                # Overbought → SELL: skip if strong uptrend
+                if (regime not in (Regime.TRENDING_BULL,) or strength < 85) and (
+                        c1["close"] < c1["open"] and c2["close"] < c2["open"]
                         and c2["close"] < c1["close"] and valid_body):
                     sig_dir = Direction.SELL
                     reason  = f"A_2bar_vwap_rev_sell z={z:.2f}"
