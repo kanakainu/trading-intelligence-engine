@@ -51,8 +51,7 @@ from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
 from core.strategy_manager.manager import StrategyManager
 from core.strategy.exit_orchestrator import ExitOrchestrator, ExitProfile
 from strategies.bystra.strategy import BystraStrategy
-from strategies.aggressive.strategy import AggressiveStrategy
-from strategies.semi_hft.strategy import SemiHFTStrategy
+from strategies.riri_scalps.strategy import RiriScalpsStrategy
 from strategies.aggressive.regime.regime_engine import AggressiveRegimeEngine
 from runtime.multi_strategy_runtime import MultiStrategyRuntime
 from runtime.adapters.tradeplan_adapter import plan_to_decision, aggressive_regime_to_core_regime
@@ -94,8 +93,7 @@ broker.initialize()
 mgr = StrategyManager()
 orch = ExitOrchestrator(min_gate_rr=1.5)
 mgr.load(BystraStrategy)
-mgr.load(AggressiveStrategy)
-mgr.load(SemiHFTStrategy)
+mgr.load(RiriScalpsStrategy)
 
 # Global Regime Detector (Nexus A12 style)
 regime_detector = RegimeDetector()
@@ -161,6 +159,56 @@ HALT_FLAG = "/tmp/tie_halt"  # touch /tmp/tie_halt to stop all trading; rm to re
 # ponytail: add Asian/London/NY session awareness when SessionProfile lands
 _CFD_24_5 = {"XAUUSD"}  # closed Fri 21:00–Sun 22:00 UTC
 _CRYPTO_247 = set()  # crypto removed — XAUUSD only
+
+def write_dashboard_status(all_pairs_data, broker, status_path):
+    """Update dashboard JSON for frontend consumption."""
+    try:
+        from datetime import datetime, timezone
+        import os, json
+        account_data = broker.get_account_info()
+        balance = account_data.balance
+        equity = account_data.equity
+        pos_states = broker.get_positions()
+        
+        # Calculate daily PnL relative to day start
+        daily_pnl = 0.0
+        try:
+            ds_file = "/home/ubuntu/trading-intelligence-engine/data/tie_day_start.json"
+            if os.path.exists(ds_file):
+                with open(ds_file) as f:
+                    day_start = float(json.load(f).get("balance", 0))
+                if day_start > 0:
+                    daily_pnl = equity - day_start
+        except: pass
+        
+        # Get daily target from governor
+        daily_target = 30.0  # fallback
+        try:
+            from runtime.trading_intelligence import DailyProfitGovernorV2
+            # Reuse the governor instance if accessible, or recreate
+            daily_target = 30.0  # Hardcoded fallback matching governor config
+        except: pass
+        
+        status_data = {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "balance": balance,
+            "equity": equity,
+            "daily_pnl": round(daily_pnl, 2),
+            "daily_target": daily_target,  # NEW: Add daily target
+            "floating_pnl": sum(getattr(p, 'unrealized_profit', 0) for p in pos_states),
+            "margin_percent": 0.0,
+            "pairs": all_pairs_data,
+            "positions": [{"side": getattr(p, 'side', ''), "volume": getattr(p, 'volume', 0), "entry": getattr(p, 'entry_price', 0), "sl": getattr(p, 'stop_loss', 0), "tp": getattr(p, 'take_profit', 0), "pnl": getattr(p, 'unrealized_profit', 0), "symbol": getattr(p, 'symbol', '')} for p in pos_states],
+            "total_setups": sum(1 for p in all_pairs_data.values() if p.get("setup")),
+        }
+        
+        os.makedirs(os.path.dirname(status_path), exist_ok=True)
+        with open(status_path, "w") as f:
+            json.dump(status_data, f)
+    except Exception as e:
+        import logging
+        logging.getLogger("TIE_Production").error(f"Dashboard write failed: {e}")
+
 
 def _market_open(sym: str, now_utc: datetime) -> bool:
     """Return False if CFD market is closed (weekend gap)."""
@@ -238,9 +286,11 @@ while True:
                                 _f.write(_reset_payload)
                             log.info("DAY RESET: new UTC day, day_start=%.2f", _last_equity)
                         else:
-                            log.info("HIBERNATE: daily target hit (PnL=$%.2f >= $30). Sleep %ds. Zero API calls.", _daily_pnl, _hibernate_s)
-                            time.sleep(_hibernate_s)
-                            continue
+                            if _daily_pnl >= 100.0: # Daily Target $100
+                                write_dashboard_status(all_pairs_data if 'all_pairs_data' in locals() else {}, broker, "/home/ubuntu/tie-dashboard/data/tie_status.json")
+                                log.info("HIBERNATE: daily target hit (PnL=$%.2f >= $100). Sleep %ds. Zero API calls.", _daily_pnl, _hibernate_s)
+                                time.sleep(_hibernate_s)
+                                continue
     except Exception as _e:
         log.warning("Hibernate check failed: %s", _e)
 
@@ -349,10 +399,10 @@ while True:
                             "B": "bystra",
                             "BA": "bystra",
                             "BAS": "bystra",
-                            "A": "aggressive",
-                            "S": "semi_hft"
+                            "A": "riri_scalps",
+                            "S": "riri_scalps"
                         }
-                        ps.strategy_id = strategy_map.get(strategy_code, "aggressive")
+                        ps.strategy_id = strategy_map.get(strategy_code, "riri_scalps")
                 else:
                     ps.strategy_id = "aggressive"  # Default fallback for TIE orders
 
@@ -385,7 +435,7 @@ while True:
                 "price": price, # Pass current live price
                 "spread": spread,
                 "market_open": _market_open(sym, now_utc),
-                "candles": candles.get("M1", []) # ContextEngine needs raw candles for Z-Score/ATR
+                "candles": candles.get("M5", [])  # FIXED: ContextEngine needs M5 candles for proper ATR/Z-Score
             }
             ctx = context_engine.build(market_data_for_context)
             log.debug(f"MarketContext built: price={ctx.price:.2f} z_score={ctx.vwap_z_score:.2f} atr={ctx.atr:.2f}")
@@ -451,7 +501,7 @@ while True:
                 
                 # Get strategy name for portfolio optimizer
                 _strat_key = decision.setup_name.split("_")[0].lower()
-                _strat_map = {"b": "bystra", "a": "aggressive", "s": "semi_hft"}
+                _strat_map = {"b": "bystra", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
                 _strat_name = _strat_map.get(_strat_key, _strat_key)
                 
                 decision.metadata["volume"] = calc_lot(equity, atr_val, strategy_id=_strat_name)
@@ -554,14 +604,26 @@ while True:
                 # === ⚔️ NEXUS CROSS-STRATEGY DEBATE (Global Direction Lock) ===
                 if decision.action != "WAIT":
                     # Check for existing positions in the OPPOSITE direction
-                    _opp_pos_count = sum(1 for p in raw_positions 
+                    _opp_positions = [p for p in raw_positions 
                                      if p.get("direction", p.get("type", "")).upper() != decision.action.upper()
-                                     and p.get("symbol", "") == sym)
+                                     and p.get("symbol", "") == sym]
+                    _opp_pos_count = len(_opp_positions)
                     
                     if _opp_pos_count > 0:
                         # Exception: Bystra can trade reversal if confidence is very high (>85%)
                         _is_bystra = "B_" in decision.setup_name
-                        if not (_is_bystra and decision.confidence > 0.85):
+
+                        # === CONTRA-HEDGE REDUCED SIZE ===
+                        # Opposing positions exist → allow entry but scale down lot size
+                        # Lot = max(0.01, normal_lot / (opp_count + 1)) — min fallback 0.01
+                        if not _is_bystra and decision.confidence >= 0.65:
+                            _normal_lot = decision.metadata.get("volume", 0.01)
+                            _reduced_lot = max(0.01, round(_normal_lot / (_opp_pos_count + 1), 2))
+                            decision.metadata["volume"] = _reduced_lot
+                            log.info(f"⚖️ CONTRA-HEDGE: {decision.action} conf={decision.confidence:.2f} lot {_normal_lot}→{_reduced_lot} ({_opp_pos_count} opposing)")
+                            # Fall through to entry with reduced lot
+
+                        elif not (_is_bystra and decision.confidence > 0.85):
                             log.warning(f"⚔️ CROSS-DEBATE BLOCK: {decision.setup_name} {decision.action} rejected! {_opp_pos_count} opposing positions open.")
                             setup_detail["status"] = "DEBATE_CONFLICT"
                             setup_detail["gate_reason"] = f"Conflict: {_opp_pos_count} opposing positions open"
@@ -588,12 +650,13 @@ while True:
                         now = time.time()
                         last_seen = _seen_setups.get(dedup_key, 0.0)
 
-                        # Adaptive dedup window based on strategy type
-                        # s = SemiHFT (fast layering) -> 10s
-                        # a = Aggressive -> 30s
+                        # Adaptive dedup window — M5 candle = 5min minimum
+                        # s = SemiHFT -> 300s (1 M5 candle)
+                        # a = Aggressive -> 180s
+                        # as = both -> 300s
                         # b = Bystra -> 60s (default)
                         _strat_type = decision.setup_name.split("_")[0].lower() if "_" in decision.setup_name else ""
-                        _dedup_window = 10 if _strat_type == "s" else 30 if _strat_type == "a" else DEDUP_WINDOW
+                        _dedup_window = 300 if _strat_type in ("s", "as") else 180 if _strat_type == "a" else DEDUP_WINDOW
 
                         # Bug fix: actually enforce DEDUP_WINDOW
                         if now - last_seen < _dedup_window:
@@ -636,7 +699,7 @@ while True:
                             from shared.momentum_gate import check as _mom_check
                             # Exempt mean reversion strategies (SemiHFT, Bystra THREE_CANDLE)
                             setup_key = decision.setup_name.split("_")[0].lower() if "_" in decision.setup_name else decision.setup_name.lower()
-                            mean_reversion_setups = {"s", "b"}  # semi_hft, bystra
+                            mean_reversion_setups = {"r", "b"}  # riri_scalps, bystra
                             if setup_key in mean_reversion_setups:
                                 _mom = type("_M", (), {"allowed": True, "reason": "mean_reversion_exempt"})()
                             else:
@@ -650,7 +713,7 @@ while True:
 
                         # Extract strategy key from setup_name (B_BUY -> bystra, A_SELL -> aggressive, S_BUY -> semi_hft)
                         strat_key = decision.setup_name.split("_")[0].lower()
-                        strat_map = {"b": "bystra", "a": "aggressive", "s": "semi_hft"}
+                        strat_map = {"b": "bystra", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
                         strategy_name = strat_map.get(strat_key, strat_key)
                         if _blocked:
                             log.debug(f"Trade blocked by gate, skipping budget consume")
@@ -770,13 +833,14 @@ while True:
                 "price": price,
                 "support": sr["h1_support"],
                 "resistance": sr["h1_resistance"],
-                "trend": ctx.metadata.get("h1_trend", "neutral"),
-                "regime": "RANGING",
+                "trend": ctx.trend.value if hasattr(ctx.trend, 'value') else str(ctx.trend),
+                "regime": _regime.regime.name if hasattr(_regime, 'regime') else "RANGING",
                 "spread": spread,
-                "atr": ctx.metadata.get("atr", 0.0),
-                "session": ctx.metadata.get("h1_trend", "ASIA").upper(),
+                "atr": ctx.atr,
+                "session": ctx.session.value if hasattr(ctx.session, 'value') else str(ctx.session),
                 "last_scan": datetime.now(timezone.utc).isoformat(),
-                "setup": setup_detail  # Full setup detail with status, reason, strategy, SL/TP
+                "setup": setup_detail,
+                "vwap_z_score": ctx.vwap_z_score,
             }
             
             all_pairs_data[sym] = pair_data
@@ -787,27 +851,7 @@ while True:
     
     # Write aggregated JSON AFTER all symbols scanned (INSIDE while True loop)
     try:
-        account_data = broker.get_account_info()
-        balance = account_data.balance
-        equity = account_data.equity
-        pos_states = broker.get_positions()
-        
-        status_data = {
-            "ts": datetime.now(timezone.utc).isoformat(),
-            "balance": balance,
-            "equity": equity,
-            "floating_pnl": sum(getattr(p, 'unrealized_profit', 0) for p in pos_states),
-            "margin_percent": 0.0,
-            "pairs": all_pairs_data,
-            "positions": [{"side": getattr(p, 'side', ''), "volume": getattr(p, 'volume', 0), "entry": getattr(p, 'entry_price', 0), "sl": getattr(p, 'stop_loss', 0), "tp": getattr(p, 'take_profit', 0), "pnl": getattr(p, 'unrealized_profit', 0), "symbol": getattr(p, 'symbol', '')} for p in pos_states],
-            "total_setups": sum(1 for p in all_pairs_data.values() if p.get("setup")),
-        }
-        
-        import os, json
-        import traceback
-        os.makedirs(os.path.dirname(status_path), exist_ok=True)
-        with open(status_path, "w") as f:
-            json.dump(status_data, f)
+        write_dashboard_status(all_pairs_data, broker, status_path)
     except Exception as e:
         log.error(f"Dashboard write failed: {e}")
     

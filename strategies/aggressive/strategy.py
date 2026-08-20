@@ -1,32 +1,74 @@
 """
-AggressiveStrategy (The Street Fighter v2.1)
-Fokus: Momentum Spike M1 via SetupDetector (MOMENTUM_BREAK).
-Gate: Z-Score Anti-Pucuk (fallback only).
+AggressiveStrategy v5.0 — M5 Swing Break + Retest
+
+Entry logic (REFACTORED):
+  1. ENGINE A: Swing Break Detection — M5 candle closes ABOVE swing_high (last 10 bars) or BELOW swing_low
+  2. ENGINE B: Retest Entry — After breakout detected, wait 1-2 M5 candles retesting the broken level
+  3. Entry at retest (better price), not at breakout candle
+
+M5 signal source only. M1 removed.
 """
-from typing import Any, Dict, List, Optional
-import logging
 import uuid
-from datetime import datetime
+import logging
+from typing import Optional, Tuple
 
 from core.strategy.base_strategy import BaseStrategy
 from core.strategy.strategy_context import StrategyContext
 from core.strategy.strategy_result import StrategyResult
 from core.strategy.strategy_metadata import StrategyMetadata
 from core.signals.signal import Signal, Direction
-from shared.setup_detector import detect, SetupType, SetupDirection
-from shared.market_context import build as build_market_ctx
+from shared.market_context import Regime
 
 logger = logging.getLogger("AggressiveStrategy")
+
+# State machine: track pending breakout for retest confirmation
+# {symbol: {"direction": "BUY"/"SELL", "level": float, "bars_waited": int}}
+_breakout_state: dict = {}
+
+RETEST_MAX_BARS = 3      # wait max 3 M5 bars for retest
+RETEST_TOLERANCE = 0.30  # price must come within 0.30 pts of broken level
+SWING_LOOKBACK = 10      # bars for swing high/low detection
+
+
+def _find_swing_levels(candles: list, lookback: int) -> Tuple[float, float]:
+    """Find swing high and swing low of last N closed candles."""
+    recent = candles[-lookback-1:-1]  # exclude current forming candle
+    if not recent:
+        return 0.0, 999999.0
+    swing_high = max(float(c.get("high", 0)) for c in recent)
+    swing_low  = min(float(c.get("low",  0)) for c in recent)
+    return swing_high, swing_low
+
+
+def _is_breakout_candle(candle: dict, swing_high: float, swing_low: float, atr: float) -> Optional[str]:
+    """Check if candle breaks swing level with meaningful body."""
+    close = float(candle.get("close", 0))
+    open_ = float(candle.get("open",  0))
+    body  = abs(close - open_)
+
+    min_body = max(0.20, atr * 0.20)  # at least 0.20 pts or 20% ATR
+
+    if close > swing_high and body >= min_body:
+        return "BUY"
+    if close < swing_low and body >= min_body:
+        return "SELL"
+    return None
+
+
+def _is_retest(price: float, level: float, direction: str) -> bool:
+    """Price has pulled back to within RETEST_TOLERANCE of broken level."""
+    return abs(price - level) <= RETEST_TOLERANCE
+
 
 class AggressiveStrategy(BaseStrategy):
     def __init__(self):
         meta = StrategyMetadata(
             id="aggressive_v1",
-            name="Aggressive Momentum",
-            version="2.1.0",
+            name="Aggressive Swing Break+Retest",
+            version="5.0.0",
             priority=80,
-            author="Sasa",
-            description="Momentum Breakout via SetupDetector + Z-Score fallback."
+            author="Riri",
+            description="M5 Swing Break detection + Retest entry (not breakout candle)"
         )
         super().__init__(meta)
 
@@ -37,165 +79,94 @@ class AggressiveStrategy(BaseStrategy):
         pass
 
     def analyze(self, context: StrategyContext) -> StrategyResult:
-        market_ctx = context.scan.market
-        candles_m1 = context.scan.features.candles.get("M1", [])
-        candles_m5 = context.scan.features.candles.get("M5", [])
-        candles_m15 = context.scan.features.candles.get("M15", [])
-        
-        if not candles_m1 or len(candles_m1) < 5:
-            return StrategyResult(signal=None, confidence=0.0, reason="insufficient_m1_data")
+        market_ctx  = context.scan.market
+        candles_m5  = context.scan.features.candles.get("M5", [])
+        sym         = "XAUUSD"
 
-        price = market_ctx.price
-        z_score = market_ctx.vwap_z_score
-        atr = market_ctx.atr
+        if not candles_m5 or len(candles_m5) < SWING_LOOKBACK + 2:
+            return StrategyResult(signal=None, confidence=0.0, reason="insufficient_m5_data")
 
-        # Initialize fallback vars
-        vol_spike = False
-        bypass_z_gate = False
+        price    = market_ctx.price
+        atr      = market_ctx.atr
+        z        = market_ctx.vwap_z_score
+        regime   = getattr(market_ctx, "regime", "UNKNOWN")
+        strength = getattr(market_ctx, "regime_strength", 0)
 
-        # Build shared MarketContext for SetupDetector
-        _shared_ctx = build_market_ctx(
-            candles_m15=candles_m15,
-            candles_m5=candles_m5,
-            candles_m1=candles_m1,
-            current_price=price,
-            atr_m5=atr,
-        )
+        last_closed = candles_m5[-2]  # last fully closed M5 candle
 
-        # 1. TRY STRUCTURAL SETUP via SetupDetector (M5 context for structure)
-        _setup = detect(
-            ctx=_shared_ctx,
-            candles_m5=candles_m5,
-            candles_m1=candles_m1,
-            current_price=price,
-        )
+        swing_high, swing_low = _find_swing_levels(candles_m5, SWING_LOOKBACK)
 
-        signal_dir = None
-        reason = "no_setup"
-        confidence = 0.0
-        bypass_z_gate = False
-
-        # Priority 1: MOMENTUM_BREAK (high confidence, bypass Z-gate)
-        if _setup and _setup.type == SetupType.MOMENTUM_BREAK:
-            if _setup.direction == SetupDirection.BUY:
-                signal_dir = Direction.BUY
-                reason = f"momentum_break_up_quality={_setup.quality:.2f}"
-            elif _setup.direction == SetupDirection.SELL:
-                signal_dir = Direction.SELL
-                reason = f"momentum_break_down_quality={_setup.quality:.2f}"
-            confidence = 0.85
-            bypass_z_gate = True
-            logger.info(f"[AGGR] MOMENTUM_BREAK: dir={_setup.direction} quality={_setup.quality:.2f} BYPASS Z-GATE")
-
-        # Priority 2: Structural setups (TREND_PULLBACK, BREAKOUT_RETEST, LIQUIDITY_SWEEP, RANGE_EDGE)
-        elif _setup and _setup.type != SetupType.NONE:
-            _dir_str = "BUY" if _setup.direction == SetupDirection.BUY else "SELL"
-            
-            # === LOCATION ENGINE ===
-            try:
-                from shared.location_engine import evaluate as eval_location, LocationGrade
-                _loc = eval_location(_dir_str, price, candles_m5, candles_m15, atr)
-                if _loc.grade == LocationGrade.BAD:
-                    logger.info(f"[AGGR] BLOCK: BAD Location ({_loc.reason})")
-                    return StrategyResult(signal=None, confidence=0.0, reason=f"bad_location:{_loc.reason}")
-            except Exception as e:
-                logger.warning(f"[AGGR] LocationEngine error: {e}")
-                _loc = None
-
-            # === TRIGGER ENGINE (M1) ===
-            try:
-                from shared.trigger_engine import evaluate as eval_trigger, TriggerSignal
-                _trig = eval_trigger(_dir_str, candles_m1, atr)
-                if _trig.signal != TriggerSignal.ARMED:
-                    logger.info(f"[AGGR] WAIT: No M1 Trigger ({_trig.reason})")
-                    return StrategyResult(signal=None, confidence=0.0, reason=f"no_trigger:{_trig.reason}")
-            except Exception as e:
-                logger.warning(f"[AGGR] TriggerEngine error: {e}")
-                _trig = None
-
-            # === TELEMETRY ===
-            try:
-                from shared.entry_telemetry import log_candidate, CandidateRecord
-                log_candidate(CandidateRecord(
-                    strategy="Aggressive",
-                    symbol="XAUUSD",
-                    direction=_dir_str,
-                    regime=str(getattr(_shared_ctx, "regime", "UNKNOWN")),
-                    setup_type=_setup.type.value,
-                    location_grade=str(_loc.grade.name) if _loc else "UNKNOWN",
-                    location_score=_loc.score if _loc else 0.0,
-                    vwap_dist_atr=getattr(_shared_ctx, "vwap_distance_atr", 0.0),
-                    available_room_atr=_loc.available_room_atr if _loc else 0.0,
-                    trigger_signal=str(_trig.signal.name) if _trig else "UNKNOWN",
-                    trigger_strength=_trig.strength if _trig else 0.0,
-                    setup_quality=_setup.quality,
-                    entry_price=price,
-                    decision="ENTRY"
-                ))
-            except Exception as e:
-                logger.warning(f"[AGGR] Telemetry error: {e}")
-
-            signal_dir = Direction.BUY if _setup.direction == SetupDirection.BUY else Direction.SELL
-            reason = f"{_setup.type.value}_{_dir_str.lower()}_quality={_setup.quality:.2f}"
-            confidence = min(0.8, _setup.quality / 100.0)
-            logger.info(f"[AGGR] STRUCTURAL: {_setup.type.value} dir={_dir_str} quality={_setup.quality:.2f}")
-            
-            # Use zone_price for entry_zone for proper SL/TP
-            entry_zone = {"price": price, "high": price + 0.5, "low": price - 0.5}
-            if _setup.zone_price:
-                entry_zone = {"price": _setup.zone_price, "high": _setup.zone_price + 0.5, "low": _setup.zone_price - 0.5}
-
-        # Priority 3: Fallback M1 spike (original street fighter logic)
-        else:
-            last_candle = candles_m1[-1]
-            is_bullish = last_candle['close'] > last_candle['open']
-            is_bearish = last_candle['close'] < last_candle['open']
-            
-            last_body = abs(candles_m1[-1]['close'] - candles_m1[-1]['open'])
-            vol_spike = last_body > 0.2 * atr if atr > 0 else False
-
-            logger.info(f"[AGGR] FALLBACK M1 Price={price:.2f} Z={z_score:.2f} ATR={atr:.2f} Body={last_body:.2f} Bullish={is_bullish} Bearish={is_bearish} VolSpike={vol_spike}")
-
-            if is_bullish and vol_spike:
-                if z_score < 1.5:
-                    signal_dir = Direction.BUY
-                    reason = f"momentum_spike_up_z={z_score:.2f}"
-                    confidence = 0.75
-                else:
-                    reason = f"pucuk_buy_blocked_z={z_score:.2f}"
-            
-            elif is_bearish and vol_spike:
-                if z_score > -1.5:
-                    signal_dir = Direction.SELL
-                    reason = f"momentum_spike_down_z={z_score:.2f}"
-                    confidence = 0.75
-                else:
-                    reason = f"lembah_sell_blocked_z={z_score:.2f}"
-
-        if not signal_dir:
-            return StrategyResult(signal=None, confidence=0.0, reason=reason)
-
-        signal = Signal(
-            signal_id=str(uuid.uuid4()),
-            strategy=self.id,
-            symbol="XAUUSD",
-            direction=signal_dir,
-            entry_zone={"price": price, "high": price + 0.5, "low": price - 0.5},
-            confidence=confidence,
-            timeframe="M1"
-        )
-
-        return StrategyResult(
-            signal=signal,
-            confidence=confidence,
-            reason=reason,
-            metadata={
-                "z_score": z_score, 
-                "vol_spike": vol_spike,
-                "bypass_z_gate": bypass_z_gate,
-                "setup_type": _setup.type.value if _setup and _setup.type != SetupType.NONE else "M1_SPIKE"
+        # ── ENGINE A: Detect new breakout ─────────────────────────────────
+        breakout_dir = _is_breakout_candle(last_closed, swing_high, swing_low, atr)
+        if breakout_dir:
+            broken_level = swing_high if breakout_dir == "BUY" else swing_low
+            _breakout_state[sym] = {
+                "direction":   breakout_dir,
+                "level":       broken_level,
+                "bars_waited": 0,
             }
-        )
+            logger.info(f"[AGGR] Breakout detected: {breakout_dir} level={broken_level:.2f}")
+            # Do NOT enter here — wait for retest
+            return StrategyResult(signal=None, confidence=0.0,
+                                  reason=f"breakout_detected_{breakout_dir}_wait_retest level={broken_level:.2f}")
+
+        # ── ENGINE B: Check for retest of pending breakout ────────────────
+        state = _breakout_state.get(sym)
+        if state:
+            state["bars_waited"] += 1
+
+            # Expire state if too many bars passed
+            if state["bars_waited"] > RETEST_MAX_BARS:
+                logger.info(f"[AGGR] Retest expired after {state['bars_waited']} bars")
+                del _breakout_state[sym]
+                return StrategyResult(signal=None, confidence=0.0, reason="retest_expired")
+
+            direction = state["direction"]
+            level     = state["level"]
+
+            if _is_retest(price, level, direction):
+                # Retest confirmed — enter in breakout direction
+                # SL: just beyond the retest level
+                if direction == "BUY":
+                    sl = level - atr * 0.5
+                    tp = price + abs(price - sl) * 2.0
+                    sig_dir = Direction.BUY
+                else:
+                    sl = level + atr * 0.5
+                    tp = price - abs(sl - price) * 2.0
+                    sig_dir = Direction.SELL
+
+                confidence = min(0.85, 0.75 + (state["bars_waited"] * 0.03))
+                reason = f"retest_{direction}_level={level:.2f}_bars={state['bars_waited']}"
+
+                logger.info(f"[AGGR] ENTRY: {sig_dir} {reason} sl={sl:.2f} tp={tp:.2f}")
+                del _breakout_state[sym]  # clear state after entry
+
+                signal = Signal(
+                    signal_id=str(uuid.uuid4()),
+                    strategy=self.id,
+                    symbol=sym,
+                    direction=sig_dir,
+                    entry_zone={"price": price, "high": price + 0.5, "low": price - 0.5},
+                    confidence=confidence,
+                    timeframe="M5"
+                )
+                return StrategyResult(
+                    signal=signal,
+                    confidence=confidence,
+                    reason=reason,
+                    metadata={
+                        "z_score":    z,
+                        "regime":     str(regime),
+                        "setup_type": "SWING_BREAK_RETEST",
+                        "sl":         sl,
+                        "tp":         tp,
+                        "level":      level,
+                    }
+                )
+
+        return StrategyResult(signal=None, confidence=0.0, reason="no_momentum_break")
 
     def shutdown(self) -> None:
         self._initialized = False
+        _breakout_state.clear()

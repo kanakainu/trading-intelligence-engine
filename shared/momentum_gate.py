@@ -23,6 +23,9 @@ def check(features: Any, candles: Dict[str, List[dict]], direction: str, setup_n
     # THREE_CANDLE exempt — pattern already encodes momentum
     if "THREE_CANDLE" in setup_name.upper():
         return MomentumVerdict(True, "three_candle_exempt")
+    # M5 Mean Reversion exempt — reversal by definition goes against last candle
+    if "MR_" in setup_name.upper() or "MEAN_REV" in setup_name.upper():
+        return MomentumVerdict(True, "mr_exempt")
     m5 = candles.get("M5", [])
     if len(m5) < 2:
         return MomentumVerdict(True, "no_candles_skip")

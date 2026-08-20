@@ -170,7 +170,7 @@ class TradePlanner:
         
         # FALLBACK: ATR buffer — never return None (order with no SL = naked risk)
         atr = float(getattr(inputs, "atr", 0.0) or 5.0)
-        atr_buf = atr * 1.5 + 0.0 # buf replaced with 0.0
+        atr_buf = atr * 0.5  # scalping: tight SL
         if direction == "sell":
             return float(entry_mid) + atr_buf
         return float(entry_mid) - atr_buf
