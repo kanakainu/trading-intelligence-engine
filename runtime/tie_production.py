@@ -767,7 +767,7 @@ while True:
                                     req = OrderRequest(
                                         symbol=sym,
                                         side=decision.action,
-                                        volume=decision.metadata.get("volume", 0.01),
+                                        volume=decision.metadata.get("volume", 0.05),
                                         order_type=_order_type,
                                         stop_loss=decision.metadata.get("sl"),
                                         take_profit=decision.metadata.get("take_profit"),
