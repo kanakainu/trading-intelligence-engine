@@ -195,10 +195,25 @@ def write_dashboard_status(all_pairs_data, broker, status_path):
             "balance": balance,
             "equity": equity,
             "daily_pnl": round(daily_pnl, 2),
-            "daily_target": daily_target,  # NEW: Add daily target
+            "daily_target": daily_target,
             "floating_pnl": sum(getattr(p, 'unrealized_profit', 0) for p in pos_states),
             "margin_percent": 0.0,
-            "active_engines": ["RiriScalps", "ThreeCa"],  # Live engines — Bystra disabled
+            "active_engines": ["RiriScalps", "ThreeCa"],
+            "settings": {
+                "capitalMode": "fixed",
+                "capital": balance,
+                "executionTF": "M5",
+                "trendTF": "H1",
+                "riskPerTrade": 1.0,
+                "maxDailyLoss": 5.0,
+                "leverage": 100,
+                "maxLotSize": 0.05,
+                "maxPositions": 5,
+                "minRR": 1.5,
+                "mlConfidence": 0.8,
+                "cooldownSeconds": 0,
+                "symbol": "XAUUSD"
+            },
             "pairs": all_pairs_data,
             "positions": [{"side": getattr(p, 'side', ''), "volume": getattr(p, 'volume', 0), "entry": getattr(p, 'entry_price', 0), "sl": getattr(p, 'stop_loss', 0), "tp": getattr(p, 'take_profit', 0), "pnl": getattr(p, 'unrealized_profit', 0), "symbol": getattr(p, 'symbol', '')} for p in pos_states],
             "total_setups": sum(1 for p in all_pairs_data.values() if p.get("setup")),
