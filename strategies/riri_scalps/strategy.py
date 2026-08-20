@@ -246,6 +246,7 @@ class RiriScalpsStrategy(BaseStrategy):
                 "setup_type": reason.split("_")[0],
                 "sl":         sl,
                 "tp":         tp,
+                "volume":     0.05,  # fixed lot
             }
         )
 
