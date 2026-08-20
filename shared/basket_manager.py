@@ -28,8 +28,8 @@ def process_baskets(broker, positions):
         threshold = cfg.get("basket_tp_threshold", 3.0)  # Min profit to close the basket
         min_pos = cfg.get("basket_tp_min_pos", 3)      # Min positions to trigger basket TP
 
-        buys = [p for p in positions if getattr(p, "side", "").upper() == "BUY"]
-        sells = [p for p in positions if getattr(p, "side", "").upper() == "SELL"]
+        buys = [p for p in positions if getattr(p, "direction", getattr(p, "side", "")).upper() == "BUY"]
+        sells = [p for p in positions if getattr(p, "direction", getattr(p, "side", "")).upper() == "SELL"]
 
         # Process BUYs
         if len(buys) >= min_pos:
