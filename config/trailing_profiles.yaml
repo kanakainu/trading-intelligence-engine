@@ -1,13 +1,9 @@
 profiles:
-    aggressive:
-        be_lock: 1.2
-        dist: 0.6
-        start: 1.2
+    riri_scalps_v1:
+        be_lock: 1.0
+        dist: 0.5
+        start: 1.0
     bystra:
         be_lock: 1.5
         dist: 0.8
         start: 1.5
-    semi_hft:
-        be_lock: 1.0
-        dist: 0.5
-        start: 1.0
