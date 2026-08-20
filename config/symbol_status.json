@@ -2,7 +2,10 @@
     "riri_scalps_v1": {
         "XAUUSD": true
     },
-    "bystra_v1": {
+    "three_ca_v1": {
         "XAUUSD": true
+    },
+    "bystra_v1": {
+        "XAUUSD": false
     }
 }

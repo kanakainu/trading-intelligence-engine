@@ -50,8 +50,8 @@ from core.regime.regime_models import RegimeSnapshot, Regime, TrendDirection
 from core.opportunity.opportunity_models import OpportunitySnapshot, BlockReason
 from core.strategy_manager.manager import StrategyManager
 from core.strategy.exit_orchestrator import ExitOrchestrator, ExitProfile
-from strategies.bystra.strategy import BystraStrategy
 from strategies.riri_scalps.strategy import RiriScalpsStrategy
+from strategies.three_ca.strategy import ThreeCaStrategy
 from strategies.aggressive.regime.regime_engine import AggressiveRegimeEngine
 from runtime.multi_strategy_runtime import MultiStrategyRuntime
 from runtime.adapters.tradeplan_adapter import plan_to_decision, aggressive_regime_to_core_regime
@@ -92,7 +92,8 @@ broker.initialize()
 
 mgr = StrategyManager()
 orch = ExitOrchestrator(min_gate_rr=1.5)
-mgr.load(BystraStrategy)
+# Bystra disabled — mati suri, replaced by ThreeCa standalone
+mgr.load(ThreeCaStrategy)
 mgr.load(RiriScalpsStrategy)
 
 # Global Regime Detector (Nexus A12 style)
@@ -365,7 +366,7 @@ while True:
             except Exception:
                 _day_start = balance
             daily_pnl = equity - _day_start
-            
+
             # SL/TP Hit Notification
             from runtime.telegram_notifier import TelegramNotifier
             notifier = TelegramNotifier(TOKEN)
@@ -501,7 +502,7 @@ while True:
                 
                 # Get strategy name for portfolio optimizer
                 _strat_key = decision.setup_name.split("_")[0].lower()
-                _strat_map = {"b": "bystra", "r": "riri_scalps", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
+                _strat_map = {"b": "bystra", "t": "three_ca", "r": "riri_scalps", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
                 _strat_name = _strat_map.get(_strat_key, "riri_scalps")
                 
                 decision.metadata["volume"] = calc_lot(equity, atr_val, strategy_id=_strat_name)
@@ -713,7 +714,7 @@ while True:
 
                         # Extract strategy key from setup_name (B_BUY -> bystra, R_BUY -> riri_scalps)
                         strat_key = decision.setup_name.split("_")[0].lower()
-                        strat_map = {"b": "bystra", "r": "riri_scalps", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
+                        strat_map = {"b": "bystra", "t": "three_ca", "r": "riri_scalps", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
                         strategy_name = strat_map.get(strat_key, "riri_scalps")
                         if _blocked:
                             log.debug(f"Trade blocked by gate, skipping budget consume")
