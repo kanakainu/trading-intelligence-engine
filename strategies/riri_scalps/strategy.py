@@ -26,11 +26,11 @@ logger = logging.getLogger("RiriScalps")
 SWING_LOOKBACK   = 10
 RETEST_MAX_BARS  = 4       # was 3 — give price more time to retest
 RETEST_TOL_ATR   = 0.20   # retest tolerance = 20% of ATR (dynamic, was fixed 0.30 pts)
-WICK_BODY_RATIO  = 1.5    # was 2.0 — easier wick rejection trigger
+WICK_BODY_RATIO  = 2.0    # stricter: wick must be 2x body
 SPREAD_Z_MAX     = 2.0    # spread z-score block threshold
 ATR_VOL_HIGH     = 2.0    # ATR > 2x avg = high vol → tighten
 ATR_VOL_THIN     = 0.5    # ATR < 0.5x avg = thin → skip
-ENG_C_PROXIMITY  = 2.0    # Engine C: price within 2.0*ATR of swing level (was 1.0)
+ENG_C_PROXIMITY  = 0.5    # tighter: price within 0.5*ATR of swing level
 
 # Module-level state machine for Engine B (swing break retest)
 _breakout_state: dict = {}
