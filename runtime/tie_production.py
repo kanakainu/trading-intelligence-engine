@@ -464,8 +464,8 @@ while True:
             _regime_snap = regime_allocator.allocate(_features, time.time())
             log.info(f"MARKET REGIME: {_regime_snap.regime.value} (strength={_regime_snap.strength:.0f}) | SUGGESTED ENGINE: {_regime_snap.suggested_engine}")
             if _regime_snap.regime in (MarketRegime.CHOPPY, MarketRegime.CHAOS):
-                log.warning(f"REGIME GATE: {_regime_snap.regime.value} — skip scan (unsafe market)")
-                continue
+                log.warning(f"REGIME GATE: {_regime_snap.regime.value} — MR disabled, structural only")
+                # Don't skip — RiriScalps Engine B/C still valid in choppy/chaos
 
             # Inject S/R via dataclasses.replace (frozen-safe)
             import dataclasses
