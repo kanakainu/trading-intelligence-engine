@@ -36,7 +36,7 @@ _breakout_state: dict = {}
 
 
 def _swing_levels(candles: list, lookback: int) -> Tuple[float, float]:
-    recent = candles[-lookback-1:-1]
+    recent = candles[-lookback-2:-2]  # exclude last 2 so breakout candle can exceed
     if not recent:
         return 0.0, 999999.0
     return (max(float(c.get("high", 0)) for c in recent),
@@ -150,9 +150,11 @@ class RiriScalpsStrategy(BaseStrategy):
         swing_high, swing_low = _swing_levels(candles_m5, SWING_LOOKBACK)
         last_c   = candles_m5[-2]
         lc_close = float(last_c.get("close", 0))
-        lc_open  = float(last_c.get("open", 0))
+        lc_open  = float(last_c.get("open",  0))
         lc_body  = abs(lc_close - lc_open)
         min_body = max(0.20, atr * 0.20)
+
+        logger.info(f"[RIRI] EngB scan: close={lc_close:.2f} sh={swing_high:.2f} sl={swing_low:.2f} body={lc_body:.2f} min={min_body:.2f} pending={_breakout_state.get(sym)}")
 
         # Detect new breakout
         if lc_close > swing_high and lc_body >= min_body:
