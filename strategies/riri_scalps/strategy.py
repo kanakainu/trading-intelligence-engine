@@ -24,12 +24,13 @@ from shared.market_context import Regime
 logger = logging.getLogger("RiriScalps")
 
 SWING_LOOKBACK   = 10
-RETEST_MAX_BARS  = 3
-RETEST_TOL       = 0.30   # pts tolerance for retest
-WICK_BODY_RATIO  = 2.0    # wick must be > 2x body
+RETEST_MAX_BARS  = 4       # was 3 — give price more time to retest
+RETEST_TOL_ATR   = 0.20   # retest tolerance = 20% of ATR (dynamic, was fixed 0.30 pts)
+WICK_BODY_RATIO  = 1.5    # was 2.0 — easier wick rejection trigger
 SPREAD_Z_MAX     = 2.0    # spread z-score block threshold
 ATR_VOL_HIGH     = 2.0    # ATR > 2x avg = high vol → tighten
 ATR_VOL_THIN     = 0.5    # ATR < 0.5x avg = thin → skip
+ENG_C_PROXIMITY  = 2.0    # Engine C: price within 2.0*ATR of swing level (was 1.0)
 
 # Module-level state machine for Engine B (swing break retest)
 _breakout_state: dict = {}
@@ -169,7 +170,7 @@ class RiriScalpsStrategy(BaseStrategy):
             state["bars"] += 1
             if state["bars"] > RETEST_MAX_BARS:
                 del _breakout_state[sym]
-            elif abs(price - state["level"]) <= RETEST_TOL:
+            elif abs(price - state["level"]) <= atr * RETEST_TOL_ATR:
                 direction = state["direction"]
                 level     = state["level"]
                 sig_dir   = Direction.BUY if direction == "BUY" else Direction.SELL
@@ -189,10 +190,11 @@ class RiriScalpsStrategy(BaseStrategy):
         lower_wick = min(lc_close, lc_open) - lc_low
 
         if lc_body > 0:
+            logger.info(f"[RIRI] EngC scan: lower_wick={lower_wick:.2f} upper_wick={upper_wick:.2f} body={lc_body:.2f} ratio={WICK_BODY_RATIO} price={price:.2f} sh={swing_high:.2f} sl={swing_low:.2f} prox={ENG_C_PROXIMITY}*atr={ENG_C_PROXIMITY*atr:.2f}")
             # Bullish wick rejection: long lower wick, close near high → BUY
             if (lower_wick > WICK_BODY_RATIO * lc_body
                     and lc_close > lc_open
-                    and abs(price - swing_low) <= 1.0 * atr):
+                    and abs(price - swing_low) <= ENG_C_PROXIMITY * atr):
                 sig_dir = Direction.BUY
                 reason  = f"C_wick_reject_buy wick={lower_wick:.2f} body={lc_body:.2f}"
                 conf    = 0.80
@@ -203,7 +205,7 @@ class RiriScalpsStrategy(BaseStrategy):
             # Bearish wick rejection: long upper wick, close near low → SELL
             if (upper_wick > WICK_BODY_RATIO * lc_body
                     and lc_close < lc_open
-                    and abs(price - swing_high) <= 1.0 * atr):
+                    and abs(price - swing_high) <= ENG_C_PROXIMITY * atr):
                 sig_dir = Direction.SELL
                 reason  = f"C_wick_reject_sell wick={upper_wick:.2f} body={lc_body:.2f}"
                 conf    = 0.80
