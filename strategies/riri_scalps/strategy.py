@@ -120,12 +120,15 @@ class RiriScalpsStrategy(BaseStrategy):
             c1_body = abs(c1["close"] - c1["open"])
             c2_body = abs(c2["close"] - c2["open"])
             valid_body = c1_body > 0.10 and c2_body > 0.10
-
-            if z < -z_threshold:
+            _a_key = f"{sym}_{c1['close']:.2f}_{c2['close']:.2f}"
+            if _a_key == getattr(self, "_last_engA_key", None):
+                pass  # same candle pair — skip Engine A, fall through to B/C
+            elif z < -z_threshold:
                 # Oversold → BUY: skip if strong downtrend (regime likely continues)
                 if (regime not in (Regime.TRENDING_BEAR,) or strength < 85) and (
                         c1["close"] > c1["open"] and c2["close"] > c2["open"]
                         and c2["close"] > c1["close"] and valid_body):
+                    self._last_engA_key = _a_key
                     sig_dir = Direction.BUY
                     reason  = f"A_2bar_vwap_rev_buy z={z:.2f}"
                     conf    = min(0.88, 0.72 + (abs(z) - z_threshold) * 0.08)
@@ -138,6 +141,7 @@ class RiriScalpsStrategy(BaseStrategy):
                 if (regime not in (Regime.TRENDING_BULL,) or strength < 85) and (
                         c1["close"] < c1["open"] and c2["close"] < c2["open"]
                         and c2["close"] < c1["close"] and valid_body):
+                    self._last_engA_key = _a_key
                     sig_dir = Direction.SELL
                     reason  = f"A_2bar_vwap_rev_sell z={z:.2f}"
                     conf    = min(0.88, 0.72 + (abs(z) - z_threshold) * 0.08)
@@ -191,10 +195,15 @@ class RiriScalpsStrategy(BaseStrategy):
 
         if lc_body > 0:
             logger.info(f"[RIRI] EngC scan: lower_wick={lower_wick:.2f} upper_wick={upper_wick:.2f} body={lc_body:.2f} ratio={WICK_BODY_RATIO} price={price:.2f} sh={swing_high:.2f} sl={swing_low:.2f} prox={ENG_C_PROXIMITY}*atr={ENG_C_PROXIMITY*atr:.2f}")
+            _c_key = f"{sym}_{lc_high:.2f}_{lc_low:.2f}_{lc_close:.2f}"
+            if _c_key == getattr(self, "_last_engC_key", None):
+                return StrategyResult(signal=None, confidence=0.0, reason="engC_same_candle")
+            self._last_engC_key = _c_key  # mark BEFORE signal check — fire once per candle max
             # Bullish wick rejection: long lower wick, close near high → BUY
             if (lower_wick > WICK_BODY_RATIO * lc_body
                     and lc_close > lc_open
                     and abs(price - swing_low) <= ENG_C_PROXIMITY * atr):
+                self._last_engC_key = _c_key
                 sig_dir = Direction.BUY
                 reason  = f"C_wick_reject_buy wick={lower_wick:.2f} body={lc_body:.2f}"
                 conf    = 0.80
@@ -206,6 +215,7 @@ class RiriScalpsStrategy(BaseStrategy):
             if (upper_wick > WICK_BODY_RATIO * lc_body
                     and lc_close < lc_open
                     and abs(price - swing_high) <= ENG_C_PROXIMITY * atr):
+                self._last_engC_key = _c_key
                 sig_dir = Direction.SELL
                 reason  = f"C_wick_reject_sell wick={upper_wick:.2f} body={lc_body:.2f}"
                 conf    = 0.80
