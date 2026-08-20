@@ -61,7 +61,7 @@ class MultiStrategyRuntime:
             return None
 
         # Build strategy code prefix for comment
-        strategy_codes = {"bystra": "B", "aggressive": "A", "semi_hft": "S"}
+        strategy_codes = {"bystra": "B", "riri_scalps": "R", "aggressive": "A", "semi_hft": "S"}
         contributing = [s.strategy.split("_")[0] for s in signals if s.direction.value.lower() == fused.direction]
         code_str = "".join(sorted([strategy_codes.get(s, s[0].upper()) for s in contributing]))
         

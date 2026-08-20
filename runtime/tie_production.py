@@ -404,7 +404,7 @@ while True:
                         }
                         ps.strategy_id = strategy_map.get(strategy_code, "riri_scalps")
                 else:
-                    ps.strategy_id = "aggressive"  # Default fallback for TIE orders
+                    ps.strategy_id = "riri_scalps"  # Default fallback for TIE orders
 
                 if ps.symbol != sym: continue
 
@@ -501,8 +501,8 @@ while True:
                 
                 # Get strategy name for portfolio optimizer
                 _strat_key = decision.setup_name.split("_")[0].lower()
-                _strat_map = {"b": "bystra", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
-                _strat_name = _strat_map.get(_strat_key, _strat_key)
+                _strat_map = {"b": "bystra", "r": "riri_scalps", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
+                _strat_name = _strat_map.get(_strat_key, "riri_scalps")
                 
                 decision.metadata["volume"] = calc_lot(equity, atr_val, strategy_id=_strat_name)
                 
@@ -711,10 +711,10 @@ while True:
                                 observatory.log_gate(trace, "Momentum", "FAIL", reason=_mom.reason)
                                 _blocked = True
 
-                        # Extract strategy key from setup_name (B_BUY -> bystra, A_SELL -> aggressive, S_BUY -> semi_hft)
+                        # Extract strategy key from setup_name (B_BUY -> bystra, R_BUY -> riri_scalps)
                         strat_key = decision.setup_name.split("_")[0].lower()
-                        strat_map = {"b": "bystra", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
-                        strategy_name = strat_map.get(strat_key, strat_key)
+                        strat_map = {"b": "bystra", "r": "riri_scalps", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
+                        strategy_name = strat_map.get(strat_key, "riri_scalps")
                         if _blocked:
                             log.debug(f"Trade blocked by gate, skipping budget consume")
                         elif not budget_mgr.can_consume(strategy_name):
