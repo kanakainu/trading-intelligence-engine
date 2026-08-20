@@ -133,7 +133,7 @@ class RiriScalpsStrategy(BaseStrategy):
                     reason  = f"A_2bar_vwap_rev_buy z={z:.2f}"
                     conf    = min(0.88, 0.72 + (abs(z) - z_threshold) * 0.08)
                     sl      = _swing_pivot_sl(candles_m5, "BUY") or (price - atr * 0.5)
-                    tp      = price + abs(price - sl) * 1.5
+                    tp      = price + 4.0  # fixed 4pts copet
                     return self._emit(sym, sig_dir, price, conf, reason, sl, tp, z, str(regime))
 
             elif z > z_threshold:
@@ -146,7 +146,7 @@ class RiriScalpsStrategy(BaseStrategy):
                     reason  = f"A_2bar_vwap_rev_sell z={z:.2f}"
                     conf    = min(0.88, 0.72 + (abs(z) - z_threshold) * 0.08)
                     sl      = _swing_pivot_sl(candles_m5, "SELL") or (price + atr * 0.5)
-                    tp      = price - abs(sl - price) * 1.5
+                    tp      = price - 4.0  # fixed 4pts copet
                     return self._emit(sym, sig_dir, price, conf, reason, sl, tp, z, str(regime))
 
         # ─────────────────────────────────────────────────────────────────
@@ -178,8 +178,8 @@ class RiriScalpsStrategy(BaseStrategy):
                 direction = state["direction"]
                 level     = state["level"]
                 sig_dir   = Direction.BUY if direction == "BUY" else Direction.SELL
-                sl  = (level - atr * 0.5) if direction == "BUY" else (level + atr * 0.5)
-                tp  = (price + abs(price - sl) * 2.0) if direction == "BUY" else (price - abs(sl - price) * 2.0)
+                sl  = _swing_pivot_sl(candles_m5, direction) or ((level - atr * 0.5) if direction == "BUY" else (level + atr * 0.5))
+                tp  = (price + 4.0) if direction == "BUY" else (price - 4.0)  # fixed 4pts copet
                 conf = min(0.85, 0.75 + state["bars"] * 0.03)
                 reason = f"B_swing_retest_{direction} level={level:.2f} bars={state['bars']}"
                 del _breakout_state[sym]
@@ -207,8 +207,8 @@ class RiriScalpsStrategy(BaseStrategy):
                 sig_dir = Direction.BUY
                 reason  = f"C_wick_reject_buy wick={lower_wick:.2f} body={lc_body:.2f}"
                 conf    = 0.80
-                sl      = lc_low - 0.1
-                tp      = price + abs(price - sl) * 1.5
+                sl      = _swing_pivot_sl(candles_m5, "BUY") or (lc_low - 0.1)
+                tp      = price + 4.0  # fixed 4pts copet
                 return self._emit(sym, sig_dir, price, conf, reason, sl, tp, z, str(regime))
 
             # Bearish wick rejection: long upper wick, close near low → SELL
@@ -219,8 +219,8 @@ class RiriScalpsStrategy(BaseStrategy):
                 sig_dir = Direction.SELL
                 reason  = f"C_wick_reject_sell wick={upper_wick:.2f} body={lc_body:.2f}"
                 conf    = 0.80
-                sl      = lc_high + 0.1
-                tp      = price - abs(sl - price) * 1.5
+                sl      = _swing_pivot_sl(candles_m5, "SELL") or (lc_high + 0.1)
+                tp      = price - 4.0  # fixed 4pts copet
                 return self._emit(sym, sig_dir, price, conf, reason, sl, tp, z, str(regime))
 
         return StrategyResult(signal=None, confidence=0.0, reason="no_setup")
