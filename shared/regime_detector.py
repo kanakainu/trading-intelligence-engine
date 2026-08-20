@@ -20,7 +20,7 @@ class RegimeSnapshot:
     adx: float
     bb_bandwidth: float
     vol_percentile: str
-    suggested_engine: str   # Aggressive | SemiHFT | Hibernate
+    suggested_engine: str   # RiriScalps | ThreeCa | Hibernate
 
 class RegimeDetector:
     """
@@ -68,7 +68,7 @@ class RegimeDetector:
             vol_pct = "EXTREME"
         elif abs_mom >= self.MOMENTUM_STRONG:
             regime = MarketRegime.TRENDING_BULL if momentum > 0 else MarketRegime.TRENDING_BEAR
-            engine = "Aggressive"
+            engine = "RiriScalps"
             strength = min(100, 50 + abs_mom * 50)
             vol_pct = "HIGH" if atr_pct >= 0.12 else "MEDIUM"
         elif atr_pct < self.ATR_PCT_SQUEEZE and abs_mom < self.MOMENTUM_NEUTRAL:
@@ -78,7 +78,7 @@ class RegimeDetector:
             vol_pct = "LOW"
         else:
             regime = MarketRegime.RANGING
-            engine = "SemiHFT"
+            engine = "ThreeCa"
             strength = 60.0
             vol_pct = "MEDIUM"
 
