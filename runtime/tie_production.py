@@ -198,6 +198,7 @@ def write_dashboard_status(all_pairs_data, broker, status_path):
             "daily_target": daily_target,  # NEW: Add daily target
             "floating_pnl": sum(getattr(p, 'unrealized_profit', 0) for p in pos_states),
             "margin_percent": 0.0,
+            "active_engines": ["RiriScalps", "ThreeCa"],  # Live engines — Bystra disabled
             "pairs": all_pairs_data,
             "positions": [{"side": getattr(p, 'side', ''), "volume": getattr(p, 'volume', 0), "entry": getattr(p, 'entry_price', 0), "sl": getattr(p, 'stop_loss', 0), "tp": getattr(p, 'take_profit', 0), "pnl": getattr(p, 'unrealized_profit', 0), "symbol": getattr(p, 'symbol', '')} for p in pos_states],
             "total_setups": sum(1 for p in all_pairs_data.values() if p.get("setup")),
