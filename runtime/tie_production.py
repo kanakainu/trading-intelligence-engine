@@ -827,7 +827,7 @@ while True:
 
             # === BASKET TP (Centralized in Engine) ===
             from shared.basket_manager import process_baskets
-            process_baskets(client, pos_states)
+            process_baskets(broker, pos_states)
             
             # Build pair_data for dashboard
             pair_data = {
