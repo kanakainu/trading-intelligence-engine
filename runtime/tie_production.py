@@ -517,12 +517,17 @@ while True:
                 from shared.volatility_sizing import calc_lot
                 atr_val = _features.atr.get("M5", 0) if hasattr(_features, "atr") else 0
                 
-                # Get strategy name for portfolio optimizer
+                # Use strategy-injected volume if present; only calc_lot when volatility_sizing ON
+                from shared.volatility_sizing import calc_lot
+                atr_val = _features.atr.get("M5", 0) if hasattr(_features, "atr") else 0
                 _strat_key = decision.setup_name.split("_")[0].lower()
                 _strat_map = {"b": "bystra", "t": "three_ca", "r": "riri_scalps", "a": "riri_scalps", "s": "riri_scalps", "as": "riri_scalps"}
                 _strat_name = _strat_map.get(_strat_key, "riri_scalps")
-                
-                decision.metadata["volume"] = calc_lot(equity, atr_val, strategy_id=_strat_name)
+                _feat_cfg = getattr(_features, "config", {}) or {}
+                _vol_sizing_on = _feat_cfg.get("volatility_sizing", False)
+                if _vol_sizing_on or "volume" not in decision.metadata:
+                    decision.metadata["volume"] = calc_lot(equity, atr_val, strategy_id=_strat_name)
+                # else: keep strategy-injected volume (0.05)
                 
                 # === MEAN-REVERSION + WICK SPIKE (Boskuh Logic) ===
                 from shared.mean_reversion_filter import check as _mean_rev_check
