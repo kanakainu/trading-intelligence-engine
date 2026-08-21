@@ -674,7 +674,7 @@ while True:
                         # as = both -> 300s
                         # b = Bystra -> 60s (default)
                         _strat_type = decision.setup_name.split("_")[0].lower() if "_" in decision.setup_name else ""
-                        _dedup_window = 300 if _strat_type in ("s", "as") else 180 if _strat_type == "a" else DEDUP_WINDOW
+                        _dedup_window = 300 if _strat_type in ("s", "as") else 180 if _strat_type == "a" else 12 if _strat_type == "t" else DEDUP_WINDOW
 
                         # Bug fix: actually enforce DEDUP_WINDOW
                         if now - last_seen < _dedup_window:
