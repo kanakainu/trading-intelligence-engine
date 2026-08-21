@@ -2,11 +2,12 @@
 from typing import Any, Dict
 from core.rules.plugins.plugin_interface import RulePluginInterface, RuleResult
 
-# ponytail: tiers hardcoded; add config support when user needs runtime override
+# tiered fixed lot by equity/balance (user-tuned 2026-08-21)
 EQUITY_TIERS = [
-    (100,   2000,  0.01),  # fixed 0.01 for small accounts (safe)
-    (2001,  5000,  0.02),
-    (5001,  10000, 0.05),
+    (10,    200,   0.01),  # Micro: $10 - $200
+    (201,   750,   0.05),  # Low: $201 - $750 (Boskuh here)
+    (751,   1500,  0.10),  # Mid: $751 - $1500
+    (1501,  5000,  0.25),  # High
 ]
 
 def _max_lot_for_equity(equity: float) -> float:

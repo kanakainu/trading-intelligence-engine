@@ -92,15 +92,18 @@ class ThreeCandleDetector(BystraBaseDetector):
                 # THREE_CANDLE has built-in 3-candle confirmation — skip htf_solid gate
                 pass  # removed htf_confirm_solid block for THREE_CANDLE
 
-            # SL beyond C3 extreme
+            # SL beyond C3 extreme, TP nearest S/R or ATR fallback
+            atr_val = float(features.atr if features and hasattr(features, 'atr') else 7.0)
             if direction == "BUY":
                 sl = float(c3.get("low", 0)) - buf
-                tp = (features.get_nearest_resistance("H1") if features else None) or \
-                     find_nearest_resistance(candles, c1.get("high", 0), h1_candles)
+                tp_sr = (features.get_nearest_resistance("H1") if features else None) or \
+                        find_nearest_resistance(candles, c1.get("high", 0), h1_candles)
+                tp = tp_sr if tp_sr and tp_sr < 999999 else float(c1.get("close", 0)) + atr_val * 3
             else:
                 sl = float(c3.get("high", 0)) + buf
-                tp = (features.get_nearest_support("H1") if features else None) or \
-                     find_nearest_support(candles, c1.get("low", 0), h1_candles)
+                tp_sr = (features.get_nearest_support("H1") if features else None) or \
+                        find_nearest_support(candles, c1.get("low", 0), h1_candles)
+                tp = tp_sr if tp_sr and tp_sr > 0 else float(c1.get("close", 0)) - atr_val * 3
 
             facts.append(self._create_pattern_fact("THREE_CANDLE", 0.82, {
                 "entry_zone": entry_zone,
