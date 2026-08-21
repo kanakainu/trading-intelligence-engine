@@ -97,6 +97,7 @@ class ThreeCaStrategy(BaseStrategy):
                 "tp": md.get("tp"),
                 "danger_zone": md.get("danger_zone"),
                 "setup_type": "3Ca",
+                "volume": 0.05,  # fixed lot
             }
         )
 
