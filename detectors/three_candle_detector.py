@@ -52,13 +52,15 @@ class ThreeCandleDetector(BystraBaseDetector):
             # All 3 same direction
             if is_bullish(c3) and is_bullish(c2) and is_bullish(c1):
                 direction = "BUY"
-                # C2 no breakout above C3 (compression check)
-                if float(c2.get("high", 0)) > float(c3.get("high", 0)):
+                # C2 must be inside C3 range (compression)
+                if float(c2.get("high", 0)) > float(c3.get("high", 0)) or \
+                   float(c2.get("low", 0)) < float(c3.get("low", 0)):
                     continue
             elif is_bearish(c3) and is_bearish(c2) and is_bearish(c1):
                 direction = "SELL"
-                # C2 no breakout below C3 (compression check)
-                if float(c2.get("low", 0)) < float(c3.get("low", 0)):
+                # C2 must be inside C3 range (compression)
+                if float(c2.get("low", 0)) < float(c3.get("low", 0)) or \
+                   float(c2.get("high", 0)) > float(c3.get("high", 0)):
                     continue
             else:
                 continue
