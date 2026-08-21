@@ -41,6 +41,16 @@ class ThreeCaStrategy(BaseStrategy):
     def analyze(self, context: StrategyContext) -> StrategyResult:
         market_ctx = context.scan.market
 
+        # Same-candle guard — fire once per M5 candle close
+        m5 = (market_ctx.metadata.get("candles") or {}).get("M5", [])
+        if m5:
+            lc = m5[-2] if len(m5) >= 2 else m5[-1]
+            _ckey = f"{lc.get('high',0):.2f}_{lc.get('low',0):.2f}_{lc.get('close',0):.2f}"
+            if _ckey == getattr(self, "_last_candle_key", None):
+                return StrategyResult(signal=None, confidence=0.0, reason="no_pattern")
+        else:
+            _ckey = None
+
         # Spread guard
         spread = getattr(market_ctx, "spread", 0.0) or 0.0
         if spread > 0.5:
@@ -55,6 +65,9 @@ class ThreeCaStrategy(BaseStrategy):
 
         if not facts:
             return StrategyResult(signal=None, confidence=0.0, reason="no_pattern")
+
+        if _ckey:
+            self._last_candle_key = _ckey
 
         best = max(facts, key=lambda f: f.confidence)
         md = best.metadata or {}
