@@ -641,7 +641,7 @@ while True:
                         # Lot = max(0.01, normal_lot / (opp_count + 1)) — min fallback 0.01
                         if not _is_bystra and decision.confidence >= 0.65:
                             _normal_lot = decision.metadata.get("volume", 0.05)
-                            _reduced_lot = max(0.01, round(_normal_lot / (_opp_pos_count + 1), 2))
+                            _reduced_lot = max(0.05, round(_normal_lot / (_opp_pos_count + 1), 2))
                             decision.metadata["volume"] = _reduced_lot
                             log.info(f"⚖️ CONTRA-HEDGE: {decision.action} conf={decision.confidence:.2f} lot {_normal_lot}→{_reduced_lot} ({_opp_pos_count} opposing)")
                             # Fall through to entry with reduced lot
