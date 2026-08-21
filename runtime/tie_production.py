@@ -452,9 +452,10 @@ while True:
                 "price": price, # Pass current live price
                 "spread": spread,
                 "market_open": _market_open(sym, now_utc),
-                "candles": candles.get("M5", [])  # FIXED: ContextEngine needs M5 candles for proper ATR/Z-Score
+                "candles": candles.get("M5", [])  # ContextEngine needs flat M5 list for ATR/Z-Score
             }
             ctx = context_engine.build(market_data_for_context)
+            ctx.metadata["candles"] = candles  # inject full dict for detectors (ThreeCa, etc.)
             log.debug(f"MarketContext built: price={ctx.price:.2f} z_score={ctx.vwap_z_score:.2f} atr={ctx.atr:.2f}")
 
             # Build ScanContext for MultiStrategyRuntime
