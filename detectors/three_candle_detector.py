@@ -36,11 +36,16 @@ class ThreeCandleDetector(BystraBaseDetector):
         buf = sl_buffer(context)
 
         facts = []
-        # candles[-1] = newest, scan recent bars only (last 10)
-        for i in range(max(1, len(candles) - 10), len(candles) - 2):
-            c3 = candles[i - 1]   # oldest of trio
-            c2 = candles[i]       # middle (small)
-            c1 = candles[i + 1]   # newest (big breakout)
+        # candles[-1] = current forming candle (skip), [-2] onward = closed candles
+        # Scan last 10 closed candles for 3-candle pattern
+        closed = candles[:-1]  # exclude current forming candle
+        if len(closed) < 3:
+            return []
+
+        for i in range(max(2, len(closed) - 10), len(closed)):
+            c3 = closed[i - 2]   # oldest of trio (big)
+            c2 = closed[i - 1]   # middle (small/compression)
+            c1 = closed[i]       # newest (big breakout, fully closed)
 
             b1 = body_size(c1)
             b2 = body_size(c2)
@@ -52,36 +57,26 @@ class ThreeCandleDetector(BystraBaseDetector):
             # All 3 same direction
             if is_bullish(c3) and is_bullish(c2) and is_bullish(c1):
                 direction = "BUY"
-                # C2 must be inside C3 range (compression)
-                if float(c2.get("high", 0)) > float(c3.get("high", 0)) or \
-                   float(c2.get("low", 0)) < float(c3.get("low", 0)):
-                    continue
             elif is_bearish(c3) and is_bearish(c2) and is_bearish(c1):
                 direction = "SELL"
-                # C2 must be inside C3 range (compression)
-                if float(c2.get("low", 0)) < float(c3.get("low", 0)) or \
-                   float(c2.get("high", 0)) > float(c3.get("high", 0)):
-                    continue
             else:
                 continue
 
-            # C2 compression check
+            # C2 body compression — must be smaller than BOTH C1 and C3
+            # No strict inside-range requirement (too strict for XAUUSD)
             if b2 >= b1 * BODY_RATIO or b2 >= b3 * BODY_RATIO:
                 continue
 
-            # Entry mode decision: immediate vs wait-retest-C2
+            # Entry: always at C1 close (immediate) — standalone strategy, no retest wait
+            entry_mode = "immediate"
+            entry_zone = {
+                "price": float(c1.get("close", 0)),
+                "high":  float(c1.get("close", 0)) + buf,
+                "low":   float(c1.get("close", 0)) - buf,
+            }
+
             c2_high = float(c2.get("high", 0))
-            c2_low = float(c2.get("low", 0))
-            c1_strong = b1 > 1.5 * b3
-            if c1_strong:
-                entry_mode = "immediate"
-                entry_zone = {
-                    "high": float(c1.get("close", c1.get("high", 0))) + buf,
-                    "low":  float(c1.get("close", c1.get("low",  0))) - buf,
-                }
-            else:
-                entry_mode = "retest_c2"
-                entry_zone = {"high": c2_high + buf, "low": c2_low - buf}
+            c2_low  = float(c2.get("low",  0))
 
             # DZ for HTF confirm
             if features:
