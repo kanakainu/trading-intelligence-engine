@@ -14,7 +14,7 @@ from detectors.common import (
     htf_confirm_solid, find_nearest_support, find_nearest_resistance,
 )
 
-BODY_RATIO = 0.6  # C2 body must be < 60% of C1 and C3
+BODY_RATIO = 0.3  # C2 body must be < 30% of C1 and C3 (stricter compression)
 
 
 class ThreeCandleDetector(BystraBaseDetector):

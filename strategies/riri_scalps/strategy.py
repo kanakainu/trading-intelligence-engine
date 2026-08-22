@@ -112,41 +112,34 @@ class RiriScalpsStrategy(BaseStrategy):
                                   reason=f"spread_trap spread={spread:.2f}")
 
         # ─────────────────────────────────────────────────────────────────
-        # ENGINE A: 2-Bar VWAP Reversal
+        # ENGINE A: Alpha Imbalance (Order Flow / FVG Logic)
         # ─────────────────────────────────────────────────────────────────
-        if abs(z) >= z_threshold:
-            c1 = candles_m5[-3]
-            c2 = candles_m5[-2]
-            c1_body = abs(c1["close"] - c1["open"])
-            c2_body = abs(c2["close"] - c2["open"])
-            valid_body = c1_body > 0.10 and c2_body > 0.10
-            _a_key = f"{sym}_{c1['close']:.2f}_{c2['close']:.2f}"
-            if _a_key == getattr(self, "_last_engA_key", None):
-                pass  # same candle pair — skip Engine A, fall through to B/C
-            elif z < -z_threshold:
-                # Oversold → BUY: skip if strong downtrend (regime likely continues)
-                if (regime not in (Regime.TRENDING_BEAR,) or strength < 85) and (
-                        c1["close"] > c1["open"] and c2["close"] > c2["open"]
-                        and c2["close"] > c1["close"] and valid_body):
-                    self._last_engA_key = _a_key
+        # Identify massive candle body vs average (Volatility/Volume Spike)
+        avg_body = sum(abs(c["close"]-c["open"]) for c in candles_m5[-10:-1]) / 10
+        spike_c  = candles_m5[-2]
+        spike_body = abs(spike_c["close"] - spike_c["open"])
+        
+        if spike_body > (avg_body * 2.5) and spike_body > 1.0:
+            # Bullish Imbalance -> BUY on retest 50% body
+            if spike_c["close"] > spike_c["open"]:
+                fvg_mid = spike_c["open"] + (spike_body * 0.5)
+                if price <= (fvg_mid + 0.3) and price >= spike_c["open"]:
                     sig_dir = Direction.BUY
-                    reason  = f"A_2bar_vwap_rev_buy z={z:.2f}"
-                    conf    = min(0.88, 0.72 + (abs(z) - z_threshold) * 0.08)
-                    sl      = _swing_pivot_sl(candles_m5, "BUY") or (price - atr * 0.5)
-                    tp      = price + 4.0  # fixed 4pts copet
+                    reason  = "A_alpha_imbalance_buy"
+                    conf    = 0.85
+                    sl      = spike_c["low"] - 0.2
+                    tp      = price + 4.0
                     return self._emit(sym, sig_dir, price, conf, reason, sl, tp, z, str(regime))
-
-            elif z > z_threshold:
-                # Overbought → SELL: skip if strong uptrend
-                if (regime not in (Regime.TRENDING_BULL,) or strength < 85) and (
-                        c1["close"] < c1["open"] and c2["close"] < c2["open"]
-                        and c2["close"] < c1["close"] and valid_body):
-                    self._last_engA_key = _a_key
+            
+            # Bearish Imbalance -> SELL on retest 50% body
+            elif spike_c["close"] < spike_c["open"]:
+                fvg_mid = spike_c["open"] - (spike_body * 0.5)
+                if price >= (fvg_mid - 0.3) and price <= spike_c["open"]:
                     sig_dir = Direction.SELL
-                    reason  = f"A_2bar_vwap_rev_sell z={z:.2f}"
-                    conf    = min(0.88, 0.72 + (abs(z) - z_threshold) * 0.08)
-                    sl      = _swing_pivot_sl(candles_m5, "SELL") or (price + atr * 0.5)
-                    tp      = price - 4.0  # fixed 4pts copet
+                    reason  = "A_alpha_imbalance_sell"
+                    conf    = 0.85
+                    sl      = spike_c["high"] + 0.2
+                    tp      = price - 4.0
                     return self._emit(sym, sig_dir, price, conf, reason, sl, tp, z, str(regime))
 
         # ─────────────────────────────────────────────────────────────────
