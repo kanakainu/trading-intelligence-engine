@@ -21,10 +21,10 @@ def evaluate(direction: str, candles_m1: list, atr_m1: float) -> TriggerResult:
     prev_candle = candles_m1[-2]
 
     body_size = abs(last_candle['close'] - last_candle['open'])
-    atr_threshold = 0.3 * atr_m1
+    atr_threshold = 0.15 * atr_m1  # Lowered from 0.3 for scalping sensitivity
 
     strength = 0
-    if body_size >= 0.3 * atr_m1:
+    if body_size >= 0.15 * atr_m1:
         if body_size >= 0.8 * atr_m1:
             strength = 25
         elif body_size >= 0.5 * atr_m1:

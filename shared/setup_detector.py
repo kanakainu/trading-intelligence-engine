@@ -75,12 +75,12 @@ def detect(
     if ctx.regime in (Regime.TRENDING_BULL, Regime.TRENDING_BEAR):
         if ctx.regime == Regime.TRENDING_BULL:
             dist = current_price - recent_low
-            if 0 <= dist <= 1.0 * atr:
+            if -0.2 * atr <= dist <= 1.5 * atr:
                 return Setup(SetupType.TREND_PULLBACK, SetupDirection.BUY,
                              25.0, f"bull_pullback_swing={recent_low:.2f}", recent_low)
         else:
             dist = recent_high - current_price
-            if 0 <= dist <= 1.0 * atr:
+            if -0.2 * atr <= dist <= 1.5 * atr:
                 return Setup(SetupType.TREND_PULLBACK, SetupDirection.SELL,
                              25.0, f"bear_pullback_swing={recent_high:.2f}", recent_high)
 
@@ -97,33 +97,79 @@ def detect(
                      28.0, f"liq_sweep_sell={recent_high:.2f}", recent_high)
 
     # 3. BREAKOUT_RETEST
-    if recent_high > prev_high + 0.5 * atr:
-        dist = current_price - prev_high
-        if 0 <= dist <= 0.3 * atr:
-            return Setup(SetupType.BREAKOUT_RETEST, SetupDirection.BUY,
-                         22.0, f"breakout_retest_buy={prev_high:.2f}", prev_high)
-    if recent_low < prev_low - 0.5 * atr:
-        dist = prev_low - current_price
-        if 0 <= dist <= 0.3 * atr:
-            return Setup(SetupType.BREAKOUT_RETEST, SetupDirection.SELL,
-                         22.0, f"breakout_retest_sell={prev_low:.2f}", prev_low)
+    # Don't signal breakout retest if Z-score shows extreme mean reversion territory
+    vwap_z = getattr(ctx, 'vwap_z_score', 0.0)
+    if abs(vwap_z) < 2.0:  # Only allow breakout retest when not in extreme MR zone
+        if recent_high > prev_high + 0.5 * atr:
+            dist = current_price - prev_high
+            if 0 <= dist <= 0.3 * atr:
+                return Setup(SetupType.BREAKOUT_RETEST, SetupDirection.BUY,
+                             22.0, f"breakout_retest_buy={prev_high:.2f}", prev_high)
+        if recent_low < prev_low - 0.5 * atr:
+            dist = prev_low - current_price
+            if 0 <= dist <= 0.3 * atr:
+                return Setup(SetupType.BREAKOUT_RETEST, SetupDirection.SELL,
+                             22.0, f"breakout_retest_sell={prev_low:.2f}", prev_low)
 
     # 4. RANGE_EDGE
     if ctx.regime == Regime.RANGING:
-        if (current_price - recent_low) <= 0.5 * atr:
+        if (current_price - recent_low) <= 1.0 * atr:
             return Setup(SetupType.RANGE_EDGE, SetupDirection.BUY,
                          20.0, f"range_edge_buy={recent_low:.2f}", recent_low)
-        if (recent_high - current_price) <= 0.5 * atr:
+        if (recent_high - current_price) <= 1.0 * atr:
             return Setup(SetupType.RANGE_EDGE, SetupDirection.SELL,
                          20.0, f"range_edge_sell={recent_high:.2f}", recent_high)
 
-    # 5. MOMENTUM_BREAK (Fallback — Faster Entry)
-    # If price breaks 10-bar high/low and regime is trending, allow immediate entry
-    if current_price > recent_high:
+    # 5. MOMENTUM_BREAK (Refined for Aggressive/SemiHFT)
+    # Quality validation: body strength, directional consistency, breakout location
+    
+    # Check M1 for fast breakout
+    m1_last = candles_m1[-1]
+    m1_body = abs(m1_last['close'] - m1_last['open'])
+    m1_atr = atr / 5.0  # Proxy M1 ATR from M5 ATR
+    m1_spike = m1_body > 1.2 * m1_atr
+    
+    # Analyze breakout candle (last M5 candle)
+    last_high = highs[-1]
+    last_low = lows[-1]
+    last_close = closes[-1]
+    last_open = _get(cs5[-1], "open", "Open")
+    last_body = abs(last_close - last_open)
+    
+    # Directional consistency: last 3 candles same direction
+    dir_consistency = 0
+    for i in range(-3, 0):
+        if i + len(cs5) >= 0:
+            c = cs5[i]
+            c_close = _get(c, "close", "Close")
+            c_open = _get(c, "open", "Open")
+            if c_close > c_open: dir_consistency += 1
+            elif c_close < c_open: dir_consistency -= 1
+    
+    body_strength = last_body / atr if atr > 0 else 0
+    
+    # BUY breakout: price > recent_high OR M1 spike at high
+    if current_price > recent_high or (current_price > last_high and m1_spike):
+        quality = 12.0  # Lowered base from 15
+        if body_strength >= 0.4: quality += 8.0  # Lowered from 0.5/10
+        if dir_consistency >= 2: quality += 10.0
+        if m1_spike: quality += 5.0
+        
         return Setup(SetupType.MOMENTUM_BREAK, SetupDirection.BUY,
-                     15.0, f"momentum_break_high={recent_high:.2f}", recent_high)
-    if current_price < recent_low:
+                     max(5.0, quality), 
+                     f"fast_break_up_q={quality:.1f}", 
+                     recent_high)
+    
+    # SELL breakdown: price < recent_low OR M1 spike at low
+    if current_price < recent_low or (current_price < last_low and m1_spike):
+        quality = 12.0
+        if body_strength >= 0.4: quality += 8.0
+        if dir_consistency <= -2: quality += 10.0
+        if m1_spike: quality += 5.0
+        
         return Setup(SetupType.MOMENTUM_BREAK, SetupDirection.SELL,
-                     15.0, f"momentum_break_low={recent_low:.2f}", recent_low)
+                     max(5.0, quality),
+                     f"fast_break_down_q={quality:.1f}",
+                     recent_low)
 
     return _no_setup("no_structural_setup")

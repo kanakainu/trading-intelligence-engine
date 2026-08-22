@@ -22,98 +22,46 @@ class ThreeCandleDetector(BystraBaseDetector):
 
     def detect(self, context: Any) -> List[Any]:
         tf = getattr(context, "timeframe", None) or context.metadata.get("timeframe", "M5")
-        # THREE_CANDLE not valid on M1 — too noisy
-        if tf == "M1":
+        if tf != "M5":
             return []
+            
         candles = self._get_candles(context, tf, 30)
-        if len(candles) < 5:
+        # M15 Trend Check: 3 of last 5 must be same dir
+        m15_candles = self._get_candles(context, "M15", 10)
+        if len(candles) < 5 or len(m15_candles) < 6:
             return []
 
-        htf_tf = "M15" if tf == "M5" else "H1"
-        htf_candles = self._get_candles(context, htf_tf, 10)
-        h1_candles = self._get_candles(context, "H1", 30)
-        features = self._get_features(context)
-        buf = sl_buffer(context)
+        m15_bull = sum(1 for c in m15_candles[-6:-1] if is_bullish(c))
+        m15_bear = sum(1 for c in m15_candles[-6:-1] if is_bearish(c))
+        m15_trend = "BULL" if m15_bull >= 3 else "BEAR" if m15_bear >= 3 else "NONE"
 
         facts = []
-        # candles[-1] = current forming candle (skip), [-2] onward = closed candles
-        # Scan last 10 closed candles for 3-candle pattern
-        closed = candles[:-1]  # exclude current forming candle
-        if len(closed) < 3:
-            return []
-
-        for i in range(max(2, len(closed) - 10), len(closed)):
-            c3 = closed[i - 2]   # oldest of trio (big)
-            c2 = closed[i - 1]   # middle (small/compression)
-            c1 = closed[i]       # newest (big breakout, fully closed)
-
-            b1 = body_size(c1)
-            b2 = body_size(c2)
-            b3 = body_size(c3)
-
-            if b1 == 0 or b3 == 0:
-                continue
-
+        closed = candles[:-1]
+        for i in range(max(2, len(closed) - 5), len(closed)):
+            c3, c2, c1 = closed[i-2], closed[i-1], closed[i]
+            
             # All 3 same direction
             if is_bullish(c3) and is_bullish(c2) and is_bullish(c1):
+                if m15_trend != "BULL": continue
                 direction = "BUY"
+                # C2 inside C3 range
+                if float(c2["high"]) > float(c3["high"]) or float(c2["low"]) < float(c3["low"]): continue
             elif is_bearish(c3) and is_bearish(c2) and is_bearish(c1):
+                if m15_trend != "BEAR": continue
                 direction = "SELL"
+                # C2 inside C3 range
+                if float(c2["low"]) < float(c3["low"]) or float(c2["high"]) > float(c3["high"]): continue
             else:
                 continue
 
-            # C2 body compression — must be smaller than BOTH C1 and C3
-            # No strict inside-range requirement (too strict for XAUUSD)
-            if b2 >= b1 * BODY_RATIO or b2 >= b3 * BODY_RATIO:
-                continue
+            # Compression check
+            b1, b2, b3 = body_size(c1), body_size(c2), body_size(c3)
+            if b2 >= b1 * 0.3 or b2 >= b3 * 0.3: continue
 
-            # Entry: always at C1 close (immediate) — standalone strategy, no retest wait
-            entry_mode = "immediate"
-            entry_zone = {
-                "price": float(c1.get("close", 0)),
-                "high":  float(c1.get("close", 0)) + buf,
-                "low":   float(c1.get("close", 0)) - buf,
-            }
-
-            c2_high = float(c2.get("high", 0))
-            c2_low  = float(c2.get("low",  0))
-
-            # DZ for HTF confirm
-            if features:
-                dz_level = (features.get_nearest_resistance("H1") or c2_high * 1.05) \
-                    if direction == "BUY" else \
-                    (features.get_nearest_support("H1") or c2_low * 0.95)
-            else:
-                dz_level = find_nearest_resistance(candles, c2_high, h1_candles) \
-                    if direction == "BUY" else \
-                    find_nearest_support(candles, c2_low, h1_candles)
-
-            if not htf_confirm_solid(htf_candles, direction, dz_level):
-                # THREE_CANDLE has built-in 3-candle confirmation — skip htf_solid gate
-                pass  # removed htf_confirm_solid block for THREE_CANDLE
-
-            # SL beyond C3 extreme, TP nearest S/R or ATR fallback
-            atr_val = float(features.atr if features and hasattr(features, 'atr') else 7.0)
-            if direction == "BUY":
-                sl = float(c3.get("low", 0)) - buf
-                tp_sr = (features.get_nearest_resistance("H1") if features else None) or \
-                        find_nearest_resistance(candles, c1.get("high", 0), h1_candles)
-                tp = tp_sr if tp_sr and tp_sr < 999999 else float(c1.get("close", 0)) + atr_val * 3
-            else:
-                sl = float(c3.get("high", 0)) + buf
-                tp_sr = (features.get_nearest_support("H1") if features else None) or \
-                        find_nearest_support(candles, c1.get("low", 0), h1_candles)
-                tp = tp_sr if tp_sr and tp_sr > 0 else float(c1.get("close", 0)) - atr_val * 3
-
-            facts.append(self._create_pattern_fact("THREE_CANDLE", 0.82, {
-                "entry_zone": entry_zone,
-                "entry_mode": entry_mode,
-                "sl": float(sl),
-                "tp": float(tp),
-                "danger_zone": float(dz_level),
+            facts.append(self._create_pattern_fact("THREE_CANDLE", 0.85, {
                 "direction": direction,
-                "entry_tf": tf,
-                "detector_name": "ThreeCandleDetector",
+                "c1": c1, "c2": c2, "c3": c3,
+                "sl": float(c3["low"] if direction=="BUY" else c3["high"]),
+                "cutloss": float(c2["low"] if direction=="BUY" else c2["high"])
             }))
-
         return facts

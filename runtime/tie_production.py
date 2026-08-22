@@ -767,6 +767,12 @@ while True:
                                     _order_type = "limit" if _entry_mode == "retest_c2" else "market"
                                     _ez = decision.metadata.get("entry_zone") or {}
                                     _limit_price = (_ez.get("high") if decision.action == "BUY" else _ez.get("low")) if _order_type == "limit" else None
+                                    _strat_code = decision.metadata.get("strategy_code", "B")
+                                    _cutloss = decision.metadata.get("cutloss")
+                                    _final_comment = f"TIE_{_strat_code}_{decision.action}"
+                                    if _cutloss:
+                                        _final_comment += f"_CL{_cutloss:.2f}"
+                                        
                                     req = OrderRequest(
                                         symbol=sym,
                                         side=decision.action,
@@ -774,7 +780,7 @@ while True:
                                         order_type=_order_type,
                                         stop_loss=decision.metadata.get("sl"),
                                         take_profit=decision.metadata.get("take_profit"),
-                                        comment=f"TIE_{decision.setup_name}",
+                                        comment=_final_comment,
                                         metadata={"limit_price": _limit_price, "entry_mode": _entry_mode},
                                     )
                                     resp = broker.submit_order(req)
@@ -812,20 +818,29 @@ while True:
             contracts = {}
             for ps in pos_states:
                 if ps.symbol == sym:
-                    # Extract strategy code from comment (e.g., "TIE_B_SELL" -> "B")
+                    # Extract strategy code and metadata from comment
                     strategy_code = "B"  # default
+                    cutloss_lvl = None
                     if ps.comment and ps.comment.startswith("TIE_"):
                         parts = ps.comment.split("_")
                         if len(parts) >= 2:
-                            strategy_code = parts[1]  # B, BA, BAS, A, S
-                    
+                            strategy_code = parts[1]  # B, T, R, BA, BAS, A, S
+                        
+                        # Detect Cutloss encoded in comment (e.g., "TIE_T_BUY_CL4621.5")
+                        if "CL" in ps.comment:
+                            try:
+                                cutloss_lvl = float(ps.comment.split("CL")[1])
+                            except: pass
+
                     # Strategy-specific exit config
                     exit_configs = {
-                        "B":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # Bystra swing
-                        "BA":  {"be_trigger_atr": 0.4, "trail_trigger_atr": 0.8, "trail_offset_atr": 0.3, "partial_tp_pct": 0.4},      # Bystra+Aggressive
-                        "BAS": {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.2, "partial_tp_pct": 0.3},      # All 3
-                        "A":   {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.25, "partial_tp_pct": 0.4},      # Aggressive momentum
-                        "S":   {"be_trigger_atr": 0.15, "trail_trigger_atr": 0.3, "trail_offset_atr": 0.15, "partial_tp_pct": 0.3},      # SemiHFT scalping
+                        "T":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # 3Ca Refined
+                        "R":   {"be_trigger_atr": 0.2, "trail_trigger_atr": 0.4, "trail_offset_atr": 0.2, "partial_tp_pct": 0.3},      # RiriScalps
+                        "B":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # Bystra
+                        "BA":  {"be_trigger_atr": 0.4, "trail_trigger_atr": 0.8, "trail_offset_atr": 0.3, "partial_tp_pct": 0.4},
+                        "BAS": {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.2, "partial_tp_pct": 0.3},
+                        "A":   {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.25, "partial_tp_pct": 0.4},
+                        "S":   {"be_trigger_atr": 0.15, "trail_trigger_atr": 0.3, "trail_offset_atr": 0.15, "partial_tp_pct": 0.3},
                     }
                     cfg = exit_configs.get(strategy_code, exit_configs["B"])
                     
@@ -836,13 +851,14 @@ while True:
                             'trail_trigger_atr': cfg["trail_trigger_atr"],
                             'trail_offset_atr': cfg["trail_offset_atr"],
                             'partial_tp_pct': cfg["partial_tp_pct"],
-                            'early_exit_reversal': False,  # broker SL handles it
+                            'early_exit_reversal': True,
+                            'cutloss': cutloss_lvl # Pass cutloss level to monitor
                         }
                     })()
             
             if contracts:
-                # DISABLED 2026-08-07: manual_trailing_v2 handles all SL/TP trailing
-                pass  # pos_monitor.tick(pos_states, contracts, market_update)
+                # ENABLED for smart cutloss tracking
+                pos_monitor.tick(pos_states, contracts, market_update)
 
             # === BASKET TP (Centralized in Engine) ===
             from shared.basket_manager import process_baskets

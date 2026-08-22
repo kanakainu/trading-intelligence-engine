@@ -4,9 +4,11 @@ from core.rules.plugins.plugin_interface import RulePluginInterface, RuleResult
 
 VALID_SESSIONS = {
     "LONDON":   (7, 16),
-    "NEW_YORK":  (12, 21),
-    "ASIA":      (0, 9),
-    "OVERLAP":   (12, 16),
+    "NEW_YORK": (12, 21),
+    "ASIA":     (0, 9),
+    "OVERLAP":  (12, 16),
+    "CFD_EXT":  (21, 24),  # CFD extended hours (NY close to Asia open)
+    "CFD_EARLY": (0, 7),   # CFD early hours (before Asia proper)
 }
 
 

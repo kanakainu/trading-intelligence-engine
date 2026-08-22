@@ -75,6 +75,18 @@ class ContractExecutor:
 
         # 3. Early Exit - dangerous reversal pattern on M5 (NOT M1)
         if early_exit and m5_candles and len(m5_candles) >= 3:
+            # 3Ca Smart Cutloss: Close if M5 closed candle breaks C2 range
+            if "3Ca" in pos.comment:
+                cutloss_lvl = meta.get("cutloss")
+                if cutloss_lvl:
+                    last_closed = m5_candles[-2]
+                    if pos.is_buy:
+                        if float(last_closed["close"]) < cutloss_lvl:
+                            return ExecutionResult("close", f"3Ca_cutloss_break_low_c2_{cutloss_lvl}")
+                    else:
+                        if float(last_closed["close"]) > cutloss_lvl:
+                            return ExecutionResult("close", f"3Ca_cutloss_break_high_c2_{cutloss_lvl}")
+
             reversal = self._check_m5_reversal(m5_candles, pos.is_buy)
             if reversal:
                 return ExecutionResult("close", f"early_exit_reversal_{reversal}")

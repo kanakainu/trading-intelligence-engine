@@ -17,14 +17,14 @@ from core.rules.plugins.daily_target import DailyTargetPlugin
 
 DEFAULT_RISK_RULES: List[tuple] = [
     ("confidence",    ConfidenceRule,         {"min_confidence": 0.55}),
-    ("session",       SessionRule,            {"allowed_sessions": ["LONDON", "NEW_YORK", "OVERLAP", "ASIA"]}),
+    ("session",       SessionRule,            {"allowed_sessions": ["LONDON", "NEW_YORK", "OVERLAP", "ASIA", "CFD_EXT", "CFD_EARLY"]}),
     ("spread",        SpreadRule,             {"max_spread": 300}), # Asia spread now same as London/NY
     # ("rr",          RRRule,                 {"min_rr": 1.5}),  # REMOVED: RR is SL/TP output, not entry gate (CFD architecture)
     ("sl_validation", SLValidationRule,       {}),
     ("tp_validation", TPValidationRule,       {}),
     ("news",          NewsFilterPlugin,       {"window_minutes": 30}),
     ("drawdown",      AdaptiveDrawdownPlugin, {"limit_pct": 0.30}),
-    ("daily_target",  DailyTargetPlugin,      {"target_usd": 30.0}),
+    ("daily_target",  DailyTargetPlugin,      {"target_usd": 100.0}),
     ("lot",           DynamicLotPlugin,       {"min_lot": 0.01, "max_lot": 0.5, "risk_pct": 0.03}),
 ]
 

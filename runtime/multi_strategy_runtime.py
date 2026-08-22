@@ -91,11 +91,14 @@ class MultiStrategyRuntime:
         )
         plan = self._planner.plan(planner_inputs)
         
-        # Inject strategy code into metadata for order comment
-        if plan and plan.metadata is None:
-            object.__setattr__(plan, 'metadata', {})
+        # Inject metadata into TradePlan for Order Comment/Monitor
         if plan:
-            plan.metadata['strategy_code'] = code_str  # B, BA, BAS
+            if plan.metadata is None:
+                object.__setattr__(plan, 'metadata', {})
+            plan.metadata['strategy_code'] = code_str  # B, T, R
+            plan.metadata['cutloss'] = md.get("cutloss") # 3Ca smart cutloss
+            plan.metadata['setup_type'] = md.get("setup_type")
+            plan.metadata['volume'] = md.get("volume") # preserve strategy volume
 
         dt = (time.perf_counter() - t0) * 1000
         logger.info(
