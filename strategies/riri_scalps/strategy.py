@@ -195,7 +195,7 @@ class RiriScalpsStrategy(BaseStrategy):
             metadata={
                 "setup_type": "R",
                 "sl": sl,
-                "tp": tp,
+                "take_profit": tp,
                 "volume": 0.05,
                 "strategy_code": "R"
             }

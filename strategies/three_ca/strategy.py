@@ -105,7 +105,7 @@ class ThreeCaStrategy(BaseStrategy):
                 timeframe="M5",
                 metadata={
                     "sl": md["sl"],
-                    "tp": price + (4.0 if direction==Direction.BUY else -4.0),
+                    "take_profit": price + (4.0 if direction==Direction.BUY else -4.0),
                     "cutloss": md["cutloss"],
                     "setup_type": "3Ca",
                     "volume": 0.05
@@ -129,7 +129,7 @@ class ThreeCaStrategy(BaseStrategy):
                     timeframe="M5",
                     metadata={
                         "sl": md["sl"],
-                        "tp": price + (4.0 if direction==Direction.BUY else -4.0),
+                        "take_profit": price + (4.0 if direction==Direction.BUY else -4.0),
                         "cutloss": md["cutloss"],
                         "setup_type": "3Ca",
                         "volume": 0.05

@@ -134781,3 +134781,1154 @@ KeyError: 'INFO'
 2026-09-04 18:15:17,922 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
 2026-09-04 18:15:17,922 TIE_Production No setup for XAUUSD (WAIT)
 2026-09-04 18:15:17,927 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:15:27,533 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:15:29,775 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4470.03 z=-0.63
+2026-09-04 18:15:29,776 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:15:29,777 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:15:29,777 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:15:29,777 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:15:29,784 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:15:29,899 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:15:32,162 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4469.90 z=-0.66
+2026-09-04 18:15:32,164 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=63) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:15:32,164 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:15:32,165 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:15:32,165 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:15:32,165 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:15:32,165 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:15:32,172 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:15:42,050 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:15:44,241 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:15:44,331 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4469.90 z=-0.66
+2026-09-04 18:15:44,332 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:15:44,333 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:15:44,333 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:15:44,334 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:15:44,339 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:15:46,400 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4469.91 z=-0.66
+2026-09-04 18:15:46,401 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:15:46,402 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:15:46,402 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:15:46,403 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:15:46,403 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:15:46,403 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:15:46,409 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:15:56,240 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:15:58,403 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:15:58,591 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4470.16 z=-0.61
+2026-09-04 18:15:58,592 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:15:58,594 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:15:58,594 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:15:58,594 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:15:58,599 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:16:00,684 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4469.99 z=-0.64
+2026-09-04 18:16:00,685 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:16:00,687 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:16:00,687 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:16:00,688 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:16:00,688 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:16:00,688 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:16:00,696 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:16:10,905 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:16:12,554 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:16:13,135 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4469.82 z=-0.67
+2026-09-04 18:16:13,137 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=64) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:16:13,137 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:16:13,138 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:16:13,138 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:16:13,143 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:16:14,775 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4469.44 z=-0.74
+2026-09-04 18:16:14,776 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=78) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:16:14,778 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:16:14,778 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:16:14,778 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:16:14,778 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:16:14,778 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:16:14,783 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:16:25,361 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:16:26,757 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:16:27,586 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4470.01 z=-0.64
+2026-09-04 18:16:27,587 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:16:27,588 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:16:27,588 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:16:27,588 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:16:27,593 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:16:29,012 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4469.72 z=-0.69
+2026-09-04 18:16:29,013 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=67) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:16:29,014 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:16:29,014 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:16:29,014 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:16:29,015 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:16:29,015 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:16:29,021 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:16:39,470 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:16:40,991 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:16:42,144 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4470.25 z=-0.60
+2026-09-04 18:16:42,145 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:16:42,146 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:16:42,146 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:16:42,147 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:16:42,151 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:16:43,523 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4470.07 z=-0.63
+2026-09-04 18:16:43,524 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:16:43,525 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:16:43,525 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:16:43,525 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:16:43,526 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:16:43,526 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:16:43,532 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:16:54,171 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:16:55,484 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:16:56,713 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4470.35 z=-0.58
+2026-09-04 18:16:56,716 regime_allocator REGIME SUGGESTION: RANGING -> Use ThreeCa
+2026-09-04 18:16:56,716 regime_allocator REGIME SWITCH: RANGING -> RANGING (engine=ThreeCa, fast_path=False)
+2026-09-04 18:16:56,716 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:16:56,717 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:16:56,717 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:16:56,717 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:16:56,723 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:16:57,766 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4470.17 z=-0.61
+2026-09-04 18:16:57,767 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:16:57,768 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:16:57,768 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:16:57,769 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:16:57,769 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:16:57,769 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:16:57,774 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:17:08,613 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:17:09,709 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:17:11,480 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4470.25 z=-0.59
+2026-09-04 18:17:11,481 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:17:11,482 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:17:11,482 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:17:11,482 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:17:11,488 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:17:11,989 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4470.01 z=-0.64
+2026-09-04 18:17:11,990 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:17:11,990 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:17:11,991 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:17:11,991 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:17:11,991 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:17:11,991 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:17:11,998 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:17:23,749 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:17:24,026 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:17:25,903 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4469.79 z=-0.68
+2026-09-04 18:17:25,904 regime_allocator REGIME SUGGESTION: TRENDING_BEAR -> Use RiriScalps
+2026-09-04 18:17:25,904 regime_allocator REGIME SWITCH: TRENDING_BEAR -> TRENDING_BEAR (engine=RiriScalps, fast_path=True)
+2026-09-04 18:17:25,904 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=64) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:17:25,907 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:17:25,907 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:17:25,907 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:17:25,912 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:17:26,481 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4469.79 z=-0.68
+2026-09-04 18:17:26,482 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=64) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:17:26,483 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:17:26,483 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:17:26,483 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:17:26,483 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:17:26,483 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:17:26,488 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:17:38,111 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:17:38,374 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:17:40,577 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4468.21 z=-0.97
+2026-09-04 18:17:40,578 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=83) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:17:40,579 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:17:40,579 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:17:40,579 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:17:40,579 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:17:40,580 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:17:40,586 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:17:40,620 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4468.10 z=-0.99
+2026-09-04 18:17:40,621 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=85) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:17:40,622 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:17:40,622 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:17:40,622 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:17:40,627 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:17:52,546 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:17:52,622 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:17:54,828 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4468.33 z=-0.95
+2026-09-04 18:17:54,829 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=81) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:17:54,830 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:17:54,830 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:17:54,831 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:17:54,835 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:17:54,930 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4468.33 z=-0.95
+2026-09-04 18:17:54,931 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=81) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:17:54,932 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:17:54,932 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:17:54,933 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:17:54,933 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:17:54,933 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:17:54,937 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:18:06,708 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:18:06,841 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:18:09,146 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4468.45 z=-0.93
+2026-09-04 18:18:09,146 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4468.45 z=-0.93
+2026-09-04 18:18:09,148 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=79) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:18:09,148 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=79) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:18:09,149 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:18:09,149 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:18:09,149 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:18:09,150 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:18:09,150 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:18:09,150 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:18:09,151 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:18:09,151 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:18:09,155 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:18:09,164 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:18:21,104 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:18:21,110 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:18:23,338 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.85 z=-1.04
+2026-09-04 18:18:23,339 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=89) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:18:23,340 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:18:23,341 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:18:23,341 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:18:23,346 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:18:23,349 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.85 z=-1.04
+2026-09-04 18:18:23,350 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=89) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:18:23,351 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:18:23,351 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:18:23,352 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:18:23,352 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:18:23,352 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:18:23,358 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:18:35,299 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:18:35,524 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:18:37,504 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.98 z=-1.01
+2026-09-04 18:18:37,505 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=87) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:18:37,506 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:18:37,506 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:18:37,507 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:18:37,507 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:18:37,507 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:18:37,513 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:18:37,729 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.73 z=-1.06
+2026-09-04 18:18:37,730 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=90) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:18:37,731 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:18:37,731 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:18:37,731 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:18:37,740 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:18:49,501 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:18:49,664 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:18:51,825 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.76 z=-1.05
+2026-09-04 18:18:51,826 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=89) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:18:51,827 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:18:51,827 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:18:51,828 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:18:51,834 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:18:51,993 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.76 z=-1.05
+2026-09-04 18:18:51,994 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=89) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:18:51,995 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:18:51,995 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:18:51,995 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:18:51,996 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:18:51,996 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:18:52,001 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:19:03,690 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:19:04,203 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:19:05,803 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4468.01 z=-1.01
+2026-09-04 18:19:05,804 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=84) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:19:05,805 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:19:05,805 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:19:05,806 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:19:05,813 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:19:06,923 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.67 z=-1.07
+2026-09-04 18:19:06,924 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=90) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:19:06,925 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:19:06,925 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:19:06,925 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:19:06,925 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:19:06,925 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:19:06,931 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:19:17,767 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:19:19,130 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:19:19,897 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.38 z=-1.12
+2026-09-04 18:19:19,898 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=87) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:19:19,899 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:19:19,899 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:19:19,899 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:19:19,904 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:19:21,605 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.37 z=-1.12
+2026-09-04 18:19:21,606 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=87) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:19:21,607 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:19:21,607 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:19:21,607 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=1.00
+2026-09-04 18:19:21,607 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:19:21,607 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:19:21,614 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:19:31,835 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:19:33,851 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:19:33,981 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.29 z=-1.14
+2026-09-04 18:19:33,982 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=83) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:19:33,983 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:19:33,983 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:19:33,983 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:19:33,989 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:19:35,965 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.17 z=-1.16
+2026-09-04 18:19:35,966 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=84) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:19:35,967 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:19:35,967 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:19:35,968 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=0.75
+2026-09-04 18:19:35,968 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:19:35,968 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:19:35,973 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:19:45,881 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:19:48,004 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4466.94 z=-1.20
+2026-09-04 18:19:48,005 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=87) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:19:48,006 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:19:48,006 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:19:48,006 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:19:48,014 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:19:49,040 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:19:51,559 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7448 spread=0.2 vol=Volatility.LOW price=4467.00 z=-1.19
+2026-09-04 18:19:51,560 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=86) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:19:51,561 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:19:51,561 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:19:51,561 TIE_Production 📊 VolumeProfile: poc=4469.45 vah=4478.89 val=4465.30 score=0.75
+2026-09-04 18:19:51,562 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:19:51,562 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:19:51,566 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:19:59,883 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:20:02,160 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4466.90 z=-1.17
+2026-09-04 18:20:02,161 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:20:02,163 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:20:02,163 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:20:02,163 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:20:02,177 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:20:03,615 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:20:05,800 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4466.63 z=-1.22
+2026-09-04 18:20:05,801 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=81) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:20:05,802 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:20:05,802 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:20:05,802 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=0.75
+2026-09-04 18:20:05,803 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:20:05,803 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:20:05,809 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:20:14,138 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:20:16,313 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4467.61 z=-1.03
+2026-09-04 18:20:16,314 regime_allocator REGIME SUGGESTION: TRENDING_BULL -> Use RiriScalps
+2026-09-04 18:20:16,314 regime_allocator REGIME SWITCH: TRENDING_BULL -> TRENDING_BULL (engine=RiriScalps, fast_path=True)
+2026-09-04 18:20:16,314 TIE_Production MARKET REGIME: TRENDING_BULL (strength=81) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:20:16,318 RiriScalps [RIRI] B_struct_flow_SELL at 4467.61 SL=4476.52 TP=4463.61
+2026-09-04 18:20:16,323 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:20:16,334 MultiStrategyRuntime Scan 18.1ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:20:16,335 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:20:16,341 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:16,352 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:16,353 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:20:16,395 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:20:17,752 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:20:19,976 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4467.72 z=-1.01
+2026-09-04 18:20:19,977 regime_allocator REGIME SUGGESTION: TRENDING_BULL -> Use RiriScalps
+2026-09-04 18:20:19,977 regime_allocator REGIME SWITCH: TRENDING_BULL -> TRENDING_BULL (engine=RiriScalps, fast_path=True)
+2026-09-04 18:20:19,977 TIE_Production MARKET REGIME: TRENDING_BULL (strength=86) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:20:19,978 RiriScalps [RIRI] B_struct_flow_SELL at 4467.72 SL=4476.52 TP=4454.52
+2026-09-04 18:20:19,978 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:20:19,979 MultiStrategyRuntime Scan 1.9ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:20:19,980 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:19,980 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:20:19,998 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:20:20,014 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:20,020 GateObservatory [XAUUSD/TIE_V4] Gate Divergence: INFO | kind=bullish div=True aligned=False
+2026-09-04 18:20:20,024 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=R_SELL lot=0.05
+2026-09-04 18:20:20,024 TIE_Production Setup detected: R_SELL SELL conf=85%
+2026-09-04 18:20:20,077 TIE_Production Risk Gate: ✅ PASS — XAUUSD
+2026-09-04 18:20:20,081 GateObservatory [XAUUSD/TIE_V4] Gate RiskGate: PASS | all rules approve
+2026-09-04 18:20:20,543 TIE_Production ✅ ORDER EXECUTED: XAUUSD SELL 0.05 lot | SL=4470.204 TP=4463.789 ticket=3764535944
+2026-09-04 18:20:20,548 GateObservatory [XAUUSD/TIE_V4] Gate Execution: PASS | order placed ticket=3764535944
+2026-09-04 18:20:28,662 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:20:30,772 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4467.66 z=-1.03
+2026-09-04 18:20:30,773 TIE_Production MARKET REGIME: TRENDING_BULL (strength=77) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:20:30,774 RiriScalps [RIRI] B_struct_flow_SELL at 4467.66 SL=4476.52 TP=4463.66
+2026-09-04 18:20:30,774 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:20:30,774 MultiStrategyRuntime Scan 0.7ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:20:30,774 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:20:30,775 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:30,778 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:30,779 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:20:30,780 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:20:32,475 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:20:34,675 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4467.94 z=-0.97
+2026-09-04 18:20:34,676 TIE_Production MARKET REGIME: TRENDING_BULL (strength=87) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:20:34,677 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:20:34,677 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:20:34,678 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:34,678 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:20:34,678 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:20:34,684 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:20:42,689 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:20:44,937 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4467.18 z=-1.12
+2026-09-04 18:20:44,938 TIE_Production MARKET REGIME: RANGING (strength=60) | SUGGESTED ENGINE: ThreeCa
+2026-09-04 18:20:44,939 RiriScalps [RIRI] B_struct_flow_SELL at 4467.18 SL=4476.52 TP=4463.18
+2026-09-04 18:20:44,939 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:20:44,940 MultiStrategyRuntime Scan 0.7ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:20:44,940 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:20:44,940 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:44,946 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:44,947 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:20:44,948 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:20:46,691 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:20:48,914 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.36 z=-0.89
+2026-09-04 18:20:48,915 TIE_Production MARKET REGIME: TRENDING_BULL (strength=92) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:20:48,916 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:20:48,916 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:20:48,916 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:48,917 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:20:48,917 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:20:48,924 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:20:56,878 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:20:59,387 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.43 z=-0.88
+2026-09-04 18:20:59,388 TIE_Production MARKET REGIME: TRENDING_BULL (strength=93) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:20:59,389 RiriScalps [RIRI] B_struct_flow_SELL at 4468.43 SL=4476.52 TP=4464.43
+2026-09-04 18:20:59,389 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:20:59,389 MultiStrategyRuntime Scan 0.7ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:20:59,390 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:20:59,390 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:59,395 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:20:59,395 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:20:59,396 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:21:01,014 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:21:03,295 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.32 z=-0.90
+2026-09-04 18:21:03,296 TIE_Production MARKET REGIME: TRENDING_BULL (strength=89) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:21:03,297 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:21:03,297 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:21:03,298 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:03,298 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:21:03,298 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:21:03,305 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:21:11,320 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:21:13,505 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4467.67 z=-1.02
+2026-09-04 18:21:13,506 TIE_Production MARKET REGIME: TRENDING_BULL (strength=71) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:21:13,507 RiriScalps [RIRI] B_struct_flow_SELL at 4467.67 SL=4476.52 TP=4463.67
+2026-09-04 18:21:13,508 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:21:13,508 MultiStrategyRuntime Scan 1.2ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:21:13,509 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:21:13,509 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:13,513 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:13,513 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:21:13,514 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:21:15,246 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:21:17,440 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4467.85 z=-0.99
+2026-09-04 18:21:17,441 TIE_Production MARKET REGIME: TRENDING_BULL (strength=75) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:21:17,442 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:21:17,442 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:21:17,443 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:17,443 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:21:17,443 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:21:17,448 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:21:25,758 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:21:27,844 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.01 z=-0.96
+2026-09-04 18:21:27,845 TIE_Production MARKET REGIME: TRENDING_BULL (strength=80) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:21:27,845 RiriScalps [RIRI] B_struct_flow_SELL at 4468.01 SL=4476.52 TP=4464.01
+2026-09-04 18:21:27,846 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:21:27,846 MultiStrategyRuntime Scan 0.8ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:21:27,846 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:21:27,847 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:27,852 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:27,852 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:21:27,853 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:21:29,432 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:21:31,639 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4467.73 z=-1.01
+2026-09-04 18:21:31,640 TIE_Production MARKET REGIME: TRENDING_BULL (strength=72) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:21:31,641 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:21:31,641 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:21:31,641 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:31,641 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:21:31,642 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:21:31,647 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:21:39,823 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:21:42,028 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.53 z=-0.86
+2026-09-04 18:21:42,029 TIE_Production MARKET REGIME: TRENDING_BULL (strength=90) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:21:42,030 RiriScalps [RIRI] B_struct_flow_SELL at 4468.53 SL=4476.52 TP=4464.53
+2026-09-04 18:21:42,030 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:21:42,030 MultiStrategyRuntime Scan 0.8ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:21:42,030 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:21:42,031 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:42,037 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:42,037 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:21:42,038 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:21:43,642 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:21:45,888 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.65 z=-0.84
+2026-09-04 18:21:45,889 TIE_Production MARKET REGIME: TRENDING_BULL (strength=91) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:21:45,890 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:21:45,890 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:21:45,890 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:45,890 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:21:45,891 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:21:45,896 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:21:53,799 TIE_Production News sentinel refresh failed: An asyncio.Future, a coroutine or an awaitable is required
+2026-09-04 18:21:54,019 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:21:56,281 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.50 z=-0.87
+2026-09-04 18:21:56,282 TIE_Production MARKET REGIME: TRENDING_BULL (strength=88) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:21:56,283 RiriScalps [RIRI] B_struct_flow_SELL at 4468.50 SL=4476.52 TP=4464.50
+2026-09-04 18:21:56,283 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:21:56,283 MultiStrategyRuntime Scan 0.7ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:21:56,283 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:21:56,284 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:56,288 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:21:56,289 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:21:56,289 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:21:57,838 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:22:00,033 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.89 z=-0.79
+2026-09-04 18:22:00,034 TIE_Production MARKET REGIME: TRENDING_BULL (strength=94) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:22:00,035 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:22:00,035 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:22:00,035 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:00,035 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:22:00,035 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:22:00,040 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:22:08,248 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:22:10,416 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.89 z=-0.79
+2026-09-04 18:22:10,417 TIE_Production MARKET REGIME: TRENDING_BULL (strength=89) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:22:10,418 RiriScalps [RIRI] B_struct_flow_SELL at 4468.89 SL=4476.52 TP=4464.89
+2026-09-04 18:22:10,418 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:22:10,419 MultiStrategyRuntime Scan 0.7ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:22:10,419 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:22:10,419 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:10,423 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:10,423 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:22:10,424 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:22:12,068 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:22:14,260 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.85 z=-0.80
+2026-09-04 18:22:14,262 TIE_Production MARKET REGIME: TRENDING_BULL (strength=88) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:22:14,263 RiriScalps [RIRI] B_struct_flow_SELL at 4468.85 SL=4476.52 TP=4457.34
+2026-09-04 18:22:14,263 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:22:14,263 MultiStrategyRuntime Scan 0.7ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:22:14,264 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:14,264 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:22:14,264 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:22:14,270 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:14,273 GateObservatory [XAUUSD/TIE_V4] Gate Divergence: INFO | kind=bullish div=True aligned=False
+2026-09-04 18:22:14,277 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=R_SELL lot=0.05
+2026-09-04 18:22:14,277 TIE_Production Setup detected: R_SELL SELL conf=85%
+2026-09-04 18:22:14,309 TIE_Production Risk Gate: ✅ PASS — XAUUSD
+2026-09-04 18:22:14,313 GateObservatory [XAUUSD/TIE_V4] Gate RiskGate: PASS | all rules approve
+2026-09-04 18:22:14,780 hermes.trading.gateway_client Order rejected: requote | detail: retcode=10004
+2026-09-04 18:22:14,780 TIE_Production ❌ ORDER FAILED: Order not accepted
+2026-09-04 18:22:14,784 GateObservatory [XAUUSD/TIE_V4] Gate Execution: FAIL | Order not accepted
+2026-09-04 18:22:22,365 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:22:24,541 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.82 z=-0.81
+2026-09-04 18:22:24,542 TIE_Production MARKET REGIME: TRENDING_BULL (strength=87) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:22:24,543 RiriScalps [RIRI] B_struct_flow_SELL at 4468.82 SL=4476.52 TP=4464.82
+2026-09-04 18:22:24,544 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:22:24,544 MultiStrategyRuntime Scan 0.7ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:22:24,544 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:22:24,544 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:24,550 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:24,550 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:22:24,551 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:22:26,730 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:22:28,926 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.60 z=-0.85
+2026-09-04 18:22:28,927 TIE_Production MARKET REGIME: TRENDING_BULL (strength=82) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:22:28,928 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:22:28,928 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:22:28,928 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:28,929 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:22:28,929 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:22:28,933 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:22:36,433 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:22:38,681 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.43 z=-0.88
+2026-09-04 18:22:38,682 TIE_Production MARKET REGIME: TRENDING_BULL (strength=79) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:22:38,684 RiriScalps [RIRI] B_struct_flow_SELL at 4468.43 SL=4476.52 TP=4464.43
+2026-09-04 18:22:38,684 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:22:38,684 MultiStrategyRuntime Scan 1.1ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:22:38,685 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:22:38,685 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:38,689 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:38,690 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:22:38,691 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:22:40,958 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:22:43,107 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.56 z=-0.86
+2026-09-04 18:22:43,108 TIE_Production MARKET REGIME: TRENDING_BULL (strength=82) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:22:43,109 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:22:43,109 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:22:43,109 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:43,110 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:22:43,110 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:22:43,115 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:22:50,747 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:22:52,953 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.65 z=-0.84
+2026-09-04 18:22:52,954 TIE_Production MARKET REGIME: TRENDING_BULL (strength=83) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:22:52,955 RiriScalps [RIRI] B_struct_flow_SELL at 4468.65 SL=4476.52 TP=4464.65
+2026-09-04 18:22:52,955 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:22:52,956 MultiStrategyRuntime Scan 0.7ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:22:52,956 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:22:52,956 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:52,960 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:52,961 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:22:52,961 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:22:55,352 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:22:57,645 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.50 z=-0.68
+2026-09-04 18:22:57,646 TIE_Production MARKET REGIME: TRENDING_BULL (strength=94) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:22:57,647 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:22:57,647 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:22:57,647 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:22:57,647 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:22:57,647 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:22:57,654 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:23:05,482 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:23:07,866 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.68 z=-0.64
+2026-09-04 18:23:07,867 TIE_Production MARKET REGIME: TRENDING_BULL (strength=87) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:23:07,868 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:23:07,868 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:23:07,868 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:23:07,873 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:23:09,672 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:23:11,860 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.99 z=-0.58
+2026-09-04 18:23:11,861 TIE_Production MARKET REGIME: TRENDING_BULL (strength=91) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:23:11,862 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:23:11,862 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:23:11,862 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:23:11,862 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:23:11,862 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:23:11,872 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:23:19,838 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:23:22,138 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4470.37 z=-0.51
+2026-09-04 18:23:22,139 TIE_Production MARKET REGIME: TRENDING_BULL (strength=96) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:23:22,140 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:23:22,140 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:23:22,140 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:23:22,146 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:23:23,746 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:23:26,001 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4470.94 z=-0.40
+2026-09-04 18:23:26,002 TIE_Production MARKET REGIME: TRENDING_BULL (strength=96) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:23:26,003 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:23:26,003 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:23:26,003 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:23:26,004 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:23:26,004 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:23:26,009 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:23:34,009 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:23:36,249 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4470.38 z=-0.51
+2026-09-04 18:23:36,250 TIE_Production MARKET REGIME: TRENDING_BULL (strength=90) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:23:36,251 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:23:36,252 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:23:36,252 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:23:36,256 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:23:37,910 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:23:40,121 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4470.40 z=-0.50
+2026-09-04 18:23:40,122 TIE_Production MARKET REGIME: TRENDING_BULL (strength=90) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:23:40,123 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:23:40,123 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:23:40,124 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:23:40,124 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:23:40,124 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:23:40,130 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:23:48,516 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:23:50,735 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.96 z=-0.59
+2026-09-04 18:23:50,736 TIE_Production MARKET REGIME: TRENDING_BULL (strength=85) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:23:50,737 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:23:50,737 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:23:50,737 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:23:50,742 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:23:51,978 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:23:54,314 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4470.14 z=-0.55
+2026-09-04 18:23:54,315 TIE_Production MARKET REGIME: TRENDING_BULL (strength=87) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:23:54,316 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:23:54,316 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:23:54,316 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:23:54,316 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:23:54,316 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:23:54,321 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:24:02,674 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:24:05,012 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.56 z=-0.66
+2026-09-04 18:24:05,013 TIE_Production MARKET REGIME: TRENDING_BULL (strength=81) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:24:05,014 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:24:05,014 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:24:05,014 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:24:05,022 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:24:06,679 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:24:08,907 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.36 z=-0.70
+2026-09-04 18:24:08,908 TIE_Production MARKET REGIME: TRENDING_BULL (strength=78) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:24:08,909 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:24:08,909 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:24:08,909 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:24:08,910 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:24:08,910 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:24:08,918 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:24:16,953 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:24:19,481 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.28 z=-0.72
+2026-09-04 18:24:19,482 TIE_Production MARKET REGIME: TRENDING_BULL (strength=77) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:24:19,483 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:24:19,483 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:24:19,483 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:24:19,490 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:24:20,887 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:24:23,369 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.27 z=-0.72
+2026-09-04 18:24:23,370 TIE_Production MARKET REGIME: TRENDING_BULL (strength=77) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:24:23,371 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:24:23,371 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:24:23,371 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:24:23,371 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:24:23,371 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:24:23,378 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:24:31,463 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:24:33,732 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.78 z=-0.62
+2026-09-04 18:24:33,733 TIE_Production MARKET REGIME: TRENDING_BULL (strength=83) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:24:33,734 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:24:33,735 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:24:33,735 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:24:33,739 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:24:35,275 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:24:37,450 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.30 z=-0.71
+2026-09-04 18:24:37,451 TIE_Production MARKET REGIME: TRENDING_BULL (strength=78) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:24:37,452 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:24:37,452 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:24:37,452 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:24:37,452 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:24:37,452 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:24:37,461 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:24:45,653 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:24:47,902 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.46 z=-0.69
+2026-09-04 18:24:47,903 TIE_Production MARKET REGIME: TRENDING_BULL (strength=79) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:24:47,904 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:24:47,904 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:24:47,904 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:24:47,911 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:24:49,403 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:24:52,232 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4469.28 z=-0.72
+2026-09-04 18:24:52,233 TIE_Production MARKET REGIME: TRENDING_BULL (strength=77) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:24:52,234 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:24:52,234 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:24:52,234 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:24:52,234 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:24:52,234 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:24:52,239 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:24:59,799 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:25:02,076 core.context.context_engine Context built: XAUUSD trend=Trend.SIDEWAYS session=Session.LONDON atr=3.7889 spread=0.2 vol=Volatility.LOW price=4468.95 z=-0.78
+2026-09-04 18:25:02,077 TIE_Production MARKET REGIME: TRENDING_BULL (strength=74) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:25:02,078 RiriScalps [RIRI] B_struct_flow_SELL at 4468.95 SL=4476.52 TP=4464.95
+2026-09-04 18:25:02,078 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:25:02,078 MultiStrategyRuntime Scan 0.8ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:25:02,079 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:25:02,079 TIE_Production 🚀 [SPIKE_CONFIRM] SELL confirmed by Wick Rejection!
+2026-09-04 18:25:02,079 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:25:02,085 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4477.39 val=4465.15 score=1.00
+2026-09-04 18:25:02,085 TIE_Production 🔀 Divergence: kind=bullish div=True aligned=False
+2026-09-04 18:25:02,086 TIE_Production Error scanning XAUUSD: 'INFO'\nTraceback (most recent call last):
+  File "/home/ubuntu/trading-intelligence-engine/runtime/tie_production.py", line 550, in <module>
+    decision.metadata["volume_profile_score"] = _vp_score
+  File "/home/ubuntu/trading-intelligence-engine/runtime/gate_observatory.py", line 151, in log_gate
+    # Track rejections
+KeyError: 'INFO'
+
+2026-09-04 18:25:04,140 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:25:06,346 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.70 z=-0.98
+2026-09-04 18:25:06,347 regime_allocator REGIME SUGGESTION: TRENDING_BEAR -> Use RiriScalps
+2026-09-04 18:25:06,347 regime_allocator REGIME SWITCH: TRENDING_BEAR -> TRENDING_BEAR (engine=RiriScalps, fast_path=True)
+2026-09-04 18:25:06,347 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=95) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:25:06,348 RiriScalps [RIRI] B_struct_flow_SELL at 4467.70 SL=4476.52 TP=4454.48
+2026-09-04 18:25:06,348 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:25:06,349 MultiStrategyRuntime Scan 0.7ms — strategies=2 signals=1 dir=sell source=riri_scalps_v1
+2026-09-04 18:25:06,349 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=1.00
+2026-09-04 18:25:06,349 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:25:06,349 TIE_Production ⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)
+2026-09-04 18:25:06,356 GateObservatory [XAUUSD/TIE_V4] Gate VolumeProfile: PASS | poc=4469.57 vah=4476.71 val=4465.15 score=1.00
+2026-09-04 18:25:06,360 GateObservatory [XAUUSD/TIE_V4] Gate Divergence: PASS | no_divergence
+2026-09-04 18:25:06,366 GateObservatory [XAUUSD/TIE_V4] Gate Detector: PASS | setup=R_SELL lot=0.05
+2026-09-04 18:25:06,366 TIE_Production Setup detected: R_SELL SELL conf=85%
+2026-09-04 18:25:06,382 TIE_Production Risk Gate: ✅ PASS — XAUUSD
+2026-09-04 18:25:06,385 GateObservatory [XAUUSD/TIE_V4] Gate RiskGate: PASS | all rules approve
+2026-09-04 18:25:06,858 TIE_Production ✅ ORDER EXECUTED: XAUUSD SELL 0.05 lot | SL=4470.204 TP=4463.789 ticket=3764557779
+2026-09-04 18:25:06,863 GateObservatory [XAUUSD/TIE_V4] Gate Execution: PASS | order placed ticket=3764557779
+2026-09-04 18:25:14,047 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:25:16,642 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.26 z=-1.07
+2026-09-04 18:25:16,643 regime_allocator REGIME SUGGESTION: TRENDING_BEAR -> Use RiriScalps
+2026-09-04 18:25:16,643 regime_allocator REGIME SWITCH: TRENDING_BEAR -> TRENDING_BEAR (engine=RiriScalps, fast_path=True)
+2026-09-04 18:25:16,643 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=94) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:25:16,644 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:25:16,644 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:25:16,644 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:25:16,649 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:25:18,776 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:25:20,988 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.62 z=-1.00
+2026-09-04 18:25:20,989 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=84) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:25:20,990 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:25:20,990 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:25:20,990 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:25:20,990 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:25:20,990 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:25:20,996 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:25:28,628 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:25:31,113 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.23 z=-1.07
+2026-09-04 18:25:31,114 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=90) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:25:31,114 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:25:31,115 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:25:31,115 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:25:31,120 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:25:33,466 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:25:36,068 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.86 z=-1.15
+2026-09-04 18:25:36,069 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=97) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:25:36,070 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:25:36,070 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:25:36,070 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:25:36,070 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:25:36,070 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:25:36,076 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:25:36,076 TrailingManager [3764557779] BE lock: SL 4470.204 → 4466.37 | profit $6.76
+2026-09-04 18:25:36,324 TIE_Production Modify 3764557779: SL=4466.37 TP=4463.789 -> REJECTED
+2026-09-04 18:25:36,581 PositionMonitor Modify 3764557779: SL=4466.37 TP=4463.789 -> REJECTED
+2026-09-04 18:25:36,582 basket_manager 🧺 BASKET TP (SELL): Profit $6.76 reached. Closing 1 positions.
+2026-09-04 18:25:43,096 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:25:45,475 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.01 z=-1.12
+2026-09-04 18:25:45,476 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=86) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:25:45,477 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:25:45,477 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:25:45,477 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:25:45,482 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:25:45,484 TrailingManager [3764557779] BE lock: SL 4470.204 → 4466.37 | profit $3.82
+2026-09-04 18:25:45,712 TIE_Production Modify 3764557779: SL=4466.37 TP=4463.789 -> REJECTED
+2026-09-04 18:25:45,937 PositionMonitor Modify 3764557779: SL=4466.37 TP=4463.789 -> REJECTED
+2026-09-04 18:25:45,938 basket_manager 🧺 BASKET TP (SELL): Profit $3.82 reached. Closing 1 positions.
+2026-09-04 18:25:49,590 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:25:51,771 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.09 z=-1.10
+2026-09-04 18:25:51,772 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=84) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:25:51,773 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:25:51,773 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:25:51,773 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:25:51,774 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:25:51,774 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:25:51,778 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:25:58,932 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:26:01,096 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.08 z=-1.10
+2026-09-04 18:26:01,097 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=84) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:26:01,098 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:26:01,098 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:26:01,098 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:26:01,102 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:26:03,691 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:26:06,518 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.57 z=-1.01
+2026-09-04 18:26:06,519 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=75) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:26:06,520 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:26:06,520 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:26:06,521 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:26:06,521 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:26:06,521 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:26:06,527 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:26:13,147 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:26:15,677 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.68 z=-0.99
+2026-09-04 18:26:15,678 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=73) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:26:15,679 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:26:15,679 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:26:15,679 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:26:15,686 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:26:18,459 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:26:20,919 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.59 z=-1.20
+2026-09-04 18:26:20,920 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=94) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:26:20,921 StrategyManager Strategy riri_scalps_v1 returned WAIT: B_already_triggered
+2026-09-04 18:26:20,921 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:26:20,922 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:26:20,922 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:26:20,922 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:26:20,929 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:26:27,963 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:26:30,172 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.21 z=-1.27
+2026-09-04 18:26:30,174 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=95) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:26:30,176 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:26:30,176 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:26:30,177 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:26:30,194 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:26:32,876 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:26:35,111 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.73 z=-1.17
+2026-09-04 18:26:35,111 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=86) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:26:35,113 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:26:35,113 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:26:35,113 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:26:35,113 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:26:35,113 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:26:35,123 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:26:42,132 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:26:44,711 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.91 z=-1.14
+2026-09-04 18:26:44,712 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=83) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:26:44,713 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:26:44,713 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:26:44,713 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:26:44,719 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:26:47,015 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:26:49,227 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.53 z=-1.02
+2026-09-04 18:26:49,228 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=73) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:26:49,229 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:26:49,229 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:26:49,229 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:26:49,229 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:26:49,229 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:26:49,238 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:26:56,752 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:26:58,861 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.24 z=-1.07
+2026-09-04 18:26:58,862 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=78) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:26:58,863 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:26:58,863 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:26:58,863 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:26:58,872 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:27:03,420 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:27:05,708 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.64 z=-1.00
+2026-09-04 18:27:05,709 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=71) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:27:05,710 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:27:05,710 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:27:05,710 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=1.00
+2026-09-04 18:27:05,710 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:27:05,710 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:27:05,715 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:27:10,771 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:27:13,011 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.73 z=-0.98
+2026-09-04 18:27:13,012 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=70) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:27:13,013 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:27:13,014 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:27:13,014 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:27:13,021 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:27:17,689 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:27:19,995 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.03 z=-1.11
+2026-09-04 18:27:19,996 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=81) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:27:19,997 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:27:19,997 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:27:19,997 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:27:19,998 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:27:19,998 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:27:20,006 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:27:24,944 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:27:27,108 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.66 z=-1.18
+2026-09-04 18:27:27,109 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=88) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:27:27,110 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:27:27,110 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:27:27,110 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:27:27,119 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:27:32,191 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:27:34,713 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.77 z=-1.16
+2026-09-04 18:27:34,714 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=86) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:27:34,715 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:27:34,715 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:27:34,716 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:27:34,716 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:27:34,716 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:27:34,722 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:27:39,009 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:27:41,142 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.86 z=-1.15
+2026-09-04 18:27:41,143 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=84) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:27:41,144 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:27:41,144 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:27:41,144 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:27:41,150 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:27:46,655 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:27:48,938 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.09 z=-1.10
+2026-09-04 18:27:48,939 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=80) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:27:48,940 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:27:48,940 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:27:48,940 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:27:48,940 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:27:48,940 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:27:48,947 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:27:53,374 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:27:55,575 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.93 z=-1.13
+2026-09-04 18:27:55,577 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=83) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:27:55,578 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:27:55,579 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:27:55,579 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:27:55,585 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:28:00,872 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:28:03,071 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.68 z=-1.18
+2026-09-04 18:28:03,072 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=87) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:28:03,073 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:28:03,073 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:28:03,073 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:28:03,073 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:28:03,073 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:28:03,079 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:28:07,842 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:28:09,956 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.74 z=-1.17
+2026-09-04 18:28:09,958 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=86) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:28:09,958 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:28:09,959 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:28:09,959 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:28:09,964 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:28:15,140 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:28:17,310 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.99 z=-1.12
+2026-09-04 18:28:17,311 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=82) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:28:17,312 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:28:17,313 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:28:17,313 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:28:17,314 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:28:17,314 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:28:17,320 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:28:21,917 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:28:24,048 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.92 z=-1.13
+2026-09-04 18:28:24,049 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=83) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:28:24,050 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:28:24,050 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:28:24,050 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:28:24,055 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:28:29,576 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:28:32,179 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.76 z=-1.16
+2026-09-04 18:28:32,181 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=86) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:28:32,185 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:28:32,185 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:28:32,186 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:28:32,186 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:28:32,186 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:28:32,193 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:28:36,116 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:28:40,417 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4467.00 z=-1.12
+2026-09-04 18:28:40,418 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=82) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:28:40,419 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:28:40,419 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:28:40,419 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:28:40,424 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:28:44,215 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:28:46,399 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.17 z=-1.28
+2026-09-04 18:28:46,400 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=93) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:28:46,401 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:28:46,401 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:28:46,402 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:28:46,402 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:28:46,402 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:28:46,408 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:28:52,415 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:28:54,859 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.59 z=-1.20
+2026-09-04 18:28:54,860 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=86) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:28:54,861 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:28:54,861 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:28:54,862 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:28:54,868 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:28:58,335 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:29:00,489 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.68 z=-1.18
+2026-09-04 18:29:00,490 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=85) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:29:00,491 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:29:00,491 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:29:00,492 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:29:00,492 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:29:00,492 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:29:00,498 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:29:06,937 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:29:09,223 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.57 z=-1.20
+2026-09-04 18:29:09,224 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=86) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:29:09,225 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:29:09,225 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:29:09,225 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:29:09,230 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:29:12,418 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:29:14,619 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.58 z=-1.20
+2026-09-04 18:29:14,620 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=86) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:29:14,621 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:29:14,621 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:29:14,622 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:29:14,622 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:29:14,623 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:29:14,630 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:29:21,332 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:29:24,062 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4465.52 z=-1.40
+2026-09-04 18:29:24,063 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=99) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:29:24,064 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:29:24,064 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:29:24,064 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:29:24,069 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:29:26,701 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:29:28,850 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.09 z=-1.29
+2026-09-04 18:29:28,851 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=89) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:29:28,852 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:29:28,852 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:29:28,852 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:29:28,853 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:29:28,853 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:29:28,858 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:29:36,134 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:29:38,548 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.36 z=-1.24
+2026-09-04 18:29:38,549 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=85) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:29:38,550 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:29:38,550 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:29:38,550 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:29:38,556 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:29:40,933 MT5BrokerAdapter MT5BrokerAdapter initialized OK
+2026-09-04 18:29:40,933 StrategyManager Registered strategy ThreeCa v1.0.0
+2026-09-04 18:29:40,933 StrategyManager Registered strategy RiriScalps v2.0.0
+2026-09-04 18:29:40,935 TIE_Production TIE Production Multi-Symbol started: ['XAUUSD']. Risk Gate active. Observatory enabled. Governor enabled.
+2026-09-04 18:29:41,204 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:29:43,354 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.18 z=-1.27
+2026-09-04 18:29:43,355 regime_allocator REGIME SUGGESTION: TRENDING_BEAR -> Use RiriScalps
+2026-09-04 18:29:43,355 regime_allocator REGIME SWITCH: TRENDING_BEAR -> TRENDING_BEAR (engine=RiriScalps, fast_path=True)
+2026-09-04 18:29:43,355 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=88) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:29:43,356 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:29:43,356 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:29:43,359 TIE_Production 📊 VolumeProfile: poc=4469.57 vah=4476.71 val=4465.15 score=0.75
+2026-09-04 18:29:43,361 TIE_Production 🔀 Divergence: no_divergence
+2026-09-04 18:29:43,361 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:29:43,366 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:29:50,509 TIE_Production --- Scanning XAUUSD ---
+2026-09-04 18:29:52,679 core.context.context_engine Context built: XAUUSD trend=Trend.BEARISH session=Session.LONDON atr=3.7352 spread=0.2 vol=Volatility.LOW price=4466.00 z=-1.31
+2026-09-04 18:29:52,681 TIE_Production MARKET REGIME: TRENDING_BEAR (strength=90) | SUGGESTED ENGINE: RiriScalps
+2026-09-04 18:29:52,682 StrategyManager Strategy riri_scalps_v1 returned WAIT: no_setup
+2026-09-04 18:29:52,682 StrategyManager Strategy three_ca_v1 returned WAIT: no_pattern
+2026-09-04 18:29:52,683 TIE_Production No setup for XAUUSD (WAIT)
+2026-09-04 18:29:52,691 GateObservatory [XAUUSD/TIE_V4] Outcome: NO_TRADE | no_signal
+2026-09-04 18:29:55,360 TIE_Production --- Scanning XAUUSD ---
