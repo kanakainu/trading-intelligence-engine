@@ -178,7 +178,11 @@ class RiriScalpsStrategy(BaseStrategy):
         return StrategyResult(signal=None, confidence=0.0, reason="no_setup")
 
     def _emit(self, sym, sig_dir, price, conf, reason, sl, tp, ctx) -> StrategyResult:
-        logger.info(f"[RIRI] {reason} at {price:.2f} SL={sl:.2f} TP={tp:.2f}")
+        # FIX: Ensure positive RR — TP must be at least 1.5x SL distance
+        sl_dist = abs(price - sl)
+        min_tp = sl_dist * 1.5
+        final_tp = max(tp, min_tp) if tp > 0 else price + (min_tp if sig_dir == Direction.BUY else -min_tp)
+        logger.info(f"[RIRI] {reason} at {price:.2f} SL={sl:.2f} TP={final_tp:.2f} (sl_dist={sl_dist:.2f})")
         signal = Signal(
             signal_id=str(uuid.uuid4()),
             strategy=self.id,
@@ -195,7 +199,7 @@ class RiriScalpsStrategy(BaseStrategy):
             metadata={
                 "setup_type": "R",
                 "sl": sl,
-                "take_profit": tp,
+                "take_profit": final_tp,
                 "volume": 0.05,
                 "strategy_code": "R"
             }

@@ -34,8 +34,12 @@ class BystraBaseDetector(DetectorInterface):
         )
 
     def _get_candles(self, context: MarketContext, timeframe: str, count: int) -> List[Any]:
-        """Helper to extract candles from context metadata or history."""
-        return context.metadata.get("candles", {}).get(timeframe, [])[:count]
+        """Helper to extract candles from context metadata or history.
+        Returns the LAST `count` candles (most recent), in chronological order.
+        Gateway returns oldest-first, so [-count:] gives latest window.
+        """
+        all_candles = context.metadata.get("candles", {}).get(timeframe, [])
+        return all_candles[-count:] if len(all_candles) > count else all_candles
 
     def _get_features(self, context: Any):
         """Get FeatureSnapshot if injected via ScanContext/metadata. Returns None if unavailable."""
