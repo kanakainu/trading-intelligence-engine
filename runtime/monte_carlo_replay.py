@@ -209,7 +209,7 @@ class HistoricalDataLoader:
         from gateway_client import MT5GatewayClient
         
         client = MT5GatewayClient(
-            'https://chips-extension-extensions-wearing.trycloudflare.com',
+            'https://buildings-threats-built-plugins.trycloudflare.com',
             'Jojo_56790@_000tUi_OO9'
         )
         
@@ -245,7 +245,7 @@ def run_replay(
     replay = MonteCarloReplay()
     
     client = MT5GatewayClient(
-        'https://chips-extension-extensions-wearing.trycloudflare.com',
+        'https://buildings-threats-built-plugins.trycloudflare.com',
         'Jojo_56790@_000tUi_OO9'
     )
     

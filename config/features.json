@@ -2,6 +2,8 @@
     "volatility_sizing": false,
     "zscore_filter": true,
     "mean_reversion_filter": true,
+    "volume_profile": true,
+    "divergence_detector": true,
     "auto_allocation": true,
     "news_filter": false,
     "basket_tp": true,

@@ -75,7 +75,7 @@ class GateObservatory:
         self._init_db()
         
         # In-memory rolling stats (last 24h)
-        self.stats = defaultdict(lambda: defaultdict(lambda: {"PASS": 0, "FAIL": 0, "SKIPPED": 0}))
+        self.stats = defaultdict(lambda: defaultdict(int))
         self.rejection_counts = defaultdict(int)
         self.strategy_stats = defaultdict(lambda: {"scans": 0, "passed": 0, "blocked": 0, "executed": 0})
         self.symbol_stats = defaultdict(lambda: {"scans": 0, "signals": 0, "trades": 0, "wins": 0, "losses": 0})
@@ -146,8 +146,6 @@ class GateObservatory:
         
         # Update rolling stats
         key = (trace.symbol, trace.strategy, gate_name)
-        if key not in self.stats:
-            self.stats[key] = {"PASS": 0, "FAIL": 0, "SKIPPED": 0, "WARN": 0}
         self.stats[key][status] += 1
         
         # Track rejections

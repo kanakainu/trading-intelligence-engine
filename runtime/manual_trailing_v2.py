@@ -49,7 +49,7 @@ def load_dynamic_config():
     return profiles, be_lock_usd, hedge_close_usd
 
 POLL_SEC             = 5
-URL                  = os.getenv("MT5_GATEWAY_URL",   "https://chips-extension-extensions-wearing.trycloudflare.com")
+URL                  = os.getenv("MT5_GATEWAY_URL",   "https://buildings-threats-built-plugins.trycloudflare.com")
 TOKEN                = os.getenv("MT5_GATEWAY_TOKEN", "Jojo_56790@_000tUi_OO9")
 HEADERS              = {"Authorization": f"Bearer {TOKEN}"}
 TIE_HEARTBEAT_PATH   = "/tmp/tie_production_heartbeat.txt"

@@ -79,7 +79,7 @@ _fh = logging.FileHandler("/home/ubuntu/trading-intelligence-engine/logs/tie_pro
 _fh.setFormatter(logging.Formatter('%(asctime)s %(name)s %(message)s'))
 logging.getLogger().addHandler(_fh)
 
-URL = 'https://chips-extension-extensions-wearing.trycloudflare.com'
+URL = 'https://buildings-threats-built-plugins.trycloudflare.com'
 TOKEN = 'Jojo_56790@_000tUi_OO9'
 SYMBOLS = ['XAUUSD']  # user-tuned 2026-08-05: XAUUSD only, save bandwidth
 
@@ -508,6 +508,17 @@ while True:
             trade_plan = rt.scan(_scan_ctx)
             decision = plan_to_decision(trade_plan)
 
+            # === VOLUME PROFILE + DIVERGENCE — run EVERY scan (fail-open confirmation) ===
+            from shared.volume_profile import check as _vp_check
+            vp_verdict = _vp_check(candles, price, decision.action if decision.action != "WAIT" else "WAIT")
+            log.info(f"📊 VolumeProfile: {vp_verdict.reason}")
+            _vp_score = vp_verdict.quality_score
+
+            from shared.divergence_detector import check as _div_check
+            div_verdict = _div_check(candles, decision.action if decision.action != "WAIT" else "WAIT")
+            log.info(f"🔀 Divergence: {div_verdict.reason}")
+            _div_score = div_verdict.quality_score
+
             # === DECISION TRACE V2 ===
             trace = create_trace(scan_id=_sid, symbol=sym, strategy="TIE_V4")
 
@@ -534,6 +545,14 @@ while True:
                     continue
                 if mr_verdict.is_spike:
                     log.info(f"🚀 [SPIKE_CONFIRM] {decision.action} confirmed by Wick Rejection!")
+
+                # Use VP/DIV scores from scan-level computation
+                decision.metadata["volume_profile_score"] = _vp_score
+                decision.metadata["divergence_score"] = _div_score
+                observatory.log_gate(trace, "VolumeProfile", "PASS" if _vp_score >= 0.5 else "INFO",
+                                     current_value=round(_vp_score * 100, 1), reason=vp_verdict.reason)
+                observatory.log_gate(trace, "Divergence", "PASS" if _div_score >= 0.5 else "INFO",
+                                     current_value=round(_div_score * 100, 1), reason=div_verdict.reason)
                 
                 observatory.log_gate(trace, "Detector", "PASS", current_value=decision.confidence * 100, reason=f"setup={decision.setup_name} lot={decision.metadata['volume']}")
                 # --- ADAPTIVE EXIT ORCHESTRATOR ---

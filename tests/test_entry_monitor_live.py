@@ -12,7 +12,7 @@ from core.decision.trade_decision import WAIT
 logging.basicConfig(level=logging.INFO, format='%(name)s %(message)s')
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 
-URL   = 'https://chips-extension-extensions-wearing.trycloudflare.com'
+URL   = 'https://buildings-threats-built-plugins.trycloudflare.com'
 TOKEN = 'Jojo_56790@_000tUi_OO9'
 SYM   = 'XAUUSD'
 

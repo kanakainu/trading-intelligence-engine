@@ -18,7 +18,7 @@ WICK_BODY_RATIO  = 2.0     # was 1.5 — stricter wick rejection
 ENG_C_PROXIMITY  = 0.5     # was 2.0 — TIGHT proximity to swing levels (0.5x ATR)
 VOL_SPIKE_RATIO  = 1.5     # volume must be 1.5x avg for Engine A
 
-_breakout_state: dict = {}
+_breakout_state: dict = {}  # {sym: {"dir", "lvl", "bars", "triggered": bool}}
 
 def is_bullish(c): return float(c.get("close", 0)) > float(c.get("open", 0))
 def is_bearish(c): return float(c.get("close", 0)) < float(c.get("open", 0))
@@ -100,26 +100,65 @@ class RiriScalpsStrategy(BaseStrategy):
                                      spike_c["high"] + 0.2, price - 4.0, market_ctx)
 
         # ── ENGINE B: Structure Flow (Break + Retest) ──
+        # GLOBAL FILTER: Z-Score extreme check — avoid mean reversion risk
+        z_score = market_ctx.vwap_z_score or 0.0
+        if abs(z_score) > 2.5:
+            return StrategyResult(signal=None, confidence=0.0, reason="z_score_extreme_avoid_B")
+        
+        # REGIME ALIGNMENT: Check via metadata if available
+        regime_str = market_ctx.metadata.get("regime", "")
+        if regime_str:
+            if ("BEAR" in regime_str.upper() and trend_m15 == "BULL") or \
+               ("BULL" in regime_str.upper() and trend_m15 == "BEAR"):
+                return StrategyResult(signal=None, confidence=0.0, reason="regime_trend_mismatch")
+        
+        # SESSION FILTER: London = wider SL/TP, avoid chop
+        session = getattr(market_ctx, 'session', None) or market_ctx.metadata.get("session", "")
+        is_london = str(session).upper() == "LONDON"
+        sl_mult = 1.5 if is_london else 1.0
+        tp_mult = 1.5 if is_london else 1.0
+        
         sh, sl = _swing_levels(candles_m5, SWING_LOOKBACK)
         lc_close = float(spike_c["close"])
         
-        # Detect Breakout
-        if lc_close > sh and trend_m15 == "BULL":
-            _breakout_state[sym] = {"dir": "BUY", "lvl": sh, "bars": 0}
-        elif lc_close < sl and trend_m15 == "BEAR":
-            _breakout_state[sym] = {"dir": "SELL", "lvl": sl, "bars": 0}
+        # Detect Breakout — only if no active/triggered state exists
+        if sym not in _breakout_state:
+            if lc_close > sh and trend_m15 == "BULL":
+                _breakout_state[sym] = {"dir": "BUY", "lvl": sh, "bars": 0, "triggered": False}
+            elif lc_close < sl and trend_m15 == "BEAR":
+                _breakout_state[sym] = {"dir": "SELL", "lvl": sl, "bars": 0, "triggered": False}
         
-        # Check Retest
+        # Check Retest — only if NOT already triggered
         if sym in _breakout_state:
             st = _breakout_state[sym]
+            if st["triggered"]:
+                # Already fired for this breakout — wait for bars to expire
+                st["bars"] += 1
+                if st["bars"] > RETEST_MAX_BARS + 3:
+                    del _breakout_state[sym]
+                return StrategyResult(signal=None, confidence=0.0, reason="B_already_triggered")
+            
             st["bars"] += 1
             if st["bars"] > RETEST_MAX_BARS:
                 del _breakout_state[sym]
             elif abs(price - st["lvl"]) <= (atr * RETEST_TOL_ATR):
                 direction = Direction.BUY if st["dir"] == "BUY" else Direction.SELL
                 stop = sl if direction == Direction.BUY else sh
-                target = price + (4.0 if direction == Direction.BUY else -4.0)
-                del _breakout_state[sym]
+                
+                # ENSURE MINIMUM SL DISTANCE: at least 1.0 ATR (1.5x for London)
+                min_sl_dist = atr * sl_mult
+                actual_sl_dist = abs(price - stop)
+                if actual_sl_dist < min_sl_dist:
+                    stop = price - min_sl_dist if direction == Direction.BUY else price + min_sl_dist
+                
+                # FIX: TP must be at least 1.5x SL distance (positive RR)
+                sl_dist = abs(price - stop)
+                min_tp_dist = sl_dist * 1.5  # minimum 1:1.5 RR
+                tp_dist = max(4.0 * tp_mult, min_tp_dist)
+                target = price + (tp_dist if direction == Direction.BUY else -tp_dist)
+                
+                # Mark as triggered — prevent duplicate entries
+                st["triggered"] = True
                 return self._emit(sym, direction, price, 0.85, f"B_struct_flow_{st['dir']}", stop, target, market_ctx)
 
         # ── ENGINE C: Liquidity Sweep (Wick Reject) ──
@@ -161,6 +200,9 @@ class RiriScalpsStrategy(BaseStrategy):
                 "strategy_code": "R"
             }
         )
+
+    def observe(self, context: StrategyContext) -> None:
+        pass
 
     def shutdown(self) -> None:
         _breakout_state.clear()
