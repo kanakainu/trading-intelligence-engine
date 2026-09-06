@@ -99,6 +99,8 @@ class MultiStrategyRuntime:
             plan.metadata['cutloss'] = md.get("cutloss") # 3Ca smart cutloss
             plan.metadata['setup_type'] = md.get("setup_type")
             plan.metadata['volume'] = md.get("volume") # preserve strategy volume
+            plan.metadata['nyao_score'] = md.get("nyao_score")  # dampener penalty math
+            plan.metadata['nyao_thr'] = md.get("nyao_thr")
 
         dt = (time.perf_counter() - t0) * 1000
         logger.info(

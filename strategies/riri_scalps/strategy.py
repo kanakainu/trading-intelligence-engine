@@ -675,8 +675,11 @@ class RiriScalpsStrategy(BaseStrategy):
                 lot = _calc_lot(balance, price, atr, abs(price - sl_s))
                 conf = min(0.90, 0.70 + buy_score * 0.02)
                 logger.info(f"[NYAO] BUY score={buy_score:.2f} thr={_buy_thr:.1f} vel={buy_velocity:+.2f} comp={buy_comp}")
-                return self._emit(sym, Direction.BUY, price, conf, "F_nyao_buy",
+                res = self._emit(sym, Direction.BUY, price, conf, "F_nyao_buy",
                                  sl_s, tp_s, market_ctx, lot)
+                res.metadata["nyao_score"] = buy_score   # for dampener penalty math
+                res.metadata["nyao_thr"] = _buy_thr
+                return res
 
             # SELL: score >= threshold + sell dominates buy
             if sell_score >= _sell_thr and sell_score > buy_score:
@@ -686,8 +689,11 @@ class RiriScalpsStrategy(BaseStrategy):
                 lot = _calc_lot(balance, price, atr, abs(price - sl_s))
                 conf = min(0.90, 0.70 + sell_score * 0.02)
                 logger.info(f"[NYAO] SELL score={sell_score:.2f} thr={_sell_thr:.1f} vel={sell_velocity:+.2f} comp={sell_comp}")
-                return self._emit(sym, Direction.SELL, price, conf, "F_nyao_sell",
+                res = self._emit(sym, Direction.SELL, price, conf, "F_nyao_sell",
                                  sl_s, tp_s, market_ctx, lot)
+                res.metadata["nyao_score"] = sell_score
+                res.metadata["nyao_thr"] = _sell_thr
+                return res
 
             # No entry this bar → decay escalation (EA resets when candle has no trade)
             _nyao_state["consec_buy"] = max(0, _nyao_state.get("consec_buy", 0) - 1)

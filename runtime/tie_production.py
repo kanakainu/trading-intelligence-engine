@@ -359,6 +359,15 @@ while True:
             balance = float(account_info.get("balance", 0))
             equity = float(account_info.get("equity", balance))
 
+            # === SIGNAL DAMPENER (EA v43 port): refresh loss cooldown ===
+            from shared.signal_dampener import update_cooldown_from_history, gate as _damp_gate
+            _deals = []
+            try:
+                _deals = client.history(days=1) or []
+                update_cooldown_from_history(_deals, sym)
+            except Exception as _he:
+                log.debug(f"dampener history skipped: {_he}")  # fail-open
+
             # Daily PnL tracker — day-start balance persisted across restarts
             _dp_file = "/tmp/tie_day_start.json"
             _dp_persist = "/home/ubuntu/trading-intelligence-engine/data/tie_day_start.json"
@@ -478,7 +487,7 @@ while True:
             )
             _features = compute_features(_feat_inputs)
 
-            # 🧠 NEXUS A12: Regime Detection + Automatic Allocation (Transmission)
+            # �� NEXUS A12: Regime Detection + Automatic Allocation (Transmission)
             _regime_snap = regime_allocator.allocate(_features, time.time())
             log.info(f"MARKET REGIME: {_regime_snap.regime.value} (strength={_regime_snap.strength:.0f}) | SUGGESTED ENGINE: {_regime_snap.suggested_engine}")
             if _regime_snap.regime in (MarketRegime.CHOPPY, MarketRegime.CHAOS):
@@ -524,6 +533,17 @@ while True:
 
 
             if decision.action != "WAIT":
+                # === SIGNAL DAMPENER GATE (EA v43 port) ===
+                _damp_ok, _damp_reason = _damp_gate(
+                    raw_positions, _deals,
+                    sym, decision.action,
+                    decision.metadata.get("nyao_score"),
+                    decision.metadata.get("nyao_thr"))
+                if not _damp_ok:
+                    log.warning(f"🧊 DAMPENER BLOCK: {decision.setup_name} {decision.action} — {_damp_reason}")
+                    observatory.log_gate(trace, "Dampener", "FAIL", reason=_damp_reason)
+                    continue
+
                 # === VOLATILITY POSITION SIZING (GS Quant inspired) ===
                 from shared.volatility_sizing import calc_lot
                 atr_val = _features.atr.get("M5", 0) if hasattr(_features, "atr") else 0

@@ -46,6 +46,9 @@ def plan_to_decision(plan: Optional[TradePlan]) -> TradeDecision:
         "risk_reward": plan.risk_reward,
         "volume": plan.position_size,
     }
+    # pass through strategy extras (nyao_score/nyao_thr for dampener, strategy_code, cutloss...)
+    for _k, _v in (plan.metadata or {}).items():
+        decision.metadata.setdefault(_k, _v)
     return decision
 
 

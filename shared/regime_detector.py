@@ -36,7 +36,7 @@ class RegimeDetector:
     # TIE-native thresholds (calibrated against live feature dump)
     MOMENTUM_STRONG = 0.25      # |momentum| >= 0.25 = clear directional move
     MOMENTUM_NEUTRAL = 0.10     # |momentum| < 0.10 = no direction
-    ATR_PCT_CHAOS = 0.20        # atr% >= 0.20 = dangerous volatility
+    ATR_PCT_CHAOS = 0.35        # atr% >= 0.35 = dangerous volatility (was 0.20 — too sensitive for XAUUSD)
     ATR_PCT_SQUEEZE = 0.05      # atr% < 0.05 = dead/squeeze market
 
     def detect(self, features: Any) -> RegimeSnapshot:
@@ -61,7 +61,8 @@ class RegimeDetector:
         # 3. CHOPPY — dead market (low ATR AND no momentum)
         # 4. RANGING — everything else
 
-        if atr_pct >= self.ATR_PCT_CHAOS:
+        if atr_pct >= self.ATR_PCT_CHAOS and abs_mom < self.MOMENTUM_STRONG:
+            # CHAOS only if extreme ATR AND no clear direction
             regime = MarketRegime.CHAOS
             engine = "Hibernate"
             strength = min(100, 60 + (atr_pct - self.ATR_PCT_CHAOS) * 100)
@@ -96,16 +97,19 @@ if __name__ == "__main__":
     d = RegimeDetector()
     # Live values 2026-08-10: mom=+0.878 atr%=0.074 -> should be TRENDING
     r = d.detect(SimpleNamespace(momentum_score={"M5": 0.878}, atr_percent={"M5": 0.074}, volume_ratio={"M5": 1.0}))
-    assert r.regime == MarketRegime.TRENDING, f"Expected TRENDING got {r.regime}"
+    assert r.regime in (MarketRegime.TRENDING, MarketRegime.TRENDING_BULL), f"Expected TRENDING got {r.regime}"
     # Strong bearish
     r2 = d.detect(SimpleNamespace(momentum_score={"M5": -0.45}, atr_percent={"M5": 0.08}, volume_ratio={"M5": 1.2}))
-    assert r2.regime == MarketRegime.TRENDING, f"Expected TRENDING got {r2.regime}"
+    assert r2.regime in (MarketRegime.TRENDING, MarketRegime.TRENDING_BEAR), f"Expected TRENDING got {r2.regime}"
     # Squeeze: no mom, no vol
     r3 = d.detect(SimpleNamespace(momentum_score={"M5": 0.02}, atr_percent={"M5": 0.03}, volume_ratio={"M5": 0.5}))
     assert r3.regime == MarketRegime.CHOPPY, f"Expected CHOPPY got {r3.regime}"
-    # Chaos: extreme vol
-    r4 = d.detect(SimpleNamespace(momentum_score={"M5": 0.5}, atr_percent={"M5": 0.35}, volume_ratio={"M5": 2.0}))
+    # Chaos: extreme vol + NO clear direction (chaos with strong momentum = still trending)
+    r4 = d.detect(SimpleNamespace(momentum_score={"M5": 0.05}, atr_percent={"M5": 0.45}, volume_ratio={"M5": 2.0}))
     assert r4.regime == MarketRegime.CHAOS, f"Expected CHAOS got {r4.regime}"
+    # Chaos guard: extreme vol BUT strong momentum → TRENDING, not chaos
+    r4b = d.detect(SimpleNamespace(momentum_score={"M5": 0.5}, atr_percent={"M5": 0.45}, volume_ratio={"M5": 2.0}))
+    assert r4b.regime in (MarketRegime.TRENDING, MarketRegime.TRENDING_BULL), f"Expected TRENDING got {r4b.regime}"
     # Ranging: medium everything
     r5 = d.detect(SimpleNamespace(momentum_score={"M5": 0.15}, atr_percent={"M5": 0.07}, volume_ratio={"M5": 1.0}))
     assert r5.regime == MarketRegime.RANGING, f"Expected RANGING got {r5.regime}"
