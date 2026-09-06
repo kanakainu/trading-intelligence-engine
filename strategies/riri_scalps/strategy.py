@@ -292,7 +292,7 @@ def _calc_lot(balance: float, price: float, atr: float, sl_dist: float) -> float
 # ── NYAO SCALPER SIGNAL SCORING (adapted from Nyao v43 by Elriz Wiraswara) ──
 # Multi-factor composite score (0-10) that measures SIGNAL QUALITY, not just indicator match.
 # Each component scores independently — a strong trend can compensate for weak momentum.
-NYAO_SCORE_THRESHOLD = 6.0   # minimum composite score to trigger entry
+NYAO_SCORE_THRESHOLD = 4.5   # EA default: MinBuySignalScore/MinSellSignalScore = 4.5
 NYAO_SMOOTH_N = 3            # candles for weighted average smoothing
 NYAO_BLEND = 0.40            # current candle blend factor
 NYAO_VELOCITY_WINDOW = 2.0   # velocity normalization window
@@ -315,6 +315,8 @@ NYAO_MIN_VOL_RATIO = 0.6     # dead market filter (ATR/avgATR)
 NYAO_BODY_LOOKBACK = 10      # lookback for avg body size
 NYAO_IMPULSE_LOOKBACK = 3    # impulse detection lookback
 NYAO_IMPULSE_WEIGHT = 1.0    # impulse boost weight
+NYAO_CONSEC_BOOST = 1.0      # EA: ConsecutiveCandleThresholdBoost (per consecutive entry candle)
+NYAO_MAX_CANDLE_BOOSTS = 3   # EA: MaxConsecutiveCandleBoosts (cap the escalation)
 
 
 def _compute_nyao_raw_score(candles: List[Dict], direction: str, idx: int = 0) -> Tuple[float, Dict]:
@@ -650,7 +652,8 @@ class RiriScalpsStrategy(BaseStrategy):
             buy_score, buy_vel, buy_comp = _compute_nyao_smoothed_score(candles_m5, "BUY")
             sell_score, sell_vel, sell_comp = _compute_nyao_smoothed_score(candles_m5, "SELL")
 
-            # Track velocity (score change from previous scan)
+            # Track velocity (score change from previous scan) — REPORTING ONLY.
+            # EA v43 uses velocity for position sizing, NOT as an entry gate.
             prev_buy = _nyao_state.get("buy_score", 0.0)
             prev_sell = _nyao_state.get("sell_score", 0.0)
             buy_velocity = buy_score - prev_buy
@@ -658,21 +661,37 @@ class RiriScalpsStrategy(BaseStrategy):
             _nyao_state["buy_score"] = buy_score
             _nyao_state["sell_score"] = sell_score
 
-            # BUY: score >= threshold + positive velocity + buy > sell
-            if buy_score >= NYAO_SCORE_THRESHOLD and buy_velocity > 0 and buy_score > sell_score:
+            # CONSECUTIVE CANDLE THRESHOLD ESCALATION (EA: ConsecutiveCandleThresholdBoost)
+            # Raise threshold when recent bars already fired entries — prevents chasing
+            # the move and entering at the peak of an extended candle run.
+            _buy_thr = NYAO_SCORE_THRESHOLD + min(_nyao_state.get("consec_buy", 0), NYAO_MAX_CANDLE_BOOSTS) * NYAO_CONSEC_BOOST
+            _sell_thr = NYAO_SCORE_THRESHOLD + min(_nyao_state.get("consec_sell", 0), NYAO_MAX_CANDLE_BOOSTS) * NYAO_CONSEC_BOOST
+
+            # BUY: score >= threshold + buy dominates sell (EA gate: adjustedScore >= adjustedThreshold)
+            if buy_score >= _buy_thr and buy_score > sell_score:
+                _nyao_state["consec_buy"] = _nyao_state.get("consec_buy", 0) + 1
+                _nyao_state["consec_sell"] = 0
                 sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
                 lot = _calc_lot(balance, price, atr, abs(price - sl_s))
                 conf = min(0.90, 0.70 + buy_score * 0.02)
+                logger.info(f"[NYAO] BUY score={buy_score:.2f} thr={_buy_thr:.1f} vel={buy_velocity:+.2f} comp={buy_comp}")
                 return self._emit(sym, Direction.BUY, price, conf, "F_nyao_buy",
                                  sl_s, tp_s, market_ctx, lot)
 
-            # SELL: score >= threshold + negative velocity + sell > buy
-            if sell_score >= NYAO_SCORE_THRESHOLD and sell_velocity > 0 and sell_score > buy_score:
+            # SELL: score >= threshold + sell dominates buy
+            if sell_score >= _sell_thr and sell_score > buy_score:
+                _nyao_state["consec_sell"] = _nyao_state.get("consec_sell", 0) + 1
+                _nyao_state["consec_buy"] = 0
                 sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
                 lot = _calc_lot(balance, price, atr, abs(price - sl_s))
                 conf = min(0.90, 0.70 + sell_score * 0.02)
+                logger.info(f"[NYAO] SELL score={sell_score:.2f} thr={_sell_thr:.1f} vel={sell_velocity:+.2f} comp={sell_comp}")
                 return self._emit(sym, Direction.SELL, price, conf, "F_nyao_sell",
                                  sl_s, tp_s, market_ctx, lot)
+
+            # No entry this bar → decay escalation (EA resets when candle has no trade)
+            _nyao_state["consec_buy"] = max(0, _nyao_state.get("consec_buy", 0) - 1)
+            _nyao_state["consec_sell"] = max(0, _nyao_state.get("consec_sell", 0) - 1)
 
         return StrategyResult(signal=None, confidence=0.0, reason="no_setup")
 
