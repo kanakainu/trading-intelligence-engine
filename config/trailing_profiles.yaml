@@ -1,8 +1,22 @@
 profiles:
+    # EA PARITY (2026-09-08): riri_scalps_v1 = trailing persis default RiriScalps.mq5
+    # (min_be_profit $0.5 × mult 1.5 → trail $0.2, BE lock entry+spread+$0.5).
+    # ea_parity: true mengaktifkan mesin trailing EA, bukan model peak-lock v2.
     riri_scalps_v1:
+        ea_parity: true
+        min_be_profit: 0.5      # EA: MinBreakEvenProfit ($)
+        profit_mult: 1.5        # EA: ProfitThresholdMultiplier
+        trail_dollar: 0.2       # EA: TrailingDistanceValue ($, INPUT_DOLLAR)
         be_lock: 1.0
         dist: 0.5
         start: 1.0
+    # ThreeCa: tetap model peak-lock v2 (replay butuh ruang; trail ketat EA = TP 4R hangus)
+    three_ca:
+        be_lock: 1.0
+        dist: 0.5
+        start: 1.0
+        lock_ratio: 0.5
+        lock_min: 1.0
     bystra:
         be_lock: 1.5
         dist: 0.8

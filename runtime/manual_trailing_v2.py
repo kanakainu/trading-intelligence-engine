@@ -49,8 +49,8 @@ def load_dynamic_config():
     return profiles, be_lock_usd, hedge_close_usd
 
 POLL_SEC             = 5
-URL                  = os.getenv("MT5_GATEWAY_URL",   "https://buildings-threats-built-plugins.trycloudflare.com")
-TOKEN                = os.getenv("MT5_GATEWAY_TOKEN", "Jojo_56790@_000tUi_OO9")
+URL                  = os.getenv("MT5_GATEWAY_URL",   "https://garcia-editorials-overnight-studies.trycloudflare.com")
+TOKEN                = os.getenv("MT5_GATEWAY_TOKEN", "Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV")
 HEADERS              = {"Authorization": f"Bearer {TOKEN}"}
 TIE_HEARTBEAT_PATH   = "/tmp/tie_production_heartbeat.txt"
 HEARTBEAT_TIMEOUT_SEC = 30
@@ -61,8 +61,58 @@ STRATEGY_MAP = {
     "BAS": "bystra",
     "R":   "riri_scalps_v1",
     "F":   "riri_scalps_v1",   # Engine F (EA Nyao port) — same trailing profile
-    "3CA": "riri_scalps_v1",   # ThreeCa (was falling to default by luck)
+    "3CA": "three_ca",         # ThreeCa: peak-lock model (TP 4R butuh ruang)
 }
+
+# ========= EA PARITY TRAILING (port of RiriScalps.mq5 ManageTrailingTPSL) =========
+# EA default: trail aktif begitu profit >= MinBreakEvenProfit*ProfitThresholdMultiplier
+# (= $0.75 @0.05), jarak trail $0.2 (INPUT_DOLLAR), SL tak pernah mundur,
+# BE-lock: SL minimal = entry + spread + $0.5-offset (BUY; mirror utk SELL).
+# TIE lama: start $1.0 + dist $0.5 + lock 50% peak → profit $0.80-0.99 gak
+# kesentuh sama sekali → balik ke SL penuh. EA udah ngamanin. Itu selisihnya.
+def _ea_parity_sl(pos, profile, spread_price):
+    direction  = str(pos.get("direction", "")).upper()
+    entry      = float(pos.get("price_open", 0) or 0)
+    current_sl = float(pos.get("sl", 0) or 0)
+    profit     = float(pos.get("profit", 0) or 0)
+    volume     = float(pos.get("volume", 0.01) or 0.01)
+    current_px = float(pos.get("current_price", 0) or pos.get("price_current", 0) or 0)
+    if not entry or not current_px or volume <= 0:
+        return None
+    min_be   = float(profile.get("min_be_profit", 0.5))
+    mult     = float(profile.get("profit_mult", 1.5))
+    trail_usd = float(profile.get("trail_dollar", 0.2))
+    threshold = min_be * mult
+    if min_be > 0 and profit < threshold:
+        return None  # EA: TrailingSLOnProfitableOnly
+    usd_per_point = volume * 100.0          # XAUUSD: 1 lot = 100 oz
+    trail_dist = trail_usd / usd_per_point
+    # BE-lock price (EA CalculateBreakEvenPrice w/o commission/swap: entry+spread+minProfit)
+    be_off = (min_be / usd_per_point) if min_be > 0 else 0.0
+    if direction == "BUY":
+        if current_px - entry < trail_dist:
+            return None  # EA: profitPoints >= finalTrailingPoints
+        sl = current_px - trail_dist
+        sl = min(sl, current_px - 0.05)     # EA: clamp maxAllowedSL = BID - minDistance
+        be = entry + (spread_price or 0.0) + be_off
+        sl = max(sl, be)                    # EA: break-even lock floor (setelah clamp)
+        if sl >= current_px:
+            return None                     # EA safety: calculatedSL < BID, skip modify
+        if current_sl == 0 or sl > current_sl + 0.005:  # EA: only move UP
+            return round(sl, 3)
+    else:
+        if entry - current_px < trail_dist:
+            return None
+        sl = current_px + trail_dist
+        sl = max(sl, current_px + 0.05)     # EA: clamp minAllowedSL = ASK + minDistance
+        be = entry - (spread_price or 0.0) - be_off
+        sl = min(sl, be)                    # EA: BE-lock cap (SELL)
+        if sl <= current_px:
+            return None                     # EA safety: calculatedSL > ASK
+        if current_sl == 0 or sl < current_sl - 0.005:  # EA: only move DOWN
+            return round(sl, 3)
+    return None
+
 
 # Peak profit tracker per ticket
 _peak: dict = {}
@@ -87,6 +137,16 @@ def get_positions():
     except Exception as e:
         log.error(f"Positions fetch fail: {e}")
         return []
+
+
+def get_spread(symbol: str = "XAUUSD") -> float:
+    """Live spread in PRICE units (ask-bid) — EA pakai ini buat BE-lock."""
+    try:
+        r = requests.get(f"{URL}/trade/price/{symbol}", headers=HEADERS, timeout=5)
+        j = r.json()
+        return max(0.0, float(j.get("ask", 0)) - float(j.get("bid", 0)))
+    except Exception:
+        return 0.0  # fail-open: BE-lock tanpa komponen spread
 
 
 def process_baskets(positions):
@@ -198,12 +258,20 @@ def run():
 
             # === ALWAYS EXECUTE TRAILING (Manual Trailing = Primary SL Manager) ===
             if tie_positions:
+                _spread_cache = {}
                 for pos in tie_positions:
                     ticket      = str(pos.get("ticket"))
                     profile_key = extract_profile_key(pos.get("comment", ""))
                     profile     = current_profiles.get(profile_key, current_profiles["riri_scalps_v1"])
 
-                    new_sl = compute_new_sl(pos, profile)
+                    if profile.get("ea_parity"):
+                        # EA RiriScalps default: trail $0.2 + BE-lock entry+spread+$0.5
+                        _sym = pos.get("symbol", "XAUUSD")
+                        if _sym not in _spread_cache:
+                            _spread_cache[_sym] = get_spread(_sym)
+                        new_sl = _ea_parity_sl(pos, profile, _spread_cache[_sym])
+                    else:
+                        new_sl = compute_new_sl(pos, profile)
                     if new_sl:
                         try:
                             modify_order(ticket, new_sl, tp=pos.get("tp"))
