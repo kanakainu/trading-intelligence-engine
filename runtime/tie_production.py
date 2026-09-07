@@ -79,8 +79,8 @@ _fh = logging.FileHandler("/home/ubuntu/trading-intelligence-engine/logs/tie_pro
 _fh.setFormatter(logging.Formatter('%(asctime)s %(name)s %(message)s'))
 logging.getLogger().addHandler(_fh)
 
-URL = 'https://buildings-threats-built-plugins.trycloudflare.com'
-TOKEN = 'Jojo_56790@_000tUi_OO9'
+URL = 'https://garcia-editorials-overnight-studies.trycloudflare.com'
+TOKEN = 'Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV'
 SYMBOLS = ['XAUUSD']  # user-tuned 2026-08-05: XAUUSD only, save bandwidth
 
 _seen_setups = {}  # {(sym, setup_name, direction): timestamp} — dedup 1 min
@@ -693,11 +693,23 @@ while True:
                 }
 
                 # === ⚔️ NEXUS CROSS-STRATEGY DEBATE (Global Direction Lock) ===
+                # EA parity: "same candle" = bar M5 berjalan (gateway WIB, floor 5 mnt)
+                _nb = datetime.now().replace(second=0, microsecond=0)
+                _cur_bar_str = _nb.strftime("%Y-%m-%dT%H:") + f"{_nb.minute - _nb.minute % 5:02d}"
                 if decision.action != "WAIT":
                     # Check for existing positions in the OPPOSITE direction
-                    _opp_positions = [p for p in raw_positions 
-                                     if p.get("direction", p.get("type", "")).upper() != decision.action.upper()
-                                     and p.get("symbol", "") == sym]
+                    # EA PARITY (2026-09-07): EA cuma nge-block arah berlawanan pada CANDLE
+                    # yang sama (oppOnBar). Posisi lama bukan penghalang -> TIE samain.
+                    _opp_on_bar = any(
+                        p.get("direction", p.get("type", "")).upper() != decision.action.upper()
+                        and p.get("symbol", "") == sym
+                        and str(p.get("open_time", ""))[:16] == _cur_bar_str
+                        for p in raw_positions
+                    )
+                    _opp_positions = [] if not _opp_on_bar else [
+                        p for p in raw_positions
+                        if p.get("direction", p.get("type", "")).upper() != decision.action.upper()
+                        and p.get("symbol", "") == sym]
                     _opp_pos_count = len(_opp_positions)
                     
                     if _opp_pos_count > 0:
@@ -722,20 +734,14 @@ while True:
                             continue
 
                 if all(r.status == "APPROVE" for r in risk_results.values()):
-                    # Adaptive max positions per strategy: TRENDING=5, else=3
-                    _is_trending = getattr(_regime_snap, "regime", None) and _regime_snap.regime.value in ("TRENDING", "TRENDING_BULL", "TRENDING_BEAR")
-                    _max_pos = 5 if _is_trending else 3
-                    _strat_pos_count = sum(1 for p in raw_positions
-                                          if p.get("symbol", "") == sym
-                                          and p.get("comment", "").lower().startswith(_strat_name[:3]))
-                    _same_dir_count = sum(1 for p in raw_positions
-                                         if p.get("symbol", "") == sym
-                                         and p.get("direction", p.get("type", "")).upper() == decision.action.upper())
-                    if _strat_pos_count >= _max_pos or _same_dir_count >= _max_pos:
-                        log.info(f"MAX_POSITIONS: skip {decision.setup_name} {sym} (strat={_strat_pos_count} dir={_same_dir_count} max={_max_pos})")
+                    # EA PARITY (2026-09-07): MaxOpenOrders=4 TOTAL (bukan per-arah), tanpa regime boost
+                    _tie_open_count = len(raw_positions)  # raw_positions udah TIE-only
+                    _max_pos = 4
+                    if _tie_open_count >= _max_pos:
+                        log.info(f"MAX_POSITIONS: skip {decision.setup_name} {sym} (open={_tie_open_count} max={_max_pos})")
                         setup_detail["status"] = "BLOCKED"
-                        setup_detail["gate_reason"] = f"max_positions:{_same_dir_count}/{_max_pos}"
-                        observatory.log_gate(trace, "MaxPositions", "FAIL", reason=f"dir={_same_dir_count} strat={_strat_pos_count} max={_max_pos}")
+                        setup_detail["gate_reason"] = f"max_positions:{_tie_open_count}/{_max_pos}"
+                        observatory.log_gate(trace, "MaxPositions", "FAIL", reason=f"open={_tie_open_count} max={_max_pos}")
                     else:
                         dedup_key = (sym, decision.setup_name, decision.action)
                         now = time.time()
@@ -757,10 +763,24 @@ while True:
                             observatory.log_gate(trace, "Dedup", "FAIL", reason=f"cooldown_{int(now - last_seen)}s")
                             continue
 
-                        # Radius dedup — block if entry within 3.0 points of ANY same-dir position
-                        # Bug fix: check _too_close independently (not gated on _any_same_dir)
+                        # EA PARITY: MaxTradesPerCandle=1 — satu entry per arah per candle M5
+                        # (bar-aligned, bukan rolling window; _seen_setups di atas cuma race-guard)
+                        if _strat_type == "r" and any(
+                            p.get("direction", p.get("type", "")).upper() == decision.action.upper()
+                            and p.get("symbol", "") == sym
+                            and str(p.get("open_time", ""))[:16] == _cur_bar_str
+                            for p in raw_positions
+                        ):
+                            log.info(f"PerCandle: skip {decision.setup_name} {decision.action} {sym} (sudah ada entry bar ini)")
+                            setup_detail["status"] = "DEDUP"
+                            setup_detail["gate_reason"] = "max_trades_per_candle"
+                            observatory.log_gate(trace, "Dedup", "FAIL", reason="max_trades_per_candle")
+                            continue
+
+                        # EA PARITY: radius dedup = ZonePoints(500) x dupMult(1.5) = $7.50 XAUUSD
+                        # (sebelumnya $3.0 — TIE lebih ketat dari EA, nge-skip entry yang EA ambil)
                         _too_close = any(
-                            abs(float(p.get("price", p.get("entry_price", 0))) - price) < 3.0
+                            abs(float(p.get("price", p.get("entry_price", p.get("open_price", 0)))) - price) < 7.5
                             for p in raw_positions
                             if p.get("direction", p.get("type", "")).upper() == decision.action.upper()
                             and p.get("symbol", "") == sym
