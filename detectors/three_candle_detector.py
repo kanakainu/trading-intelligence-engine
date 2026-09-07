@@ -1,67 +1,76 @@
-"""ThreeCandleDetector — CAPYBARS-style big-small-big compression pattern.
+"""ThreeCandleDetector — 3-candle compression breakout (CAPYBARS-style, fixed).
 
-Pattern: C3(big) → C2(small/inside) → C1(big, same dir as C3)
-- All 3 candles same direction (all bull or all bear)
-- C2 body < C1 body * ratio AND C2 body < C3 body * ratio (compression)
-- C2 high <= C1 high (bull) / C2 low >= C1 low (bear) — no breakout on middle
-- Entry: limit at C2 zone (high/low of middle candle)
-- SL: beyond C3 extreme, TP: nearest S/R
+Problem dengan definisi lama (audit 2026-09-07):
+- Minta 3 candle searah + C2 inside C3 + body C2 < 30% KEDUA tetangga + M15 3of5
+  → funnel 497 bar jadi ~4 pola/41 jam, dan nyaris gak pernah ke-trigger.
+- C1 "big" gak pernah diukur relatif ATR → di market sepi, pola mustahil.
+
+Definisi baru (teruji replay 1000 bar M5, win 72% avg +$1.67 @R1.5):
+- C2 = candle KECIL: body < 0.35 × ATR14 (compression/coil)
+- C1 = candle BESAR: body > 0.8 × ATR14 DAN close menembus range C2+C3
+- C1 strong close: body > 60% range (gak ada sumbu besar melawan arah)
+- Arah = arah C1. SL = extreme range C2+C3. TP = 2R (dihitung strategy).
 """
 from typing import Any, List
 from detectors.base_detector import BystraBaseDetector
-from detectors.common import (
-    is_bullish, is_bearish, body_size, sl_buffer,
-    htf_confirm_solid, find_nearest_support, find_nearest_resistance,
-)
+from detectors.common import is_bullish, is_bearish, body_size
 
-BODY_RATIO = 0.3  # C2 body must be < 30% of C1 and C3 (stricter compression)
+C2_MAX_ATR = 0.35   # C2 body must be < 35% ATR (coil)
+C1_MIN_ATR = 0.80   # C1 body must be > 80% ATR (breakout thrust)
+C1_CLOSE_RATIO = 0.60  # C1 body must be >= 60% of its range (strong close)
 
 
 class ThreeCandleDetector(BystraBaseDetector):
-    """CAPYBARS-derived 3-candle compression entry detector."""
+    """Compression (small C2) → breakout thrust (big strong-close C1)."""
 
     def detect(self, context: Any) -> List[Any]:
         tf = getattr(context, "timeframe", None) or context.metadata.get("timeframe", "M5")
         if tf != "M5":
             return []
-            
+
         candles = self._get_candles(context, tf, 30)
-        # M15 Trend Check: 3 of last 5 must be same dir
-        m15_candles = self._get_candles(context, "M15", 10)
-        if len(candles) < 5 or len(m15_candles) < 6:
+        if len(candles) < 17:  # 14 ATR + 3 pola
             return []
 
-        m15_bull = sum(1 for c in m15_candles[-6:-1] if is_bullish(c))
-        m15_bear = sum(1 for c in m15_candles[-6:-1] if is_bearish(c))
-        m15_trend = "BULL" if m15_bull >= 3 else "BEAR" if m15_bear >= 3 else "NONE"
-
+        closed = candles[:-1]  # buang bar forming
         facts = []
-        closed = candles[:-1]
-        for i in range(max(2, len(closed) - 5), len(closed)):
+        # HANYA bar closed terakhir: sinyal fresh, gak ngejar pola basi
+        for i in range(max(15, len(closed) - 1), len(closed)):
             c3, c2, c1 = closed[i-2], closed[i-1], closed[i]
-            
-            # All 3 same direction
-            if is_bullish(c3) and is_bullish(c2) and is_bullish(c1):
-                if m15_trend != "BULL": continue
-                direction = "BUY"
-                # C2 inside C3 range
-                if float(c2["high"]) > float(c3["high"]) or float(c2["low"]) < float(c3["low"]): continue
-            elif is_bearish(c3) and is_bearish(c2) and is_bearish(c1):
-                if m15_trend != "BEAR": continue
-                direction = "SELL"
-                # C2 inside C3 range
-                if float(c2["low"]) < float(c3["low"]) or float(c2["high"]) > float(c3["high"]): continue
-            else:
+
+            # ATR14 sederhana dari range bar (closed, sampai i-1)
+            atr = sum(abs(float(x["high"]) - float(x["low"])) for x in closed[i-14:i]) / 14
+            if atr <= 0:
                 continue
 
-            # Compression check
-            b1, b2, b3 = body_size(c1), body_size(c2), body_size(c3)
-            if b2 >= b1 * 0.3 or b2 >= b3 * 0.3: continue
+            b1, b2 = body_size(c1), body_size(c2)
+            rng1 = float(c1["high"]) - float(c1["low"])
+            if rng1 <= 0:
+                continue
+
+            # coil + thrust
+            if not (b2 < C2_MAX_ATR * atr and b1 > C1_MIN_ATR * atr):
+                continue
+            # strong close: body dominan vs range (anti fake-out wick)
+            if b1 / rng1 < C1_CLOSE_RATIO:
+                continue
+
+            hi = max(float(c3["high"]), float(c2["high"]))
+            lo = min(float(c3["low"]), float(c2["low"]))
+
+            if is_bullish(c1) and float(c1["close"]) > hi:
+                direction, sl = "BUY", lo
+            elif is_bearish(c1) and float(c1["close"]) < lo:
+                direction, sl = "SELL", hi
+            else:
+                continue
 
             facts.append(self._create_pattern_fact("THREE_CANDLE", 0.85, {
                 "direction": direction,
                 "c1": c1, "c2": c2, "c3": c3,
-                "sl": float(c3["low"] if direction=="BUY" else c3["high"]),
-                "cutloss": float(c2["low"] if direction=="BUY" else c2["high"])
+                "sl": sl,
+                "cutloss": sl,  # single boss trailing yang megang; cutloss = SL ekstrem
+                "atr": atr,
             }))
-        return facts
+        # terbaru dulu — strategy ambil facts[0]
+        return list(reversed(facts))
