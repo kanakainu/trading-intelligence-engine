@@ -95,7 +95,9 @@ class MultiStrategyRuntime:
         if plan:
             if plan.metadata is None:
                 object.__setattr__(plan, 'metadata', {})
-            plan.metadata['strategy_code'] = code_str  # B, T, R
+            # Prefer engine-level code emitted by strategy (F, A, C, D, E1, E2, 3Ca)
+            # so order comment shows WHICH engine fired, not just the strategy family
+            plan.metadata['strategy_code'] = md.get("strategy_code") or code_str
             plan.metadata['cutloss'] = md.get("cutloss") # 3Ca smart cutloss
             plan.metadata['setup_type'] = md.get("setup_type")
             plan.metadata['volume'] = md.get("volume") # preserve strategy volume
