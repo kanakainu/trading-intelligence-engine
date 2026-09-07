@@ -1,8 +1,7 @@
 """
-ThreeCa v1.1 — 3-Candle Compression Breakout Strategy
-Pattern: C3 → C2(coil kecil) → C1(thrust besar, close tembus range)
-Entry market saat thrust terdeteksi; SL extreme range; TP 2R.
-Extracted from Bystra. Runs independently alongside RiriScalps.
+ThreeCa v1.2 — Big-Small-Big 3-Candle Compression (definisi Boskuh)
+Pattern: C3 besar → C2 kecil (kunci) → C1 besar; 3 candle searah semua.
+Entry market saat C1 closed; SL ekstrem C3; exit dikunci trailing v2.
 """
 import uuid
 import logging
@@ -17,7 +16,8 @@ from detectors.three_candle_detector import ThreeCandleDetector
 
 logger = logging.getLogger("ThreeCa")
 
-TP_R = 2.0  # take profit = 2x risiko (teruji replay: R1.5-2 win 61-72%)
+TP_R = 4.0  # TP lebar — exit sesungguhnya dipegang manual_trailing_v2 (lock $1/trail $0.5).
+            # Replay: TP 2R avg -$1.23 vs trailing +$4.58. Jangan ketus TP dekat.
 
 
 class ThreeCaStrategy(BaseStrategy):
@@ -27,10 +27,10 @@ class ThreeCaStrategy(BaseStrategy):
         meta = StrategyMetadata(
             id="three_ca_v1",
             name="ThreeCa",
-            version="1.1.0",
+            version="1.2.0",
             priority=85,
             author="Sasa",
-            description="3-candle coil->breakout thrust: market entry, SL range extreme, TP 2R"
+            description="big-small-big 3 searah: C2 kecil kunci, entry market, SL C3, exit trailing v2"
         )
         super().__init__(meta)
         self._detector = ThreeCandleDetector()
@@ -96,7 +96,7 @@ class ThreeCaStrategy(BaseStrategy):
                 "volume": 0.05
             }
         )
-        return StrategyResult(signal=signal, confidence=0.85, reason="3Ca_breakout_thrust", metadata=signal.metadata)
+        return StrategyResult(signal=signal, confidence=0.85, reason="3Ca_big_small_big", metadata=signal.metadata)
 
     def shutdown(self) -> None:
         self._initialized = False
