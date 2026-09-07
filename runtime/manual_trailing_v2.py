@@ -60,7 +60,8 @@ STRATEGY_MAP = {
     "BA":  "bystra",
     "BAS": "bystra",
     "R":   "riri_scalps_v1",
-    "B":   "bystra",
+    "F":   "riri_scalps_v1",   # Engine F (EA Nyao port) — same trailing profile
+    "3CA": "riri_scalps_v1",   # ThreeCa (was falling to default by luck)
 }
 
 # Peak profit tracker per ticket
@@ -206,8 +207,8 @@ def run():
                 for pos in hedge_targets:
                     ticket = str(pos.get("ticket"))
                     try:
-                        r = requests.post(f"{URL}/account/position/close", 
-                                        headers=HEADERS, json={"ticket": ticket}, timeout=5)
+                        r = requests.post(f"{URL}/trade/close/{ticket}",
+                                        headers=HEADERS, timeout=5)
                         r.raise_for_status()
                         log.info(f"[HEDGE CLOSE] {ticket} closed.")
                     except Exception as e:
