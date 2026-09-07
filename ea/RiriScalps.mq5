@@ -1,19 +1,26 @@
 // +------------------------------------------------------------------+
-// | RiriScalps v1.0                                                  |
-// | Scalping EA for XAUUSD — $300 Account Optimized                  |
-// | © RiriScalps — Based on Nyao Scalper (BSD-3-Clause) by Elriz W.  |
+// | RIRISCALPS v1.0 — Riri Trading Engine                            |
+// | XAUUSD Scalping EA · $300 Account Edition                        |
+// | © 2026 Riri Trading Engine (RTE) — All rights reserved           |
+// | Derived from Nyao Scalper v43 (BSD-3-Clause, Elriz Wiraswara)    |
 // +------------------------------------------------------------------+
-#property copyright "© RiriScalps — Based on Nyao Scalper (BSD-3-Clause)"
-#property version "1.0"
-#property description "RiriScalps — XAUUSD Scalping EA for $300 Accounts"
+#property copyright "© 2026 Riri Trading Engine — RiriScalps"
+#property link      ""
+#property version   "1.00"
+#property description "RIRISCALPS v1.0 — Riri Trading Engine"
 #property description ""
-#property description "This is an open-source project for educational and experimental purposes only"
-#property description "Source: https://github.com/elrizwiraswara/nyao_scalper_mt5 [BSD-3-Clause]"
+#property description "XAUUSD M5 scalper with 10-point composite signal scoring:"
+#property description "  TREND (EMA 5/12 alignment + slope)  3.0 pts"
+#property description "  MOMENTUM (RSI-8 zone + body impulse)  3.0 pts"
+#property description "  VOLATILITY (ATR expansion, chop filter)  3.0 pts"
+#property description "  STRUCTURE (peak breakout)  1.0 pts  − WICK PENALTY"
 #property description ""
-#property description "No guarantee of profitability. Use at your own risk. Past performance ≠ future results"
-#property description "Built with significant effort, please use and share respectfully"
-#property description "I do not sell this EA myself. If sold under my name, treat it as a scam and report it"
-#property description "Rebranded from Nyao Scalper v43.0 by Elriz Wiraswara (BSD-3-Clause)"
+#property description "Built-in brakes: consecutive-candle escalation, losing-position"
+#property description "dampening, loss-streak cooldown, health-based adaptive exits."
+#property description "Default preset tuned for $300 accounts, 0.01-0.03 lot, XAUUSD."
+#property description ""
+#property description "Educational use only. No profitability guarantee. Past ≠ future."
+#property description "Source engine: Nyao Scalper v43 (BSD-3-Clause, Elriz Wiraswara)"
 #property strict
 
 // Windows API for Algo Trading Button Control
@@ -53,8 +60,8 @@ enum ENUM_LIMIT_ANCHOR
 };
 
 input group "+-----------------------------------------+"
-input group " RiriScalps v1.0"
-input group " © RiriScalps — XAUUSD $300 Optimized"
+input group " RIRISCALPS v1.0 — Riri Trading Engine"
+input group " XAUUSD M5 Scalper · $300 Account Edition"
 input group "+-----------------------------------------+"
 
 // +------------------------------------------------------------------+
@@ -161,7 +168,7 @@ input int ConsecutiveWinsRequired = 3;                    // Min Consecutive Win
 input double MinOffsetProfit = 1.0;                       // Min Accumulated Profit ($) to Trigger SL Offset
 
 input group "🔀 Hedge Chain (Rolling Martingale Recovery) Settings"
-input bool EnableHedgeChain = true;                       // Enable Hedge Chain (MARTINGALE - high risk)
+input bool EnableHedgeChain = false;                      // Enable Hedge Chain (MARTINGALE - OFF for $300)
 input double HedgeTriggerATR = 1.5;                       // Adverse Move (ATR) to Start the Chain
 input bool HedgeRequireSignal = true;                     // Only Hedge if Reverse Signal Confirms (anti-spike)
 input double HedgeMinSignalScore = 4.5;                   // Min Reverse-Direction Score to Open Hedge
@@ -212,7 +219,7 @@ input ENUM_INPUT_TYPE SLInputType = INPUT_PERCENT;        // SL Input Type
 input double SLValue = 10.0;                              // SL Value
 
 input group "⚖️ Risk:Reward Settings"
-input bool EnableRiskReward = false;                      // Enable Independent R:R SL/TP (overrides manual SL & TP)
+input bool EnableRiskReward = true;                       // Enable Independent R:R SL/TP (overrides manual SL & TP)
 input ENUM_RR_RISK_MODE RRRiskMode = RR_RISK_ATR;         // Risk (SL) Sizing: Manual or Auto ATR
 input ENUM_INPUT_TYPE RRRiskInputType = INPUT_POINTS;     // Manual Risk Input Type (when Mode = Manual)
 input double RRRiskValue = 200.0;                         // Manual Risk Distance (SL leg, when Mode = Manual)
@@ -5722,60 +5729,168 @@ void DrawDashboardLabel(string name, string text, int x, int y, int fontSize, co
     ObjectSetString(0, name, OBJPROP_FONT, bold ? "Arial Bold" : "Arial");
 }
 
+// ── RiriScalps Panel Helpers (ember theme) ──────────────────────────
+void DrawPanelRect(string name, int x, int y, int w, int h, color bg, color brd)
+{
+    if(ObjectFind(0, name) < 0)
+    {
+        ObjectCreate(0, name, OBJ_RECTANGLE_LABEL, 0, 0, 0);
+        ObjectSetInteger(0, name, OBJPROP_CORNER, CORNER_LEFT_UPPER);
+        ObjectSetInteger(0, name, OBJPROP_SELECTABLE, false);
+        ObjectSetInteger(0, name, OBJPROP_SELECTED, false);
+        ObjectSetInteger(0, name, OBJPROP_HIDDEN, true);
+        ObjectSetInteger(0, name, OBJPROP_BACK, false);
+    }
+    ObjectSetInteger(0, name, OBJPROP_XDISTANCE, x);
+    ObjectSetInteger(0, name, OBJPROP_YDISTANCE, y);
+    ObjectSetInteger(0, name, OBJPROP_XSIZE, w);
+    ObjectSetInteger(0, name, OBJPROP_YSIZE, h);
+    ObjectSetInteger(0, name, OBJPROP_BGCOLOR, bg);
+    ObjectSetInteger(0, name, OBJPROP_BORDER_TYPE, BORDER_FLAT);
+    ObjectSetInteger(0, name, OBJPROP_COLOR, brd);
+}
+
+void DrawRightLabel(string name, string text, int x, int y, int fontSize, color clr, bool bold = false)
+{
+    if(ObjectFind(0, name) < 0)
+    {
+        ObjectCreate(0, name, OBJ_LABEL, 0, 0, 0);
+        ObjectSetInteger(0, name, OBJPROP_CORNER, CORNER_LEFT_UPPER);
+        ObjectSetInteger(0, name, OBJPROP_ANCHOR, ANCHOR_RIGHT_UPPER);
+        ObjectSetInteger(0, name, OBJPROP_SELECTABLE, false);
+        ObjectSetInteger(0, name, OBJPROP_SELECTED, false);
+        ObjectSetInteger(0, name, OBJPROP_HIDDEN, true);
+        ObjectSetInteger(0, name, OBJPROP_BACK, false);
+    }
+    ObjectSetInteger(0, name, OBJPROP_XDISTANCE, x);
+    ObjectSetInteger(0, name, OBJPROP_YDISTANCE, y);
+    ObjectSetString(0, name, OBJPROP_TEXT, text);
+    ObjectSetInteger(0, name, OBJPROP_FONTSIZE, fontSize);
+    ObjectSetInteger(0, name, OBJPROP_COLOR, clr);
+    ObjectSetString(0, name, OBJPROP_FONT, bold ? "Arial Bold" : "Arial");
+}
+
+void DrawScoreBar(string name, int x, int y, int w, int h, double score, double maxScore, color fill)
+{
+    DrawPanelRect(name+"_bg", x, y, w, h, C'38,34,40', C'74,64,62');
+    double frac = (maxScore > 0) ? score / maxScore : 0.0;
+    if(frac < 0) frac = 0;
+    if(frac > 1.0) frac = 1.0;
+    int fw = (int)MathRound(w * frac);
+    if(fw < 1 && score > 0) fw = 1;
+    DrawPanelRect(name+"_on", x, y, fw, h, fill, fill);
+}
+
 void UpdateDashboard()
 {
     // Clear old comment based dashboard
     Comment("");
 
-    // Layout Constants
-    int startX = 20;
-    int startY = 20;
-    int lineHeight = 18;
-    int headersize = 10;
-    int textsize = 9;
-    int detailsSize = 8;
-    
-    color colorHeader = clrCyan;
-    color colorText = clrWhite;
-    color colorBuy = clrLime;
-    color colorSell = clrRed;
-    color colorNeutral = clrGray;
-    color colorBg = C'15,20,30';
-    color colorBorder = clrDarkCyan;
+    // ── RiriScalps Ember Panel ──
+    color cBg     = C'16,13,18';
+    color cBorder = C'96,38,24';
+    color cHdr    = C'40,16,14';
+    color cAccent = clrOrangeRed;
+    color cTitle  = clrGold;
+    color cText   = C'228,222,216';
+    color cDim    = C'138,130,126';
+    color cBuy    = clrLime;
+    color cSell   = clrTomato;
 
-    int currentY = startY;
+    int px = 15, py = 20, pw = 330, lh = 17;
+    int y = py + 52;
 
-    // Header
-    DrawDashboardLabel("RiriDash_Title", "RiriScalps v1.0", startX, currentY, 11, colorHeader, true);
-    currentY += lineHeight + 5;
+    // Background first (z-order behind), header bar + accent line
+    DrawPanelRect("RiriDash_Bg", px, py, pw, 360, cBg, cBorder);
+    DrawPanelRect("RiriDash_Hdr", px+1, py+1, pw-2, 46, cHdr, cHdr);
+    DrawPanelRect("RiriDash_Acc", px+1, py+47, pw-2, 2, cAccent, cAccent);
 
-    // Status logic
-    string status = "Active";
-    color statusColor = clrLime;
+    DrawDashboardLabel("RiriDash_Title", "RIRISCALPS v1.0", px+10, py+7, 12, cTitle, true);
+    DrawDashboardLabel("RiriDash_Sub", "Riri Trading Engine · XAUUSD M5 · $300 Edition", px+10, py+28, 8, cDim);
+
+    // Status row
+    string status = "ACTIVE";
+    color statusColor = cBuy;
     if(isPaused) { status = "PAUSED (" + IntegerToString(currentPauseDuration) + "m)"; statusColor = clrOrange; }
-    else if(isOutsideTradingHours) { status = "Closed (Time)"; statusColor = clrGray; }
-    else if(targetEquityReached) { status = "STOPPED (Target)"; statusColor = clrRed; }
-    else if(minimumEquityReached) { status = "STOPPED (Min Equity)"; statusColor = clrRed; }
+    else if(isOutsideTradingHours) { status = "CLOSED (TIME)"; statusColor = cDim; }
+    else if(targetEquityReached) { status = "STOPPED (TARGET)"; statusColor = cSell; }
+    else if(minimumEquityReached) { status = "STOPPED (MIN EQUITY)"; statusColor = cSell; }
 
-    DrawDashboardLabel("RiriDash_Status", "Status: " + status, startX, currentY, textsize, statusColor, true);
-    currentY += lineHeight;
+    DrawDashboardLabel("RiriDash_Status", "● " + status, px+10, y, 9, statusColor, true);
+    long spreadPts = SymbolInfoInteger(_Symbol, SYMBOL_SPREAD);
+    DrawRightLabel("RiriDash_Spr", "Spread " + IntegerToString((int)spreadPts) + " pts", px+pw-10, y, 8, cDim);
+    y += lh;
 
-    // Account Info
+    // Cooldown row (dampener)
+    if(EnableSignalDampening && cooldownUntilBarTime > 0 && TimeCurrent() < cooldownUntilBarTime)
+    {
+        int remMin = (int)((cooldownUntilBarTime - TimeCurrent()) / 60);
+        DrawDashboardLabel("RiriDash_Cool", "COOLDOWN ~" + IntegerToString(remMin) + "m (loss streak brake)", px+10, y, 8, clrOrange, true);
+        y += lh;
+    }
+    else ObjectDelete(0, "RiriDash_Cool");
+
+    // Account block
     double balance = AccountInfoDouble(ACCOUNT_BALANCE);
-    double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+    double equity  = AccountInfoDouble(ACCOUNT_EQUITY);
+    double floating = GetTotalFloatingPL();
     double equityDrop = (peakEquity > 0) ? ((peakEquity - equity) / peakEquity) * 100.0 : 0.0;
-    
-    DrawDashboardLabel("RiriDash_Bal", StringFormat("Balance: $%.2f", balance), startX, currentY, textsize, colorText);
-    currentY += lineHeight;
-    DrawDashboardLabel("RiriDash_Eq", StringFormat("Equity: $%.2f", equity), startX, currentY, textsize, colorText);
-    currentY += lineHeight;
-    DrawDashboardLabel("RiriDash_Peak", StringFormat("Peak: $%.2f (Drop: %.1f%%)", peakEquity, equityDrop), startX, currentY, textsize, colorText);
-    currentY += lineHeight + 5;
+
+    DrawDashboardLabel("RiriDash_Bal", "Balance", px+10, y, 9, cDim);
+    DrawRightLabel("RiriDash_BalV", StringFormat("$%.2f", balance), px+pw-10, y, 9, cText); y += lh;
+    DrawDashboardLabel("RiriDash_Eq", "Equity", px+10, y, 9, cDim);
+    DrawRightLabel("RiriDash_EqV", StringFormat("$%.2f", equity), px+pw-10, y, 9, cText); y += lh;
+    DrawDashboardLabel("RiriDash_Flt", "Floating P/L", px+10, y, 9, cDim);
+    DrawRightLabel("RiriDash_FltV", StringFormat("%+.2f", floating), px+pw-10, y, 9, floating >= 0 ? cBuy : cSell, true); y += lh;
+    DrawDashboardLabel("RiriDash_Pk", "Peak / Drop", px+10, y, 9, cDim);
+    DrawRightLabel("RiriDash_PkV", StringFormat("$%.2f / %.1f%%", peakEquity, equityDrop), px+pw-10, y, 9, cText); y += lh + 4;
+
+    DrawPanelRect("RiriDash_Sep1", px+8, y, pw-16, 1, cBorder, cBorder); y += 8;
+
+    // Signal strength with visual bars
+    SignalStrength buyStrength = GetSignalStrength(ORDER_TYPE_BUY);
+    SignalStrength sellStrength = GetSignalStrength(ORDER_TYPE_SELL);
+    double rawBuyScore = ComputeRawScore(ORDER_TYPE_BUY, 1);
+    double rawSellScore = ComputeRawScore(ORDER_TYPE_SELL, 1);
+
+    DrawDashboardLabel("RiriDash_SigHead", "SIGNAL STRENGTH", px+10, y, 9, cAccent, true);
+    DrawRightLabel("RiriDash_Req", StringFormat("min B%.1f / S%.1f", MinBuySignalScore, MinSellSignalScore), px+pw-10, y, 8, cDim);
+    y += lh;
+
+    bool buyLead = buyStrength.finalScore >= sellStrength.finalScore;
+    DrawDashboardLabel("RiriDash_Buy", StringFormat("BUY  %.2f", buyStrength.finalScore), px+10, y, 9, buyLead ? cBuy : cText, true);
+    DrawScoreBar("RiriDash_BarB", px+95, y+2, 150, 9, buyStrength.finalScore, 10.0, buyLead ? cBuy : C'70,110,70');
+    DrawRightLabel("RiriDash_BuyRaw", StringFormat("raw %.2f", rawBuyScore), px+pw-10, y, 8, cDim);
+    y += lh;
+    DrawDashboardLabel("RiriDash_BuyDet", buyStrength.reasoning, px+10, y, 8, cDim);
+    y += lh;
+
+    bool sellLead = sellStrength.finalScore > buyStrength.finalScore;
+    DrawDashboardLabel("RiriDash_Sell", StringFormat("SELL %.2f", sellStrength.finalScore), px+10, y, 9, sellLead ? cSell : cText, true);
+    DrawScoreBar("RiriDash_BarS", px+95, y+2, 150, 9, sellStrength.finalScore, 10.0, sellLead ? cSell : C'120,60,55');
+    DrawRightLabel("RiriDash_SellRaw", StringFormat("raw %.2f", rawSellScore), px+pw-10, y, 8, cDim);
+    y += lh;
+    DrawDashboardLabel("RiriDash_SellDet", sellStrength.reasoning, px+10, y, 8, cDim);
+    y += lh + 4;
+
+    DrawPanelRect("RiriDash_Sep2", px+8, y, pw-16, 1, cBorder, cBorder); y += 8;
+
+    // Statistics
+    TradeStats daily, allTime;
+    GetTradeStats(daily, allTime);
+    double allTimeNetProfit = allTime.profit + allTime.loss;
+
+    DrawDashboardLabel("RiriDash_StatHead", "STATISTICS", px+10, y, 9, cAccent, true); y += lh;
+    DrawDashboardLabel("RiriDash_Tr", "Trades (W/L)", px+10, y, 9, cDim);
+    DrawRightLabel("RiriDash_TrV", StringFormat("%d (%d/%d)", allTime.count, allTime.won, allTime.lost), px+pw-10, y, 9, cText); y += lh;
+    DrawDashboardLabel("RiriDash_PL", "Gross +/-", px+10, y, 9, cDim);
+    DrawRightLabel("RiriDash_PLV", StringFormat("$%.2f / $%.2f", allTime.profit, allTime.loss), px+pw-10, y, 9, cText); y += lh;
+    DrawDashboardLabel("RiriDash_Net", "NET PROFIT", px+10, y, 9, cText, true);
+    DrawRightLabel("RiriDash_NetV", StringFormat("$%.2f", allTimeNetProfit), px+pw-10, y, 9, allTimeNetProfit >= 0 ? cBuy : cSell, true); y += lh;
 
     // Hedge Chain status (only when feature enabled)
     if(EnableHedgeChain)
     {
-        // Count distinct active chains, total chain legs, and deepest cycle in progress
         ulong dashIds[];
         int dashChains = 0;
         int dashLegs = 0;
@@ -5790,79 +5905,156 @@ void UpdateDashboard()
             for(int k = 0; k < dashChains; k++) if(dashIds[k] == r) { seen = true; break; }
             if(!seen) { ArrayResize(dashIds, dashChains + 1); dashIds[dashChains++] = r; }
         }
-
         DrawDashboardLabel("RiriDash_Hedge",
-                           StringFormat("Hedge Chains: %d (legs %d, cycle %d/%d)", dashChains, dashLegs, dashMaxCycle,
+                           StringFormat("Hedge chains: %d (legs %d, cycle %d/%d)", dashChains, dashLegs, dashMaxCycle,
                                         (HedgeMaxCycles > 0 ? HedgeMaxCycles : 0)),
-                           startX, currentY, textsize, dashChains > 0 ? clrOrange : colorText);
-        currentY += lineHeight + 5;
+                           px+10, y, 8, dashChains > 0 ? clrOrange : cDim);
+        y += lh;
+    }
+    else ObjectDelete(0, "RiriDash_Hedge");
+
+    DrawDashboardLabel("RiriDash_Ftr", "RiriScalps · Riri Trading Engine", px+10, y+4, 8, C'92,84,80');
+    y += 22;
+
+    // Fit background panel to final content height
+    ObjectSetInteger(0, "RiriDash_Bg", OBJPROP_YSIZE, y - py);
+}
+// +------------------------------------------------------------------+
+// +------------------------------------------------------------------+
+
+// +------------------------------------------------------------------+
+// | Algo Trading MT5                                                 |
+// +------------------------------------------------------------------+
+void CheckAlgoTradingStatus()
+{
+    bool currentStatus = TerminalInfoInteger(TERMINAL_TRADE_ALLOWED);
+   
+   // Detect status change
+   if(currentStatus != algoTradingStatus)
+   {
+      if(currentStatus)
+      {
+        LogPrint("Algo Trading has been ENABLED");
+
+        double currentEquity = AccountInfoDouble(ACCOUNT_EQUITY);
+        double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+
+        string alertMsg = "**Instrument:** " + _Symbol + "\n";
+        alertMsg += "**Timeframe:** " + EnumToString(_Period) + "\n";
+        alertMsg += "**Server Time:** " + TimeToString(TimeTradeServer(), TIME_DATE|TIME_SECONDS) + "\n";
+        alertMsg += "**Trading Hours:** " + (EnableTradingHours ? TradingStartTime + " - " + TradingEndTime + "\n" : "DISABLED\n");
+        alertMsg += "**Current Equity:** $" + DoubleToString(currentEquity, 2) + "\n";
+        alertMsg += "**Peak Equity:** $" + DoubleToString(peakEquity, 2) + "\n";
+        alertMsg += "**Current Balance:** $" + DoubleToString(balance, 2) + "\n";
+        alertMsg += "**Initial Balance:** $" + DoubleToString(initialBalance, 2) + "\n";
+        alertMsg += "**Action:** Trading Started (Algo Trading Enabled)";
+        
+        SendDiscordAlert("🟢 AUTOMATED TRADING STARTED", alertMsg, 5763719); // Green color
+      }
+      else
+      {
+        LogPrint("Algo Trading has been DISABLED");
+
+        double currentEquity = AccountInfoDouble(ACCOUNT_EQUITY);
+        double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+
+        string alertMsg = "**Instrument:** " + _Symbol + "\n";
+        alertMsg += "**Timeframe:** " + EnumToString(_Period) + "\n";
+        alertMsg += "**Server Time:** " + TimeToString(TimeTradeServer(), TIME_DATE|TIME_SECONDS) + "\n";
+        alertMsg += "**Trading Hours:** " + (EnableTradingHours ? TradingStartTime + " - " + TradingEndTime + "\n" : "DISABLED\n");
+        alertMsg += "**Current Equity:** $" + DoubleToString(currentEquity, 2) + "\n";
+        alertMsg += "**Peak Equity:** $" + DoubleToString(peakEquity, 2) + "\n";
+        alertMsg += "**Current Balance:** $" + DoubleToString(balance, 2) + "\n";
+        alertMsg += "**Initial Balance:** $" + DoubleToString(initialBalance, 2) + "\n";
+        alertMsg += "**Action:** Trading Stopped (Algo Trading Disabled)";
+        
+        SendDiscordAlert("🔴 AUTOMATED TRADING STOPPED", alertMsg, 15158332); // Green color
+      }
+      
+      // Update status
+      algoTradingStatus = currentStatus;
+   }
+}
+
+// Toggle  disable algo trading in MT5
+void DisableAlgoTrading()
+{
+    bool Status = (bool)TerminalInfoInteger(TERMINAL_TRADE_ALLOWED);
+    
+    if(Status)
+    {
+        HANDLE hChart = (HANDLE)ChartGetInteger(ChartID(), CHART_WINDOW_HANDLE);
+        PostMessageW(GetAncestor(hChart, GA_ROOT), WM_COMMAND, MT_WMCMD_EXPERTS, 0);
+    }
+}
+
+// +------------------------------------------------------------------+
+// | Send Discord alert via webhook                                   |
+// +------------------------------------------------------------------+
+bool SendDiscordAlert(string title, string message, int embedColor = 3447003)
+{
+    if(!EnableDiscordAlerts || DiscordWebhookURL == "") return false;
+
+    // Escape special characters in message
+    StringReplace(message, "\\", "\\\\");
+    StringReplace(message, "\"", "\\\"");
+    StringReplace(message, "\n", "\\n");
+    
+    // Build JSON payload
+    string json = "";
+    json += "{\"embeds\":[{";
+    json += "\"title\":\"" + title + "\",";
+    json += "\"description\":\"" + message + "\",";
+    json += "\"color\":" + IntegerToString(embedColor) + ",";
+    json += "\"footer\":{\"text\":\"RiriScalps v1.0\"}";
+    json += "}]}";
+    
+    // Prepare HTTP request
+    char post[];
+    char result[];
+    string headers = "Content-Type: application/json\r\n";
+    string resultHeaders = "";
+    int timeout = 5000;
+    
+    // Convert JSON to char array
+    StringToCharArray(json, post, 0, WHOLE_ARRAY, CP_UTF8);
+    ArrayResize(post, ArraySize(post) - 1); // Remove null terminator
+
+    // Send webhook
+    int res = WebRequest("POST", DiscordWebhookURL, headers, timeout, post, result, resultHeaders);
+
+    if(res == 200 || res == 204)
+    {
+        LogPrint("Discord alert sent: ", title);
+        return true;
     }
     else
     {
-        // Hide stale label when feature is toggled off
-        ObjectDelete(0, "RiriDash_Hedge");
+        LogPrint("Discord ERROR: ", res);
+        LogPrint("Payload: ", json);
+        LogPrint("Response: ", CharArrayToString(result));
+        LogPrint("MT5 Error: ", GetLastError());
+        return false;
     }
-
-    // Signal Strength (Smoothed - Unified)
-    SignalStrength buyStrength = GetSignalStrength(ORDER_TYPE_BUY);
-    SignalStrength sellStrength = GetSignalStrength(ORDER_TYPE_SELL);
-    
-    // Raw closed-candle scores for reference
-    double rawBuyScore = ComputeRawScore(ORDER_TYPE_BUY, 1);
-    double rawSellScore = ComputeRawScore(ORDER_TYPE_SELL, 1);
-
-    DrawDashboardLabel("RiriDash_SigHead", "SIGNAL STRENGTH:", startX, currentY, headersize, colorHeader, true);
-    currentY += lineHeight;
-
-    string reqBuyText = StringFormat("Min Buy: %.2f", MinBuySignalScore);
-    DrawDashboardLabel("RiriDash_ReqBuy", reqBuyText, startX, currentY, detailsSize, colorText);
-    currentY += lineHeight;
-
-    string reqSellText = StringFormat("Min Sell: %.2f", MinSellSignalScore);
-    DrawDashboardLabel("RiriDash_ReqSell", reqSellText, startX, currentY, detailsSize, colorText);
-    currentY += lineHeight;
-
-    // Buy Row
-    string buyText = StringFormat("BUY SCORE: %.2f", buyStrength.finalScore);
-    DrawDashboardLabel("RiriDash_Buy", buyText, startX, currentY, textsize, buyStrength.finalScore > sellStrength.finalScore ? colorBuy : colorText, true);
-    currentY += lineHeight;
-
-    string rawBuyText = StringFormat("Raw (Closed): %.2f", rawBuyScore);
-    DrawDashboardLabel("RiriDash_CurrentBuy", rawBuyText, startX, currentY, detailsSize, colorText);
-    currentY += lineHeight;
-    
-    string buyDet = StringFormat("%s", buyStrength.reasoning);
-    DrawDashboardLabel("RiriDash_BuyDet", buyDet, startX, currentY, detailsSize, colorText);
-    currentY += lineHeight + 2;
-
-    // Sell Row
-    string sellText = StringFormat("SELL SCORE: %.2f", sellStrength.finalScore);
-    DrawDashboardLabel("RiriDash_Sell", sellText, startX, currentY, textsize, sellStrength.finalScore > buyStrength.finalScore ? colorSell : colorText, true);
-    currentY += lineHeight;
-
-    string rawSellText = StringFormat("Raw (Closed): %.2f", rawSellScore);
-    DrawDashboardLabel("RiriDash_CurrentSell", rawSellText, startX, currentY, detailsSize, colorText);
-    currentY += lineHeight;
-
-    string sellDet = StringFormat("%s",sellStrength.reasoning);
-    DrawDashboardLabel("RiriDash_SellDet", sellDet, startX, currentY, detailsSize, colorText);
-    currentY += lineHeight + 10;
-
-    // Statistics
-    TradeStats daily, allTime;
-    GetTradeStats(daily, allTime);
-    double allTimeNetProfit = allTime.profit + allTime.loss;
-    
-    DrawDashboardLabel("RiriDash_StatHead", "STATISTICS:", startX, currentY, headersize, colorHeader, true);
-    currentY += lineHeight;
-    
-    DrawDashboardLabel("RiriDash_Trades", StringFormat("Trades: %d (W:%d / L:%d)", allTime.count, allTime.won, allTime.lost), startX, currentY, textsize, colorText);
-    currentY += lineHeight;
-
-    DrawDashboardLabel("RiriDash_PL", StringFormat("Profit: $%.2f | Loss: $%.2f", allTime.profit, allTime.loss), startX, currentY, textsize, colorText);
-    currentY += lineHeight;
-    
-    color profitColor = allTimeNetProfit >= 0 ? colorBuy : colorSell;
-    DrawDashboardLabel("RiriDash_Net", StringFormat("NET PROFIT: $%.2f", allTimeNetProfit), startX, currentY, textsize, profitColor, true);
 }
+
 // +------------------------------------------------------------------+
+// | Check and Test Discord Alert                                     |
+// +------------------------------------------------------------------+
+void CheckDiscordAlert() 
+{
+    if(DiscordWebhookURL == "")
+    {
+        Print("WARNING: Discord alerts enabled but webhook URL is empty!");
+    }
+    else if(StringFind(DiscordWebhookURL, "https://discord.com/api/webhooks/") != 0 &&
+            StringFind(DiscordWebhookURL, "https://discordapp.com/api/webhooks/") != 0)
+    {
+        Print("WARNING: Discord webhook URL format may be incorrect!");
+    }
+    else
+    {   
+        CheckAlgoTradingStatus();
+    }
+}
+
