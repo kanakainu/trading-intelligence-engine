@@ -119,6 +119,56 @@ def _deal_today(d: dict) -> bool:
 
 _TIE_DAY_PNL = 0.0  # TIE-only daily P/L cache for dashboard writer
 
+# === EA PARITY (2026-09-07): history-based per-bar trade counter ===
+# EA counts buysOnCurrentBar/sellsOnCurrentBar from TRADES THAT HAPPENED on the
+# bar — not from still-open positions. TIE's old check (open positions only) leaked
+# a second entry after basket-TP closed the first (19:20 + 19:22 same candle) and
+# reset on service restart. Deals history is restart-proof and close-proof.
+def _bar_opens_from_history(deals, symbol: str, direction: str, bar_dt, prefix: str):
+    """Returns (same_dir_opens, opp_dir_opens) for prefix-trades on bar_dt's M5 bar."""
+    n_same = n_opp = 0
+    for d in deals or []:
+        if d.get("symbol") != symbol or not _is_tie_deal(d):
+            continue
+        if d.get("profit", 1) != 0:  # open-deals carry profit 0
+            continue
+        if not str(d.get("comment", "")).startswith(prefix):
+            continue
+        try:
+            t = datetime.fromisoformat(str(d.get("time", ""))[:19])
+        except ValueError:
+            continue
+        if t.date() != bar_dt.date() or (t.minute - t.minute % 5) != (bar_dt.minute - bar_dt.minute % 5):
+            continue
+        dd = str(d.get("type", "")).upper()
+        if dd == direction:
+            n_same += 1
+        elif dd:
+            n_opp += 1
+    return n_same, n_opp
+
+# === EA PARITY: DrawdownThresholdPct=3.0 → threshold +DrawdownScoreBoost=2.0 ===
+_PEAK_EQUITY_FILE = "/home/ubuntu/trading-intelligence-engine/data/peak_equity.txt"
+
+def _drawdown_score_boost(equity: float):
+    """Returns (extra_threshold, drawdown_pct). Peak persisted so restarts don't forget."""
+    try:
+        peak = float(open(_PEAK_EQUITY_FILE).read().strip())
+    except Exception:
+        peak = 0.0
+    if equity > peak:
+        peak = equity
+        try:
+            os.makedirs(os.path.dirname(_PEAK_EQUITY_FILE), exist_ok=True)
+            open(_PEAK_EQUITY_FILE, "w").write(f"{peak:.2f}")
+        except Exception:
+            pass
+    if peak > 0 and equity > 0:
+        dd = (peak - equity) / peak * 100.0
+        if dd >= 3.0:  # EA: DrawdownThresholdPct
+            return 2.0, dd  # EA: DrawdownScoreBoost
+    return 0.0, 0.0
+
 mgr = StrategyManager()
 orch = ExitOrchestrator(min_gate_rr=1.5)
 # Bystra disabled — mati suri, replaced by ThreeCa standalone
@@ -565,15 +615,38 @@ while True:
 
 
             if decision.action != "WAIT":
+                # === EA PARITY: drawdown gate (DrawdownThresholdPct=3.0 → thr +2.0) ===
+                _dd_boost, _dd_pct = _drawdown_score_boost(equity)
+                if _dd_boost:
+                    log.info(f"📉 DRAWDOWN GATE: dd={_dd_pct:.1f}% ≥3% → threshold +{_dd_boost}")
+
                 # === SIGNAL DAMPENER GATE (EA v43 port) ===
+                _thr = decision.metadata.get("nyao_thr")
                 _damp_ok, _damp_reason = _damp_gate(
                     raw_positions, _deals,
                     sym, decision.action,
                     decision.metadata.get("nyao_score"),
-                    decision.metadata.get("nyao_thr"))
+                    (_thr + _dd_boost) if _thr is not None else None)
                 if not _damp_ok:
                     log.warning(f"🧊 DAMPENER BLOCK: {decision.setup_name} {decision.action} — {_damp_reason}")
                     observatory.log_gate(trace, "Dampener", "FAIL", reason=_damp_reason)
+                    continue
+
+                # === EA PARITY: MaxHoldingLossPositions=2 (TOTAL, all dirs) ===
+                # Dampener only brakes per-direction; EA hard-blocks at 2 losing overall.
+                _losing_total = sum(1 for p in raw_positions
+                                    if p.get("symbol", "") == sym
+                                    and float(p.get("profit", 0.0) or 0.0) < 0)
+                if _losing_total >= 2:
+                    log.info(f"MAX_LOSING: skip {decision.setup_name} {decision.action} (losing={_losing_total})")
+                    observatory.log_gate(trace, "MaxLosing", "FAIL", reason=f"losing_positions:{_losing_total}")
+                    continue
+
+                # === EA PARITY: spread filter (auto cap = 0.25 × ATR) ===
+                _atr_m5 = _features.atr.get("M5", 0) if hasattr(_features, "atr") else 0
+                if _atr_m5 and spread > 0.25 * _atr_m5:
+                    log.info(f"SPREAD BLOCK: {spread:.2f} > 0.25×ATR({_atr_m5:.2f})={0.25 * _atr_m5:.2f}")
+                    observatory.log_gate(trace, "Spread", "FAIL", reason=f"spread:{spread:.2f}")
                     continue
 
                 # === VOLATILITY POSITION SIZING (GS Quant inspired) ===
@@ -692,46 +765,30 @@ while True:
                     "timestamp": datetime.now(timezone.utc).isoformat(),
                 }
 
-                # === ⚔️ NEXUS CROSS-STRATEGY DEBATE (Global Direction Lock) ===
-                # EA parity: "same candle" = bar M5 berjalan (gateway WIB, floor 5 mnt)
-                _nb = datetime.now().replace(second=0, microsecond=0)
-                _cur_bar_str = _nb.strftime("%Y-%m-%dT%H:") + f"{_nb.minute - _nb.minute % 5:02d}"
                 if decision.action != "WAIT":
-                    # Check for existing positions in the OPPOSITE direction
                     # EA PARITY (2026-09-07): EA cuma nge-block arah berlawanan pada CANDLE
-                    # yang sama (oppOnBar). Posisi lama bukan penghalang -> TIE samain.
-                    _opp_on_bar = any(
-                        p.get("direction", p.get("type", "")).upper() != decision.action.upper()
-                        and p.get("symbol", "") == sym
-                        and str(p.get("open_time", ""))[:16] == _cur_bar_str
-                        for p in raw_positions
-                    )
-                    _opp_positions = [] if not _opp_on_bar else [
-                        p for p in raw_positions
-                        if p.get("direction", p.get("type", "")).upper() != decision.action.upper()
-                        and p.get("symbol", "") == sym]
-                    _opp_pos_count = len(_opp_positions)
-                    
-                    if _opp_pos_count > 0:
-                        # Exception: Bystra can trade reversal if confidence is very high (>85%)
-                        _is_bystra = "B_" in decision.setup_name
-
-                        # === CONTRA-HEDGE REDUCED SIZE ===
-                        # Opposing positions exist → allow entry but scale down lot size
-                        # Lot = max(0.01, normal_lot / (opp_count + 1)) — min fallback 0.01
-                        if not _is_bystra and decision.confidence >= 0.65:
-                            _normal_lot = decision.metadata.get("volume", 0.05)
-                            _reduced_lot = max(0.05, round(_normal_lot / (_opp_pos_count + 1), 2))
-                            decision.metadata["volume"] = _reduced_lot
-                            log.info(f"⚖️ CONTRA-HEDGE: {decision.action} conf={decision.confidence:.2f} lot {_normal_lot}→{_reduced_lot} ({_opp_pos_count} opposing)")
-                            # Fall through to entry with reduced lot
-
-                        elif not (_is_bystra and decision.confidence > 0.85):
-                            log.warning(f"⚔️ CROSS-DEBATE BLOCK: {decision.setup_name} {decision.action} rejected! {_opp_pos_count} opposing positions open.")
-                            setup_detail["status"] = "DEBATE_CONFLICT"
-                            setup_detail["gate_reason"] = f"Conflict: {_opp_pos_count} opposing positions open"
-                            observatory.log_gate(trace, "Debate", "FAIL", reason="hedge_conflict")
-                            continue
+                    # yang sama (oppOnBar). Counter dihitung dari HISTORY DEALS (trade yang
+                    # terjadi di bar ini), bukan open positions — kebal restart & kebal
+                    # posisi yang udah keclose (bug 19:20+19:22 se-candle).
+                    _nb = datetime.now().replace(second=0, microsecond=0)
+                    _cur_bar = _nb.replace(minute=_nb.minute - _nb.minute % 5)
+                    _prefix = "TIE_R" if decision.setup_name.startswith("R_") else "TIE_"
+                    _same_bar, _opp_bar = _bar_opens_from_history(
+                        _deals, sym, decision.action, _cur_bar, _prefix)
+                    if _opp_bar > 0:
+                        log.info(f"PerCandle opp: skip {decision.setup_name} {decision.action} ({_opp_bar} opposite opened this bar)")
+                        setup_detail["status"] = "DEDUP"
+                        setup_detail["gate_reason"] = "opp_on_bar"
+                        observatory.log_gate(trace, "Debate", "FAIL", reason="opp_on_bar")
+                        continue
+                    if _same_bar >= 1:  # EA: MaxTradesPerCandle=1
+                        log.info(f"PerCandle: skip {decision.setup_name} {decision.action} ({_same_bar} same-dir already this bar)")
+                        setup_detail["status"] = "DEDUP"
+                        setup_detail["gate_reason"] = "max_trades_per_candle"
+                        observatory.log_gate(trace, "Debate", "FAIL", reason="max_trades_per_candle")
+                        continue
+                    _opp_positions = []
+                    _opp_pos_count = 0
 
                 if all(r.status == "APPROVE" for r in risk_results.values()):
                     # EA PARITY (2026-09-07): MaxOpenOrders=4 TOTAL (bukan per-arah), tanpa regime boost
@@ -763,19 +820,8 @@ while True:
                             observatory.log_gate(trace, "Dedup", "FAIL", reason=f"cooldown_{int(now - last_seen)}s")
                             continue
 
-                        # EA PARITY: MaxTradesPerCandle=1 — satu entry per arah per candle M5
-                        # (bar-aligned, bukan rolling window; _seen_setups di atas cuma race-guard)
-                        if _strat_type == "r" and any(
-                            p.get("direction", p.get("type", "")).upper() == decision.action.upper()
-                            and p.get("symbol", "") == sym
-                            and str(p.get("open_time", ""))[:16] == _cur_bar_str
-                            for p in raw_positions
-                        ):
-                            log.info(f"PerCandle: skip {decision.setup_name} {decision.action} {sym} (sudah ada entry bar ini)")
-                            setup_detail["status"] = "DEDUP"
-                            setup_detail["gate_reason"] = "max_trades_per_candle"
-                            observatory.log_gate(trace, "Dedup", "FAIL", reason="max_trades_per_candle")
-                            continue
+                        # EA PARITY: MaxTradesPerCandle=1 — udah di-handle counter
+                        # history di atas (restart-proof), gak perlu cek open positions lagi.
 
                         # EA PARITY: radius dedup = ZonePoints(500) x dupMult(1.5) = $7.50 XAUUSD
                         # (sebelumnya $3.0 — TIE lebih ketat dari EA, nge-skip entry yang EA ambil)
