@@ -78,7 +78,8 @@ class StrategyBudget:
 class TradeBudgetManager:
     """Per-strategy daily trade budget. Reset at day rollover."""
 
-    DEFAULTS = {"bystra": 500, "aggressive": 500, "semi_hft": 500}
+    DEFAULTS = {"bystra": 500, "aggressive": 500, "semi_hft": 500,
+                "riri_scalps": 50, "three_ca": 50}  # scalper: 5/hari bikin TIE bungkum saat EA tetap entry (parity fix 2026-09-07)
 
     def __init__(self):
         self._budgets: Dict[str, StrategyBudget] = {}
@@ -92,19 +93,22 @@ class TradeBudgetManager:
 
     def can_consume(self, strategy: str) -> bool:
         self._roll()
+        strategy = strategy.lower()
         spec = self._budgets.setdefault(strategy, StrategyBudget(daily_quota=self.DEFAULTS.get(strategy, 5), day=self._today))
         return spec.used < spec.daily_quota
 
     def consume(self, strategy: str) -> bool:
         self._roll()
+        strategy = strategy.lower()
         if not self.can_consume(strategy):
             return False
-        self._budgets[strategy.lower()].used += 1
+        self._budgets[strategy].used += 1
         return True
 
     def remaining(self, strategy: str) -> int:
         self._roll()
-        spec = self._budgets.get(strategy.lower())
+        strategy = strategy.lower()
+        spec = self._budgets.get(strategy)
         if not spec:
             return self.DEFAULTS.get(strategy.lower(), 5)
         return spec.daily_quota - spec.used
