@@ -22,6 +22,7 @@ VOL_SPIKE_RATIO  = 1.5
 # --- NEW SETTINGS (v3.0.0) ---
 ADX_PERIOD       = 14
 ADX_THRESHOLD    = 20       # below = weak trend → skip Engine B
+EA_ONLY_MODE     = True     # True = only Engine F (EA Nyao port) trades; A/C/D/E1/E2 disabled
 RSI_PERIOD       = 14
 MACD_FAST        = 12
 MACD_SLOW        = 26
@@ -545,99 +546,101 @@ class RiriScalpsStrategy(BaseStrategy):
         else:
             self._last_candle_key = ckey
 
-        # ── ENGINE A: Whale FVG (Imbalance) ── [UNCHANGED]
-        avg_body = sum(body_size(c) for c in candles_m5[-11:-1]) / 10
-        avg_vol  = sum(float(c.get("tick_volume", 1)) for c in candles_m5[-11:-1]) / 10
-        spike_c  = candles_m5[-2]
-        s_body   = body_size(spike_c)
-        s_vol    = float(spike_c.get("tick_volume", 0))
+        # ── EA_ONLY_MODE: engines A/C/D/E1/E2 disabled — only Engine F (Nyao port) trades ──
+        if not EA_ONLY_MODE:
+            # ── ENGINE A: Whale FVG (Imbalance) ── [UNCHANGED]
+            avg_body = sum(body_size(c) for c in candles_m5[-11:-1]) / 10
+            avg_vol  = sum(float(c.get("tick_volume", 1)) for c in candles_m5[-11:-1]) / 10
+            spike_c  = candles_m5[-2]
+            s_body   = body_size(spike_c)
+            s_vol    = float(spike_c.get("tick_volume", 0))
 
-        if s_body > (avg_body * 2.5) and s_vol > (avg_vol * VOL_SPIKE_RATIO):
-            if is_bullish(spike_c) and trend_m15 == "BULL":
-                top = spike_c["open"] + s_body * 0.7
-                btm = spike_c["open"] + s_body * 0.3
-                if btm <= price <= top:
-                    sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
-                    lot = _calc_lot(balance, price, atr, abs(price - sl_s))
-                    return self._emit(sym, Direction.BUY, price, 0.88, "A_whale_fvg_buy",
-                                     sl_s, tp_s, market_ctx, lot)
-            elif is_bearish(spike_c) and trend_m15 == "BEAR":
-                top = spike_c["open"] - s_body * 0.3
-                btm = spike_c["open"] - s_body * 0.7
-                if btm <= price <= top:
-                    sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
-                    lot = _calc_lot(balance, price, atr, abs(price - sl_s))
-                    return self._emit(sym, Direction.SELL, price, 0.88, "A_whale_fvg_sell",
-                                     sl_s, tp_s, market_ctx, lot)
+            if s_body > (avg_body * 2.5) and s_vol > (avg_vol * VOL_SPIKE_RATIO):
+                if is_bullish(spike_c) and trend_m15 == "BULL":
+                    top = spike_c["open"] + s_body * 0.7
+                    btm = spike_c["open"] + s_body * 0.3
+                    if btm <= price <= top:
+                        sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
+                        lot = _calc_lot(balance, price, atr, abs(price - sl_s))
+                        return self._emit(sym, Direction.BUY, price, 0.88, "A_whale_fvg_buy",
+                                         sl_s, tp_s, market_ctx, lot)
+                elif is_bearish(spike_c) and trend_m15 == "BEAR":
+                    top = spike_c["open"] - s_body * 0.3
+                    btm = spike_c["open"] - s_body * 0.7
+                    if btm <= price <= top:
+                        sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
+                        lot = _calc_lot(balance, price, atr, abs(price - sl_s))
+                        return self._emit(sym, Direction.SELL, price, 0.88, "A_whale_fvg_sell",
+                                         sl_s, tp_s, market_ctx, lot)
 
-        # ── ENGINE B: REMOVED — was B_struct_flow (Break + Retest), consistently lossy ──
-        # Previous issues: duplicate entries, Z-Score false triggers, regime mismatch
-        # User decision: remove entirely, keep A/C/D/E1/E2 only
+            # ── ENGINE B: REMOVED — was B_struct_flow (Break + Retest), consistently lossy ──
+            # Previous issues: duplicate entries, Z-Score false triggers, regime mismatch
+            # User decision: remove entirely, keep A/C/D/E1/E2 only
 
-        # ── ENGINE C: Liquidity Sweep (Wick Reject) ── [UNCHANGED]
-        u_wick = float(spike_c["high"]) - max(float(spike_c["close"]), float(spike_c["open"]))
-        l_wick = min(float(spike_c["close"]), float(spike_c["open"])) - float(spike_c["low"])
+            # ── ENGINE C: Liquidity Sweep (Wick Reject) ── [UNCHANGED]
+            u_wick = float(spike_c["high"]) - max(float(spike_c["close"]), float(spike_c["open"]))
+            l_wick = min(float(spike_c["close"]), float(spike_c["open"])) - float(spike_c["low"])
 
-        if s_body > 0:
-            if l_wick > WICK_BODY_RATIO * s_body and is_bullish(spike_c) and trend_m15 == "BULL":
-                if abs(price - sl_lvl) <= ENG_C_PROXIMITY * atr:
-                    sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
-                    lot = _calc_lot(balance, price, atr, abs(price - sl_s))
-                    return self._emit(sym, Direction.BUY, price, 0.82, "C_liq_sweep_buy", sl_s, tp_s, market_ctx, lot)
-            elif u_wick > WICK_BODY_RATIO * s_body and is_bearish(spike_c) and trend_m15 == "BEAR":
-                if abs(price - sh) <= ENG_C_PROXIMITY * atr:
-                    sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
-                    lot = _calc_lot(balance, price, atr, abs(price - sl_s))
-                    return self._emit(sym, Direction.SELL, price, 0.82, "C_liq_sweep_sell", sl_s, tp_s, market_ctx, lot)
+            if s_body > 0:
+                if l_wick > WICK_BODY_RATIO * s_body and is_bullish(spike_c) and trend_m15 == "BULL":
+                    if abs(price - sl_lvl) <= ENG_C_PROXIMITY * atr:
+                        sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
+                        lot = _calc_lot(balance, price, atr, abs(price - sl_s))
+                        return self._emit(sym, Direction.BUY, price, 0.82, "C_liq_sweep_buy", sl_s, tp_s, market_ctx, lot)
+                elif u_wick > WICK_BODY_RATIO * s_body and is_bearish(spike_c) and trend_m15 == "BEAR":
+                    if abs(price - sh) <= ENG_C_PROXIMITY * atr:
+                        sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
+                        lot = _calc_lot(balance, price, atr, abs(price - sl_s))
+                        return self._emit(sym, Direction.SELL, price, 0.82, "C_liq_sweep_sell", sl_s, tp_s, market_ctx, lot)
 
-        # ── ENGINE D: RSI + MACD Confluence (from Fincept LIB-RSI-MACD) ── [NEW]
-        # BUY: RSI < 45 AND MACD crosses above signal
-        # SELL: RSI > 55 AND MACD crosses below signal
-        prev_closes = closes[:-1]
-        prev_macd_l, prev_macd_s, prev_hist = _compute_macd(prev_closes, MACD_FAST, MACD_SLOW, MACD_SIGNAL)
+            # ── ENGINE D: RSI + MACD Confluence (from Fincept LIB-RSI-MACD) ── [NEW]
+            # BUY: RSI < 45 AND MACD crosses above signal
+            # SELL: RSI > 55 AND MACD crosses below signal
+            prev_closes = closes[:-1]
+            prev_macd_l, prev_macd_s, prev_hist = _compute_macd(prev_closes, MACD_FAST, MACD_SLOW, MACD_SIGNAL)
 
-        if rsi_val < 45 and macd_hist > 0 and prev_hist <= 0:
-            sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
-            lot = _calc_lot(balance, price, atr, abs(price - sl_s))
-            return self._emit(sym, Direction.BUY, price, 0.80, "D_rsi_macd_buy", sl_s, tp_s, market_ctx, lot)
-
-        if rsi_val > 55 and macd_hist < 0 and prev_hist >= 0:
-            sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
-            lot = _calc_lot(balance, price, atr, abs(price - sl_s))
-            return self._emit(sym, Direction.SELL, price, 0.80, "D_rsi_macd_sell", sl_s, tp_s, market_ctx, lot)
-
-        # ── ENGINE E1: VWAP Cross (from Fincept LIB-VWAP-RECLAIM) ── [NEW]
-        # BUY: price crosses above VWAP (prev candle below, current above)
-        if len(candles_m5) >= 3:
-            prev_close = float(candles_m5[-3]["close"])
-            if prev_close < vwap_val and price > vwap_val and rsi_val < 55:
+            if rsi_val < 45 and macd_hist > 0 and prev_hist <= 0:
                 sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
                 lot = _calc_lot(balance, price, atr, abs(price - sl_s))
-                return self._emit(sym, Direction.BUY, price, 0.75, "E1_vwap_cross_buy", sl_s, tp_s, market_ctx, lot)
+                return self._emit(sym, Direction.BUY, price, 0.80, "D_rsi_macd_buy", sl_s, tp_s, market_ctx, lot)
 
-            if prev_close > vwap_val and price < vwap_val and rsi_val > 45:
+            if rsi_val > 55 and macd_hist < 0 and prev_hist >= 0:
                 sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
                 lot = _calc_lot(balance, price, atr, abs(price - sl_s))
-                return self._emit(sym, Direction.SELL, price, 0.75, "E1_vwap_cross_sell", sl_s, tp_s, market_ctx, lot)
+                return self._emit(sym, Direction.SELL, price, 0.80, "D_rsi_macd_sell", sl_s, tp_s, market_ctx, lot)
 
-        # ── ENGINE E2: Bollinger + RSI Mean Reversion (from Fincept LIB-BB-RSI) ── [NEW]
-        # BUY: price < BB lower AND RSI < 30 (oversold bounce)
-        if bb_lower > 0 and price < bb_lower and rsi_val < 30:
-            sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
-            # Override TP to BB middle (mean reversion target)
-            if bb_mid > price:
-                tp_s = bb_mid
-            lot = _calc_lot(balance, price, atr, abs(price - sl_s))
-            return self._emit(sym, Direction.BUY, price, 0.78, "E2_bb_rsi_buy", sl_s, tp_s, market_ctx, lot)
+            # ── ENGINE E1: VWAP Cross (from Fincept LIB-VWAP-RECLAIM) ── [NEW]
+            # BUY: price crosses above VWAP (prev candle below, current above)
+            if len(candles_m5) >= 3:
+                prev_close = float(candles_m5[-3]["close"])
+                if prev_close < vwap_val and price > vwap_val and rsi_val < 55:
+                    sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
+                    lot = _calc_lot(balance, price, atr, abs(price - sl_s))
+                    return self._emit(sym, Direction.BUY, price, 0.75, "E1_vwap_cross_buy", sl_s, tp_s, market_ctx, lot)
 
-        # SELL: price > BB upper AND RSI > 70 (overbought reversal)
-        if bb_upper > 0 and price > bb_upper and rsi_val > 70:
-            sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
-            # Override TP to BB middle (mean reversion target)
-            if bb_mid < price:
-                tp_s = bb_mid
-            lot = _calc_lot(balance, price, atr, abs(price - sl_s))
-            return self._emit(sym, Direction.SELL, price, 0.78, "E2_bb_rsi_sell", sl_s, tp_s, market_ctx, lot)
+                if prev_close > vwap_val and price < vwap_val and rsi_val > 45:
+                    sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
+                    lot = _calc_lot(balance, price, atr, abs(price - sl_s))
+                    return self._emit(sym, Direction.SELL, price, 0.75, "E1_vwap_cross_sell", sl_s, tp_s, market_ctx, lot)
+
+            # ── ENGINE E2: Bollinger + RSI Mean Reversion (from Fincept LIB-BB-RSI) ── [NEW]
+            # BUY: price < BB lower AND RSI < 30 (oversold bounce)
+            if bb_lower > 0 and price < bb_lower and rsi_val < 30:
+                sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
+                # Override TP to BB middle (mean reversion target)
+                if bb_mid > price:
+                    tp_s = bb_mid
+                lot = _calc_lot(balance, price, atr, abs(price - sl_s))
+                return self._emit(sym, Direction.BUY, price, 0.78, "E2_bb_rsi_buy", sl_s, tp_s, market_ctx, lot)
+
+            # SELL: price > BB upper AND RSI > 70 (overbought reversal)
+            if bb_upper > 0 and price > bb_upper and rsi_val > 70:
+                sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
+                # Override TP to BB middle (mean reversion target)
+                if bb_mid < price:
+                    tp_s = bb_mid
+                lot = _calc_lot(balance, price, atr, abs(price - sl_s))
+                return self._emit(sym, Direction.SELL, price, 0.78, "E2_bb_rsi_sell", sl_s, tp_s, market_ctx, lot)
 
         # ── ENGINE F: Nyao Scalper Multi-Factor Score (adapted from Nyao v43) ── [NEW]
         # Composite signal quality score (0-10) — different approach from individual indicators.
