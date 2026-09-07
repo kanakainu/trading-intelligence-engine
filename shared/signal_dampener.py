@@ -19,6 +19,7 @@ MAX_LOSING_SAME_DIR = 2          # EA: MaxLosingPositionsSameDir
 CONSEC_LOSSES_BEFORE_COOLDOWN = 3  # EA: ConsecutiveLossesBeforeCooldown
 COOLDOWN_BARS = 3                # EA: ConsecutiveLossCooldownBars
 BAR_SECONDS = 300                # M5
+TIE_MAGIC = 20260801             # gateway magic — TIE's own trades only
 
 # module state: cooldown expiry (epoch UTC) — recomputed from history each scan
 _cooldown_until = 0.0
@@ -54,9 +55,16 @@ def update_cooldown_from_history(deals: list, symbol: str) -> None:
         for d in deals:
             if d.get("symbol", "") != symbol:
                 continue
-            cmt = d.get("comment", "") or ""
-            if not (cmt.startswith("TIE_") or cmt.startswith("Riri")):
-                continue  # only count our own trades
+            # TIE-only: magic first (SL/TP closes carry "[sl ...]" comments),
+            # comment prefix as fallback for gateways without magic field
+            m = d.get("magic")
+            if m is not None:
+                if int(m) != TIE_MAGIC:
+                    continue
+            else:
+                cmt = d.get("comment", "") or ""
+                if not (cmt.startswith("TIE_") or cmt.startswith("Riri")):
+                    continue
             t = d.get("time")
             if isinstance(t, str):
                 dt = datetime.fromisoformat(t).replace(tzinfo=timezone.utc)

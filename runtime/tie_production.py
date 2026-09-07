@@ -90,6 +90,35 @@ client = MT5GatewayClient(URL, TOKEN)
 broker = MT5BrokerAdapter(base_url=URL, token=TOKEN)
 broker.initialize()
 
+# ── TIE OWN MAGIC — trade isolation (like an EA) ──
+# Gateway stamps magic=20260801 on every TIE order. Everything else on the
+# account (EA Nyao, manual trades) is invisible to TIE: no exit management,
+# no dedup interference, no P/L contamination. Fallback to comment prefix
+# for gateways that don't expose magic yet.
+TIE_MAGIC = 20260801
+
+def _is_tie_pos(p: dict) -> bool:
+    m = p.get("magic")
+    if m is not None:
+        return int(m) == TIE_MAGIC
+    return str(p.get("comment", "")).startswith("TIE_")
+
+def _is_tie_deal(d: dict) -> bool:
+    m = d.get("magic")
+    if m is not None:
+        return int(m) == TIE_MAGIC
+    c = str(d.get("comment", ""))
+    return c.startswith("TIE_") or c.startswith("Riri")
+
+def _deal_today(d: dict) -> bool:
+    """Deal timestamp is gateway-local (WIB on Windows VPS, same as here)."""
+    try:
+        return str(d.get("time", ""))[:10] == datetime.now().strftime("%Y-%m-%d")
+    except Exception:
+        return False
+
+_TIE_DAY_PNL = 0.0  # TIE-only daily P/L cache for dashboard writer
+
 mgr = StrategyManager()
 orch = ExitOrchestrator(min_gate_rr=1.5)
 # Bystra disabled — mati suri, replaced by ThreeCa standalone
@@ -169,18 +198,11 @@ def write_dashboard_status(all_pairs_data, broker, status_path):
         account_data = broker.get_account_info()
         balance = account_data.balance
         equity = account_data.equity
-        pos_states = broker.get_positions()
-        
-        # Calculate daily PnL relative to day start
-        daily_pnl = 0.0
-        try:
-            ds_file = "/home/ubuntu/trading-intelligence-engine/data/tie_day_start.json"
-            if os.path.exists(ds_file):
-                with open(ds_file) as f:
-                    day_start = float(json.load(f).get("balance", 0))
-                if day_start > 0:
-                    daily_pnl = equity - day_start
-        except: pass
+        pos_states = [p for p in broker.get_positions()
+                      if str(getattr(p, "comment", "")).startswith("TIE_")]  # TIE-only
+
+        # Daily PnL = TIE realized deals today + TIE floating (ignore EA/manual trades)
+        daily_pnl = _TIE_DAY_PNL + sum(getattr(p, 'unrealized_profit', 0) for p in pos_states)
         
         # Get daily target from governor
         daily_target = 30.0  # fallback
@@ -283,14 +305,17 @@ while True:
             if _day_start_val > 0:
                 _status_path = "/home/ubuntu/tie-dashboard/data/tie_status.json"
                 _last_equity = 0.0
+                _tie_pnl = 0.0
                 if os.path.exists(_status_path):
                     try:
                         with open(_status_path) as _sf:
-                            _last_equity = float(json.load(_sf).get("equity", 0))
+                            _sd = json.load(_sf)
+                            _last_equity = float(_sd.get("equity", 0))
+                            _tie_pnl = float(_sd.get("daily_pnl", 0))  # TIE-only PnL
                     except Exception:
                         pass
                 if _last_equity > 0:
-                    _daily_pnl = _last_equity - _day_start_val
+                    _daily_pnl = _tie_pnl  # was: equity - day_start (contaminated by EA/manual trades)
                     if _daily_pnl >= 30.0:  # MUST MATCH daily_target in governor (30.0)
                         _now_utc = datetime.now(timezone.utc)
                         _day_start_mtime = datetime.fromtimestamp(os.path.getmtime(_ds_file), tz=timezone.utc)
@@ -355,7 +380,7 @@ while True:
                 continue
 
             account_info = client.account() or {}
-            raw_positions = client.positions() or []
+            raw_positions = [p for p in (client.positions() or []) if _is_tie_pos(p)]  # TIE-only: ignore EA/manual trades
             balance = float(account_info.get("balance", 0))
             equity = float(account_info.get("equity", balance))
 
@@ -367,6 +392,13 @@ while True:
                 update_cooldown_from_history(_deals, sym)
             except Exception as _he:
                 log.debug(f"dampener history skipped: {_he}")  # fail-open
+
+            # === TIE-ONLY DAILY P/L (realized deals today + floating) ===
+            try:
+                _TIE_DAY_PNL = sum(float(d.get("profit", 0)) for d in _deals
+                                   if _is_tie_deal(d) and _deal_today(d))
+            except Exception:
+                pass
 
             # Daily PnL tracker — day-start balance persisted across restarts
             _dp_file = "/tmp/tie_day_start.json"
@@ -390,7 +422,7 @@ while True:
                         _f.write(_payload)
             except Exception:
                 _day_start = balance
-            daily_pnl = equity - _day_start
+            daily_pnl = _TIE_DAY_PNL + sum(float(p.get("profit", 0)) for p in raw_positions)  # TIE-only (raw_positions already magic-filtered)
 
             # SL/TP Hit Notification
             from runtime.telegram_notifier import TelegramNotifier
