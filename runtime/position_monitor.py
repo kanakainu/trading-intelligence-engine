@@ -13,10 +13,14 @@ class PositionMonitor:
     Executes modify/close via broker when ContractExecutor decides.
     """
 
-    def __init__(self, on_result: Optional[Callable] = None, broker: Any = None):
+    def __init__(self, on_result: Optional[Callable] = None, broker: Any = None,
+                 manage_sl: bool = True):
         self._executor = ContractExecutor()
         self._on_result = on_result or (lambda pos, result: None)
         self._broker = broker
+        # manage_sl=False → SL/BE/trailing owned by manual_trailing_v2 (single boss);
+        # this monitor only executes emergency closes (partial TP, 3Ca cutloss, reversal).
+        self._manage_sl = manage_sl
 
     def tick(self, positions: List[PositionState],
              contracts: Dict[str, Any],
@@ -57,6 +61,8 @@ class PositionMonitor:
             return
         try:
             if result.action == "modify":
+                if not self._manage_sl:
+                    return  # v2 trailing engine owns SL
                 new_sl = getattr(result, "new_sl", None)
                 new_tp = getattr(result, "new_tp", None)
                 if new_sl is not None or new_tp is not None:

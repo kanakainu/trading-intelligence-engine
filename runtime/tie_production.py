@@ -148,7 +148,7 @@ def handle_pos_result(pos, result):
         resp = broker.close_position(str(pos.position_id))
         log.info(f"Close {pos.position_id}: {result.reason} -> {getattr(resp, 'status', '?')}")
 
-pos_monitor = PositionMonitor(on_result=handle_pos_result, broker=broker)
+pos_monitor = PositionMonitor(on_result=handle_pos_result, broker=broker, manage_sl=False)  # SL/BE/trailing = manual_trailing_v2 (single exit boss); monitor keeps emergency closes only
 risk_gate = build_risk_registry()
 context_engine = ContextEngine()
 observatory = GateObservatory()
