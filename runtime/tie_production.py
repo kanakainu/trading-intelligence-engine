@@ -874,12 +874,14 @@ while True:
                     # Strategy-specific exit config
                     exit_configs = {
                         "T":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # 3Ca Refined
-                        "R":   {"be_trigger_atr": 0.2, "trail_trigger_atr": 0.4, "trail_offset_atr": 0.2, "partial_tp_pct": 0.3},      # RiriScalps
+                        "R":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.5, "partial_tp_pct": 0.3},      # RiriScalps (was 0.2/0.4/0.2 — closed positions within seconds)
                         "B":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # Bystra
                         "BA":  {"be_trigger_atr": 0.4, "trail_trigger_atr": 0.8, "trail_offset_atr": 0.3, "partial_tp_pct": 0.4},
                         "BAS": {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.2, "partial_tp_pct": 0.3},
                         "A":   {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.25, "partial_tp_pct": 0.4},
                         "S":   {"be_trigger_atr": 0.15, "trail_trigger_atr": 0.3, "trail_offset_atr": 0.15, "partial_tp_pct": 0.3},
+                        "F":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.5, "partial_tp_pct": 0.3},      # Engine F Nyao (was missing → fell back to Bystra)
+                        "3Ca": {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # ThreeCa (was missing → fell back to Bystra)
                     }
                     cfg = exit_configs.get(strategy_code, exit_configs["B"])
                     
