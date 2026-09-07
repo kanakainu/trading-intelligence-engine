@@ -129,35 +129,45 @@ def compute_new_sl(pos, profile):
     direction   = str(pos.get("direction", "")).upper()
     entry       = float(pos.get("price_open", 0) or 0)
     current_sl  = float(pos.get("sl", 0) or 0)
-    current_tp  = float(pos.get("tp", 0) or 0)
     profit      = float(pos.get("profit", 0) or 0)
     current_px  = float(pos.get("current_price", 0) or pos.get("price_current", 0) or 0)
+    volume      = float(pos.get("volume", 0.01) or 0.01)
 
-    if profit < 0:
-        return None  # Belum profit, gak trailing
+    if profit < 0 or not current_px or not entry:
+        return None  # Belum profit / data belum lengkap, gak trailing
 
-    # Peak profit tracking
-    prev_peak = _peak.get(ticket, 0)
-    if profit > prev_peak:
-        _peak[ticket] = profit
+    # Peak profit tracking (basis kunci lock)
+    peak = _peak.get(ticket, 0)
+    if profit > peak:
+        _peak[ticket] = peak = profit
 
-    # Phase 1: BE Lock
+    # XAUUSD: 1 lot = 100 oz → $100 per 1.0 poin harga per lot
+    usd_per_point = volume * 100.0
+    start    = profile["start"]
+    dist     = profile["dist"]
+    lock_r   = profile.get("lock_ratio", 0.5)   # kunci 50% dari puncak profit
+    lock_min = profile.get("lock_min", 1.0)     # $ floor — lebih dari spread, anti slippage-loss
+
+    # Phase 1: BE+buffer lock (SL masih original)
     if profit >= current_be_lock and current_sl == 0:
-        return round(entry, 2)  # Move SL to BE (entry price)
+        buf = max(0.1, lock_min / usd_per_point)
+        return round(entry + buf if direction == "BUY" else entry - buf, 2)
 
-    # Phase 2: Trailing
-    if profit >= profile["start"]:
-        # Tentukan trailing distance
-        trail_dist = profile["dist"]
-        
-        if direction == "BUY":
-            new_sl = current_px - trail_dist
-            if current_sl == 0 or new_sl > current_sl:
-                return round(new_sl, 2)
-        else:  # SELL
-            new_sl = current_px + trail_dist
-            if current_sl == 0 or new_sl < current_sl:
-                return round(new_sl, 2)
+    if profit < start:
+        return None
+
+    # Phase 2: trailing = max(jarak harga, floor lock profit)
+    lock_off = max(lock_min, peak * lock_r) / usd_per_point
+    if direction == "BUY":
+        new_sl = max(current_px - dist, entry + lock_off)
+        new_sl = min(new_sl, current_px - 0.05)          # SL wajib di bawah harga
+        if (current_sl == 0 or new_sl > current_sl + 0.04) and new_sl > entry:
+            return round(new_sl, 2)
+    else:  # SELL
+        new_sl = min(current_px + dist, entry - lock_off)
+        new_sl = max(new_sl, current_px + 0.05)          # SL wajib di atas harga
+        if (current_sl == 0 or new_sl < current_sl - 0.04) and new_sl < entry:
+            return round(new_sl, 2)
 
     return None
 
