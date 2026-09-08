@@ -111,10 +111,19 @@ def _is_tie_deal(d: dict) -> bool:
     c = str(d.get("comment", ""))
     return c.startswith("TIE_") or c.startswith("Riri")
 
+_PNL_CUTOFF = ""  # reset point (data/pnl_reset_time.txt) — PnL mulai dihitung dr sini
+try:
+    _PNL_CUTOFF = open("/home/ubuntu/tie-dashboard-backend/data/pnl_reset_time.txt").read().strip().replace(" ", "T")
+except Exception:
+    pass
+
 def _deal_today(d: dict) -> bool:
-    """Deal timestamp is gateway-local (WIB on Windows VPS, same as here)."""
+    """Deal timestamp gateway-local (WIB). Setelah reset: hanya deal >= cutoff yang dihitung."""
     try:
-        return str(d.get("time", ""))[:10] == datetime.now().strftime("%Y-%m-%d")
+        t = str(d.get("time", ""))[:19]
+        if _PNL_CUTOFF:
+            return t >= _PNL_CUTOFF
+        return t[:10] == datetime.now().strftime("%Y-%m-%d")
     except Exception:
         return False
 
@@ -240,6 +249,20 @@ def _compute_real_sr(candles_h1: list, price: float = 0.0) -> dict:
         if not support:    support    = max(lows)  if lows  else None
         if not resistance: resistance = min(highs) if highs else None
     return {"h1_support": support, "h1_resistance": resistance}
+
+_BIAS_CACHE = {"ts": 0.0, "data": {}}
+def _oi_bias() -> str:
+    """Bias arah dari OI CME (tools/oi_bias.py, via mailbox Windows). Cache 10 menit."""
+    import time as _t
+    if _t.time() - _BIAS_CACHE["ts"] > 600:
+        try:
+            p = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "bias.json")
+            _BIAS_CACHE["data"] = json.load(open(p))
+        except Exception:
+            _BIAS_CACHE["data"] = {}
+        _BIAS_CACHE["ts"] = _t.time()
+    return str(_BIAS_CACHE["data"].get("bias", "NEUTRAL"))
+
 
 def _get_spread(client, symbol: str) -> float:
     try:
@@ -691,6 +714,30 @@ while True:
                     log.info(f"SPREAD BLOCK: {spread:.2f} > 0.25×ATR({_atr_m5:.2f})={0.25 * _atr_m5:.2f}")
                     observatory.log_gate(trace, "Spread", "FAIL", reason=f"spread:{spread:.2f}")
                     continue
+
+                # === ORDERFLOW GATES 2026-09-09 (RiriScalps only; 3Ca mean-rev, exempt) ===
+                if decision.setup_name.startswith("R_"):
+                    # (a) CVD internal: slope delta 3 bar M5 closed = siapa agresif sekarang
+                    _m5 = (candles.get("M5") or [])[:-1]        # buang bar masih napas
+                    _closed = _m5[-3:]
+                    _slope = sum((c.get("tick_volume", 0) or c.get("volume", 0)) *
+                                 (1 if c["close"] > c["open"] else -1 if c["close"] < c["open"] else 0)
+                                 for c in _closed)
+                    _dirn = 1 if decision.action == "BUY" else -1
+                    if _slope and _dirn * _slope < 0:
+                        log.info(f"⛔ CVD GATE: {decision.action} lawan flow (slope={_slope:+.0f}, 3 bar M5)")
+                        observatory.log_gate(trace, "CVD", "FAIL", reason=f"cvd_against:{_slope:+.0f}")
+                        continue
+                    # (b) OI bias CME: jangan lawan institusi
+                    _bias = _oi_bias()
+                    if _bias == "SELL_ON_RALLY" and decision.action == "BUY":
+                        log.info("⛔ BIAS GATE: BUY dilarang (OI CME = SELL_ON_RALLY)")
+                        observatory.log_gate(trace, "OIBias", "FAIL", reason="buy_vs_sell_rally")
+                        continue
+                    if _bias == "BUY_ON_DIP" and decision.action == "SELL":
+                        log.info("⛔ BIAS GATE: SELL dilarang (OI CME = BUY_ON_DIP)")
+                        observatory.log_gate(trace, "OIBias", "FAIL", reason="sell_vs_buy_dip")
+                        continue
 
                 # === RISK-CAPPED LOT (EA parity: BaseLot 0.01–MaxLot 0.03) ===
                 # Data 3 hari: lot fix 0.05 + sl_dist 17–24 poin = risiko $8.5–12/trade.

@@ -12,8 +12,8 @@ from core.decision.trade_decision import WAIT
 logging.basicConfig(level=logging.INFO, format='%(name)s %(message)s')
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 
-URL   = 'https://buildings-threats-built-plugins.trycloudflare.com'
-TOKEN = 'Jojo_56790@_000tUi_OO9'
+URL   = 'https://garcia-editorials-overnight-studies.trycloudflare.com'
+TOKEN = 'Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV'
 SYM   = 'XAUUSD'
 
 client = MT5GatewayClient(URL, TOKEN)
