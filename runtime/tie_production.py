@@ -691,13 +691,25 @@ while True:
                     observatory.log_gate(trace, "Spread", "FAIL", reason=f"spread:{spread:.2f}")
                     continue
 
-                # === VOLATILITY POSITION SIZING (GS Quant inspired) ===
-                from shared.volatility_sizing import calc_lot
-                atr_val = _features.atr.get("M5", 0) if hasattr(_features, "atr") else 0
-                
-                # HARDCODE: Lot always 0.05 per user request
-                decision.metadata["volume"] = 0.05
-                log.info(f"⚖️ POSITION SIZING: Fixed Lot 0.05 applied (overriding sizing engine)")
+                # === RISK-CAPPED LOT (EA parity: BaseLot 0.01–MaxLot 0.03) ===
+                # Data 3 hari: lot fix 0.05 + sl_dist 17–24 poin = risiko $8.5–12/trade.
+                # 6 loss >$25 makan SEMUA win (+307 vs −467). EA aslinya: base 0.01,
+                # dinaikin cuma buat signal>=8, cap 0.03 → worst case −$14.
+                # Aturan baru: risiko per trade = 2% equity, FLOOR $3 CAP $6, lot 0.01–0.03.
+                _sl_d = 0.0
+                try:
+                    _sl_d = abs(float(decision.metadata.get("sl") or 0) - float(price))
+                except Exception:
+                    pass
+                _risk_usd = max(3.0, min(6.0, equity * 0.02))
+                if _sl_d > 0:
+                    _lot = max(0.01, min(0.03, round(_risk_usd / (_sl_d * 100), 2)))
+                else:
+                    _lot = 0.01
+                if float(decision.metadata.get("nyao_score") or 0) < 8.0:
+                    _lot = min(_lot, 0.02)  # EA: lot naik cuma buat signal kuat
+                decision.metadata["volume"] = _lot
+                log.info(f"⚖️ POSITION SIZING: risk=${_risk_usd:.2f} sl_dist={_sl_d:.1f} → lot={_lot} (score={decision.metadata.get('nyao_score')})")
                 
                 # Setup mapping for observability
                 _strat_key = decision.setup_name.split("_")[0].lower()
