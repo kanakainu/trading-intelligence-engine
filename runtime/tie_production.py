@@ -138,7 +138,10 @@ def _bar_opens_from_history(deals, symbol: str, direction: str, bar_dt, prefix: 
             t = datetime.fromisoformat(str(d.get("time", ""))[:19])
         except ValueError:
             continue
-        if t.date() != bar_dt.date() or (t.minute - t.minute % 5) != (bar_dt.minute - bar_dt.minute % 5):
+        # floor kedua sisi ke bar M5 penuh (tanggal+JAM+menit) — dulu cuma tanggal+menit,
+        # jadi deal jam 01:00 "cocok" sama bar 11:00 → hantu nyumbat entry (bug 2026-09-08)
+        if t.replace(minute=t.minute - t.minute % 5, second=0) != \
+           bar_dt.replace(minute=bar_dt.minute - bar_dt.minute % 5, second=0):
             continue
         dd = str(d.get("type", "")).upper()
         if dd == direction:
