@@ -506,6 +506,18 @@ class RiriScalpsStrategy(BaseStrategy):
         candles_m5 = market_ctx.metadata.get("candles", {}).get("M5", [])
         candles_m15 = market_ctx.metadata.get("candles", {}).get("M15", [])
 
+        # === EA PARITY (2026-09-08): skor dihitung di bar CLOSED saja ===
+        # Gateway menyertakan bar forming sebagai elemen terakhir. EA (EnableNewBarEntryOnly)
+        # mengevaluasi pada awal bar baru memakai candle yang sudah mati. Selama ini TIE
+        # menghitung skor pada bar yang masih napas → entry muncul di menit yang EA diem
+        # (bukti loss 19:12 -45.76 & 20:25 -30.76: keduanya TIE-only entries).
+        import time as _time
+        _nowts = _time.time()
+        if candles_m5 and _nowts - float(candles_m5[-1].get("time", 0)) < 300:
+            candles_m5 = candles_m5[:-1]
+        if candles_m15 and _nowts - float(candles_m15[-1].get("time", 0)) < 900:
+            candles_m15 = candles_m15[:-1]
+
         if len(candles_m5) < SWING_LOOKBACK + 5:
             return StrategyResult(signal=None, confidence=0.0, reason="low_data")
 

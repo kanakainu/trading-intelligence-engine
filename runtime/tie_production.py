@@ -127,11 +127,16 @@ _TIE_DAY_PNL = 0.0  # TIE-only daily P/L cache for dashboard writer
 def _bar_opens_from_history(deals, symbol: str, direction: str, bar_dt, prefix: str):
     """Returns (same_dir_opens, opp_dir_opens) for prefix-trades on bar_dt's M5 bar."""
     n_same = n_opp = 0
+    _seen = set()  # gateway kadang lapor 1 order sbg 2 baris deal identik → jangan dobel hitung
     for d in deals or []:
         if d.get("symbol") != symbol or not _is_tie_deal(d):
             continue
         if d.get("profit", 1) != 0:  # open-deals carry profit 0
             continue
+        _dk = (str(d.get("time")), d.get("price"), d.get("volume"), str(d.get("comment")))
+        if _dk in _seen:
+            continue
+        _seen.add(_dk)
         if not str(d.get("comment", "")).startswith(prefix):
             continue
         try:
@@ -207,6 +212,11 @@ context_engine = ContextEngine()
 observatory = GateObservatory()
 governor = DailyProfitGovernorV2(daily_target=30.0, daily_loss_limit=200.0)
 budget_mgr = TradeBudgetManager()
+
+# === FIRE LOCK (in-memory, anti race/kembar + retry terbatas) ===
+# key (bar_start, action) -> percobaan kirim order. 1 sukses = 99 (kunci mati).
+# Batas 2 percobaan per bar: boleh retry 1x kalau broker nolak transient (No prices/requote).
+_fire_lock: dict = {}
 opp_lifecycle = OpportunityLifecycle()
 adaptive_mgr = AdaptiveThresholdManager()
 pma = PostMortemAnalyzer(lookback_days=30)
@@ -617,9 +627,38 @@ while True:
             trace = create_trace(scan_id=_sid, symbol=sym, strategy="TIE_V4")
 
 
+            # === CANDLE PARITY: EA entry only at bar close/start ===
+            _m5_time = candles.get("M5", [{}])[-1].get("time", 0)
+            if "_last_m5_entry_scan" not in globals():
+                 globals()["_last_m5_entry_scan"] = 0
+            
+            is_new_bar = (_m5_time > globals()["_last_m5_entry_scan"])
+            globals()["_last_m5_entry_scan"] = _m5_time
+
             if decision.action != "WAIT":
                 # === EA PARITY: drawdown gate (DrawdownThresholdPct=3.0 → thr +2.0) ===
                 _dd_boost, _dd_pct = _drawdown_score_boost(equity)
+
+                # === DD BOOST HARD GATE (EA: adjustedThreshold += DrawdownScoreBoost) ===
+                # EA NOLAK entry kalau score < thr+boost saat DD≥3%. TIE dulu cuma nyatet
+                # di log → entry lemah lolos (bukti: 19:15 score=5.99 < 6.5 → loss -45).
+                _nyao_thr = decision.metadata.get("nyao_thr")
+                _nyao_sc  = decision.metadata.get("nyao_score")
+                if _nyao_thr is not None and _nyao_sc is not None and _dd_boost > 0:
+                    if _nyao_sc < (_nyao_thr + _dd_boost):
+                        log.info(f"⛔ DD BOOST GATE: {decision.setup_name} {decision.action} score={_nyao_sc:.2f} < thr={_nyao_thr:.1f}+{_dd_boost:.1f} (dd={_dd_pct:.1f}%)")
+                        observatory.log_gate(trace, "DrawdownBoost", "FAIL", reason=f"score<{_nyao_thr+_dd_boost:.1f}")
+                        setup_detail = None
+                        continue
+                
+                # EA Parity: entry only happens when a bar completes or starts.
+                _now_ts = now_utc.timestamp()
+                _bar_elapsed = _now_ts % 300
+                if _bar_elapsed > 30: # 30s max tolerance for new candle
+                     if not decision.setup_name.startswith("3Ca"):
+                         log.debug(f"Intrabar skip: {_bar_elapsed}s into bar. Waiting for next M5.")
+                         continue
+                
                 if _dd_boost:
                     log.info(f"📉 DRAWDOWN GATE: dd={_dd_pct:.1f}% ≥3% → threshold +{_dd_boost}")
 
@@ -913,6 +952,17 @@ while True:
                                     if _cutloss:
                                         _final_comment += f"_CL{_cutloss:.2f}"
                                         
+                                    # FIRE LOCK: kunci per bar+arah (history gateway telat update = risiko kembar)
+                                    _nb = datetime.now().replace(second=0, microsecond=0)
+                                    _lock_bar = _nb.replace(minute=_nb.minute - _nb.minute % 5)
+                                    _lk = (_lock_bar, decision.action)
+                                    _tries = _fire_lock.get(_lk, 0)
+                                    if _tries >= 2:
+                                        log.info(f"FIRE LOCK: skip {decision.setup_name} {decision.action} (tries={_tries} bar={_lock_bar.strftime('%H:%M')})")
+                                        observatory.log_gate(trace, "Execution", "FAIL", reason="fire_lock")
+                                        continue
+                                    _fire_lock[_lk] = _tries + 1
+
                                     req = OrderRequest(
                                         symbol=sym,
                                         side=decision.action,
@@ -925,6 +975,7 @@ while True:
                                     )
                                     resp = broker.submit_order(req)
                                     if resp.status == "FILLED":
+                                        _fire_lock[_lk] = 99  # sukses: bar ini mati buat arah ini
                                         log.info(f"✅ ORDER EXECUTED: {sym} {decision.action} {req.volume} lot | SL={req.stop_loss} TP={req.take_profit} ticket={resp.order_id}")
                                         observatory.log_gate(trace, "Execution", "PASS", reason=f"order placed ticket={resp.order_id}")
                                         # monitor.add_setup(decision)  # EntryMonitor disabled — TIE_ path handles tracking
