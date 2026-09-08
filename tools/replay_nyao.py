@@ -24,7 +24,7 @@ for d in deals:
         bar = t.replace(minute=t.minute - t.minute % 5, second=0).strftime("%m-%d %H:%M")
         if d.get("magic") == 86420:
             ea_bars.add(bar)
-        elif d.get("magic") == 20260801 and str(d.get("comment", "")).startswith("TIE_R"):
+        elif d.get("magic") in (20260801, 20260908) and str(d.get("comment", "")).startswith("TIE_R"):
             tie_bars.add(bar)
 
 print(f"{'bar':12} {'BUY':>6} {'SELL':>6}  {'fire?':>6}  EA   TIE")

@@ -1,4 +1,4 @@
-"""Side-by-side: EA (magic 86420) vs TIE (magic 20260801) entries per M5 candle."""
+"""Side-by-side: EA (magic 86420) vs TIE (magic 20260908) entries per M5 candle."""
 import sys, datetime as dt
 from collections import defaultdict
 
@@ -26,7 +26,7 @@ for d in deals:
     key = (bucket(tm), d.get("type", ""))
     if mg == 86420:
         ea_open[key].append((d.get("volume", 0), d.get("price", 0)))
-    elif mg == 20260801:
+    elif mg in (20260801, 20260908):
         tie_open[key].append((d.get("volume", 0), d.get("price", 0), d.get("comment", "")))
 
 keys = sorted(set(ea_open) | set(tie_open))

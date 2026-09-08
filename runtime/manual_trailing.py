@@ -13,8 +13,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 log = logging.getLogger("ManualTrailing")
 
 POLL_SEC   = 5
-URL        = os.getenv("MT5_GATEWAY_URL",   "https://buildings-threats-built-plugins.trycloudflare.com")
-TOKEN      = os.getenv("MT5_GATEWAY_TOKEN", "Jojo_56790@_000tUi_OO9")
+URL        = os.getenv("MT5_GATEWAY_URL",   "https://garcia-editorials-overnight-studies.trycloudflare.com")
+TOKEN      = os.getenv("MT5_GATEWAY_TOKEN", "Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV")
 HEADERS    = {"Authorization": f"Bearer {TOKEN}"}
 
 START_USD  = 5.0

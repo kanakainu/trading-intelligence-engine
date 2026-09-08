@@ -60,8 +60,9 @@ STRATEGY_MAP = {
     "BA":  "bystra",
     "BAS": "bystra",
     "R":   "riri_scalps_v1",
-    "F":   "riri_scalps_v1",   # Engine F (EA Nyao port) — same trailing profile
-    "3CA": "three_ca",         # ThreeCa: peak-lock model (TP 4R butuh ruang)
+    "F":   "riri_scalps_v1",   # Engine F (EA Nyao port)
+    "RIRI_SCALPS": "riri_scalps_v1",
+    "3CA": "three_ca",         # ThreeCa: peak-lock model
 }
 
 # ========= EA PARITY TRAILING (port of RiriScalps.mq5 ManageTrailingTPSL) =========

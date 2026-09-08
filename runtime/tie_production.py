@@ -91,22 +91,23 @@ broker = MT5BrokerAdapter(base_url=URL, token=TOKEN)
 broker.initialize()
 
 # ── TIE OWN MAGIC — trade isolation (like an EA) ──
-# Gateway stamps magic=20260801 on every TIE order. Everything else on the
+# Gateway stamps magic=20260908 on every TIE order. Everything else on the
 # account (EA Nyao, manual trades) is invisible to TIE: no exit management,
 # no dedup interference, no P/L contamination. Fallback to comment prefix
 # for gateways that don't expose magic yet.
-TIE_MAGIC = 20260801
+TIE_MAGIC = {20260908, 20260801}  # baru + legacy (gateway Windows lama masih stempel 20260801
+                                   # s/d file server baru di-deploy & gateway di-restart)
 
 def _is_tie_pos(p: dict) -> bool:
     m = p.get("magic")
     if m is not None:
-        return int(m) == TIE_MAGIC
+        return int(m) in TIE_MAGIC
     return str(p.get("comment", "")).startswith("TIE_")
 
 def _is_tie_deal(d: dict) -> bool:
     m = d.get("magic")
     if m is not None:
-        return int(m) == TIE_MAGIC
+        return int(m) in TIE_MAGIC
     c = str(d.get("comment", ""))
     return c.startswith("TIE_") or c.startswith("Riri")
 

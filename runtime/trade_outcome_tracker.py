@@ -6,8 +6,8 @@ Run: python3 runtime/trade_outcome_tracker.py &
 import json, time, urllib.request, ssl
 from pathlib import Path
 
-GATEWAY = "https://buildings-threats-built-plugins.trycloudflare.com"
-TOKEN = "Jojo_56790@_000tUi_OO9"
+GATEWAY = "https://garcia-editorials-overnight-studies.trycloudflare.com"
+TOKEN = "Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV"
 WINS_FILE = Path("/home/ubuntu/trading-intelligence-engine/data/tie_wins.json")
 STATE_FILE = Path("/home/ubuntu/trading-intelligence-engine/data/tie_tracker_state.json")
 CHECK_INTERVAL = 15  # seconds

@@ -209,8 +209,8 @@ class HistoricalDataLoader:
         from gateway_client import MT5GatewayClient
         
         client = MT5GatewayClient(
-            'https://buildings-threats-built-plugins.trycloudflare.com',
-            'Jojo_56790@_000tUi_OO9'
+            'https://garcia-editorials-overnight-studies.trycloudflare.com',
+            'Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV'
         )
         
         tf_map = {'M1': 'M1', 'M5': 'M5', 'M15': 'M15', 'H1': 'H1'}
@@ -245,8 +245,8 @@ def run_replay(
     replay = MonteCarloReplay()
     
     client = MT5GatewayClient(
-        'https://buildings-threats-built-plugins.trycloudflare.com',
-        'Jojo_56790@_000tUi_OO9'
+        'https://garcia-editorials-overnight-studies.trycloudflare.com',
+        'Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV'
     )
     
     logger.info(f"Starting Monte Carlo replay: {symbols} over {days} days")
