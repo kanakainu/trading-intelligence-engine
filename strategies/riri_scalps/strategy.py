@@ -36,6 +36,9 @@ BB_STD           = 2.0
 POSITION_PCT     = 0.02     # 2% of balance per trade
 MAX_LOT          = 0.10     # hard cap
 MIN_LOT          = 0.01     # minimum lot
+MAX_LOSS_PER_TRADE_USD = 4.0  # [V-CAP 10-Sep] rugi maksimum dolar per trade utk 0.01-lot XAUUSD:
+                              # lot dibatasi s.t. lot × sl_dist × 100 <= cap. Bukti: sizing % bikin
+                              # SL 2.5$ jadi lot 0.04 = risk $10 — pager SL doang percuma kalau lot ngembang.
 
 _breakout_state: dict = {}  # DEPRECATED: Engine B removed, kept for import compat
 
@@ -295,7 +298,13 @@ def _calc_lot(balance: float, price: float, atr: float, sl_dist: float) -> float
     # XAUUSD: 0.01 lot = $0.10 per point
     # risk_amount = lot * sl_dist * 100
     lot = risk_amount / (sl_dist * 100)
-    lot = max(MIN_LOT, min(MAX_LOT, round(lot, 2)))
+    # [V-CAP] lot ceiling by dolar loss — turun-only, kalau 0.01 masih > cap -> 0 (skip)
+    lot_cap = MAX_LOSS_PER_TRADE_USD / (sl_dist * 100)
+    lot = max(0.0, min(lot, lot_cap))
+    lot = math.floor(lot * 100 + 1e-8) / 100  # turun ke step 0.01, jangan naik
+    if lot < MIN_LOT:
+        return 0.0  # terlalu lebar utk cap — engine skip order (lot 0 = no trade)
+    lot = min(MAX_LOT, lot)
     return lot
 
 
@@ -726,6 +735,10 @@ class RiriScalpsStrategy(BaseStrategy):
         return StrategyResult(signal=None, confidence=0.0, reason="no_setup")
 
     def _emit(self, sym, sig_dir, price, conf, reason, sl, tp, ctx, lot=0.05) -> StrategyResult:
+        if lot <= 0:
+            # [V-CAP] SL selebar itu gak muat di loss cap $4 — skip bersih, jangan kirim lot 0
+            logger.info(f"[RIRI] SKIP {reason}: lot=0 (sl_dist={abs(price-sl):.2f} > loss cap)")
+            return StrategyResult(signal=None, confidence=0.0, reason="cap_skip")
         sl_dist = abs(price - sl)
         min_tp = sl_dist * 1.5
         if tp > 0:
