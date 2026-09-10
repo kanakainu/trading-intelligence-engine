@@ -74,6 +74,10 @@ class ThreeCaStrategy(BaseStrategy):
         risk = abs(price - sl)
         if risk <= 0.5:  # SL kelewat dekat = noise, skip (biar R gak ngawur)
             return StrategyResult(signal=None, confidence=0.0, reason="risk_too_small")
+        # [V-GATE 10-Sep] C3 terlalu lebar = pola liar (bukti: loss -8.93, risk $8.93 @0.01).
+        # TP 4R gak nyampe duluan, satu runner makan seminggu copet. Skip, tunggu C3 ramping.
+        if risk > 5.0:
+            return StrategyResult(signal=None, confidence=0.0, reason=f"pattern_too_wide:{risk:.2f}")
         tp = price + TP_R * risk * (1 if direction == Direction.BUY else -1)
 
         if _ckey:

@@ -22,6 +22,10 @@ VOL_SPIKE_RATIO  = 1.5
 # --- NEW SETTINGS (v3.0.0) ---
 ADX_PERIOD       = 14
 ADX_THRESHOLD    = 20       # below = weak trend → skip Engine B
+SL_MAX_DIST_USD    = 2.5    # [V-TRUNC 10-Sep] plafon jarak SL dlm $ utk 0.01 lot (XAUUSD: $1 jarak = $1 rugi).
+                            # Bukti: 11 loss RiriScalps net -42.82 (worst -10.69) vs 34 win cuma +0.97 rata2 —
+                            # SL struktur M5 bisa lari 3-10x ATR, satu runner = 10 copet profit hangus.
+                            # Clamp: SL struktur tetap dipakai kalau <= plafon; kalau kelebaran, dipotong ke plafon.
 EA_ONLY_MODE     = True     # True = only Engine F (EA Nyao port) trades; A/C/D/E1/E2 disabled
 RSI_PERIOD       = 14
 MACD_FAST        = 12
@@ -175,6 +179,11 @@ def _get_sl_tp(direction: Direction, price: float, sr: Dict, atr: float) -> Tupl
         if tp >= price:
             tp = price - abs(sl - price) * 1.5
 
+    # [V-TRUNC] plafon jarak SL — jangan biarin struktur jauh ngasih risk liar
+    if direction == Direction.BUY:
+        sl = max(sl, price - SL_MAX_DIST_USD)
+    else:
+        sl = min(sl, price + SL_MAX_DIST_USD)
     return sl, tp
 
 # ── INDICATOR COMPUTATIONS (adapted from Fincept IndicatorEngine) ──
