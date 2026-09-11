@@ -27,10 +27,9 @@ THRUST_FILTER      = True   # [V-THRUST 11-Sep] audit 43 trade: entry tanpa thru
                             # (signal bar + 1 bar sebelumnya searah): WR 88%+, net +16.8. Ini filter
                             # kualitas entry, bukan perisai SL. Mode ketat: 2 bar sebelumnya juga searah.
 THRUST_STRICT      = False  # True = butuh 2 bar prev searah (audit: +0.2$ doang, tapi trade -3)
-SL_MAX_DIST_USD    = 2.5    # [V-TRUNC 10-Sep] plafon jarak SL dlm $ utk 0.01 lot (XAUUSD: $1 jarak = $1 rugi).
-                            # Bukti: 11 loss RiriScalps net -42.82 (worst -10.69) vs 34 win cuma +0.97 rata2 —
-                            # SL struktur M5 bisa lari 3-10x ATR, satu runner = 10 copet profit hangus.
-                            # Clamp: SL struktur tetap dipakai kalau <= plafon; kalau kelebaran, dipotong ke plafon.
+SL_MAX_DIST_USD    = 6.0    # [v3.4] plafon SL $ utk 0.01 lot (naik dari 2.5 — 2.5 itu di zona noise XAUUSD,
+                            # SL kenojit wick terus: 5 loss avg -4.75 vs 12 win avg +1.02).
+                            # 6.0 ≈ 1.5x ATR M5 — tetap ngebatasin runner liar, tapi gak di noise zone.
 EA_ONLY_MODE     = True     # True = only Engine F (EA Nyao port) trades; A/C/D/E1/E2 disabled
 RSI_PERIOD       = 14
 MACD_FAST        = 12
@@ -41,7 +40,9 @@ BB_STD           = 2.0
 POSITION_PCT     = 0.02     # 2% of balance per trade
 MAX_LOT          = 0.10     # hard cap
 MIN_LOT          = 0.01     # minimum lot
-MAX_LOSS_PER_TRADE_USD = 4.0  # [V-CAP 10-Sep] rugi maksimum dolar per trade utk 0.01-lot XAUUSD:
+MAX_LOSS_PER_TRADE_USD = 6.0  # [v3.4-ALIGN 11-Sep] diselaraskan Boskuh dgn SL ceiling 6.0 punya Riri:
+                              # cap 4.0 + ceiling 6.0 = setup SL $4-6 skip lot=0 (bukti log 23:20).
+                              # Rugi max per trade 0.01-lot naik $4 -> $6. Plafon & cap harus sama arahnya.
                               # lot dibatasi s.t. lot × sl_dist × 100 <= cap. Bukti: sizing % bikin
                               # SL 2.5$ jadi lot 0.04 = risk $10 — pager SL doang percuma kalau lot ngembang.
 
@@ -168,7 +169,7 @@ def _get_sl_tp(direction: Direction, price: float, sr: Dict, atr: float) -> Tupl
     SELL: SL = nearest fresh resistance (above), TP = nearest fresh support (below)
     Fallback to ATR-based if no fresh S/R found (safety net).
     """
-    min_sl_dist = atr * 0.5  # minimum SL distance (safety)
+    min_sl_dist = atr * 1.2  # [v3.4] noise floor XAUUSD M5 ±$3-5 — SL di bawah ini = lottery
 
     if direction == Direction.BUY:
         # SL: nearest fresh support below price
@@ -326,7 +327,12 @@ def _calc_lot(balance: float, price: float, atr: float, sl_dist: float) -> float
     lot = max(0.0, min(lot, lot_cap))
     lot = math.floor(lot * 100 + 1e-8) / 100  # turun ke step 0.01, jangan naik
     if lot < MIN_LOT:
-        return 0.0  # terlalu lebar utk cap — engine skip order (lot 0 = no trade)
+        # [v3.4-ALIGN] balance kecil bikin budget 2% gak pernah muat 0.01 utk SL lebar —
+        # padahal Exness min lot ya 0.01 (gak bisa lebih kecil). Kalau rugi di MIN_LOT
+        # masih hormat sama cap dolar, pake MIN_LOT. Cap dolar = bos, bukan budget %.
+        if lot_cap >= MIN_LOT:
+            return MIN_LOT
+        return 0.0  # 0.01-lot pun rugi > cap — engine skip order (lot 0 = no trade)
     lot = min(MAX_LOT, lot)
     return lot
 
@@ -534,7 +540,7 @@ class RiriScalpsStrategy(BaseStrategy):
         meta = StrategyMetadata(
             id="riri_scalps_v1",
             name="RiriScalps",
-            version="3.3.0",
+            version="3.4.0",
             priority=95,
             author="Riri",
             description="v3.3: +Engine F (Nyao Score) + REMOVED Engine B. A(FVG)+C(Sweep)+D(RSI/MACD)+E1(VWAP)+E2(BB/RSI)+F(Nyao)"
@@ -798,6 +804,8 @@ class RiriScalpsStrategy(BaseStrategy):
                 "sl": sl,
                 "emit_price": price,   # [V-ANCHOR] jangkar jarak SL buat runtime
                 "take_profit": final_tp,
+                "strategy_sl": sl,         # [V-SLBOS fix] jangkar WAJIB — hook runtime selama ini mati
+                "strategy_tp": final_tp,   # [V-SLBOS fix] supaya SL/TP strategi gak di-overwrite planner H1
                 "volume": lot,
                 "strategy_code": reason[0]  # A/B/C/D/E
             }
