@@ -12,7 +12,7 @@ from core.decision.trade_decision import WAIT
 logging.basicConfig(level=logging.INFO, format='%(name)s %(message)s')
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 
-URL   = 'https://garcia-editorials-overnight-studies.trycloudflare.com'
+URL   = 'https://legends-api-disable-morrison.trycloudflare.com'
 TOKEN = 'Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV'
 SYM   = 'XAUUSD'
 

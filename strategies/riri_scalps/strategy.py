@@ -796,6 +796,7 @@ class RiriScalpsStrategy(BaseStrategy):
             metadata={
                 "setup_type": "R",
                 "sl": sl,
+                "emit_price": price,   # [V-ANCHOR] jangkar jarak SL buat runtime
                 "take_profit": final_tp,
                 "volume": lot,
                 "strategy_code": reason[0]  # A/B/C/D/E

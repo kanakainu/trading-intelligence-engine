@@ -79,6 +79,7 @@ class ThreeCaStrategy(BaseStrategy):
                         entry_zone={"price": price, "high": price+0.2, "low": price-0.2},
                         confidence=0.85, timeframe="M5",
                         metadata={"sl": sl, "take_profit": tp, "cutloss": sl,
+                        "emit_price": price,
                                   "setup_type": "3Ca", "strategy_code": "3Ca", "volume": 0.05})
                     return StrategyResult(signal=signal, confidence=0.85,
                                           reason="3Ca_break_confirm", metadata=signal.metadata)

@@ -79,7 +79,7 @@ _fh = logging.FileHandler("/home/ubuntu/trading-intelligence-engine/logs/tie_pro
 _fh.setFormatter(logging.Formatter('%(asctime)s %(name)s %(message)s'))
 logging.getLogger().addHandler(_fh)
 
-URL = 'https://garcia-editorials-overnight-studies.trycloudflare.com'
+URL = 'https://legends-api-disable-morrison.trycloudflare.com'
 TOKEN = 'Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV'
 SYMBOLS = ['XAUUSD']  # user-tuned 2026-08-05: XAUUSD only, save bandwidth
 
@@ -794,19 +794,31 @@ while True:
                 
                 if _sl and _tp:
                     # FIX #54b: normalize SL/TP side vs LIVE entry using dynamic ATR buffer
+                    # [V-ANCHOR 11-Sep BUGFIX] bukti log 12:00: strategi emit SL jarak $2.5,
+                    # tapi 3 detik kemudian harga live nyusup di bawah SL itu -> blok lama
+                    # nulis ulang SL = entry - max(1.5*ATR,3) = JAUH lebih lebar ($6.3 ke order).
+                    # Clamp $2.5 strategi hilang diam-diam. Sekarang: pas re-anchor, hormatin
+                    # jarak asli strategi; buffer ATR cuma jadi fallback kalau jarak asli nol.
                     _atr = _features.get_atr("M5") or 2.0
                     _buffer = max(_atr * 1.5, 3.0)  # Dynamic buffer based on volatility
-                    
+                    _orig_sl = float(decision.metadata.get("sl") or 0.0)
+                    _orig_tp = float(decision.metadata.get("take_profit") or 0.0)
+                    _d_sl  = abs(_orig_sl - float(decision.metadata.get("emit_price") or _entry)) if _orig_sl else 0.0
+                    if _d_sl <= 0:
+                        # fallback: pakai jarak awal sl-vs-entry (strategi emit per price scan)
+                        _d_sl = abs(_orig_sl - _entry) if _orig_sl else 0.0
+                    _d_sl = max(min(_d_sl, _buffer), 0.5) if _d_sl > 0 else _buffer  # jangan lebih lebar dr buffer, jangan < $0.5
+
                     if decision.action == "SELL":
                         if _sl <= _entry:
-                            _sl = _entry + _buffer
+                            _sl = _entry + _d_sl
                         if _tp >= _entry:
-                            _tp = _entry - (_buffer * 1.5) # Default 1:1.5 RR for fallback
+                            _tp = _entry - max(min(abs(_orig_tp - _entry) if _orig_tp else _buffer*1.5, _buffer*1.5), _d_sl*1.5)
                     elif decision.action == "BUY":
                         if _sl >= _entry:
-                            _sl = _entry - _buffer
+                            _sl = _entry - _d_sl
                         if _tp <= _entry:
-                            _tp = _entry + (_buffer * 1.5)
+                            _tp = _entry + max(min(abs(_orig_tp - _entry) if _orig_tp else _buffer*1.5, _buffer*1.5), _d_sl*1.5)
                     # ExitOrchestrator disabled — manual_trailing_v2 handle all SL/TP modify
                     # opt = orch.optimize(
                     #     strategy_id=decision.setup_name,

@@ -209,7 +209,7 @@ class HistoricalDataLoader:
         from gateway_client import MT5GatewayClient
         
         client = MT5GatewayClient(
-            'https://garcia-editorials-overnight-studies.trycloudflare.com',
+            'https://legends-api-disable-morrison.trycloudflare.com',
             'Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV'
         )
         
@@ -245,7 +245,7 @@ def run_replay(
     replay = MonteCarloReplay()
     
     client = MT5GatewayClient(
-        'https://garcia-editorials-overnight-studies.trycloudflare.com',
+        'https://legends-api-disable-morrison.trycloudflare.com',
         'Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV'
     )
     
