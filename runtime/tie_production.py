@@ -1098,13 +1098,13 @@ while True:
                     # Strategy-specific exit config
                     exit_configs = {
                         "T":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # 3Ca Refined
-                        "R":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.5, "partial_tp_pct": 0.3},      # RiriScalps (was 0.2/0.4/0.2 — closed positions within seconds)
+                        "R":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.5, "partial_tp_pct": 0.3, "early_exit_reversal": False},  # RiriScalps — [V-NOCHASE] reversal exit 0/6 -13.54, mati
                         "B":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # Bystra
                         "BA":  {"be_trigger_atr": 0.4, "trail_trigger_atr": 0.8, "trail_offset_atr": 0.3, "partial_tp_pct": 0.4},
                         "BAS": {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.2, "partial_tp_pct": 0.3},
                         "A":   {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.25, "partial_tp_pct": 0.4},
                         "S":   {"be_trigger_atr": 0.15, "trail_trigger_atr": 0.3, "trail_offset_atr": 0.15, "partial_tp_pct": 0.3},
-                        "F":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.5, "partial_tp_pct": 0.3},      # Engine F Nyao (was missing → fell back to Bystra)
+                        "F":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.5, "partial_tp_pct": 0.3, "early_exit_reversal": False},  # Engine F Nyao — [V-NOCHASE] sama2 RiriScalps
                         "3Ca": {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # ThreeCa (was missing → fell back to Bystra)
                     }
                     cfg = exit_configs.get(strategy_code, exit_configs["B"])
@@ -1116,7 +1116,9 @@ while True:
                             'trail_trigger_atr': cfg["trail_trigger_atr"],
                             'trail_offset_atr': cfg["trail_offset_atr"],
                             'partial_tp_pct': cfg["partial_tp_pct"],
-                            'early_exit_reversal': True,
+                            # [V-NOCHASE 11-Sep] reversal exit engine bikin rugi 0/6 -13.54 vs SL/TP broker 7/8.
+                            # Nilai per-strategy dari exit_configs (R/F = False, 3Ca tetap True).
+                            'early_exit_reversal': cfg.get("early_exit_reversal", True),
                             'cutloss': cutloss_lvl # Pass cutloss level to monitor
                         }
                     })()
