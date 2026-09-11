@@ -22,6 +22,11 @@ VOL_SPIKE_RATIO  = 1.5
 # --- NEW SETTINGS (v3.0.0) ---
 ADX_PERIOD       = 14
 ADX_THRESHOLD    = 20       # below = weak trend → skip Engine B
+THRUST_FILTER      = True   # [V-THRUST 11-Sep] audit 43 trade: entry tanpa thrust (bar trigger gak
+                            # searah / bar sebelumnya melawan) = WR 14-25%, net -18. Dengan thrust
+                            # (signal bar + 1 bar sebelumnya searah): WR 88%+, net +16.8. Ini filter
+                            # kualitas entry, bukan perisai SL. Mode ketat: 2 bar sebelumnya juga searah.
+THRUST_STRICT      = False  # True = butuh 2 bar prev searah (audit: +0.2$ doang, tapi trade -3)
 SL_MAX_DIST_USD    = 2.5    # [V-TRUNC 10-Sep] plafon jarak SL dlm $ utk 0.01 lot (XAUUSD: $1 jarak = $1 rugi).
                             # Bukti: 11 loss RiriScalps net -42.82 (worst -10.69) vs 34 win cuma +0.97 rata2 —
                             # SL struktur M5 bisa lari 3-10x ATR, satu runner = 10 copet profit hangus.
@@ -137,6 +142,24 @@ def _find_fresh_sr(candles: List[Dict], price: float, atr: float,
         "all_resistances": [r[1] for r in fresh_resistance[:max_levels]],
     }
     return result
+
+def _thrust_ok(candles_m5, is_buy: bool) -> bool:
+    """[V-THRUST] bar trigger = candles_m5[-2] (bar M5 terakhir yang CLOSED; [-1] masih hidup).
+    Butuh: bar trigger searah trade + minimal 1 bar sebelumnya searah."""
+    if len(candles_m5) < 4:
+        return False
+    sig = candles_m5[-2]
+    prev = candles_m5[-3]
+    need_up = (float(sig["close"]) > float(sig["open"])) if is_buy else (float(sig["close"]) < float(sig["open"]))
+    prev_up = (float(prev["close"]) > float(prev["open"])) if is_buy else (float(prev["close"]) < float(prev["open"]))
+    if not (need_up and prev_up):
+        return False
+    if THRUST_STRICT:
+        p2 = candles_m5[-4]
+        p2_up = (float(p2["close"]) > float(p2["open"])) if is_buy else (float(p2["close"]) < float(p2["open"]))
+        return bool(p2_up)
+    return True
+
 
 def _get_sl_tp(direction: Direction, price: float, sr: Dict, atr: float) -> Tuple[float, float]:
     """
@@ -701,7 +724,10 @@ class RiriScalpsStrategy(BaseStrategy):
             _sell_thr = NYAO_SCORE_THRESHOLD + min(_nyao_state.get("consec_sell", 0), NYAO_MAX_CANDLE_BOOSTS) * NYAO_CONSEC_BOOST
 
             # BUY: score >= threshold + buy dominates sell (EA gate: adjustedScore >= adjustedThreshold)
-            if buy_score >= _buy_thr and buy_score > sell_score:
+            _thr_buy = (not THRUST_FILTER) or _thrust_ok(candles_m5, True)
+            if buy_score >= _buy_thr and buy_score > sell_score and not _thr_buy:
+                logger.info(f"[NYAO] BUY score={buy_score:.2f} DIBLOCK thrust-filter (bar trigger/prev gak searah)")
+            if buy_score >= _buy_thr and buy_score > sell_score and _thr_buy:
                 _nyao_state["consec_buy"] = _nyao_state.get("consec_buy", 0) + 1
                 _nyao_state["consec_sell"] = 0
                 sl_s, tp_s = _get_sl_tp(Direction.BUY, price, sr, atr)
@@ -715,7 +741,10 @@ class RiriScalpsStrategy(BaseStrategy):
                 return res
 
             # SELL: score >= threshold + sell dominates buy
-            if sell_score >= _sell_thr and sell_score > buy_score:
+            _thr_sell = (not THRUST_FILTER) or _thrust_ok(candles_m5, False)
+            if sell_score >= _sell_thr and sell_score > buy_score and not _thr_sell:
+                logger.info(f"[NYAO] SELL score={sell_score:.2f} DIBLOCK thrust-filter (bar trigger/prev gak searah)")
+            if sell_score >= _sell_thr and sell_score > buy_score and _thr_sell:
                 _nyao_state["consec_sell"] = _nyao_state.get("consec_sell", 0) + 1
                 _nyao_state["consec_buy"] = 0
                 sl_s, tp_s = _get_sl_tp(Direction.SELL, price, sr, atr)
