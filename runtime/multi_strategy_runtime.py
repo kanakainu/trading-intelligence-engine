@@ -103,6 +103,11 @@ class MultiStrategyRuntime:
             plan.metadata['volume'] = md.get("volume") # preserve strategy volume
             plan.metadata['nyao_score'] = md.get("nyao_score")  # dampener penalty math
             plan.metadata['nyao_thr'] = md.get("nyao_thr")
+            # [V-SLBOS 11-Sep] bawa SL/TP JANGKAR strategi asli: planner pernah
+            # nge-override SL clamp $2.5 -> swing H1 $9.6 (log 14:35). Runtime wajib restore.
+            plan.metadata['strategy_sl'] = md.get('sl')
+            plan.metadata['strategy_tp'] = md.get('take_profit')
+            plan.metadata['emit_price'] = md.get('emit_price')
 
         dt = (time.perf_counter() - t0) * 1000
         logger.info(

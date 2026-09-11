@@ -801,13 +801,24 @@ while True:
                     # jarak asli strategi; buffer ATR cuma jadi fallback kalau jarak asli nol.
                     _atr = _features.get_atr("M5") or 2.0
                     _buffer = max(_atr * 1.5, 3.0)  # Dynamic buffer based on volatility
-                    _orig_sl = float(decision.metadata.get("sl") or 0.0)
-                    _orig_tp = float(decision.metadata.get("take_profit") or 0.0)
-                    _d_sl  = abs(_orig_sl - float(decision.metadata.get("emit_price") or _entry)) if _orig_sl else 0.0
-                    if _d_sl <= 0:
-                        # fallback: pakai jarak awal sl-vs-entry (strategi emit per price scan)
-                        _d_sl = abs(_orig_sl - _entry) if _orig_sl else 0.0
+                    _s_sl = float(decision.metadata.get("strategy_sl") or 0.0)   # [V-SLBOS] jangkar strategi
+                    _s_tp = float(decision.metadata.get("strategy_tp") or 0.0)
+                    _emit = float(decision.metadata.get("emit_price") or 0.0)
+                    _orig_sl = _s_sl or float(decision.metadata.get("sl") or 0.0)
+                    _orig_tp = _s_tp or float(decision.metadata.get("take_profit") or 0.0)
+                    _d_sl  = abs(_orig_sl - (_emit or _entry)) if _orig_sl else 0.0
+                    _d_tp  = abs(_orig_tp - (_emit or _entry)) if _orig_tp else 0.0
                     _d_sl = max(min(_d_sl, _buffer), 0.5) if _d_sl > 0 else _buffer  # jangan lebih lebar dr buffer, jangan < $0.5
+                    # [V-SLBOS] kalau strategi ngasih jangkar, SL/TP WAJIB dibangun ulang dari
+                    # jarak strategi thd entry live — walau planner udah nulis SL versi swing H1.
+                    if _s_sl and _d_sl > 0:
+                        _tp_d = max(min(_d_tp, _buffer*1.5), _d_sl*1.5) if _d_tp > 0 else _d_sl*1.5
+                        if decision.action == "SELL":
+                            _sl, _tp = _entry + _d_sl, _entry - _tp_d
+                        else:
+                            _sl, _tp = _entry - _d_sl, _entry + _tp_d
+                        if abs(float(decision.metadata.get("sl") or 0.0) - _sl) > 0.01:
+                            log.info(f"🛡️ V-SLBOS restore: planner SL={float(decision.metadata.get('sl') or 0):.2f} -> strategi {_sl:.2f} (dist={_d_sl:.2f})")
 
                     if decision.action == "SELL":
                         if _sl <= _entry:
