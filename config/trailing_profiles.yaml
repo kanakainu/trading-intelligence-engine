@@ -4,12 +4,12 @@ profiles:
     # ea_parity: true mengaktifkan mesin trailing EA, bukan model peak-lock v2.
     riri_scalps_v1:
         ea_parity: true
-        min_be_profit: 0.5      # EA: MinBreakEvenProfit ($)
-        profit_mult: 1.5        # EA: ProfitThresholdMultiplier
-        trail_dollar: 0.2       # EA: TrailingDistanceValue ($, INPUT_DOLLAR)
+        min_be_profit: 1.5      # [v3.4] dari 0.5 — profit $0.5 langsung BE = mati karna spread
+        profit_mult: 2.0        # [v3.4] dari 1.5 — kasih win room lari ke arah TP
+        trail_dollar: 1.0       # [v3.4] dari 0.2 — trail $0.2 = tiap noise wick nutup win kecil
         be_lock: 1.0
-        dist: 0.5
-        start: 1.0
+        dist: 0.8               # [v3.4] dari 0.5
+        start: 1.5              # [v3.4] dari 1.0
     # ThreeCa: tetap model peak-lock v2 (replay butuh ruang; trail ketat EA = TP 4R hangus)
     three_ca:
         be_lock: 1.0

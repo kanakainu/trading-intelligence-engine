@@ -786,6 +786,24 @@ class RiriScalpsStrategy(BaseStrategy):
         else:
             final_tp = price + (min_tp if sig_dir == Direction.BUY else -min_tp)
         logger.info(f"[RIRI] {reason} at {price:.2f} SL={sl:.2f} TP={final_tp:.2f} lot={lot} (sl_dist={sl_dist:.2f})")
+        # [V-PLUMB 12-Sep BUG FIX] ROOT CAUSE Jumat: runtime ambil metadata dari
+        # Signal (best_src = fusionSignals), BUKAN StrategyResult — selama ini metadata
+        # RiriScalps cuma nempel di StrategyResult -> Signal.metadata KOSONG ->
+        # planner kehilangan detector_sl (hitung swing H1 sendiri: SL $2.8-6.1 nyasar),
+        # nyao_score=None (dampener mati), strategy_code fallback "R". 3Ca gak kena
+        # karena dia emang nulis metadata ke Signal. Sekarang: metadata yg sama dipasang
+        # di DUA-duanya.
+        _md = {
+            "setup_type": "R",
+            "sl": sl,
+            "emit_price": price,       # [V-ANCHOR] jangkar jarak SL buat runtime
+            "take_profit": final_tp,
+            "strategy_sl": sl,         # [V-SLBOS] jangkar WAJIB anti planner-override
+            "strategy_tp": final_tp,
+            "volume": lot,
+            "strategy_code": reason[0]  # A/B/C/D/E/F
+        }
+        _md = {k: v for k, v in _md.items() if v is not None}
         signal = Signal(
             signal_id=str(uuid.uuid4()),
             strategy=self.id,
@@ -793,22 +811,14 @@ class RiriScalpsStrategy(BaseStrategy):
             direction=sig_dir,
             entry_zone={"price": price, "high": price + 0.2, "low": price - 0.2},
             confidence=conf,
-            timeframe="M5"
+            timeframe="M5",
+            metadata=_md
         )
         return StrategyResult(
             signal=signal,
             confidence=conf,
             reason=reason,
-            metadata={
-                "setup_type": "R",
-                "sl": sl,
-                "emit_price": price,   # [V-ANCHOR] jangkar jarak SL buat runtime
-                "take_profit": final_tp,
-                "strategy_sl": sl,         # [V-SLBOS fix] jangkar WAJIB — hook runtime selama ini mati
-                "strategy_tp": final_tp,   # [V-SLBOS fix] supaya SL/TP strategi gak di-overwrite planner H1
-                "volume": lot,
-                "strategy_code": reason[0]  # A/B/C/D/E
-            }
+            metadata=_md
         )
 
     def observe(self, context: StrategyContext) -> None:
