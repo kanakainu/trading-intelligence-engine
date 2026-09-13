@@ -191,6 +191,8 @@ mgr = StrategyManager()
 orch = ExitOrchestrator(min_gate_rr=1.5)
 # Bystra disabled — mati suri, replaced by ThreeCa standalone
 mgr.load(ThreeCaStrategy)
+# RiriScalps DI NONAKTIFKAN di TIE per 13-Sep (SOP refine 3Ca — Boskuh: "engine
+# Ririscalps g akan kita pakai"). EA standalone RiriScalps di MT5 TIDAK disentuh.
 mgr.load(RiriScalpsStrategy)
 
 # Global Regime Detector (Nexus A12 style)
@@ -222,6 +224,14 @@ context_engine = ContextEngine()
 observatory = GateObservatory()
 governor = DailyProfitGovernorV2(daily_target=30.0, daily_loss_limit=200.0)
 budget_mgr = TradeBudgetManager()
+
+# [3Ca v2.0] direct executor — inject broker + safety global. Strategi pegang
+# own order lifecycle (PO/cancel/pyramid), gak lewat fusion/planner/gate Riri.
+_tca = mgr.get("three_ca_v2")
+if _tca:
+    _tca.set_broker(client)
+    _tca.set_safety_gates({"gov": governor, "budget": budget_mgr})
+    log.info("ThreeCa v2.0 wired: direct executor (PO limit + pyramid, buffer 2xspread)")
 
 # === FIRE LOCK (in-memory, anti race/kembar + retry terbatas) ===
 # key (bar_start, action) -> percobaan kirim order. 1 sukses = 99 (kunci mati).

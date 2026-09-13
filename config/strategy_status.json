@@ -1,5 +1,6 @@
 {
-    "riri_scalps_v1": true,
+    "riri_scalps_v1": false,
     "three_ca_v1": true,
+    "three_ca_v2": true,
     "bystra_v1": false
 }

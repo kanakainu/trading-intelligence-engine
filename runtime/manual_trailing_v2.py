@@ -62,6 +62,7 @@ STRATEGY_MAP = {
     "R":   "riri_scalps_v1",
     "F":   "riri_scalps_v1",   # Engine F (EA Nyao port)
     "RIRI_SCALPS": "riri_scalps_v1",
+    "T":   "three_ca",          # [3Ca v2.0] comment TIE_T_<tag>_* — jangan sampe jatuh ke fallback
     "3CA": "three_ca",         # ThreeCa: peak-lock model
 }
 
