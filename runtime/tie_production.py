@@ -317,7 +317,7 @@ def write_dashboard_status(all_pairs_data, broker, status_path):
             "daily_target": daily_target,
             "floating_pnl": sum(getattr(p, 'unrealized_profit', 0) for p in pos_states),
             "margin_percent": 0.0,
-            "active_engines": ["RiriScalps", "ThreeCa"],
+            "active_engines": ["ThreeCa v2.0"],
             "settings": {
                 "capitalMode": "fixed",
                 "capital": balance,
