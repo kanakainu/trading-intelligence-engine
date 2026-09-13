@@ -68,6 +68,8 @@ class ThreeCaStrategy(BaseStrategy):
         self._last_pattern = None
         self._gate = None
         self._gw = None
+        self._gw_ok = None
+        self._gw_probe_t = 0.0
         self._spread_cached = 0.20
         self._digits = 2
         self._last_positions = []   # cache dari runtime (hemat call)
@@ -225,6 +227,21 @@ class ThreeCaStrategy(BaseStrategy):
     def analyze(self, context: StrategyContext) -> StrategyResult:
         if self._gw is None:
             return StrategyResult(signal=None, confidence=0.0, reason="no_broker")
+
+        # [GUARD gw-versi] PO butuh /trade/orders + order_type limit di gateway.
+        # Gateway lama diamin-amin limit => jadi MARKET = bencana. Probe 1x/5mnt.
+        if self._gw_ok is None or time.time() - self._gw_probe_t > 300:
+            self._gw_probe_t = time.time()
+            try:
+                self._gw._get("/trade/orders")
+                self._gw_ok = True
+            except Exception:
+                if self._gw_ok is not False:
+                    logger.warning("[3Ca] GATEWAY LAMA: /trade/orders gak ada — 3Ca "
+                                   "DIBEKUKIN sampai Windows pake server baru (limit)")
+                self._gw_ok = False
+        if not self._gw_ok:
+            return StrategyResult(signal=None, confidence=0.0, reason="gateway_old")
 
         mc = context.scan.market
         sym = mc.symbol
