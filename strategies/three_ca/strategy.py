@@ -254,6 +254,9 @@ class ThreeCaStrategy(BaseStrategy):
         closed = m5[:-1]          # M5 closed (bar forming dibuang)
         c1_t = int(closed[-1].get("time", 0) or 0)
 
+        # heartbeat deck (state cycle terakhir — cukup utk panel 3C)
+        self._publish(mc, price)
+
         # ── fase 0: pola hidup -> rawat; SATU pola aktif, deteksi baru noleh ──
         if self._p:
             why = self._manage_pattern(sym, price, closed, c1_t, now)
@@ -423,13 +426,50 @@ class ThreeCaStrategy(BaseStrategy):
         self._save_state()
         self._mark_dashboard("dead", "", 0, price)
 
-    def _mark_dashboard(self, status, d, lvl, price):
-        """SOP no.10: tandain warna candle / state di dashboard (file; endpoint
-        menyusul kalau Boskuh mau tile khusus)."""
+    def _mark_dashboard(self, status, d, lvl, price, extra=None):
+        """State 3Ca utk dashboard (file; deck bacanya via /api/3ca)."""
         try:
-            json.dump({"ts": datetime.now(timezone.utc).isoformat(), "status": status,
-                       "dir": d, "level": lvl, "price": price,
-                       "pattern": (self._p or {}).get("tag", "")},
-                      open("/tmp/tie_3ca_mark.json", "w"))
+            m = {"ts": datetime.now(timezone.utc).isoformat(), "status": status,
+                 "dir": d, "level": lvl, "price": price,
+                 "pattern": (self._p or {}).get("tag", "")}
+            if extra:
+                m.update(extra)
+            json.dump(m, open("/tmp/tie_3ca_mark.json", "w"))
         except Exception:
             pass
+
+    def _publish(self, mc, price):
+        """Snapshot state 3Ca utk deck: pattern, PO, jatah, level break, tren EMA."""
+        try:
+            p = self._p or {}
+            em = self._ema_trend(mc)
+            json.dump({
+                "ts": datetime.now(timezone.utc).isoformat(),
+                "phase": ("PATTERN" if p else ("FROZEN" if not getattr(self, "_gw_ok", True) else "WATCH")),
+                "pattern": p.get("tag", ""), "dir": p.get("dir", ""),
+                "po_price": p.get("po_price"), "po_sl": p.get("po_sl"),
+                "po_active": bool(p.get("po_ticket")),
+                "break_level": p.get("inst_lvl"), "gate2": p.get("gate2"),
+                "positions": len(p.get("tickets", [])), "max_pos": MAX_POS_PER_PATTERN,
+                "m15_kuat": p.get("m15", False), "buf": p.get("buf"),
+                "price": price, **em,
+            }, open("/tmp/tie_3ca_mark.json", "w"))
+        except Exception:
+            pass
+
+    def _ema_trend(self, mc):
+        """Tren EMA9/21 M5 & M15 (close terakhir) — utk panel 3C deck."""
+        out = {"m5_trend": "--", "m15_trend": "--"}
+        try:
+            for tf, key in (("M5", "m5_trend"), ("M15", "m15_trend")):
+                cs = (mc.metadata.get("candles") or {}).get(tf, [])[:-1]
+                if len(cs) < 22:
+                    continue
+                closes = [float(c.get("close", 0)) for c in cs]
+                from detectors.three_candle_detector import ema_series
+                e9, e21 = ema_series(closes, 9)[-1], ema_series(closes, 21)[-1]
+                out[key] = "BULL" if closes[-1] > max(e9, e21) \
+                    else "BEAR" if closes[-1] < min(e9, e21) else "MIX"
+        except Exception:
+            pass
+        return out
