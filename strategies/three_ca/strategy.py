@@ -56,7 +56,7 @@ class ThreeCaStrategy(BaseStrategy):
         meta = StrategyMetadata(
             id="three_ca_v2",
             name="ThreeCa",
-            version="2.0.0",
+            version="2.3.0",
             priority=85,
             author="Boskuh+Sasa",
             description="3C SOP: PO limit @C2 (buf 2xspread), SL C3; instant break C1 "
@@ -98,7 +98,9 @@ class ThreeCaStrategy(BaseStrategy):
     # ── persistence (restart-proof) ───────────────────────────────────────
     @property
     def _state_path(self):
-        return os.path.join(os.path.dirname(os.path.abspath(__file__)), ".three_ca_state.json")
+        # test boleh redirect (TIE_3CA_STATE) biar gak nyemar state produksi
+        return os.environ.get("TIE_3CA_STATE") or os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), ".three_ca_state.json")
 
     def _save_state(self):
         try:
@@ -293,13 +295,24 @@ class ThreeCaStrategy(BaseStrategy):
             inst_lvl = self._r(l1 - buf)
             gate2, gate3 = self._r(h2), self._r(h3)
 
-        # pola kegedean? limit $5; $8 kalau M5+M15 kompak (SOP no.2 Boskuh)
+        # [v2.2 Boskuh: NO-SKIP] pola kegedean? JANGAN dibuang — SL PO di-anchor
+        # 1.2x ATR dari harga PO (sama kayak instant entry). Risk per trade tetap
+        # kecil (0.01 lot), pattern tetap dapet chance.
         risk_po = abs(po_price - po_sl)
+        atr_det = float(md.get("atr") or 0.0)
         cap = 8.0 if md.get("trend_m15") else 5.0
         if risk_po > cap:
-            logger.info("[3Ca] %s %s SKIP: risk PO $%.2f > $%.0f (M15 %s)",
-                        tag, d, risk_po, cap, "ON" if md.get("trend_m15") else "off")
-            return StrategyResult(signal=None, confidence=0.0, reason=f"too_wide:{risk_po:.2f}")
+            if atr_det > 0:
+                po_sl = (self._r(po_price - 1.2 * atr_det) if d == "BUY"
+                         else self._r(po_price + 1.2 * atr_det))
+                risk_po = abs(po_price - po_sl)
+                logger.info("[3Ca] %s %s PO SL wide->anchor ATR: sl=%.2f risk=$%.2f",
+                            tag, d, po_sl, risk_po)
+            else:
+                logger.info("[3Ca] %s %s SKIP: risk PO $%.2f > $%.0f & atr=? (jarang)",
+                            tag, d, risk_po, cap)
+                return StrategyResult(signal=None, confidence=0.0,
+                                      reason=f"too_wide:{risk_po:.2f}")
 
         side = "buy" if d == "BUY" else "sell"
         okp, ticket, msg = self._place(sym, side, LOT, price=po_price,
@@ -364,13 +377,39 @@ class ThreeCaStrategy(BaseStrategy):
                 return f"3ca_invalid:{tag}" + ("_fatal" if fatal else "")
         self._save_state()
 
-        # 3) trigger break C1 -> instant/pyramid
+        # [v2.4 REAPER HANTU] jatah SOP abis + PO gak ada + semua posisi pola udah keluar
+        # -> pola dipensiunkan. Tanpa ini deck nempel "PATTERN" selamanya walau trade
+        # bubar semua (bukti P68300: 12 tiket, 0 live, phase masih PATTERN).
+        # Konfirmasi 2 cycle beruntun — query posisi bisa ngawur balik [] pas network glitch.
+        if p.get("tickets") and len(p["tickets"]) >= MAX_POS_PER_PATTERN and not p.get("po_ticket"):
+            try:
+                src = self._gw._get("/account/positions") or []
+                any_live = any(str(x.get("comment", "")).startswith(f"TIE_T_{tag}") for x in src)
+            except Exception:
+                any_live = True
+            if any_live:
+                p["empty_n"] = 0
+            else:
+                p["empty_n"] = p.get("empty_n", 0) + 1
+                if p["empty_n"] >= 2:
+                    self._kill_pattern(sym, "jatah habis & semua posisi close", price)
+                    return f"3ca_done:{tag}"
         broke = price > p["inst_lvl"] if d == "BUY" else price < p["inst_lvl"]
         if not broke:
             return None
 
         live = self._live_pos(sym)
-        if len(live) >= MAX_POS_PER_PATTERN:
+        # [v2.2 ANTI-STAMPEDE] query posisi ke-gateway bisa balik [] pas network error/requote —
+        # guard max5 jadi bolong, strategi nembak 22x berturut-turut (bukti log 14-Sep 10:29-10:41).
+        # Fallback: kalau live kosong padahal tickets tercatat, pakai hitungan tickets.
+        n_live = len(live)
+        if n_live == 0 and p.get("tickets"):
+            n_live = len(p["tickets"])
+        # [v2.3 SOP Boskuh] jatah = KUMULATIF 5/pola, bukan concurrent. Ticket nabung terus
+        # walau posisi udah di-close trailing — jangan bisa entry ke-6 dst (bukti P68300: 12 tiket).
+        if len(p.get("tickets", [])) >= MAX_POS_PER_PATTERN:
+            return "max5"
+        if n_live >= MAX_POS_PER_PATTERN:
             return "max5"
         ok, why = self._allowed_global(now, "three_ca")
         if not ok:
@@ -390,11 +429,33 @@ class ThreeCaStrategy(BaseStrategy):
             self._cancel_po()
 
         quota = 2 if p["m15"] else 1
-        quota = min(quota, MAX_POS_PER_PATTERN - len(live))
+        quota = min(quota, MAX_POS_PER_PATTERN - n_live)
+        if quota <= 0:
+            return "max5"
         sl_i = self._r(p["gate2"] - p["buf"]) if d == "BUY" else self._r(p["gate2"] + p["buf"])
         risk_i = abs(price - sl_i)
-        if risk_i < 0.3 or risk_i > 9.5:
-            logger.info("[3Ca] %s break, risk entry $%.2f di luar 0.3-9.5 — skip", tag, risk_i)
+        # [v2.1 NO-CAP Boskuh] plafon risk $9.5 DIHAPUS.
+        # Kalau SL struktur kejauhan (harga udah kabur dr C2), SL di-anchor
+        # 1.2x ATR dari harga — risk per trade kekontrol, entry TETAP jalan.
+        atr_now = 0.0
+        try:
+            trs = []
+            for k in range(max(1, len(closed) - 14), len(closed)):
+                ck, pk = closed[k], closed[k - 1]
+                trs.append(max(float(ck["high"]) - float(ck["low"]),
+                               abs(float(ck["high"]) - float(pk["close"])),
+                               abs(float(ck["low"]) - float(pk["close"]))))
+            atr_now = sum(trs) / len(trs) if trs else 0.0
+        except Exception:
+            pass
+        if atr_now and atr_now > 0:
+            floor_sl = atr_now * 1.2
+            if risk_i > floor_sl:
+                sl_i = self._r(price + floor_sl) if d == "SELL" else self._r(price - floor_sl)
+                risk_i = abs(price - sl_i)
+                logger.info("[3Ca] %s SL wide->anchor ATR: sl=%.2f risk=$%.2f", tag, sl_i, risk_i)
+        if risk_i < 0.3:
+            logger.info("[3Ca] %s break, risk entry $%.2f < $0.3 — skip", tag, risk_i)
             return "risk_out"
         tp_i = price + TP_R * risk_i * (1 if d == "BUY" else -1)
         side = "buy" if d == "BUY" else "sell"
@@ -434,7 +495,7 @@ class ThreeCaStrategy(BaseStrategy):
                  "pattern": (self._p or {}).get("tag", "")}
             if extra:
                 m.update(extra)
-            json.dump(m, open("/tmp/tie_3ca_mark.json", "w"))
+            json.dump(m, open(os.environ.get("TIE_3CA_MARK", "/tmp/tie_3ca_mark.json"), "w"))
         except Exception:
             pass
 
@@ -453,7 +514,7 @@ class ThreeCaStrategy(BaseStrategy):
                 "positions": len(p.get("tickets", [])), "max_pos": MAX_POS_PER_PATTERN,
                 "m15_kuat": p.get("m15", False), "buf": p.get("buf"),
                 "price": price, **em,
-            }, open("/tmp/tie_3ca_mark.json", "w"))
+            }, open(os.environ.get("TIE_3CA_MARK", "/tmp/tie_3ca_mark.json"), "w"))
         except Exception:
             pass
 
