@@ -79,7 +79,7 @@ _fh = logging.FileHandler("/home/ubuntu/trading-intelligence-engine/logs/tie_pro
 _fh.setFormatter(logging.Formatter('%(asctime)s %(name)s %(message)s'))
 logging.getLogger().addHandler(_fh)
 
-URL = 'https://legends-api-disable-morrison.trycloudflare.com'
+URL = 'https://statute-expired-chapter-subscribers.trycloudflare.com'
 TOKEN = 'Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV'
 SYMBOLS = ['XAUUSD']  # user-tuned 2026-08-05: XAUUSD only, save bandwidth
 

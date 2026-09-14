@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 log = logging.getLogger("ManualTrailing")
 
 POLL_SEC   = 5
-URL        = os.getenv("MT5_GATEWAY_URL",   "https://legends-api-disable-morrison.trycloudflare.com")
+URL        = os.getenv("MT5_GATEWAY_URL",   "https://statute-expired-chapter-subscribers.trycloudflare.com")
 TOKEN      = os.getenv("MT5_GATEWAY_TOKEN", "Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV")
 HEADERS    = {"Authorization": f"Bearer {TOKEN}"}
 
