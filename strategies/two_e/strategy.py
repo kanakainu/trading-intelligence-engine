@@ -345,7 +345,8 @@ class TwoEStrategy(BaseStrategy):
                    "h1": self._r(h1), "l1": self._r(l1), "buf": buf}
         self._save_state()
         logger.info("[2E] %s %s pola: %d LIMIT @%.2f-%.2f SL_ALL=%.2f break@%.2f",
-                    tag, d, placed, po[0]["price"], po[-1]["price"], sl, inst)
+                    tag, d, placed, po[0]["price"] if po else 0.0,
+                    po[-1]["price"] if po else inst, sl, inst)
         self._publish(price)
         return StrategyResult(signal=None, confidence=0.0, reason="pattern_new")
 
