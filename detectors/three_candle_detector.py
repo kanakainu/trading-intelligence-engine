@@ -26,7 +26,7 @@ CHOP_WINDOW = 5     # 5 candle sebelum deteksi: pita EMA = jebakan sideways
 
 def _align_ok(e9, e21, is_buy):
     # [SOP-16B] alignment EMA9 vs EMA21 wajib searah (knob ablation: TIE_EMA_ALIGN=off)
-    if os.environ.get("TIE_EMA_ALIGN", "on") == "off":
+    if os.environ.get("TIE_EMA_ALIGN", "on") in ("off",):
         return True
     return e9 > e21 if is_buy else e9 < e21
 

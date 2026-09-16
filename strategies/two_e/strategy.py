@@ -49,7 +49,7 @@ class TwoEStrategy(BaseStrategy):
         meta = StrategyMetadata(
             id="two_e_v1",
             name="TwoE",
-            version="1.8.2",
+            version="1.8.3",
             priority=84,
             author="Boskuh+Riri",
             description="2-Engulfing: 4 limit di area C2body-C1close + market "
@@ -278,7 +278,7 @@ class TwoEStrategy(BaseStrategy):
             cl1f = float(c1.get("close", 0))
             # [SOP-16B Boskuh] ALIGNMENT dulu: EMA9 vs EMA21 harus searah arah trade —
             # sell tanpa 9<21 = jualan di struktur naik (kronologi 12:15: 4 L rugi)
-            _align = os.environ.get("TIE_EMA_ALIGN", "on") != "off"
+            _align = os.environ.get("TIE_EMA_ALIGN", "3c") == "on"   # [16C] default: 2E BEBAS (hanya "on" penuh yang ngiket)
             ok_ema = (cl1f > e9 and cl1f > e21 and (e9 > e21 or not _align)) if d == "BUY" \
                 else (cl1f < e9 and cl1f < e21 and (e9 < e21 or not _align))
             if not ok_ema:
