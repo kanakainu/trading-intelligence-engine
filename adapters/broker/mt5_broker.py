@@ -16,6 +16,11 @@ from adapters.broker.exceptions import BrokerConnectionError, SymbolNotFoundErro
 
 log = logging.getLogger("MT5BrokerAdapter")
 
+# [17-Sep] retry modify SL/TP — requote/timeout = gangguan sesaat, bukan penolakan.
+import os as _os
+MODIFY_RETRY = max(1, int(_os.environ.get("TIE_MODIFY_RETRY", "4")))
+MODIFY_BACKOFF = float(_os.environ.get("TIE_MODIFY_BACKOFF", "0.6"))
+
 
 def _get_gateway_client(base_url, token, timeout):
     """Lazy import of gateway_client — enables mocking in tests."""
@@ -37,6 +42,20 @@ class MT5BrokerAdapter(BrokerAdapterBase):
     @property
     def name(self) -> str:
         return "mt5_broker"
+
+    def _spread_cached(self, ticket, pos):
+        """Spread $ simbol (fallback 0.2) — dipakai buat geser SL saat requote."""
+        try:
+            sym = pos.get("symbol", "XAUUSD")
+            if not hasattr(self, "_spr_cache"):
+                self._spr_cache = {}
+            if sym not in self._spr_cache:
+                _p = self._client.price(sym) or {}
+                _s = _p.get("spread")
+                self._spr_cache[sym] = (abs(float(_s)) / 1000.0 if _s else 0.2)
+            return self._spr_cache[sym]
+        except Exception:
+            return 0.2
 
     def initialize(self) -> None:
         try:
@@ -118,19 +137,57 @@ class MT5BrokerAdapter(BrokerAdapterBase):
         return OrderResponse(status="REJECTED", error="Order not accepted")
 
     def modify_order(self, order_id: str, **kwargs) -> OrderResponse:
-        try:
-            result = self._client.modify(
-                int(order_id),
-                sl=kwargs.get("stop_loss"),
-                tp=kwargs.get("take_profit"),
-            )
-            success = result.get("success", False) if isinstance(result, dict) else bool(result)
-            return OrderResponse(
-                order_id=order_id,
-                status="FILLED" if success else "REJECTED",
-            )
-        except Exception as e:
-            return OrderResponse(order_id=order_id, status="REJECTED", error=str(e))
+        """Modify SL/TP — RETRY cerdas: requote/timeout itu gangguan sesaat, JANGAN buang.
+
+        [17-Sep fix] Dulu `except Exception -> REJECTED` tanpa retry: 1 requote = SL
+        gagal geser, posisi balik ke SL awal dan kena SL padahal udah profit
+        (bukti E77100 #3830163215: 3x BE-lock ditolak, akhirnya loss).
+        Klasifikasi: error SESAAAT (requote/off quotes/timeout/5xx) -> coba lagi pakai
+        harga terbaru; error PERMANEN (posisi gak ada, parameter invalid) -> langsung stop.
+        """
+        import time as _t
+        sl, tp = kwargs.get("stop_loss"), kwargs.get("take_profit")
+        transient_kw = ("requote", "off quote", "off quotes", "busy", "timeout",
+                        "timed out", "connection", "temporarily", "try again",
+                        "price changed", "invalid price", "slippage", "server")
+        last = ""
+        for attempt in range(1, MODIFY_RETRY + 1):
+            try:
+                result = self._client.modify(int(order_id), sl=sl, tp=tp)
+                success = result.get("success", False) if isinstance(result, dict) else bool(result)
+                if success:
+                    if attempt > 1:
+                        log.info("[modify %s] berhasil di percobaan %d/%d", order_id, attempt, MODIFY_RETRY)
+                    return OrderResponse(order_id=order_id, status="FILLED")
+                last = str((result or {}).get("message") or (result or {}).get("error") or "rejected")
+                if any(k in last.lower() for k in ("not found", "invalid", "no such")):
+                    break            # permanen — gak usah retry
+            except Exception as e:
+                last = str(e)
+                code = getattr(e, "status", None)
+                permanent = ("not found" in last.lower() or "invalid" in last.lower()
+                             or (isinstance(code, int) and 400 <= code < 500 and code != 429
+                                 and not any(k in last.lower() for k in ("requote", "price"))))
+                transient = (isinstance(code, int) and (code == 429 or code >= 500)) or \
+                            any(k in last.lower() for k in transient_kw)
+                if permanent and not transient:
+                    break
+            if attempt < MODIFY_RETRY:
+                # backoff + geser SL sedikit MENJAUH dari harga (MT5 nolak SL terlalu mepet
+                # harga pasar / requote karena harga gerak). Arah: buat SELL SL naik sedikit,
+                # buat BUY SL turun sedikit — tetap di sisi aman (bukan nambah risiko).
+                try:
+                    _p = self._client.positions() or []
+                    _me = next((x for x in _p if str(x.get("ticket")) == str(order_id)), None)
+                    if _me and sl:
+                        _side = "buy" if str(_me.get("type", "")).lower() in ("0", "buy") else "sell"
+                        _buf = max(0.01, self._spread_cached(order_id, _me)) * attempt
+                        sl = round(sl - _buf if _side == "buy" else sl + _buf, 2)
+                except Exception:
+                    pass
+                _t.sleep(MODIFY_BACKOFF * attempt)
+        log.warning("Modify %s GAGAL %dx (%s)", order_id, MODIFY_RETRY, last[:80])
+        return OrderResponse(order_id=order_id, status="REJECTED", error=last)
 
     def cancel_order(self, order_id: str) -> bool:
         return True  # MT5: market orders can't be cancelled after filled

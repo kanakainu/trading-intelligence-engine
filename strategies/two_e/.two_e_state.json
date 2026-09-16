@@ -1,1 +1,1 @@
-{"version": 1, "pattern": {"tag": "E77100", "dir": "SELL", "sl": 4349.16, "inst": 4345.73, "po": [], "cpre": "2E_S_E77100", "tickets": [], "inst_fired": false, "created": 1789577407.346649, "h1": 4348.79, "l1": 4346.1, "buf": 0.37}, "last_pattern": "E77100", "ghost": null}
+{"version": 1, "pattern": null, "last_pattern": "E77100", "ghost": {"dir": "SELL", "h1": 4348.79, "l1": 4346.1, "tag": "E77100", "t": 1789579992.3224895}}
