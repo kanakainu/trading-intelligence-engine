@@ -131,7 +131,10 @@ class SimGW:
         pos = self.positions.pop(t, None)
         if not pos:
             return
-        px = px - 0.02 if pos["direction"] == "buy" else px + 0.02   # slip tipis
+        # [AUDIT Sasa 16-Sep] harga exit kena SEBERANG spread + slippage kecil.
+        # Sebelumnya cuma geser 0.02 -> spread nol biaya, backtest ketipu optimis.
+        half = self.spread / 2.0
+        px = px - half - 0.02 if pos["direction"] == "buy" else px + half + 0.02
         pnl = self._pnl(pos, px)
         self.fills.append({"kind": "exit", "t": CLOCK['t'], "price": round(px, 2),
                            "comment": pos["comment"], "pnl": round(pnl, 2), "reason": reason})
@@ -140,9 +143,11 @@ class SimGW:
 
     def step(self, candle):
         o, h, l = float(candle["open"]), float(candle["high"]), float(candle["low"])
+        # spread riil = jarak harga beli/jual; order limit kena sisi kita, exit kena sisi lawan
         for tk in list(self.orders):
             rec = self.orders[tk]
             px = float(rec["price"])
+            _ = o, h, l
             if rec["direction"] == "buy" and l <= px:
                 self.orders.pop(tk); self._open(tk, min(o, px), rec)
                 self.fills.append({"kind": "entry", "t": CLOCK['t'], "price": round(min(o, px), 2),
@@ -209,7 +214,7 @@ def fetch_m5(count):
     return out
 
 
-def run(m5):
+def run(m5, spread=0.18):
     for f in ("/tmp/bt_3ca_state.json", "/tmp/bt_2e_state.json"):
         if os.path.exists(f):
             os.remove(f)
@@ -217,7 +222,7 @@ def run(m5):
     gov = DailyProfitGovernorV2(daily_target=float(os.environ.get("TIE_GOV_TARGET", "30")),
                                 daily_loss_limit=float(os.environ.get("TIE_GOV_LOSS", "200")))
     budget = TradeBudgetManager()
-    sim = SimGW(gov=gov if os.environ.get("TIE_SIM_GOV", "1") == "1" else None)
+    sim = SimGW(spread=spread, gov=gov if os.environ.get("TIE_SIM_GOV", "1") == "1" else None)
     s3 = m3.ThreeCaStrategy(); s2 = m2.TwoEStrategy()
     s3.set_broker(sim); s2.set_broker(sim)
     s3.set_safety_gates({"gov": sim.gov or gov, "budget": budget})
@@ -288,6 +293,8 @@ def metrics(trades):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--bars", type=int, default=8000)
+    ap.add_argument("--spread", type=float, default=0.18,
+                    help="spread XAUUSD dlm $ (default 0.18; stress-test: coba 0.25/0.35)")
     a = ap.parse_args()
     t0 = time.time()
     m5 = fetch_m5(a.bars)
@@ -295,14 +302,16 @@ if __name__ == "__main__":
         sys.exit("gateway candles kosong")
     d0 = datetime.datetime.utcfromtimestamp(int(m5[0]["time"]))
     d1 = datetime.datetime.utcfromtimestamp(int(m5[-1]["time"]))
-    print(f"data M5 = {len(m5)} candle  {d0} .. {d1} UTC  (~{(d1-d0).days} hari)")
-    trades = list(run(m5))
+    print(f"data M5 = {len(m5)} candle  {d0} .. {d1} UTC  (~{(d1-d0).days} hari)  spread=${a.spread:.2f}")
+    trades = list(run(m5, spread=a.spread))
     mt = metrics(trades)
     print(json.dumps(mt, indent=1))
     print(f"elapsed {time.time()-t0:.0f}s")
     os.makedirs("backtest/reports", exist_ok=True)
     stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M")
-    json.dump({"metrics": mt, "window": [str(d0), str(d1)], "bars": len(m5),
+    json.dump({"meta": {"source": "mt5_gateway_exness", "symbol": "XAUUSD",
+                        "tf": "M5", "spread_usd": a.spread, "bars_arg": a.bars},
+               "metrics": mt, "window": [str(d0), str(d1)], "bars": len(m5),
                "trades": trades},
               open(f"backtest/reports/tuiul_replay_{stamp}.json", "w"), default=str)
     print(f"saved backtest/reports/tuiul_replay_{stamp}.json")

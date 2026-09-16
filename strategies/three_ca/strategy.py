@@ -47,6 +47,9 @@ HALT_FLAG = "/tmp/tie_halt"
 PEN_FRAC = float(os.environ.get("TIE_PEN_FRAC", "0.3"))
 GHOST_ON = os.environ.get("TIE_GHOST", "1") == "1"
 FOOT_SL = os.environ.get("TIE_FOOT_SL", "1") == "1"
+# [AUDIT Sasa 16-Sep] ladder 3C: area C2 (body C2 s/d wick C2) dibagi N tangga.
+# 1 = perilaku lama (PO tunggal di ujung C2). Ablation dulu, default 1.
+LADDER_N = max(1, int(os.environ.get("TIE_3C_LADDER", "1")))
 HOLD_OK = os.environ.get("TIE_HOLD", "1") == "1"
 STATE_VERSION = 3         # bump = reset state bawaan versi lama
 
@@ -62,7 +65,7 @@ class ThreeCaStrategy(BaseStrategy):
         meta = StrategyMetadata(
             id="three_ca_v2",
             name="ThreeCa",
-            version="2.9.5",
+            version="2.9.6",
             priority=85,
             author="Boskuh+Sasa",
             description="3C SOP: PO limit @C2 (buf 2xspread), SL C3; instant break C1 "
@@ -174,15 +177,17 @@ class ThreeCaStrategy(BaseStrategy):
             return False, None, str(e)[:60]
 
     def _cancel_po(self):
-        t = (self._p or {}).get("po_ticket")
-        if not t:
-            return
-        try:
-            self._gw._post(f"/trade/delete/{int(t)}")
-            logger.info("[3Ca] PO %s dicabut", t)
-        except Exception as e:
-            logger.info("[3Ca] PO %s dicabut (mungkin udah kefill): %s", t, str(e)[:50])
-        self._p["po_ticket"] = None
+        """Cabut SEMUA PO pola (ladder-aware). po_ticket tetap = PO utama (kompat state lama)."""
+        p = self._p or {}
+        tix = list(p.get("po_tickets") or ([p["po_ticket"]] if p.get("po_ticket") else []))
+        for t in tix:
+            try:
+                self._gw._post(f"/trade/delete/{int(t)}")
+                logger.info("[3Ca] PO %s dicabut", t)
+            except Exception as e:
+                logger.info("[3Ca] PO %s dicabut (mungkin udah kefill): %s", t, str(e)[:50])
+        p["po_ticket"] = None
+        p["po_tickets"] = []
 
     def _pending_orders(self):
         try:
@@ -355,16 +360,56 @@ class ThreeCaStrategy(BaseStrategy):
                         tag, d, po_sl, risk_po)
 
         side = "buy" if d == "BUY" else "sell"
-        okp, ticket, msg = self._place(sym, side, LOT, price=po_price,
-                                       sl=po_sl, comment=self._p_cpre(tag, d) + "_PO")
-        if not okp:
-            logger.warning("[3Ca] %s PO GAGAL pasang: %s", tag, msg)
-            return StrategyResult(signal=None, confidence=0.0, reason=f"po_fail:{msg}")
+
+        def _atr_of(cs):
+            try:
+                trs = [max(float(cs[k]["high"]) - float(cs[k]["low"]),
+                           abs(float(cs[k]["high"]) - float(cs[k - 1]["close"])),
+                           abs(float(cs[k]["low"]) - float(cs[k - 1]["close"])))
+                       for k in range(max(1, len(cs) - 14), len(cs))]
+                return sum(trs) / len(trs) if trs else 0.0
+            except Exception:
+                return 0.0
+
+        # [LADDER] titik-titik PO: N=1 -> perilaku lama (po_price di ujung C2)
+        if LADDER_N <= 1:
+            lv = [(po_price, po_sl)]
+        else:
+            # area C2 = body C2 -> wick C2 (deket2 zona entry), dibagi N tangga
+            if d == "BUY":
+                a, b = float(c2["open"]), po_price          # body C2 (bawah) .. high C2+buf
+            else:
+                a, b = float(c2["open"]), po_price          # body C2 (atas) .. low C2-buf
+            lv = []
+            for i in range(1, LADDER_N + 1):
+                px = self._r(a + (b - a) * i / LADDER_N)
+                slf = po_sl
+                if atr_det > 0 and abs(px - slf) > 2.5 * atr_det:
+                    slf = self._r(px - 2.5 * atr_det) if d == "BUY" else self._r(px + 2.5 * atr_det)
+                lv.append((px, slf))
+
+        po_tickets, first_tk = [], None
+        for i, (px, slf) in enumerate(lv):
+            suf = "_PO" if LADDER_N <= 1 else f"_PO{i + 1}"
+            okt, tk, msg = self._place(sym, side, LOT, price=px, sl=slf,
+                                       comment=self._p_cpre(tag, d) + suf)
+            if not okt:
+                logger.warning("[3Ca] %s PO%s GAGAL @%.2f: %s", tag, suf, px, msg)
+                continue
+            po_tickets.append(int(tk))
+            if first_tk is None:
+                first_tk = int(tk)
+        if not po_tickets:
+            logger.warning("[3Ca] %s PO GAGAL pasang semua", tag)
+            return StrategyResult(signal=None, confidence=0.0, reason="po_fail")
+        ticket = first_tk
 
         self._p = {
             "tag": tag, "dir": d, "buf": buf, "atr": atr_det,
             "cpre": f"3C_{'B' if d == 'BUY' else 'S'}_{tag}",  # [v2.6 comment simple]
             "po_price": po_price, "po_sl": po_sl, "po_ticket": int(ticket),
+            "po_tickets": po_tickets, "po_map": {int(tk): slf for tk, (px, slf) in zip(po_tickets, lv)},
+            "po_lv": {int(tk): px for tk, (px, slf) in zip(po_tickets, lv)},
             "inst_lvl": inst_lvl, "gate2": gate2, "gate3": gate3,
             "sl_wall": po_sl,
             "tickets": [], "m15": bool(md.get("trend_m15")),
@@ -389,24 +434,31 @@ class ThreeCaStrategy(BaseStrategy):
 
         # 1) deteksi PO tereksekusi: order ilang dr /orders -> tanya positions.
         #    Ada di positions = FILLED (SL C3 warisan broker). Gak ada dua2nya = reject.
-        if p.get("po_ticket") and (now - p.get("orders_checked", 0)) >= 5:
+        _po_all = list(p.get("po_tickets") or ([p["po_ticket"]] if p.get("po_ticket") else []))
+        if _po_all and (now - p.get("orders_checked", 0)) >= 5:
             p["orders_checked"] = now
             orders = self._pending_orders()
             if orders is not None:
-                still = any(int(o.get("ticket", 0)) == int(p["po_ticket"]) for o in orders)
-                if not still:
+                live_tix = {int(o.get("ticket", 0)) for o in orders}
+                _tixset = set(_po_all)
+                gone = [t for t in _po_all if t not in live_tix]
+                if gone:
                     pos = self._gw._get("/account/positions") or []
-                    filled = any(int(x.get("ticket", 0)) == int(p["po_ticket"]) for x in pos)
+                    pos_tix = {int(x.get("ticket", 0)) for x in pos}
                     self._last_positions = pos
-                    if filled:
-                        p["tickets"].append(int(p["po_ticket"]))
-                        logger.info("[3Ca] %s PO HIT -> #%s live (SL C3=%.2f, trailing "
-                                    "tiga_ca yang megang) [%d/5]", tag, p["po_ticket"],
-                                    p["po_sl"], len(p["tickets"]))
-                    else:
-                        logger.info("[3Ca] %s PO#%s reject/expired — dilupakan",
-                                    tag, p["po_ticket"])
-                    p["po_ticket"] = None
+                    for t in gone:
+                        if t in pos_tix:
+                            p["tickets"].append(int(t))
+                            _slf = (p.get("po_map") or {}).get(t, p["po_sl"])
+                            logger.info("[3Ca] %s PO HIT -> #%s live (SL=%.2f, trailing "
+                                        "tiga_ca yang megang) [%d/5]", tag, t, _slf,
+                                        len(p["tickets"]))
+                        else:
+                            logger.info("[3Ca] %s PO#%s reject/expired — dilupakan", tag, t)
+                        _tixset.discard(t)
+                    p["po_tickets"] = sorted(_tixset)
+                    # po_ticket = PO utama yg masih hidup (kompat deck/kode lama)
+                    p["po_ticket"] = (p.get("po_tickets") or [None])[0]
                     self._save_state()
 
         # 2) evaluasi M5 closed baru: validasi gerbang C2 / fatal C3
@@ -450,7 +502,11 @@ class ThreeCaStrategy(BaseStrategy):
         # ke-hold -> pola nempel "SELL" selamanya & BLOKIR deteksi pola baru.
         # Reaper sekarang: ticket ada + PO mati + 0 live (2x confirm) = PENSIUN,
         # mau jatah 2 apa 5.
-        if p.get("tickets") and not p.get("po_ticket"):
+        # [v2.9.6 zombie-kosong] tickets=[] + PO mati juga wajib diburu:
+        # break instant GAGAL Requote -> brk_done True tapi placed 0 -> pola hampa,
+        # dulu SELAMAT dari reaper (karena syarat tickets non-kosong) dan BLOKIR
+        # semua deteksi baru berjam-jam (P24600 16-Sep: 4 pola hilang, 6 jam).
+        if not (p.get("po_tickets") or p.get("po_ticket")) and (p.get("tickets") or now - p.get("created", now) > 120):
             try:
                 src = self._gw._get("/account/positions") or []
                 any_live = any(str(x.get("comment", "")).startswith(f"3C_") and tag in str(x.get("comment", "")) for x in src)
@@ -464,10 +520,11 @@ class ThreeCaStrategy(BaseStrategy):
                     # [v2.9.3] ghost: SL disapu wick, pola pensiun DULUAN — tapi
                     # close fatal luar C3 yang dateng 1-3 candle kemudian tetap
                     # sah nge-arm counter. Memo gate3 sebelum dibersihin.
-                    self._ghost = ({"dir": p["dir"], "gate3": p["gate3"],
-                                   "tag": p["tag"], "t": now} if GHOST_ON else None)
-                    logger.info("[3Ca] %s GHOST 15mnt — close fatal luar %.2f masih arm counter",
-                                p["tag"], p["gate3"])
+                    if p.get("tickets"):   # zombi kosong (nabrak posisi) = pensiun tanpa memo
+                        self._ghost = ({"dir": p["dir"], "gate3": p["gate3"],
+                                       "tag": p["tag"], "t": now} if GHOST_ON else None)
+                        logger.info("[3Ca] %s GHOST 15mnt — close fatal luar %.2f masih arm counter",
+                                    p["tag"], p["gate3"])
                     self._kill_pattern(sym, "semua posisi close, PO mati — pola pensiun", price)
                     return f"3ca_done:{tag}"
         # [v2.6 filter penetrasi Boskuh] break = CLOSE M5 di luar inst_lvl minus
@@ -510,8 +567,8 @@ class ThreeCaStrategy(BaseStrategy):
         else:
             p["brk_ref"], p["brk_t"] = price, now
 
-        # aturan SOP: entry instant => PO dihapus
-        if p.get("po_ticket"):
+        # aturan SOP: entry instant => SEMUA PO dicabut
+        if p.get("po_tickets") or p.get("po_ticket"):
             self._cancel_po()
 
         quota = 2 if p["m15"] else 1
@@ -561,13 +618,17 @@ class ThreeCaStrategy(BaseStrategy):
                 break
             p["tickets"].append(int(t))
             placed += 1
-        p["brk_done"] = True  # [v2.7] seumur pola, gak ada break ke-2
         if placed:
+            p["brk_done"] = True  # [v2.7] seumur pola, gak ada break ke-2
+            # [v2.9.6] placed=0 (Requote total) -> brk_done TIDAK di-set: pola hampa
+            # dengan break "sudah terjadi" = zombi pemblokir deteksi (P24600 16-Sep)
             self._consume_budget(placed)
             logger.info("[3Ca] %s BREAK C1 @%.2f -> +%d posisi SL=%.2f TP=%.2f "
                         "(total %d/5, M15 %s)", tag, price, placed, sl_i, tp_i,
                         len(p["tickets"]), "KUAT" if p["m15"] else "lemah")
             self._save_state()
+        else:
+            logger.warning("[3Ca] %s break terdeteksi TAPI 0 posisi terpasang — break boleh diulang", tag)
         return None
 
     def _kill_pattern(self, sym, why, price):
@@ -603,7 +664,7 @@ class ThreeCaStrategy(BaseStrategy):
                 "phase": ("PATTERN" if p else ("FROZEN" if not getattr(self, "_gw_ok", True) else "WATCH")),
                 "pattern": p.get("tag", ""), "dir": p.get("dir", ""),
                 "po_price": p.get("po_price"), "po_sl": p.get("po_sl"),
-                "po_active": bool(p.get("po_ticket")),
+                "po_active": bool(p.get("po_tickets") or p.get("po_ticket")),
                 "break_level": p.get("inst_lvl"), "gate2": p.get("gate2"),
                 "positions": len(p.get("tickets", [])), "max_pos": MAX_POS_PER_PATTERN,
                 "m15_kuat": p.get("m15", False), "buf": p.get("buf"),

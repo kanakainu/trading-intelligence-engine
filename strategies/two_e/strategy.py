@@ -31,6 +31,9 @@ logger = logging.getLogger("TwoE")
 
 LOT = 0.01
 MAX_POS = 5                  # 4 ladder + 1 break
+# [AUDIT Sasa 16-Sep] knob ablation: ladder L1-L4 ternyata PF ~1.0 / rugi.
+# TIE_2E_LADDER=off -> cuma jalur BREAK (X1) yang jalan. Default tetap "on" (SOP live).
+LADDER_ON = os.environ.get("TIE_2E_LADDER", "on") != "off"
 TP_R = 3.5
 BODY_RATIO = 2.5             # [v1.4 Boskuh] body C1 >= 2.5x body C2 — 3x kelangkaan, 2x kemasukan fake engulf
 HALT_FLAG = "/tmp/tie_halt"
@@ -318,7 +321,7 @@ class TwoEStrategy(BaseStrategy):
         po = []
         side = "sell" if d == "SELL" else "buy"
         placed = 0
-        for i in range(1, 5):
+        for i in range(1, 5) if LADDER_ON else []:
             px = self._r(zone_lo + span * i / 5.0 if d == "SELL"
                          else zone_hi - span * i / 5.0)
             tp = self._r(px - TP_R * (sl - px)) if d == "SELL" else \
@@ -330,8 +333,10 @@ class TwoEStrategy(BaseStrategy):
                 continue
             po.append({"ticket": int(t), "price": px})
             placed += 1
-        if not placed:
+        if not placed and LADDER_ON:
             return StrategyResult(signal=None, confidence=0.0, reason="po_failed")
+        if not placed:
+            logger.info("[2E] %s ladder OFF (ablation) — nunggu BREAK aja", tag)
         self._consume_budget(placed)
 
         self._p = {"tag": tag, "dir": d, "sl": sl, "inst": inst, "po": po,
