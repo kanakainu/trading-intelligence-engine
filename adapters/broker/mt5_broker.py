@@ -165,13 +165,19 @@ class MT5BrokerAdapter(BrokerAdapterBase):
             except Exception as e:
                 last = str(e)
                 code = getattr(e, "status", None)
-                permanent = ("not found" in last.lower() or "invalid" in last.lower()
-                             or (isinstance(code, int) and 400 <= code < 500 and code != 429
-                                 and not any(k in last.lower() for k in ("requote", "price"))))
+                low = last.lower()
+                # Urutan penting: keyword TRANSIENT dicek LEBIH DULU, karena broker kadang
+                # balikin 409/400 utk requote (kode 4xx ≠ otomatis permanen).
                 transient = (isinstance(code, int) and (code == 429 or code >= 500)) or \
-                            any(k in last.lower() for k in transient_kw)
-                if permanent and not transient:
-                    break
+                            any(k in low for k in transient_kw)
+                if transient:
+                    pass                     # lanjut retry
+                elif ("not found" in low or "no such" in low
+                      or (isinstance(code, int) and 400 <= code < 500 and code != 429)
+                      or "invalid" in low):
+                    break                    # permanen — retry gak nolong
+                else:
+                    break                    # gak dikenal = jangan spam, stop
             if attempt < MODIFY_RETRY:
                 # backoff + geser SL sedikit MENJAUH dari harga (MT5 nolak SL terlalu mepet
                 # harga pasar / requote karena harga gerak). Arah: buat SELL SL naik sedikit,
