@@ -62,7 +62,7 @@ class ThreeCaStrategy(BaseStrategy):
         meta = StrategyMetadata(
             id="three_ca_v2",
             name="ThreeCa",
-            version="2.9.4",
+            version="2.9.5",
             priority=85,
             author="Boskuh+Sasa",
             description="3C SOP: PO limit @C2 (buf 2xspread), SL C3; instant break C1 "

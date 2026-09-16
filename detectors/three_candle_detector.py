@@ -24,6 +24,13 @@ C2_ATR_MAX = 0.40   # body C2 < 40% ATR14 — "kecil" absolut
 CHOP_WINDOW = 5     # 5 candle sebelum deteksi: pita EMA = jebakan sideways
 
 
+def _align_ok(e9, e21, is_buy):
+    # [SOP-16B] alignment EMA9 vs EMA21 wajib searah (knob ablation: TIE_EMA_ALIGN=off)
+    if os.environ.get("TIE_EMA_ALIGN", "on") == "off":
+        return True
+    return e9 > e21 if is_buy else e9 < e21
+
+
 def ema_series(closes: List[float], period: int) -> List[float]:
     """EMA standar; hasil sepanjang input (dibangun dari seed SMA)."""
     if len(closes) < period:
@@ -109,9 +116,9 @@ class ThreeCandleDetector(BystraBaseDetector):
                 all(closes[-1 - i] < e9s[-1 - i] and closes[-1 - i] < e21s[-1 - i]
                     for i in range(2))
         elif direction == "BUY":
-            trend_m5 = closes[-1] > e9s[-1] and closes[-1] > e21s[-1]
+            trend_m5 = closes[-1] > e9s[-1] and closes[-1] > e21s[-1] and _align_ok(e9s[-1], e21s[-1], True)
         else:
-            trend_m5 = closes[-1] < e9s[-1] and closes[-1] < e21s[-1]
+            trend_m5 = closes[-1] < e9s[-1] and closes[-1] < e21s[-1] and _align_ok(e9s[-1], e21s[-1], False)
         if not trend_m5:
             return []
 
