@@ -22,6 +22,11 @@ _TRAILING_PROFILES = {
     "bystra":     TrailingProfile("bystra",     3.0, 2.5, 1.0, 1.0, 360),
     "aggressive": TrailingProfile("aggressive", 2.0, 0.5, 0.2, 0.2,  30),
     "semi_hft":   TrailingProfile("semi_hft",   1.0, 0.5, 0.2, 0.1,   5),
+    # [fix 15-Sep] profil era-2 — manager cuma fallback ATR-offset di sini;
+    # SL/BE/trailing real tetap manual_trailing_v2 (manage_sl=False).
+    "three_ca":   TrailingProfile("three_ca",   0.5, 1.0, 0.3, 0.3, 300),
+    "two_e":      TrailingProfile("two_e",      0.5, 1.0, 0.3, 0.3, 300),
+    "riri_scalps_v1": TrailingProfile("riri_scalps_v1", 0.5, 1.5, 0.2, 0.5, 0),
 }
 _TRAILING_MGR = TrailingManager(_TRAILING_PROFILES)
 

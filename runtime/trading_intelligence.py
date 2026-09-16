@@ -40,6 +40,7 @@ class DailyProfitGovernorV2:
         if self.state.trading_day != today:
             self.state.trading_day = today
             self.state.realized_pnl = 0.0
+            self.state.trades_today = 0   # [fix 16-Sep] lupa reset -> rem seumur hidup
             self.state.halted = False
             self.state.halt_reason = ""
 
@@ -79,7 +80,7 @@ class TradeBudgetManager:
     """Per-strategy daily trade budget. Reset at day rollover."""
 
     DEFAULTS = {"bystra": 500, "aggressive": 500, "semi_hft": 500,
-                "riri_scalps": 50, "three_ca": 50}  # scalper: 5/hari bikin TIE bungkum saat EA tetap entry (parity fix 2026-09-07)
+                "riri_scalps": 50, "three_ca": 50, "two_e": 50}  # scalper: 5/hari bikin TIE bungkum saat EA tetap entry (parity fix 2026-09-07)
 
     def __init__(self):
         self._budgets: Dict[str, StrategyBudget] = {}

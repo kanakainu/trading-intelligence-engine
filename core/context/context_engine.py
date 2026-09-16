@@ -64,7 +64,7 @@ class ContextEngine:
             volatility=volatility,
             market_status=status,
         )
-        log.info(f"Context built: {symbol} trend={trend} session={session} "
+        log.debug(f"Context built: {symbol} trend={trend} session={session} "
                  f"atr={atr:.4f} spread={spread:.1f} vol={volatility} "
                  f"price={price:.2f} z={vwap_z_score:.2f}")
         return ctx

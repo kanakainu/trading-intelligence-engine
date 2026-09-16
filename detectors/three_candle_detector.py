@@ -13,6 +13,7 @@ Rule v2 (SOP Boskuh):
 Return metadata lengkap per pola: c1/c2/c3 (dict utuh), direction, sl (ekstrem C3),
 trend_m5, trend_m15, atr14.
 """
+import os
 from typing import Any, Dict, List
 
 from detectors.base_detector import BystraBaseDetector
@@ -95,16 +96,22 @@ class ThreeCandleDetector(BystraBaseDetector):
         else:
             return []
 
-        # [SOP v2] tren M5: close C1 & C2 vs EMA9/21
+        # [SOP v2.9.4 Boskuh] tren M5: close C1 SAJA di luar pita EMA9/21
+        # (dulu C1+C2 — C2 besar bikin pola valid kelewat; ukuran C2 dijaga gate lain)
         closes = [float(c.get("close", 0)) for c in closed]
         e9s, e21s = ema_series(closes, 9), ema_series(closes, 21)
-        last_c = [closes[-1], closes[-2]]
-        last_e9 = [e9s[-1], e9s[-2]]
-        last_e21 = [e21s[-1], e21s[-2]]
-        if direction == "BUY":
-            trend_m5 = all(last_c[i] > last_e9[i] and last_c[i] > last_e21[i] for i in range(2))
+        _mode = os.environ.get("TIE_EMA_MODE", "c1")
+        if _mode == "off":
+            trend_m5 = True
+        elif _mode == "c1c2":
+            trend_m5 = all(closes[-1 - i] > e9s[-1 - i] and closes[-1 - i] > e21s[-1 - i]
+                           for i in range(2)) if direction == "BUY" else \
+                all(closes[-1 - i] < e9s[-1 - i] and closes[-1 - i] < e21s[-1 - i]
+                    for i in range(2))
+        elif direction == "BUY":
+            trend_m5 = closes[-1] > e9s[-1] and closes[-1] > e21s[-1]
         else:
-            trend_m5 = all(last_c[i] < last_e9[i] and last_c[i] < last_e21[i] for i in range(2))
+            trend_m5 = closes[-1] < e9s[-1] and closes[-1] < e21s[-1]
         if not trend_m5:
             return []
 

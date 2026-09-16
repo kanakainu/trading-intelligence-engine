@@ -64,6 +64,9 @@ STRATEGY_MAP = {
     "RIRI_SCALPS": "riri_scalps_v1",
     "T":   "three_ca",          # [3Ca v2.0] comment TIE_T_<tag>_* — jangan sampe jatuh ke fallback
     "3CA": "three_ca",         # ThreeCa: peak-lock model
+    "E":   "two_e",            # [2E] comment TIE_E_<tag>_Lx/X1 — satu keluarga peak-lock
+    "3C":  "three_ca",         # [v2.6 comment simple] 3C_B_/3C_S_
+    "2E":  "two_e",            # [v2.6] 2E_B_/2E_S_
 }
 
 # ========= EA PARITY TRAILING (port of RiriScalps.mq5 ManageTrailingTPSL) =========
@@ -180,9 +183,11 @@ def process_baskets(positions):
 
 
 def extract_profile_key(comment: str) -> str:
-    if not comment or not comment.startswith("TIE_"):
+    if not comment or not comment.startswith(("TIE_", "3C_", "2E_")):
         return "riri_scalps_v1"
     parts = comment.split("_")
+    if parts[0] in ("3C", "2E"):
+        return STRATEGY_MAP[parts[0]]
     return STRATEGY_MAP.get(parts[1].upper(), "riri_scalps_v1") if len(parts) >= 2 else "riri_scalps_v1"
 
 
@@ -256,7 +261,7 @@ def run():
             
             tie_alive = check_tie_alive()
             positions = get_positions()
-            tie_positions = [p for p in positions if str(p.get("comment", "")).startswith("TIE_")]
+            tie_positions = [p for p in positions if str(p.get("comment", "")).startswith(("TIE_", "3C_", "2E_"))]
 
             # === ALWAYS EXECUTE TRAILING (Manual Trailing = Primary SL Manager) ===
             if tie_positions:

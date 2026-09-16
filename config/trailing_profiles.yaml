@@ -17,6 +17,12 @@ profiles:
         start: 1.0
         lock_ratio: 0.5
         lock_min: 1.0
+    two_e:
+        be_lock: 1.0
+        dist: 0.5
+        start: 1.0
+        lock_ratio: 0.5
+        lock_min: 1.0
     bystra:
         be_lock: 1.5
         dist: 0.8

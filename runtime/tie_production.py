@@ -52,6 +52,7 @@ from core.strategy_manager.manager import StrategyManager
 from core.strategy.exit_orchestrator import ExitOrchestrator, ExitProfile
 from strategies.riri_scalps.strategy import RiriScalpsStrategy
 from strategies.three_ca.strategy import ThreeCaStrategy
+from strategies.two_e.strategy import TwoEStrategy
 from strategies.aggressive.regime.regime_engine import AggressiveRegimeEngine
 from runtime.multi_strategy_runtime import MultiStrategyRuntime
 from runtime.adapters.tradeplan_adapter import plan_to_decision, aggressive_regime_to_core_regime
@@ -102,14 +103,14 @@ def _is_tie_pos(p: dict) -> bool:
     m = p.get("magic")
     if m is not None:
         return int(m) in TIE_MAGIC
-    return str(p.get("comment", "")).startswith("TIE_")
+    return str(p.get("comment", "")).startswith(("TIE_", "3C_", "2E_"))  # v2.6 prefix baru
 
 def _is_tie_deal(d: dict) -> bool:
     m = d.get("magic")
     if m is not None:
         return int(m) in TIE_MAGIC
     c = str(d.get("comment", ""))
-    return c.startswith("TIE_") or c.startswith("Riri")
+    return c.startswith(("TIE_", "3C_", "2E_", "Riri"))
 
 _PNL_CUTOFF = ""  # reset point (data/pnl_reset_time.txt) — PnL mulai dihitung dr sini
 try:
@@ -191,6 +192,7 @@ mgr = StrategyManager()
 orch = ExitOrchestrator(min_gate_rr=1.5)
 # Bystra disabled — mati suri, replaced by ThreeCa standalone
 mgr.load(ThreeCaStrategy)
+mgr.load(TwoEStrategy)
 # RiriScalps DI NONAKTIFKAN di TIE per 13-Sep (SOP refine 3Ca — Boskuh: "engine
 # Ririscalps g akan kita pakai"). EA standalone RiriScalps di MT5 TIDAK disentuh.
 mgr.load(RiriScalpsStrategy)
@@ -222,7 +224,9 @@ pos_monitor = PositionMonitor(on_result=handle_pos_result, broker=broker, manage
 risk_gate = build_risk_registry()
 context_engine = ContextEngine()
 observatory = GateObservatory()
-governor = DailyProfitGovernorV2(daily_target=30.0, daily_loss_limit=200.0)
+GOV_TARGET_OFF = 1_000_000.0  # target harian DIMATIKAN (SOP-16A Boskuh): sentinel tak tersentuh
+GOV_LOSS = 80.0             # rem-loss harian $80 (sweep: $60-80 gratis, $45 rugi)
+governor = DailyProfitGovernorV2(daily_target=GOV_TARGET_OFF, daily_loss_limit=GOV_LOSS)
 budget_mgr = TradeBudgetManager()
 
 # [3Ca v2.0] direct executor — inject broker + safety global. Strategi pegang
@@ -232,6 +236,11 @@ if _tca:
     _tca.set_broker(client)
     _tca.set_safety_gates({"gov": governor, "budget": budget_mgr})
     log.info("ThreeCa v2.0 wired: direct executor (PO limit + pyramid, buffer 2xspread)")
+_twoe = mgr.get("two_e_v1")
+if _twoe:
+    _twoe.set_broker(client)
+    _twoe.set_safety_gates({"gov": governor, "budget": budget_mgr})
+    log.info("TwoE v1.0 wired: 2-Engulfing direct executor (ladder 4 limit + break entry)")
 
 # === FIRE LOCK (in-memory, anti race/kembar + retry terbatas) ===
 # key (bar_start, action) -> percobaan kirim order. 1 sukses = 99 (kunci mati).
@@ -296,18 +305,14 @@ def write_dashboard_status(all_pairs_data, broker, status_path):
         balance = account_data.balance
         equity = account_data.equity
         pos_states = [p for p in broker.get_positions()
-                      if str(getattr(p, "comment", "")).startswith("TIE_")]  # TIE-only
+                      if str(getattr(p, "comment", "")).startswith(("TIE_", "3C_", "2E_"))]  # TIE-only
 
         # Daily PnL = TIE realized deals today + TIE floating (ignore EA/manual trades)
         daily_pnl = _TIE_DAY_PNL + sum(getattr(p, 'unrealized_profit', 0) for p in pos_states)
         
         # Get daily target from governor
-        daily_target = 30.0  # fallback
-        try:
-            from runtime.trading_intelligence import DailyProfitGovernorV2
-            # Reuse the governor instance if accessible, or recreate
-            daily_target = 30.0  # Hardcoded fallback matching governor config
-        except: pass
+        daily_target = GOV_TARGET_OFF   # dilaporkan apa adanya: 1e9 = target OFF
+        daily_loss = GOV_LOSS
         
         status_data = {
             "ts": datetime.now(timezone.utc).isoformat(),
@@ -315,6 +320,7 @@ def write_dashboard_status(all_pairs_data, broker, status_path):
             "equity": equity,
             "daily_pnl": round(daily_pnl, 2),
             "daily_target": daily_target,
+            "daily_loss": daily_loss,
             "floating_pnl": sum(getattr(p, 'unrealized_profit', 0) for p in pos_states),
             "margin_percent": 0.0,
             "active_engines": ["ThreeCa v2.0"],
@@ -381,9 +387,8 @@ while True:
     _blackout_age = _now_ts - os.path.getmtime(_blackout_file) if os.path.exists(_blackout_file) else 9999
     if _blackout_age > 900:  # 15 min stale → refresh
         try:
-            import asyncio as _aio
             from shared.news_sentinel import NewsSentinel as _NS
-            _aio.get_event_loop().run_until_complete(_NS().check_blackout())
+            _NS().check_blackout()  # sync fn — run_until_complete salah pakai
             log.debug("News sentinel refreshed")
         except Exception as _ne:
             log.warning("News sentinel refresh failed: %s", _ne)
@@ -459,7 +464,7 @@ while True:
             if not _market_open(sym, now_utc):
                 log.info("Market closed for %s (%s) — skip scan", sym, now_utc.strftime("%a %H:%M UTC"))
                 continue
-            log.info(f"--- Scanning {sym} ---")
+            log.debug(f"--- Scanning {sym} ---")
             candles = {}
             for tf in ["M1", "M5", "M15", "M30", "H1"]:
                 count = 100 if tf == "M1" else 40 if tf == "M5" else 20
@@ -546,20 +551,20 @@ while True:
             
             for ps in pos_states:
                 # Extract strategy_id from comment — always, regardless of symbol
-                if ps.comment and ps.comment.startswith("TIE_"):
-                    parts = ps.comment.split("_")
-                    if len(parts) >= 2:
-                        strategy_code = parts[1]  # B, BA, BAS, A, S
-                        strategy_map = {
-                            "B": "bystra",
-                            "BA": "bystra",
-                            "BAS": "bystra",
-                            "A": "riri_scalps",
-                            "S": "riri_scalps"
-                        }
-                        ps.strategy_id = strategy_map.get(strategy_code, "riri_scalps")
+                # [fix 15-Sep] comment era-2 = 3C_S_/2E_B_ dst; parsing lama ngeliat
+                # parts[1]="S" (arah!) -> riri_scalps -> No-trailing-profile spam per cycle.
+                if ps.comment and ps.comment.startswith(("TIE_", "3C_", "2E_")):
+                    c = ps.comment
+                    if c.startswith("3C_") or "_T_" in c:
+                        ps.strategy_id = "three_ca"
+                    elif c.startswith("2E_") or "_E_" in c:
+                        ps.strategy_id = "two_e"
+                    elif c.startswith(("TIE_B", "TIE_BA")):
+                        ps.strategy_id = "bystra"
+                    else:
+                        ps.strategy_id = "riri_scalps_v1"   # profile beneran (bukan "riri_scalps")
                 else:
-                    ps.strategy_id = "riri_scalps"  # Default fallback for TIE orders
+                    ps.strategy_id = "riri_scalps_v1"  # Default fallback for TIE orders
 
                 if ps.symbol != sym: continue
 
@@ -618,7 +623,7 @@ while True:
 
             # �� NEXUS A12: Regime Detection + Automatic Allocation (Transmission)
             _regime_snap = regime_allocator.allocate(_features, time.time())
-            log.info(f"MARKET REGIME: {_regime_snap.regime.value} (strength={_regime_snap.strength:.0f}) | SUGGESTED ENGINE: {_regime_snap.suggested_engine}")
+            log.debug(f"MARKET REGIME: {_regime_snap.regime.value} (strength={_regime_snap.strength:.0f}) | SUGGESTED ENGINE: {_regime_snap.suggested_engine}")
             if _regime_snap.regime in (MarketRegime.CHOPPY, MarketRegime.CHAOS):
                 log.warning(f"REGIME GATE: {_regime_snap.regime.value} — MR disabled, structural only")
                 # Don't skip — RiriScalps Engine B/C still valid in choppy/chaos
@@ -649,12 +654,12 @@ while True:
             # === VOLUME PROFILE + DIVERGENCE — run EVERY scan (fail-open confirmation) ===
             from shared.volume_profile import check as _vp_check
             vp_verdict = _vp_check(candles, price, decision.action if decision.action != "WAIT" else "WAIT")
-            log.info(f"📊 VolumeProfile: {vp_verdict.reason}")
+            log.debug(f"📊 VolumeProfile: {vp_verdict.reason}")
             _vp_score = vp_verdict.quality_score
 
             from shared.divergence_detector import check as _div_check
             div_verdict = _div_check(candles, decision.action if decision.action != "WAIT" else "WAIT")
-            log.info(f"🔀 Divergence: {div_verdict.reason}")
+            log.debug(f"🔀 Divergence: {div_verdict.reason}")
             _div_score = div_verdict.quality_score
 
             # === DECISION TRACE V2 ===
@@ -1086,7 +1091,7 @@ while True:
                     observatory.log_gate(trace, "RiskGate", "FAIL", reason=reasons)
                     # NOTIF OFF: notifier.notify_risk_gate_blocked(...)
             else:
-                log.info(f"No setup for {sym} (WAIT)")
+                log.debug(f"No setup for {sym} (WAIT)")
                 setup_detail = None
                 observatory.finalize_trace(trace, "NO_TRADE", rejection_reason="no_signal")
             
@@ -1105,10 +1110,16 @@ while True:
                     # Extract strategy code and metadata from comment
                     strategy_code = "B"  # default
                     cutloss_lvl = None
-                    if ps.comment and ps.comment.startswith("TIE_"):
-                        parts = ps.comment.split("_")
-                        if len(parts) >= 2:
-                            strategy_code = parts[1]  # B, T, R, BA, BAS, A, S
+                    if ps.comment and ps.comment.startswith(("TIE_", "3C_", "2E_")):
+                        # [fix 15-Sep era-2] 3C_S_/2E_B_ -> kode config mesin, BUKAN arah!
+                        if ps.comment.startswith("3C_") or "TIE_T_" in ps.comment:
+                            strategy_code = "T"
+                        elif ps.comment.startswith("2E_") or "TIE_E_" in ps.comment:
+                            strategy_code = "E"
+                        else:
+                            parts = ps.comment.split("_")
+                            if len(parts) >= 2:
+                                strategy_code = parts[1]  # B, BA, BAS, R...
                         
                         # Detect Cutloss encoded in comment (e.g., "TIE_T_BUY_CL4621.5")
                         if "CL" in ps.comment:
@@ -1118,15 +1129,16 @@ while True:
 
                     # Strategy-specific exit config
                     exit_configs = {
-                        "T":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # 3Ca Refined
+                        "T":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5, "early_exit_reversal": False},  # 3Ca Refined — [v2.1 SOP] exit = SL/trailing/kill C2, BUKAN pola candle
                         "R":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.5, "partial_tp_pct": 0.3, "early_exit_reversal": False},  # RiriScalps — [V-NOCHASE] reversal exit 0/6 -13.54, mati
-                        "B":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # Bystra
-                        "BA":  {"be_trigger_atr": 0.4, "trail_trigger_atr": 0.8, "trail_offset_atr": 0.3, "partial_tp_pct": 0.4},
-                        "BAS": {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.2, "partial_tp_pct": 0.3},
-                        "A":   {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.25, "partial_tp_pct": 0.4},
-                        "S":   {"be_trigger_atr": 0.15, "trail_trigger_atr": 0.3, "trail_offset_atr": 0.15, "partial_tp_pct": 0.3},
+                        "B":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5, "early_exit_reversal": False},  # Bystra — [v2.1] default mati juga
+                        "BA":  {"be_trigger_atr": 0.4, "trail_trigger_atr": 0.8, "trail_offset_atr": 0.3, "partial_tp_pct": 0.4, "early_exit_reversal": False},
+                        "BAS": {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.2, "partial_tp_pct": 0.3, "early_exit_reversal": False},
+                        "A":   {"be_trigger_atr": 0.3, "trail_trigger_atr": 0.6, "trail_offset_atr": 0.25, "partial_tp_pct": 0.4, "early_exit_reversal": False},
+                        "S":   {"be_trigger_atr": 0.15, "trail_trigger_atr": 0.3, "trail_offset_atr": 0.15, "partial_tp_pct": 0.3, "early_exit_reversal": False},
                         "F":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.5, "partial_tp_pct": 0.3, "early_exit_reversal": False},  # Engine F Nyao — [V-NOCHASE] sama2 RiriScalps
-                        "3Ca": {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5},      # ThreeCa (was missing → fell back to Bystra)
+                        "3Ca": {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5, "early_exit_reversal": False},      # ThreeCa — [v2.1 SOP] sama dgn T
+                        "E":   {"be_trigger_atr": 0.5, "trail_trigger_atr": 1.0, "trail_offset_atr": 0.3, "partial_tp_pct": 0.5, "early_exit_reversal": False},      # 2E — exit = SL/trailing/kill High-Low C1, BUKAN pola candle
                     }
                     cfg = exit_configs.get(strategy_code, exit_configs["B"])
                     

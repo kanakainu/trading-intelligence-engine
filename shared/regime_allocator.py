@@ -51,7 +51,7 @@ class RegimeAllocator:
             self._apply(snap)
             self._current_regime = snap.regime
             self._last_switch_ts = now_ts
-            logger.info("REGIME SWITCH: %s -> %s (engine=%s, fast_path=%s)", 
+            logger.debug("REGIME SWITCH: %s -> %s (engine=%s, fast_path=%s)", 
                         self._current_regime.value if self._current_regime else "?", 
                         snap.regime.value, snap.suggested_engine, is_fast_path)
 
@@ -60,7 +60,7 @@ class RegimeAllocator:
     def _apply(self, snap: RegimeSnapshot) -> None:
         """SOPAN MODE: Only logs suggestions, does NOT overwrite manual dashboard settings."""
         regime = snap.regime
-        logger.info("REGIME SUGGESTION: %s -> Use %s", regime.value, snap.suggested_engine)
+        logger.debug("REGIME SUGGESTION: %s -> Use %s", regime.value, snap.suggested_engine)
         
         # We skip writing to STRATEGY_STATUS_PATH to prevent fighting with the Dashboard.
         # Mas Wisnu has full control now.

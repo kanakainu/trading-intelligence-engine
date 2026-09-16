@@ -142,7 +142,7 @@ class StrategyManager:
                     self._metrics[sid].record(result)
                     results.append(result)
                     if result.signal is None:
-                        logger.info("Strategy %s returned WAIT: %s", sid, result.reason)
+                        logger.debug("Strategy %s returned WAIT: %s", sid, result.reason)
                 # Save score from metadata regardless of signal (always track live score)
                 if result and result.metadata and sym:
                     self._last_scores[f"{sid}_{sym}"] = {

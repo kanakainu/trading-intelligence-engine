@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/home/ubuntu/trading-intelligence-engine/shared/regime_allocator.py", line 6, in <module>
-    from shared.regime_detector import MarketRegime, RegimeSnapshot
-ModuleNotFoundError: No module named 'shared.regime_detector'
-Traceback (most recent call last):
-  File "/home/ubuntu/trading-intelligence-engine/shared/regime_allocator.py", line 6, in <module>
-    from shared.regime_detector import MarketRegime, RegimeSnapshot
-ModuleNotFoundError: No module named 'shared.regime_detector'

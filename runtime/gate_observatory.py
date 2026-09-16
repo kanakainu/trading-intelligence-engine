@@ -181,7 +181,7 @@ class GateObservatory:
         # Persist trace
         self._persist_trace(trace)
         
-        logger.info(f"[{trace.symbol}/{trace.strategy}] Outcome: {outcome} | {rejection_reason}")
+        logger.debug(f"[{trace.symbol}/{trace.strategy}] Outcome: {outcome} | {rejection_reason}")
     
     def _persist_gate(self, scan_id: str, symbol: str, strategy: str, gate: GateResult):
         """Persist gate decision to SQLite."""
