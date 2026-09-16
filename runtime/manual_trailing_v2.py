@@ -49,6 +49,10 @@ def load_dynamic_config():
     return profiles, be_lock_usd, hedge_close_usd
 
 POLL_SEC             = 5
+
+# [17-Sep] retry modify SL/TP — requote = gangguan sesaat, bukan penolakan final.
+MODIFY_RETRY   = max(1, int(os.environ.get("TIE_MODIFY_RETRY", "4")))
+MODIFY_BACKOFF = float(os.environ.get("TIE_MODIFY_BACKOFF", "0.6"))
 URL                  = os.getenv("MT5_GATEWAY_URL",   "https://statute-expired-chapter-subscribers.trycloudflare.com")
 TOKEN                = os.getenv("MT5_GATEWAY_TOKEN", "Xs-EjloGUf_WxDlpLHEkRNbbVcsmtRlV")
 HEADERS              = {"Authorization": f"Bearer {TOKEN}"}
@@ -240,13 +244,51 @@ def compute_new_sl(pos, profile):
 
 
 def modify_order(ticket, new_sl, tp=None):
-    """Modify SL/TP via MT5 Gateway."""
+    """Modify SL/TP via MT5 Gateway — RETRY cerdas (requote = gangguan sesaat).
+
+    [17-Sep fix, selaras adapters/broker/mt5_broker.py] Dulu sekali requote langsung
+    dibuang: BE-lock gagal, posisi balik ke SL awal dan kena SL padahal udah profit
+    (bukti E77100 #3830163215: 3x BE-lock `SL 4349.16 -> 4341.47` ditolak -> loss).
+    """
     payload = {"ticket": ticket, "sl": new_sl}
     if tp:
         payload["tp"] = tp
-    r = requests.post(f"{URL}/trade/modify", headers=HEADERS, json=payload, timeout=5)
-    r.raise_for_status()
-    return r.json()
+    transient_kw = ("requote", "off quote", "off quotes", "busy", "timeout",
+                    "timed out", "connection", "temporarily", "try again",
+                    "price changed", "invalid price", "slippage", "server")
+    last = ""
+    attempt = 0
+    while attempt < MODIFY_RETRY:
+        attempt += 1
+        try:
+            r = requests.post(f"{URL}/trade/modify", headers=HEADERS, json=payload, timeout=5)
+            r.raise_for_status()
+            if attempt > 1:
+                log.info(f"[{ticket}] modify berhasil di percobaan {attempt}/{MODIFY_RETRY}")
+            return r.json()
+        except Exception as e:
+            last = str(e)
+            low = last.lower()
+            code = getattr(getattr(e, "response", None), "status_code", None)
+            transient = (isinstance(code, int) and (code == 429 or code >= 500)) or \
+                        any(k in low for k in transient_kw)
+            if not transient:
+                break                     # permanen / gak dikenal -> jangan spam
+            if attempt < MODIFY_RETRY:
+                # geser SL menjauh dari harga (arah aman) — lepas dari zona requote
+                try:
+                    _pos = next((x for x in get_positions()
+                                 if str(x.get("ticket")) == str(ticket)), None)
+                    if _pos and new_sl:
+                        _side = "buy" if str(_pos.get("type", "")).lower() in ("0", "buy") else "sell"
+                        _b = 0.2 * attempt
+                        new_sl = round(new_sl - _b if _side == "buy" else new_sl + _b, 2)
+                        payload["sl"] = new_sl
+                except Exception:
+                    pass
+                time.sleep(MODIFY_BACKOFF * attempt)
+    log.warning(f"[{ticket}] modify GAGAL {attempt}x ({last[:80]})")
+    raise RuntimeError(last)
 
 
 # ========= MAIN LOOP =========
