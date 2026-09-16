@@ -665,6 +665,9 @@ class ThreeCaStrategy(BaseStrategy):
                 "pattern": p.get("tag", ""), "dir": p.get("dir", ""),
                 "po_price": p.get("po_price"), "po_sl": p.get("po_sl"),
                 "po_active": bool(p.get("po_tickets") or p.get("po_ticket")),
+                "ladder_n": LADDER_N,          # target tangga per pola
+                "po_count": len(p.get("po_tickets") or []),
+                "po_prices": sorted(p.get("po_lv", {}).values()),
                 "break_level": p.get("inst_lvl"), "gate2": p.get("gate2"),
                 "positions": len(p.get("tickets", [])), "max_pos": MAX_POS_PER_PATTERN,
                 "m15_kuat": p.get("m15", False), "buf": p.get("buf"),

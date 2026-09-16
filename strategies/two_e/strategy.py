@@ -471,6 +471,7 @@ class TwoEStrategy(BaseStrategy):
                 "pattern": p.get("tag", ""), "dir": p.get("dir", ""),
                 "po_prices": [o["price"] for o in p.get("po", [])],
                 "po_count": len(p.get("po", [])),
+                "ladder_on": LADDER_ON, "ladder_max": 4,
                 "sl_all": p.get("sl"), "break_level": p.get("inst"),
                 "h1": p.get("h1"), "l1": p.get("l1"), "buf": p.get("buf"),
                 "positions": len(p.get("tickets", [])), "max_pos": MAX_POS,
