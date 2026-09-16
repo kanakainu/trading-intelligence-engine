@@ -270,6 +270,8 @@ def modify_order(ticket, new_sl, tp=None):
             last = str(e)
             low = last.lower()
             code = getattr(getattr(e, "response", None), "status_code", None)
+            # Urutan penting: keyword TRANSIENT dulu (broker kadang balikin 4xx utk requote),
+            # baru PERMANEN (404 not found / 400 invalid) -> stop percobaan-1.
             transient = (isinstance(code, int) and (code == 429 or code >= 500)) or \
                         any(k in low for k in transient_kw)
             if not transient:
