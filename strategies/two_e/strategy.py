@@ -427,9 +427,8 @@ class TwoEStrategy(BaseStrategy):
                     break
                 time.sleep(0.7)
             if okm:
-                p["inst_fired"] = True   # [v1.5] flag HANYA kalau sukses — dulu
-                #                      di-set sebelum cek: Entry1 kena Requote ->
-                #                      pola mati tanpa instant entry (E88100 19:20)
+                p["inst_fired"] = True   # flag hanya kalau order sukses
+                p["break_t"] = now       # beri gateway waktu sinkronisasi posisi
                 p["tickets"].append(int(t))
                 self._consume_budget()
                 logger.info("[2E] %s BREAK C1 @%.2f -> Entry1 #%s SL=%.2f TP=%.2f",
@@ -440,7 +439,7 @@ class TwoEStrategy(BaseStrategy):
             return None
 
         # 5) selesai kalau semua PO habis & posisi udah diurus trailing
-        if p["inst_fired"] and not p["po"]:
+        if p["inst_fired"] and not p["po"] and (now - p.get("break_t", now)) > 60:
             n_now = len(live) if live is not None else len(p["tickets"])
             if n_now == 0:
                 self._ghost = {"dir": d, "h1": p.get("h1"), "l1": p.get("l1"),
