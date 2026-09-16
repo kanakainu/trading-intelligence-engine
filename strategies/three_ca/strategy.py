@@ -418,7 +418,7 @@ class ThreeCaStrategy(BaseStrategy):
             "brk_done": False,  # [v2.7] break dieksekusi sekali/pola
             "g2b": 0,  # [v2.9] ts close nembus C2 (warning, nunggu hold)
         }
-        self._consume_budget()
+        self._consume_budget(len(po_tickets))   # ladder = N order, quota dihitung N
         self._save_state()
         logger.info("[3Ca] %s %s PO#%s @%.2f SL=%.2f buf=%.2f | break@%.2f gate2=%.2f "
                     "(M15 %s, risk $%.2f)", tag, d, ticket, po_price, po_sl, buf,
